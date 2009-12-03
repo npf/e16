@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -75,22 +75,22 @@ void                EImageTile(EImage * im, EImage * tile, int flags, int tw,
 			       int th, int dx, int dy, int dw, int dh, int ox,
 			       int oy);
 
-EImage             *EImageGrabDrawable(Drawable draw, Pixmap mask,
+EImage             *EImageGrabDrawable(EX_Drawable draw, EX_Pixmap mask,
 				       int x, int y, int w, int h, int grab);
 EImage             *EImageGrabDrawableScaled(Win win,
-					     Drawable draw, Pixmap mask,
-					     int x, int y, int w, int h,
-					     int iw, int ih, int grab,
-					     int get_mask_from_shape);
+					     EX_Drawable draw,
+					     EX_Pixmap mask, int x, int y,
+					     int w, int h, int iw, int ih,
+					     int grab, int get_mask_from_shape);
 
-void                EImageRenderOnDrawable(EImage * im, Win win, Drawable draw,
-					   int flags,
+void                EImageRenderOnDrawable(EImage * im, Win win,
+					   EX_Drawable draw, int flags,
 					   int x, int y, int w, int h);
 
 void                EImageRenderPixmaps(EImage * im, Win win, int flags,
-					Pixmap * pmap, Pixmap * mask,
-					int w, int h);
-void                EImagePixmapsFree(Pixmap pmap, Pixmap mask);
+					EX_Pixmap * pmap,
+					EX_Pixmap * mask, int w, int h);
+void                EImagePixmapsFree(EX_Pixmap pmap, EX_Pixmap mask);
 
 void                EImageApplyToWin(EImage * im, Win win, int flags,
 				     int w, int h);
@@ -102,13 +102,14 @@ void                EImageColorModifierSetTables(EImageColorModifier * icm,
 						 unsigned char *b,
 						 unsigned char *a);
 
-void                ScaleRect(Win wsrc, Drawable src, Win wdst, Pixmap dst,
-			      int sx, int sy, int sw, int sh,
+void                ScaleRect(Win wsrc, EX_Drawable src, Win wdst,
+			      EX_Pixmap dst, int sx, int sy, int sw, int sh,
 			      int dx, int dy, int dw, int dh, int flags);
-void                ScaleTile(Win wsrc, Drawable src, Win wdst, Pixmap dst,
-			      int dx, int dy, int dw, int dh, int flags);
+void                ScaleTile(Win wsrc, EX_Drawable src, Win wdst,
+			      EX_Pixmap dst, int dx, int dy, int dw, int dh,
+			      int flags);
 
-void                EDrawableDumpImage(Drawable draw, const char *txt);
+void                EDrawableDumpImage(EX_Drawable draw, const char *txt);
 
 EImage             *ThemeImageLoad(const char *file);
 

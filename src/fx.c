@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -62,7 +62,7 @@ typedef struct {
 
 typedef struct {
    Win                 win;
-   Pixmap              above;
+   EX_Pixmap           above;
    int                 count;
    float               incv, inch;
    GC                  gc1;
@@ -172,7 +172,7 @@ FX_Ripple_Ops(int op)
 
 typedef struct {
    Win                 win;
-   Pixmap              above;
+   EX_Pixmap           above;
    int                 count;
    float               incv, inch, incx;
    GC                  gc1;

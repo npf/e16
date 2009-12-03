@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -512,7 +512,7 @@ MenuLoadFromEwins(Menu * m, int (*f) (EWin * ewin, void *prm), void *prm)
 	if (!f(lst[i], prm))
 	   continue;
 
-	Esnprintf(s, sizeof(s), "wop %#lx focus", EwinGetClientXwin(lst[i]));
+	Esnprintf(s, sizeof(s), "wop %#x focus", EwinGetClientXwin(lst[i]));
 	mi = MenuItemCreate(EwinGetTitle(lst[i]), NULL, s, NULL);
 	MenuAddItem(m, mi);
      }
@@ -599,11 +599,11 @@ MenuLoadFromGroups(Menu * m)
      {
 	mm = MenuCreate("__SUBMENUGROUP_E", NULL, m, NULL);
 
-	Esnprintf(s, sizeof(s), "gop %li showhide",
+	Esnprintf(s, sizeof(s), "gop %i showhide",
 		  EwinGetClientXwin(lst[i]->members[0]));
 	mi = MenuItemCreate(_("Show/Hide this group"), NULL, s, NULL);
 
-	Esnprintf(s, sizeof(s), "wop %#lx ic",
+	Esnprintf(s, sizeof(s), "wop %#x ic",
 		  EwinGetClientXwin(lst[i]->members[0]));
 	MenuAddItem(mm, mi);
 	mi = MenuItemCreate(_("Iconify this group"), NULL, s, NULL);
@@ -611,7 +611,7 @@ MenuLoadFromGroups(Menu * m)
 
 	for (j = 0; j < lst[i]->num_members; j++)
 	  {
-	     Esnprintf(s, sizeof(s), "wop %#lx focus",
+	     Esnprintf(s, sizeof(s), "wop %#x focus",
 		       EwinGetClientXwin(lst[i]->members[j]));
 	     mi = MenuItemCreate(EwinGetTitle(lst[i]->members[j]), NULL,
 				 s, NULL);

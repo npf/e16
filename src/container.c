@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -1183,7 +1183,7 @@ ContainerShowMenu(Container * ct)
    mi = MenuItemCreate(_("Settings..."), NULL, s, NULL);
    MenuAddItem(m, mi);
 
-   Esnprintf(s, sizeof(s), "wop %#lx cl", WinGetXwin(ct->win));
+   Esnprintf(s, sizeof(s), "wop %#x cl", WinGetXwin(ct->win));
    mi = MenuItemCreate(_("Close"), NULL, s, NULL);
    MenuAddItem(m, mi);
 

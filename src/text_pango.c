@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2010 Kim Woelders
+ * Copyright (C) 2007-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -40,7 +40,7 @@ static PangoContext *_pango_ctx = NULL;
 typedef struct {
    PangoFontDescription *font;
    Win                 win;
-   Drawable            draw;
+   EX_Drawable         draw;
    XftDraw            *xftd;
    XftColor            xftc;
 } FontCtxPangoXft;

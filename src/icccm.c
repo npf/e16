@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -302,7 +302,7 @@ ICCCM_Configure(EWin * ewin)
 void
 ICCCM_AdoptStart(const EWin * ewin)
 {
-   Window              win = EwinGetClientXwin(ewin);
+   EX_Window           win = EwinGetClientXwin(ewin);
 
    if (!EwinIsInternal(ewin))
       XAddToSaveSet(disp, win);
@@ -311,7 +311,7 @@ ICCCM_AdoptStart(const EWin * ewin)
 void
 ICCCM_Adopt(const EWin * ewin)
 {
-   Window              win = EwinGetClientXwin(ewin);
+   EX_Window           win = EwinGetClientXwin(ewin);
 
    if (ewin->icccm.start_iconified)
       ex_icccm_state_set_iconic(win);
@@ -322,7 +322,7 @@ ICCCM_Adopt(const EWin * ewin)
 void
 ICCCM_Cmap(EWin * ewin)
 {
-   Colormap            ecmap, dcmap, ccmap;
+   EX_Colormap         ecmap, dcmap, ccmap;
    XWindowAttributes   xwa;
    int                 i, num;
    EX_Window          *wlist;
@@ -369,7 +369,7 @@ ICCCM_Cmap(EWin * ewin)
 
  set_cmap:
    if (EDebug(EDBUG_TYPE_FOCUS))
-      Eprintf("ICCCM_Cmap %#lx\n", ccmap);
+      Eprintf("ICCCM_Cmap %#x\n", ccmap);
    XInstallColormap(disp, ccmap);
    Mode.current_cmap = ccmap;
 }
@@ -380,12 +380,12 @@ ICCCM_Focus(const EWin * ewin)
    if (EDebug(EDBUG_TYPE_FOCUS))
      {
 	if (ewin)
-	   Eprintf("ICCCM_Focus T=%#lx R=%#lx %#lx %s\n", Mode.events.time,
-		   NextRequest(disp), EwinGetClientXwin(ewin),
+	   Eprintf("ICCCM_Focus T=%#x R=%#x %#x %s\n", Mode.events.time,
+		   (int)NextRequest(disp), EwinGetClientXwin(ewin),
 		   EwinGetTitle(ewin));
 	else
-	   Eprintf("ICCCM_Focus T=%#lx R=%#lx None\n", Mode.events.time,
-		   NextRequest(disp));
+	   Eprintf("ICCCM_Focus T=%#x R=%#x None\n", Mode.events.time,
+		   (int)NextRequest(disp));
      }
 
    if (!ewin)
@@ -541,7 +541,7 @@ ICCCM_GetGeoms(EWin * ewin)
    ewin->props.no_resize_v = (ewin->icccm.height_min == ewin->icccm.height_max);
 
    if (EDebug(EDBUG_TYPE_SNAPS))
-      Eprintf("Snap get icccm %#lx: %4d+%4d %4dx%4d: %s\n",
+      Eprintf("Snap get icccm %#x: %4d+%4d %4dx%4d: %s\n",
 	      EwinGetClientXwin(ewin), ewin->client.x, ewin->client.y,
 	      ewin->client.w, ewin->client.h, EwinGetTitle(ewin));
 }
@@ -799,7 +799,7 @@ ICCCM_SetIconSizes(void)
  * Process received window property change
  */
 int
-ICCCM_ProcessPropertyChange(EWin * ewin, Atom atom_change)
+ICCCM_ProcessPropertyChange(EWin * ewin, EX_Atom atom_change)
 {
    if (atom_change == EX_ATOM_WM_NAME)
      {

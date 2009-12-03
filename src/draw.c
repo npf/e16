@@ -34,7 +34,7 @@
 static Font         font = NoXID;	/* Used in mode 1 (technical) */
 
 static void
-draw_h_arrow(Drawable dr, GC gc, int x1, int x2, int y1)
+draw_h_arrow(EX_Drawable dr, GC gc, int x1, int x2, int y1)
 {
    char                str[32];
 
@@ -54,7 +54,7 @@ draw_h_arrow(Drawable dr, GC gc, int x1, int x2, int y1)
 }
 
 static void
-draw_v_arrow(Drawable dr, GC gc, int y1, int y2, int x1)
+draw_v_arrow(EX_Drawable dr, GC gc, int y1, int y2, int x1)
 {
    char                str[32];
 
@@ -74,7 +74,7 @@ draw_v_arrow(Drawable dr, GC gc, int y1, int y2, int x1)
 }
 
 void
-do_draw_technical(Drawable dr, GC gc,
+do_draw_technical(EX_Drawable dr, GC gc,
 		  int a, int b, int c, int d, int bl, int br, int bt, int bb)
 {
    if (!font)
@@ -104,7 +104,7 @@ do_draw_technical(Drawable dr, GC gc,
 }
 
 static void
-do_draw_boxy(Drawable dr, GC gc,
+do_draw_boxy(EX_Drawable dr, GC gc,
 	     int a, int b, int c, int d, int bl, int br, int bt, int bb)
 {
    if (c < 3)
@@ -116,7 +116,7 @@ do_draw_boxy(Drawable dr, GC gc,
 }
 
 typedef struct {
-   Window              root;
+   EX_Window           root;
    GC                  gc;
    int                 xo, yo, wo, ho;
    int                 bl, br, bt, bb;
@@ -147,7 +147,8 @@ _ShapeDrawNograb_tech_box(EWin * ewin, int md, int firstlast,
      }
 }
 
-typedef void        (DrawFunc) (Drawable dr, GC gc, int a, int b, int c, int d,
+typedef void        (DrawFunc) (EX_Drawable dr, GC gc,
+				int a, int b, int c, int d,
 				int bl, int br, int bt, int bb);
 
 static DrawFunc    *const draw_functions[] = {

@@ -780,7 +780,7 @@ pt_get_bg_image(Win win, int w, int h, int use_root)
 {
    EImage             *ii = NULL;
    Win                 cr;
-   Drawable            bg;
+   EX_Drawable         bg;
    int                 xx, yy;
 
    bg = DeskGetBackgroundPixmap(DesksGetCurrent());
@@ -887,7 +887,7 @@ ImagestateMakePmapMask(ImageState * is, Win win, PmapMask * pmm,
 #ifdef ENABLE_TRANSPARENCY
    EImage             *ii = NULL;
    int                 flags;
-   Pixmap              pmap, mask;
+   EX_Pixmap           pmap, mask;
 
    flags = pt_type_to_flags(image_type);
 
@@ -994,7 +994,8 @@ ImagestateMakePmapMask(ImageState * is, Win win, PmapMask * pmm,
 	XDrawRectangle(disp, win, gc, x, y, w, h);
 
 static void
-ImagestateDrawBevel(ImageState * is, Drawable win, int x, int y, int w, int h)
+ImagestateDrawBevel(ImageState * is, EX_Drawable win,
+		    int x, int y, int w, int h)
 {
    GC                  gc;
 
@@ -1096,7 +1097,8 @@ ImagestateDrawBevel(ImageState * is, Drawable win, int x, int y, int w, int h)
 }
 
 static void
-ImagestateDrawNoImg(ImageState * is, Drawable draw, int x, int y, int w, int h)
+ImagestateDrawNoImg(ImageState * is, EX_Drawable draw, int x, int y, int w,
+		    int h)
 {
    ImagestateColorsAlloc(is);
 
@@ -1144,7 +1146,7 @@ ITApply(Win win, ImageClass * ic, ImageState * is,
 
 	if (pmm.pmap)
 	  {
-	     Pixmap              pmap = pmm.pmap;
+	     EX_Pixmap           pmap = pmm.pmap;
 
 	     if ((ts && text) || (is->bevelstyle != BEVEL_NONE) ||
 		 (flags & ITA_BGPMAP))
@@ -1193,7 +1195,7 @@ ITApply(Win win, ImageClass * ic, ImageState * is,
 	  }
 	else
 	  {
-	     Pixmap              pmap;
+	     EX_Pixmap           pmap;
 
 	     pmap = EGetWindowBackgroundPixmap(win);
 	     ImagestateDrawNoImg(is, pmap, 0, 0, w, h);
@@ -1218,7 +1220,7 @@ ImageclassApply(ImageClass * ic, Win win, int active, int sticky, int state,
 static void
 PmapMaskTile(PmapMask * pmm, Win win, unsigned int w, unsigned int h)
 {
-   Pixmap              pmap, mask;
+   EX_Pixmap           pmap, mask;
 
    pmap = ECreatePixmap(win, w, h, 0);
    if (pmap == NoXID)
@@ -1296,7 +1298,7 @@ ImageclassApplyCopy(ImageClass * ic, Win win, int w, int h,
 }
 
 void
-ImageclassApplySimple(ImageClass * ic, Win win, Drawable draw, int state,
+ImageclassApplySimple(ImageClass * ic, Win win, EX_Drawable draw, int state,
 		      int x, int y, int w, int h)
 {
    EImage             *im;
@@ -1414,9 +1416,9 @@ ImageclassIpc(const char *params)
 
    if (!strcmp(param2, "free_pixmap"))
      {
-	Pixmap              pmap;
+	EX_Pixmap           pmap;
 
-	pmap = (Pixmap) strtol(p, NULL, 0);
+	pmap = (EX_Pixmap) strtol(p, NULL, 0);
 	EImagePixmapsFree(pmap, NoXID);
 	return;
      }
@@ -1448,7 +1450,7 @@ ImageclassIpc(const char *params)
      }
    else if (!strcmp(param2, "apply"))
      {
-	Window              xwin;
+	EX_Window           xwin;
 	Win                 win;
 	char                state[20];
 	int                 st, w, h;
@@ -1457,7 +1459,7 @@ ImageclassIpc(const char *params)
 	xwin = NoXID;
 	state[0] = '\0';
 	w = h = -1;
-	sscanf(p, "%lx %16s %d %d", &xwin, state, &w, &h);
+	sscanf(p, "%x %16s %d %d", &xwin, state, &w, &h);
 
 	win = ECreateWinFromXwin(xwin);
 	if (!win)
@@ -1479,7 +1481,7 @@ ImageclassIpc(const char *params)
      }
    else if (!strcmp(param2, "apply_copy"))
      {
-	Window              xwin;
+	EX_Window           xwin;
 	Win                 win;
 	char                state[20];
 	int                 st, w, h;
@@ -1489,7 +1491,7 @@ ImageclassIpc(const char *params)
 	xwin = NoXID;
 	state[0] = '\0';
 	w = h = -1;
-	sscanf(p, "%lx %16s %d %d", &xwin, state, &w, &h);
+	sscanf(p, "%x %16s %d %d", &xwin, state, &w, &h);
 
 	win = ECreateWinFromXwin(xwin);
 	if (!win)
@@ -1514,7 +1516,7 @@ ImageclassIpc(const char *params)
 
 	ImageclassApplyCopy(ic, win, w, h, 0, 0, st, &pmm,
 			    IC_FLAG_MAKE_MASK | IC_FLAG_FULL_SIZE, ST_SOLID);
-	IpcPrintf("0x%08lx 0x%08lx\n", pmm.pmap, pmm.mask);
+	IpcPrintf("0x%08x 0x%08x\n", pmm.pmap, pmm.mask);
 	EDestroyWin(win);
      }
    else if (!strcmp(param2, "query"))

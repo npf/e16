@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -48,7 +48,7 @@ extern EX_Atom      atoms_misc[];
 #define E16_ATOM_WIN_BORDER		atoms_misc[9]
 
 /* ewmh.c */
-void                EWMH_Init(Window win_wm_check);
+void                EWMH_Init(EX_Window win_wm_check);
 void                EWMH_SetDesktopCount(void);
 void                EWMH_SetDesktopRoots(void);
 void                EWMH_SetDesktopNames(void);
@@ -58,9 +58,9 @@ void                EWMH_SetDesktopViewport(void);
 void                EWMH_SetWorkArea(void);
 void                EWMH_SetClientList(void);
 void                EWMH_SetClientStacking(void);
-void                EWMH_SetActiveWindow(Window win);
+void                EWMH_SetActiveWindow(EX_Window win);
 void                EWMH_SetShowingDesktop(int on);
-void                EWMH_SetWindowName(Window win, const char *name);
+void                EWMH_SetWindowName(EX_Window win, const char *name);
 void                EWMH_SetWindowDesktop(const EWin * ewin);
 void                EWMH_SetWindowState(const EWin * ewin);
 void                EWMH_SetWindowBorder(const EWin * ewin);
@@ -68,7 +68,8 @@ void                EWMH_SetWindowOpacity(EWin * ewin);
 void                EWMH_SetWindowActions(const EWin * ewin);
 void                EWMH_GetWindowHints(EWin * ewin);
 void                EWMH_DelWindowHints(const EWin * ewin);
-int                 EWMH_ProcessPropertyChange(EWin * ewin, Atom atom_change);
+int                 EWMH_ProcessPropertyChange(EWin * ewin,
+					       EX_Atom atom_change);
 int                 EWMH_ProcessClientClientMessage(EWin * ewin,
 						    XClientMessageEvent *
 						    event);
@@ -85,9 +86,9 @@ void                GNOME_SetEwinArea(const EWin * ewin);
 void                GNOME_SetHint(const EWin * ewin);
 void                GNOME_SetCurrentArea(void);
 void                GNOME_SetAreaCount(void);
-void                GNOME_GetHints(EWin * ewin, Atom atom_change);
+void                GNOME_GetHints(EWin * ewin, EX_Atom atom_change);
 void                GNOME_DelHints(const EWin * ewin);
-void                GNOME_SetHints(Window win_wm_check);
+void                GNOME_SetHints(EX_Window win_wm_check);
 int                 GNOME_ProcessClientClientMessage(EWin * ewin,
 						     XClientMessageEvent *
 						     event);
@@ -102,7 +103,7 @@ void                HintsSetCurrentDesktop(void);
 void                HintsSetDesktopViewport(void);
 void                HintsSetClientList(void);
 void                HintsSetClientStacking(void);
-void                HintsSetActiveWindow(Window win);
+void                HintsSetActiveWindow(EX_Window win);
 void                HintsSetWindowName(Win win, const char *name);
 void                HintsSetWindowClass(Win win, const char *name,
 					const char *clss);
@@ -119,9 +120,10 @@ void                HintsProcessClientClientMessage(EWin * ewin,
 						    event);
 void                HintsProcessRootClientMessage(XClientMessageEvent * event);
 
-Pixmap              HintsGetRootPixmap(Win win);
+EX_Pixmap           HintsGetRootPixmap(Win win);
 void                HintsSetRootHints(Win win);
-void                HintsSetRootInfo(Win win, Pixmap pmap, unsigned int color);
+void                HintsSetRootInfo(Win win, EX_Pixmap pmap,
+				     unsigned int color);
 
 void                EHintsSetInfo(const EWin * ewin);
 void                EHintsGetInfo(EWin * ewin);
@@ -166,10 +168,11 @@ void                ICCCM_Focus(const EWin * ewin);
 void                ICCCM_GetGeoms(EWin * ewin);
 void                ICCCM_GetInfo(EWin * ewin);
 void                ICCCM_GetHints(EWin * ewin);
-int                 ICCCM_ProcessPropertyChange(EWin * ewin, Atom atom_change);
+int                 ICCCM_ProcessPropertyChange(EWin * ewin,
+						EX_Atom atom_change);
 
 /* mwm.c */
-void                MWM_GetHints(EWin * ewin, Atom atom_change);
+void                MWM_GetHints(EWin * ewin, EX_Atom atom_change);
 void                MWM_SetInfo(void);
 
 /* session.c */

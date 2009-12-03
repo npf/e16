@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2013 Kim Woelders
+ * Copyright (C) 2008-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -25,8 +25,22 @@
 
 #include <X11/Xlib.h>
 
+#define EX_ID           unsigned int
+#define EX_Atom         EX_ID
+#define EX_Colormap     EX_ID
+#define EX_Cursor       EX_ID
+#define EX_Drawable     EX_ID
+#define EX_KeySym       EX_ID
+#define EX_Picture      EX_ID
+#define EX_Pixmap       EX_ID
+#define EX_SrvRegion    EX_ID
+#define EX_Window       EX_ID
+
+#define EX_KeyCode      unsigned char
+#define EX_Time         unsigned int
+
 typedef struct _xwin *Win;
 
-#define NoXID   None
+#define NoXID   0U
 
 #endif /* _XTYPES_H_ */

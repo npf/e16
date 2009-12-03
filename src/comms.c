@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -32,7 +32,7 @@
 typedef struct {
    dlist_t             list;
    char               *name;
-   Window              xwin;
+   EX_Window           xwin;
    char               *msg;
    char               *clientname;
    char               *version;
@@ -47,7 +47,7 @@ static              LIST_HEAD(client_list);
 static Win          comms_win = NULL;
 
 static Client      *
-ClientCreate(Window xwin)
+ClientCreate(EX_Window xwin)
 {
    Client             *c;
    char                st[32];
@@ -134,13 +134,14 @@ ClientConfigure(Client * c, const char *str)
 static int
 ClientMatchWindow(const void *data, const void *match)
 {
-   return ((const Client *)data)->xwin != (Window) match;
+   return ((const Client *)data)->xwin != (EX_Window) (long)match;
 }
 
 static Client      *
-ClientFind(Window xwin)
+ClientFind(EX_Window xwin)
 {
-   return LIST_FIND(Client, &client_list, ClientMatchWindow, (void *)xwin);
+   return LIST_FIND(Client, &client_list, ClientMatchWindow,
+		    (void *)(long)xwin);
 }
 
 static char        *
@@ -148,7 +149,7 @@ ClientCommsGet(Client ** c, XClientMessageEvent * ev)
 {
    char                s[13], s2[9], *msg;
    unsigned int        i;
-   Window              xwin;
+   EX_Window           xwin;
    Client             *cl;
 
    if ((!ev) || (!c))
@@ -163,7 +164,7 @@ ClientCommsGet(Client ** c, XClientMessageEvent * ev)
    for (i = 0; i < 12; i++)
       s[i] = ev->data.b[i + 8];
    xwin = NoXID;
-   sscanf(s2, "%lx", &xwin);
+   sscanf(s2, "%x", &xwin);
    if (xwin == NoXID)
       return NULL;
    cl = ClientFind(xwin);
@@ -296,13 +297,13 @@ CommsInit(void)
    EventCallbackRegister(comms_win, ClientHandleCommsEvents, NULL);
    EventCallbackRegister(VROOT, ClientHandleRootEvents, NULL);
 
-   Esnprintf(s, sizeof(s), "WINID %8lx", WinGetXwin(comms_win));
+   Esnprintf(s, sizeof(s), "WINID %8x", WinGetXwin(comms_win));
    ex_window_prop_string_set(WinGetXwin(comms_win), E16_ATOM_COMMS_WIN, s);
    ex_window_prop_string_set(WinGetXwin(VROOT), E16_ATOM_COMMS_WIN, s);
 }
 
 static void
-CommsDoSend(Window win, const char *s)
+CommsDoSend(EX_Window win, const char *s)
 {
    char                ss[21];
    int                 i, j, k, len;
@@ -320,7 +321,7 @@ CommsDoSend(Window win, const char *s)
    ev.xclient.format = 8;
    for (i = 0; i < len + 1; i += 12)
      {
-	Esnprintf(ss, sizeof(ss), "%8lx", WinGetXwin(comms_win));
+	Esnprintf(ss, sizeof(ss), "%8x", WinGetXwin(comms_win));
 	for (j = 0; j < 12; j++)
 	  {
 	     ss[8 + j] = s[i + j];

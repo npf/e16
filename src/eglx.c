@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2013 Kim Woelders
+ * Copyright (C) 2007-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -299,7 +299,7 @@ EGlGetDepth(void)
 }
 
 void
-EGlWindowConnect(Window xwin)
+EGlWindowConnect(EX_Window xwin)
 {
    glXMakeContextCurrent(disp, xwin, xwin, egl.ctx);
 
@@ -377,14 +377,14 @@ EGlTextureFromImage(EImage * im, int mode)
 }
 
 static              GLXPixmap
-GetGlPixmap(Window xwin, Drawable draw)
+GetGlPixmap(EX_Window xwin, EX_Drawable draw)
 {
    static const int    attrs[] = {
       GLX_TEXTURE_TARGET_EXT, GLX_TEXTURE_2D_EXT,
       GLX_TEXTURE_FORMAT_EXT, GLX_TEXTURE_FORMAT_RGB_EXT,
       0
    };
-   Pixmap              pixmap;
+   EX_Pixmap           pixmap;
    GLXPixmap           glxpixmap;
 
    if (xwin == NoXID && draw == NoXID)
@@ -392,14 +392,14 @@ GetGlPixmap(Window xwin, Drawable draw)
 
    pixmap = (draw) ? draw : XCompositeNameWindowPixmap(disp, xwin);
    glxpixmap = glXCreatePixmap(disp, egl.fbc, pixmap, attrs);
-   Dprintf("GetGlPixmap: Window=%#lx Drawable=%#lx glxpixmap=%#lx\n",
+   Dprintf("GetGlPixmap: Window=%#x Drawable=%#x glxpixmap=%#lx\n",
 	   xwin, draw, glxpixmap);
 
    return glxpixmap;
 }
 
 static void
-_EGlTextureFromDrawable(ETexture * et, Drawable draw, int mode)
+_EGlTextureFromDrawable(ETexture * et, EX_Drawable draw, int mode)
 {
    if (!et || draw == NoXID)
       return;
@@ -416,7 +416,7 @@ _EGlTextureFromDrawable(ETexture * et, Drawable draw, int mode)
 }
 
 ETexture           *
-EGlTextureFromDrawable(Drawable draw, int mode)
+EGlTextureFromDrawable(EX_Drawable draw, int mode)
 {
    ETexture           *et;
 
@@ -506,7 +506,7 @@ EobjGetTexture(EObj * eo)
 void
 EobjTextureCreate(EObj * eo)
 {
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
 
    pmap = EobjGetPixmap(eo);
    if (pmap == NoXID)

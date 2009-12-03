@@ -45,7 +45,7 @@ struct _action {
    char                anybutton;
    int                 button;
    char                anykey;
-   KeyCode             keycode;
+   EX_KeyCode          keycode;
    char               *key_str;
    char               *tooltipstring;
    ActionType         *action;
@@ -989,7 +989,7 @@ handleAction(EWin * ewin, ActionType * action)
 int
 ActionclassEvent(ActionClass * ac, XEvent * ev, EWin * ewin)
 {
-   KeyCode             keycode;
+   EX_KeyCode          keycode;
    int                 i, type, button, modifiers, ok, mouse, mask, val = 0;
    Action             *aa;
 

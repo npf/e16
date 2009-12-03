@@ -47,7 +47,7 @@ typedef struct {
 struct _background {
    dlist_t             list;
    char               *name;
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
    time_t              last_viewed;
    unsigned int        bg_solid;
    char                bg_tile;
@@ -180,10 +180,10 @@ BackgroundGetUniqueString(Background * bg)
 }
 
 void
-BackgroundPixmapSet(Background * bg, Pixmap pmap)
+BackgroundPixmapSet(Background * bg, EX_Pixmap pmap)
 {
    if (bg->pmap != NoXID && bg->pmap != pmap)
-      Eprintf("*** BackgroundPixmapSet %s: pmap was set %#lx/%#lx\n",
+      Eprintf("*** BackgroundPixmapSet %s: pmap was set %#x/%#x\n",
 	      bg->name, bg->pmap, pmap);
    bg->pmap = pmap;
 }
@@ -529,10 +529,10 @@ BgFindImageSize(BgPart * bgp, unsigned int rw, unsigned int rh,
    *ph = (unsigned int)h;
 }
 
-static              Pixmap
+static              EX_Pixmap
 BackgroundCreatePixmap(Win win, unsigned int w, unsigned int h)
 {
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
 
    /*
     * Stupid hack to avoid that a new root pixmap has the same ID as the now
@@ -550,11 +550,11 @@ BackgroundCreatePixmap(Win win, unsigned int w, unsigned int h)
 }
 
 void
-BackgroundRealize(Background * bg, Win win, Drawable draw, unsigned int rw,
-		  unsigned int rh, int is_win, Pixmap * ppmap,
-		  unsigned int *ppixel)
+BackgroundRealize(Background * bg, Win win, EX_Drawable draw,
+		  unsigned int rw, unsigned int rh, int is_win,
+		  EX_Pixmap * ppmap, unsigned int *ppixel)
 {
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
    int                 x, y, ww, hh;
    unsigned int        w, h;
    char               *file, hasbg, hasfg;
@@ -680,7 +680,7 @@ BackgroundRealize(Background * bg, Win win, Drawable draw, unsigned int rw,
 }
 
 void
-BackgroundApplyPmap(Background * bg, Win win, Drawable draw,
+BackgroundApplyPmap(Background * bg, Win win, EX_Drawable draw,
 		    unsigned int w, unsigned int h)
 {
    BackgroundRealize(bg, win, draw, w, h, 0, NULL, NULL);
@@ -690,7 +690,7 @@ static void
 BackgroundApplyWin(Background * bg, Win win)
 {
    int                 w, h;
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
    unsigned int        pixel;
 
    if (!EGetGeometry(win, NULL, NULL, NULL, &w, &h, NULL, NULL))
@@ -716,7 +716,7 @@ BackgroundApplyWin(Background * bg, Win win)
 void
 BackgroundSet(Background * bg, Win win, unsigned int w, unsigned int h)
 {
-   Pixmap              pmap = NoXID;
+   EX_Pixmap           pmap = NoXID;
    unsigned int        pixel = 0;
 
    if (bg->pmap)
@@ -893,7 +893,7 @@ BackgroundGetFgFile(const Background * bg)
 }
 #endif /* ENABLE_DIALOGS */
 
-Pixmap
+EX_Pixmap
 BackgroundGetPixmap(const Background * bg)
 {
    return (bg) ? bg->pmap : NoXID;
@@ -917,7 +917,7 @@ BackgroundCacheMini(Background * bg, int keep, int nuke)
 {
    char                s[4096];
    EImage             *im;
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
    int                 mini_w = Mode.backgrounds.mini_w;
    int                 mini_h = Mode.backgrounds.mini_h;
 
@@ -1452,7 +1452,7 @@ CB_DesktopMiniDisplayRedraw(Dialog * d __UNUSED__, int val __UNUSED__,
 			    void *data)
 {
    Background         *bg;
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
    int                 w, h;
    DItem              *di = (DItem *) data;
    Win                 win;
@@ -1621,7 +1621,7 @@ BG_RedrawView(void)
    Background         *bg;
    int                 x, w, h, num;
    Win                 win;
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
    ImageClass         *ic;
    int                 mini_w = Mode.backgrounds.mini_w;
    int                 mini_h = Mode.backgrounds.mini_h;
@@ -2395,7 +2395,7 @@ BackgroundsIpc(const char *params)
      }
    else if (!strncmp(cmd, "apply", 2))
      {
-	Window              xwin;
+	EX_Window           xwin;
 	Win                 win;
 
 	bg = BackgroundFind(prm);
@@ -2403,7 +2403,7 @@ BackgroundsIpc(const char *params)
 	   return;
 
 	xwin = NoXID;
-	sscanf(p, "%lx", &xwin);
+	sscanf(p, "%x", &xwin);
 
 	win = ECreateWinFromXwin(xwin);
 	if (!win)

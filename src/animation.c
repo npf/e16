@@ -151,7 +151,7 @@ AnimatorAdd(EObj * eo, animation_category category, AnimCbFunc * func,
    if (!an)
       return NULL;
 
-   Dprintf("%s: %u/%u: %#lx %p C%d\n", __func__,
+   Dprintf("%s: %u/%u: %#x %p C%d\n", __func__,
 	   current_frame_num, skip_to_frame_num, EOW(eo), an, category);
 
    if (!Mode_anim.timer)
@@ -203,7 +203,7 @@ AnimatorSetDoneFunc(Animator * an, AnimDoneFunc * done)
 static void
 _AnimatorDel(Animator * an)
 {
-   Dprintf("%s: %u/%u: %#lx %p C%d\n", __func__,
+   Dprintf("%s: %u/%u: %#x %p C%d\n", __func__,
 	   current_frame_num, skip_to_frame_num, EOW(an->eo), an, an->category);
    Efree(an);
 }
@@ -242,7 +242,7 @@ _AnimatorsRun(Animator ** head, unsigned int frame_num, unsigned int next_frame)
 
    for (first = 1, pprev = head, an = *head; an; an = next)
      {
-	D3printf("%s: %#lx %p\n", __func__, EOW(an->eo), an);
+	D3printf("%s: %#x %p\n", __func__, EOW(an->eo), an);
 	next = an->next;
 
 	if (an->cancelled)
@@ -255,7 +255,7 @@ _AnimatorsRun(Animator ** head, unsigned int frame_num, unsigned int next_frame)
 	     /* Start when other non-forever animations have run */
 	     if (!first)
 		goto do_next;
-	     Dprintf("%s: %#lx %p C%d: De-serialize\n", __func__, EOW(an->eo),
+	     Dprintf("%s: %#x %p C%d: De-serialize\n", __func__, EOW(an->eo),
 		     an, an->category);
 	     an->next_frame = frame_num;
 	     an->start_frame = an->next_frame;
@@ -312,14 +312,14 @@ _AnimatorsRun(Animator ** head, unsigned int frame_num, unsigned int next_frame)
 	  {
 	     if (an->duration > 0 && remaining <= 0)
 	       {
-		  Dprintf("%s: %#lx %p C%d: autocancelling\n", __func__,
+		  Dprintf("%s: %#x %p C%d: autocancelling\n", __func__,
 			  EOW(an->eo), an, an->category);
 		  res = ANIM_RET_CANCEL_ANIM;
 	       }
 	  }
 	else
 	  {
-	     Dprintf("%s: %#lx %p C%d: self cancelling\n", __func__,
+	     Dprintf("%s: %#x %p C%d: self cancelling\n", __func__,
 		     EOW(an->eo), an, an->category);
 	  }
 
@@ -390,7 +390,7 @@ AnimatorDel(EObj * eo, Animator * anx)
      {
 	if (an != anx)
 	   continue;
-	Dprintf("%s: %u/%u: %#lx %p C%d\n", __func__,
+	Dprintf("%s: %u/%u: %#x %p C%d\n", __func__,
 		current_frame_num, skip_to_frame_num, EOW(an->eo), an,
 		an->category);
 	an->cancelled = 1;

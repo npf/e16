@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -135,7 +135,7 @@ SetupX(const char *dstr)
 	VROOT = ECreateWindow(RROOT, 0, 0, Mode.wm.win_w, Mode.wm.win_h, 0);
 
 	/* Enable eesh and edox to pick up the virtual root */
-	Esnprintf(buf, sizeof(buf), "%#lx", WinGetXwin(VROOT));
+	Esnprintf(buf, sizeof(buf), "%#x", WinGetXwin(VROOT));
 	Esetenv("ENL_WM_ROOT", buf);
      }
    else
@@ -193,7 +193,7 @@ SetupX(const char *dstr)
    /* to hunt them down to mask them out - EVIL EVIL EVIL hack but needed */
    {
       XModifierKeymap    *mod;
-      KeyCode             nl, sl;
+      EX_KeyCode          nl, sl;
       unsigned int        numlock, scrollock;
       int                 i;
 

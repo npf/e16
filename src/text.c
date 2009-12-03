@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -49,7 +49,7 @@ _get_gc(Win win)
 }
 
 static void
-TextDrawRotTo(Win win, Drawable src, Drawable dst, int x, int y,
+TextDrawRotTo(Win win, EX_Drawable src, EX_Drawable dst, int x, int y,
 	      int w, int h, TextState * ts)
 {
    EImage             *im;
@@ -82,7 +82,7 @@ TextDrawRotTo(Win win, Drawable src, Drawable dst, int x, int y,
 }
 
 static void
-TextDrawRotBack(Win win, Drawable dst, Drawable src, int x, int y,
+TextDrawRotBack(Win win, EX_Drawable dst, EX_Drawable src, int x, int y,
 		int w, int h, TextState * ts)
 {
    EImage             *im;
@@ -116,7 +116,7 @@ TextDrawRotBack(Win win, Drawable dst, Drawable src, int x, int y,
 
 #if FONT_TYPE_IFT
 static EImage      *
-TextImageGet(Win win __UNUSED__, Drawable src, int x, int y, int w, int h,
+TextImageGet(Win win __UNUSED__, EX_Drawable src, int x, int y, int w, int h,
 	     TextState * ts)
 {
    EImage             *im;
@@ -147,7 +147,7 @@ TextImageGet(Win win __UNUSED__, Drawable src, int x, int y, int w, int h,
 }
 
 static void
-TextImagePut(EImage * im, Win win, Drawable dst, int x, int y,
+TextImagePut(EImage * im, Win win, EX_Drawable dst, int x, int y,
 	     int w, int h, TextState * ts)
 {
    int                 win_w;
@@ -408,7 +408,7 @@ typedef struct {
    XFontSet            font;
    int                 ascent;
    Win                 win;
-   Drawable            draw;
+   EX_Drawable         draw;
    GC                  gc;
 } FontCtxXfs;
 
@@ -482,7 +482,7 @@ _xfs_TextDraw(TextState * ts, int x, int y, const char *text, int len)
 }
 
 static int
-_xfs_FdcInit(TextState * ts, Win win, Drawable draw)
+_xfs_FdcInit(TextState * ts, Win win, EX_Drawable draw)
 {
    FontCtxXfs         *fdc = (FontCtxXfs *) ts->fdc;
 
@@ -525,7 +525,7 @@ extern const FontOps FontOpsXfont;
 typedef struct {
    XFontStruct        *font;
    Win                 win;
-   Drawable            draw;
+   EX_Drawable         draw;
    GC                  gc;
 } FontCtxXfont;
 
@@ -585,7 +585,7 @@ _xfont_TextDraw(TextState * ts, int x, int y, const char *text, int len)
 }
 
 static int
-_xfont_FdcInit(TextState * ts, Win win, Drawable draw)
+_xfont_FdcInit(TextState * ts, Win win, EX_Drawable draw)
 {
    FontCtxXfont       *fdc = (FontCtxXfont *) ts->fdc;
 
@@ -829,16 +829,17 @@ TextstateTextFit(TextState * ts, char **ptext, int *pw, int textwidth_limit)
 }
 
 void
-TextstateTextDraw(TextState * ts, Win win, Drawable draw, const char *text,
-		  int x, int y, int w, int h, const EImageBorder * pad,
-		  int fsize __UNUSED__, int justh, int justv)
+TextstateTextDraw(TextState * ts, Win win, EX_Drawable draw,
+		  const char *text, int x, int y, int w, int h,
+		  const EImageBorder * pad, int fsize __UNUSED__, int justh,
+		  int justv)
 {
    const char         *str;
    char              **lines;
    int                 i, num_lines;
    int                 textwidth_limit, textheight_limit, offset_x, offset_y;
    int                 xx, yy, ww, hh, ascent;
-   Pixmap              drawable;
+   EX_Pixmap           drawable;
 
    if (w <= 0 || h <= 0)
       return;
@@ -982,9 +983,9 @@ TextstateTextDraw(TextState * ts, Win win, Drawable draw, const char *text,
 }
 
 void
-TextDraw(TextClass * tclass, Win win, Drawable draw, int active, int sticky,
-	 int state, const char *text, int x, int y, int w, int h, int fsize,
-	 int justh)
+TextDraw(TextClass * tclass, Win win, EX_Drawable draw, int active,
+	 int sticky, int state, const char *text, int x, int y, int w, int h,
+	 int fsize, int justh)
 {
    TextState          *ts;
 

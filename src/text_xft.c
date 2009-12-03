@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2009 Kim Woelders
+ * Copyright (C) 2006-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -36,7 +36,7 @@ __EXPORT__ extern const FontOps FontOps_xft;
 typedef struct {
    XftFont            *font;
    Win                 win;
-   Drawable            draw;
+   EX_Drawable         draw;
    XftDraw            *xftd;
    XftColor            xftc;
 } FontCtxXft;
@@ -118,7 +118,7 @@ _xft_TextDraw(TextState * ts, int x, int y, const char *text, int len)
 }
 
 int
-_xft_FdcInit(TextState * ts, Win win, Drawable draw)
+_xft_FdcInit(TextState * ts, Win win, EX_Drawable draw)
 {
    FontCtxXft         *fdc = (FontCtxXft *) ts->fdc;
 

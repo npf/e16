@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -28,14 +28,15 @@
 Background         *BackgroundFind(const char *name);
 
 char               *BackgroundGetUniqueString(Background * bg);
-void                BackgroundPixmapSet(Background * bg, Pixmap pmap);
+void                BackgroundPixmapSet(Background * bg, EX_Pixmap pmap);
 void                BackgroundDestroyByName(const char *name);
-void                BackgroundRealize(Background * bg, Win win, Drawable draw,
-				      unsigned int rw, unsigned int rh,
-				      int is_win, Pixmap * ppmap,
-				      unsigned int *ppixel);
-void                BackgroundApplyPmap(Background * bg, Win win, Drawable draw,
-					unsigned int rw, unsigned int rh);
+void                BackgroundRealize(Background * bg, Win win,
+				      EX_Drawable draw, unsigned int rw,
+				      unsigned int rh, int is_win,
+				      EX_Pixmap * ppmap, unsigned int *ppixel);
+void                BackgroundApplyPmap(Background * bg, Win win,
+					EX_Drawable draw, unsigned int rw,
+					unsigned int rh);
 void                BackgroundSet(Background * bg, Win win, unsigned int rw,
 				  unsigned int rh);
 void                BackgroundIncRefcount(Background * bg);
@@ -43,7 +44,7 @@ void                BackgroundDecRefcount(Background * bg);
 
 void                BackgroundTouch(Background * bg);
 const char         *BackgroundGetName(const Background * bg);
-Pixmap              BackgroundGetPixmap(const Background * bg);
+EX_Pixmap           BackgroundGetPixmap(const Background * bg);
 unsigned int        BackgroundGetSeqNo(const Background * bg);
 int                 BackgroundIsNone(const Background * bg);
 Background         *BrackgroundCreateFromImage(const char *bgid,

@@ -35,7 +35,7 @@
 struct _ecursor {
    dlist_t             list;
    char               *name;
-   Cursor              cursor;
+   EX_Cursor           cursor;
    unsigned int        ref_count;
    char               *file;
    unsigned int        bg;
@@ -47,13 +47,14 @@ static              LIST_HEAD(cursor_list);
 
 #if USE_XRENDER
 /* Assuming we have XRenderCreateCursor (render >= 0.5) */
-static              Cursor
-ECreatePixmapCursor(Pixmap cpmap, Pixmap cmask, unsigned int w, unsigned int h,
-		    int xh, int yh, unsigned int fg, unsigned int bg)
+static              EX_Cursor
+ECreatePixmapCursor(EX_Pixmap cpmap, EX_Pixmap cmask, unsigned int w,
+		    unsigned int h, int xh, int yh, unsigned int fg,
+		    unsigned int bg)
 {
-   Cursor              curs;
-   Pixmap              pmap;
-   Picture             pict;
+   EX_Cursor           curs;
+   EX_Pixmap           pmap;
+   EX_Picture          pict;
    XRenderPictFormat  *pictfmt;
    XRenderPictureAttributes pa;
    XRenderColor        c;
@@ -87,12 +88,12 @@ ECreatePixmapCursor(Pixmap cpmap, Pixmap cmask, unsigned int w, unsigned int h,
    return curs;
 }
 #else
-static              Cursor
-ECreatePixmapCursor(Pixmap cpmap, Pixmap cmask,
+static              EX_Cursor
+ECreatePixmapCursor(EX_Pixmap cpmap, EX_Pixmap cmask,
 		    unsigned int w __UNUSED__, unsigned int h __UNUSED__,
 		    int xh, int yh, unsigned int fg, unsigned int bg)
 {
-   Cursor              curs;
+   EX_Cursor           curs;
    XColor              fgxc, bgxc;
 
    COLOR32_TO_RGB16(fg, fgxc.red, fgxc.green, fgxc.blue);
@@ -337,7 +338,7 @@ ECursorApply(ECursor * ec, Win win)
    XDefineCursor(disp, WinGetXwin(win), ec->cursor);
 }
 
-static              Cursor
+static              EX_Cursor
 ECursorGetByName(const char *name, const char *name2, unsigned int fallback)
 {
    ECursor            *ec;
@@ -371,11 +372,11 @@ static const ECDataRec ECData[ECSR_COUNT] = {
    {"RESIZE_BR", "RESIZE_TL", XC_bottom_right_corner},
 };
 
-static Cursor       ECsrs[ECSR_COUNT] = {
+static EX_Cursor    ECsrs[ECSR_COUNT] = {
    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 };
 
-Cursor
+EX_Cursor
 ECsrGet(int which)
 {
    if (which < 0 || which >= ECSR_COUNT)
@@ -388,7 +389,7 @@ ECsrGet(int which)
 }
 
 void
-ECsrApply(int which, Window win)
+ECsrApply(int which, EX_Window win)
 {
    XDefineCursor(disp, win, ECsrGet(which));
 }

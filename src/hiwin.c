@@ -54,10 +54,10 @@ static ImageClass  *hiwin_ic = NULL;
 
 /* TBD: Move elsewhere? */
 static EImage      *
-EobjGetImage(EObj * eo, Drawable draw)
+EobjGetImage(EObj * eo, EX_Drawable draw)
 {
    EImage             *im;
-   Pixmap              mask;
+   EX_Pixmap           mask;
 
    mask = EWindowGetShapePixmap(EobjGetWin(eo));
    im = EImageGrabDrawable(draw, mask, 0, 0, EobjGetW(eo), EobjGetH(eo), 0);
@@ -71,7 +71,7 @@ static void
 HiwinRenderImageInit(Hiwin * phi)
 {
    EWin               *ewin = phi->ewin;
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
 
    pmap = EoGetPixmap(ewin);
    if (pmap)
@@ -99,7 +99,7 @@ HiwinRenderImageInit(Hiwin * phi)
 }
 
 static void
-HiwinRenderImageDrawX(Hiwin * phi, Drawable draw __UNUSED__)
+HiwinRenderImageDrawX(Hiwin * phi, EX_Drawable draw __UNUSED__)
 {
    EImageApplyToWin(phi->im, EoGetWin(phi), EIMAGE_ANTI_ALIAS,
 		    EoGetW(phi), EoGetH(phi));
@@ -125,7 +125,7 @@ HiwinRenderImageFini(Hiwin * phi, int shown)
 static void
 HiwinRenderImageUpdate(Hiwin * phi)
 {
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
    EWin               *ewin = phi->ewin;
 
    pmap = EoGetPixmap(ewin);
@@ -171,7 +171,7 @@ HiwinRenderPixmapInit(Hiwin * phi __UNUSED__)
 }
 
 static void
-HiwinRenderPixmapDrawX(Hiwin * phi, Drawable draw)
+HiwinRenderPixmapDrawX(Hiwin * phi, EX_Drawable draw)
 {
    EXPaintRectangle(draw, 0, 0, EoGetW(phi), EoGetH(phi),
 		    Dpy.pixel_black, Dpy.pixel_white);
@@ -187,7 +187,7 @@ HiwinRenderPixmapDraw(Hiwin * phi)
 static void
 HiwinRenderPixmapFini(Hiwin * phi, int shown)
 {
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
 
    if (shown)
      {

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -37,7 +37,7 @@
 #include "xwin.h"
 
 #ifdef USE_EXT_INIT_WIN
-static Window       new_init_win_ext = NoXID;
+static EX_Window    new_init_win_ext = NoXID;
 #endif
 
 /* True if we are saving state for a doExit("restart") */
@@ -181,7 +181,7 @@ set_save_props(SmcConn smc_conn, int master_flag)
 #ifdef USE_EXT_INIT_WIN
    if (restarting)
      {
-	Esnprintf(bufx, sizeof(bufx), "%#lx", new_init_win_ext);
+	Esnprintf(bufx, sizeof(bufx), "%#x", new_init_win_ext);
 	restartVal[n++].value = (char *)"-X";
 	restartVal[n++].value = bufx;
      }
@@ -551,7 +551,7 @@ doSMExit(int mode, const char *params)
 #endif
 #ifdef USE_EXT_INIT_WIN
 	if (new_init_win_ext != NoXID)
-	   l += Esnprintf(s + l, sizeof(s) - l, " -X %#lx", new_init_win_ext);
+	   l += Esnprintf(s + l, sizeof(s) - l, " -X %#x", new_init_win_ext);
 #endif
 	if (ss)
 	   l += Esnprintf(s + l, sizeof(s) - l, " -t %s", ss);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -155,7 +155,7 @@ EObj               *EobjWindowCreate(int type, int x, int y, int w, int h,
 				     int su, const char *name);
 void                EobjWindowDestroy(EObj * eo);
 
-EObj               *EobjRegisterOR(Window xwin, XWindowAttributes * pxwa,
+EObj               *EobjRegisterOR(EX_Window xwin, XWindowAttributes * pxwa,
 				   int mapped);
 void                EobjUnregister(EObj * eo);
 
@@ -170,7 +170,7 @@ int                 EobjRaise(EObj * eo);
 int                 EobjLower(EObj * eo);
 void                EobjShapeUpdate(EObj * eo, int propagate);
 void                EobjsRepaint(void);
-Pixmap              EobjGetPixmap(const EObj * eo);
+EX_Pixmap           EobjGetPixmap(const EObj * eo);
 
 #if USE_GLX
 void                EobjTextureCreate(EObj * eo);
@@ -193,7 +193,7 @@ void                EobjListStackDel(EObj * eo);
 int                 EobjListStackRaise(EObj * eo, int test);
 int                 EobjListStackLower(EObj * eo, int test);
 int                 EobjListStackCheck(EObj * eo);
-EObj               *EobjListStackFind(Window win);
+EObj               *EobjListStackFind(EX_Window win);
 EObj               *const *EobjListStackGet(int *num);
 EObj               *const *EobjListStackGetForDesk(int *num, Desk * dsk);
 void                EobjListFocusAdd(EObj * eo, int ontop);

@@ -31,7 +31,7 @@
 typedef struct _ShapeWin ShapeWin;
 struct _ShapeWin {
    EObj                o;
-   Pixmap              mask;
+   EX_Pixmap           mask;
    GC                  gc;
 };
 
@@ -41,7 +41,7 @@ void                ShapewinShapeSet(ShapeWin * sw, int md, int x, int y, int w,
 				     int h, int bl, int br, int bt, int bb,
 				     int seqno);
 
-void                do_draw_technical(Drawable dr, GC gc,
+void                do_draw_technical(EX_Drawable dr, GC gc,
 				      int a, int b, int c, int d, int bl,
 				      int br, int bt, int bb);
 

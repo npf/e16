@@ -443,7 +443,7 @@ static void
 WarpFocusHandleEvent(Win win __UNUSED__, XEvent * ev, void *prm __UNUSED__)
 {
    WarpFocusWin       *fw = warpFocusWindow;
-   KeySym              keysym;
+   EX_KeySym           keysym;
    unsigned int        mask;
 
    if (!EoIsShown(fw))

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -287,13 +287,13 @@
 
 #if 0				/* Does nothing useful */
 static void
-GNOME_GetHintIcons(EWin * ewin, Atom atom_change)
+GNOME_GetHintIcons(EWin * ewin, EX_Atom atom_change)
 {
    static EX_Atom      atom_get = 0;
    int                 num, i;
    EX_ID              *plst;
-   Pixmap              pmap;
-   Pixmap              mask;
+   EX_Pixmap           pmap;
+   EX_Pixmap           mask;
 
    if (EwinIsInternal(ewin))
       return;
@@ -318,7 +318,7 @@ GNOME_GetHintIcons(EWin * ewin, Atom atom_change)
 #endif
 
 static void
-GNOME_GetHintLayer(EWin * ewin, Atom atom_change)
+GNOME_GetHintLayer(EWin * ewin, EX_Atom atom_change)
 {
    static EX_Atom      atom_get = 0;
    int                 num;
@@ -342,7 +342,7 @@ GNOME_GetHintLayer(EWin * ewin, Atom atom_change)
 }
 
 static void
-GNOME_GetHintState(EWin * ewin, Atom atom_change)
+GNOME_GetHintState(EWin * ewin, EX_Atom atom_change)
 {
    static EX_Atom      atom_get = 0;
    int                 num;
@@ -373,7 +373,7 @@ GNOME_GetHintState(EWin * ewin, Atom atom_change)
 
 #if 0				/* Does nothing */
 static void
-GNOME_GetHintAppState(EWin * ewin, Atom atom_change)
+GNOME_GetHintAppState(EWin * ewin, EX_Atom atom_change)
 {
    static EX_Atom      atom_get = 0;
    int                 num;
@@ -397,7 +397,7 @@ GNOME_GetHintAppState(EWin * ewin, Atom atom_change)
 #endif
 
 static void
-GNOME_GetHintDesktop(EWin * ewin, Atom atom_change)
+GNOME_GetHintDesktop(EWin * ewin, EX_Atom atom_change)
 {
    static EX_Atom      atom_get = 0;
    int                 num;
@@ -420,7 +420,7 @@ GNOME_GetHintDesktop(EWin * ewin, Atom atom_change)
 }
 
 static void
-GNOME_GetHint(EWin * ewin, Atom atom_change)
+GNOME_GetHint(EWin * ewin, EX_Atom atom_change)
 {
    static EX_Atom      atom_get = 0;
    int                 num;
@@ -502,7 +502,7 @@ GNOME_SetEwinDesk(const EWin * ewin)
 
 #if 0				/* Does nothing */
 static void
-GNOME_GetExpandedSize(EWin * ewin, Atom atom_change)
+GNOME_GetExpandedSize(EWin * ewin, EX_Atom atom_change)
 {
    static EX_Atom      atom_get = 0;
    int                 num;
@@ -578,7 +578,7 @@ GNOME_SetCurrentDesk(void)
 }
 
 static void
-GNOME_SetWMCheck(Window win_wm_check)
+GNOME_SetWMCheck(EX_Window win_wm_check)
 {
    static EX_Atom      atom_set = 0;
    unsigned int        val;
@@ -692,7 +692,7 @@ void
 GNOME_DelHints(const EWin * ewin)
 {
    static EX_Atom      atom_get[6] = { 0, 0, 0, 0, 0, 0 };
-   Window              win;
+   EX_Window           win;
 
    if (!atom_get[0])
      {
@@ -714,7 +714,7 @@ GNOME_DelHints(const EWin * ewin)
 }
 
 void
-GNOME_GetHints(EWin * ewin, Atom atom_change)
+GNOME_GetHints(EWin * ewin, EX_Atom atom_change)
 {
    GNOME_GetHintDesktop(ewin, atom_change);
    GNOME_GetHintLayer(ewin, atom_change);
@@ -728,7 +728,7 @@ GNOME_GetHints(EWin * ewin, Atom atom_change)
 }
 
 void
-GNOME_SetHints(Window win_wm_check)
+GNOME_SetHints(EX_Window win_wm_check)
 {
    GNOME_SetWMNameVer();
    GNOME_SetUsedHints();

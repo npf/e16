@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -58,7 +58,7 @@ EobjListShow(const char *txt, EobjList * ewl)
    for (i = 0; i < ewl->nwins; i++)
      {
 	eo = ewl->list[i];
-	Eprintf(" %2d: %#10lx %#10lx %d %d %s\n", i, EobjGetXwin(eo),
+	Eprintf(" %2d: %#10x %#10x %d %d %s\n", i, EobjGetXwin(eo),
 		EobjGetCwin(eo), eo->desk->num, eo->ilayer, EobjGetName(eo));
      }
 }
@@ -246,7 +246,7 @@ EobjListRaise(EobjList * ewl, EObj * eo, int test)
 }
 
 static EObj        *
-EobjListFind(const EobjList * ewl, Window win)
+EobjListFind(const EobjList * ewl, EX_Window win)
 {
    int                 i;
 
@@ -290,7 +290,7 @@ EobjListStackCheck(EObj * eo)
 }
 
 EObj               *
-EobjListStackFind(Window win)
+EobjListStackFind(EX_Window win)
 {
    return EobjListFind(&EwinListStack, win);
 }

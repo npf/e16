@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -42,7 +42,7 @@ struct _snapshot {
    char               *win_name;
    char               *win_class;
    char               *win_role;
-   Window              win;
+   EX_Window           win;
    EWin               *used;
    unsigned int        startup_id;
    char                track_changes;
@@ -550,7 +550,7 @@ _EwinSnapRemove(EWin * ewin)
  * Snapshot dialogs
  */
 typedef struct {
-   Window              client;
+   EX_Window           client;
 
    struct {
       char                title;
@@ -928,7 +928,7 @@ _EwinSnapDialog(const EWin * ewin)
 {
    char                s[1024];
 
-   Esnprintf(s, sizeof(s), "SNAPSHOT_WINDOW-%#lx", EwinGetClientXwin(ewin));
+   Esnprintf(s, sizeof(s), "SNAPSHOT_WINDOW-%#x", EwinGetClientXwin(ewin));
 
    DialogShowSimpleWithName(&DlgSnap, s, (void *)ewin);
 }
@@ -1106,7 +1106,7 @@ SnapshotsSaveReal(void)
    {
       fprintf(f, "NEW: %s\n", sn->name);
       if (sn->used)
-	 fprintf(f, "WIN: %#lx\n", EwinGetClientXwin(sn->used));
+	 fprintf(f, "WIN: %#x\n", EwinGetClientXwin(sn->used));
       if ((sn->match_flags & SNAP_MATCH_TITLE) && sn->win_title)
 	 fprintf(f, "TITLE: %s\n", sn->win_title);
       if ((sn->match_flags & SNAP_MATCH_NAME) && sn->win_name)
@@ -1498,7 +1498,7 @@ SnapshotEwinApply(EWin * ewin)
 #endif
 
    if (EDebug(EDBUG_TYPE_SNAPS))
-      Eprintf("Snap get snap  %#lx: %4d+%4d %4dx%4d: %s\n",
+      Eprintf("Snap get snap  %#x: %4d+%4d %4dx%4d: %s\n",
 	      EwinGetClientXwin(ewin), ewin->client.x, ewin->client.y,
 	      ewin->client.w, ewin->client.h, EwinGetTitle(ewin));
 }
@@ -1627,7 +1627,7 @@ _SnapShow(void *data, void *prm)
 #define SU(sn, item) ((sn->match_flags & item) ? '>' : ':')
 
    if (sn->used)
-      Esnprintf(buf, sizeof(buf), "In use - %#lx", EwinGetClientXwin(sn->used));
+      Esnprintf(buf, sizeof(buf), "In use - %#x", EwinGetClientXwin(sn->used));
    else
       Esnprintf(buf, sizeof(buf), "*** Unused ***");
    IpcPrintf(" Snapshot  Name: %s    %s\n", name, buf);

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -334,19 +334,19 @@ IPC_WinList(const char *params)
 	switch (format[0])
 	  {
 	  case '\0':
-	     IpcPrintf("%#lx : %s\n", EwinGetClientXwin(e),
+	     IpcPrintf("%#x : %s\n", EwinGetClientXwin(e),
 		       SS(EwinGetIcccmName(e)));
 	     break;
 
 	  default:
-	     IpcPrintf("%#lx : %s :: %d : %d %d : %d %d %dx%d\n",
+	     IpcPrintf("%#x : %s :: %d : %d %d : %d %d %dx%d\n",
 		       EwinGetClientXwin(e), SS(EwinGetIcccmName(e)),
 		       (EoIsSticky(e)) ? -1 : (int)EoGetDeskNum(e), e->area_x,
 		       e->area_y, EoGetX(e), EoGetY(e), EoGetW(e), EoGetH(e));
 	     break;
 
 	  case 'a':
-	     IpcPrintf("%#10lx : %5d %5d %4dx%4d :: %2d : %d %d : %s\n",
+	     IpcPrintf("%#10x : %5d %5d %4dx%4d :: %2d : %d %d : %s\n",
 		       EwinGetClientXwin(e), EoGetX(e), EoGetY(e), EoGetW(e),
 		       EoGetH(e), (EoIsSticky(e)) ? -1 : (int)EoGetDeskNum(e),
 		       e->area_x, e->area_y, SS(EwinGetIcccmName(e)));
@@ -354,7 +354,7 @@ IPC_WinList(const char *params)
 
 	  case 'g':
 	     IpcPrintf
-		("%#10lx : %5d %5d %4dx%4d :: %2d : %s %4d,%4d %2d,%2d : %s\n",
+		("%#10x : %5d %5d %4dx%4d :: %2d : %s %4d,%4d %2d,%2d : %s\n",
 		 EwinGetClientXwin(e), EoGetX(e), EoGetY(e), EoGetW(e),
 		 EoGetH(e), (EoIsSticky(e)) ? -1 : (int)EoGetDeskNum(e),
 		 TxtPG[e->place.gravity & 3], e->place.gx, e->place.gy,
@@ -363,7 +363,7 @@ IPC_WinList(const char *params)
 
 	  case 'p':
 	     IpcPrintf
-		("%#10lx : %5d %5d %4dx%4d :: %2d : \"%s\" \"%s\" : \"%s\" : \"%s\"\n",
+		("%#10x : %5d %5d %4dx%4d :: %2d : \"%s\" \"%s\" : \"%s\" : \"%s\"\n",
 		 EwinGetClientXwin(e), EoGetX(e), EoGetY(e), EoGetW(e),
 		 EoGetH(e), (EoIsSticky(e)) ? -1 : (int)EoGetDeskNum(e),
 		 SS(EwinGetIcccmCName(e)), SS(EwinGetIcccmClass(e)),
@@ -1025,7 +1025,7 @@ IPC_Debug(const char *params)
 
 	if (!strcmp(param, "?"))
 	  {
-	     IpcPrintf("Pointer grab on=%d win=%#lx\n",
+	     IpcPrintf("Pointer grab on=%d win=%#x\n",
 		       Mode.grabs.pointer_grab_active,
 		       Mode.grabs.pointer_grab_window);
 	  }
@@ -1085,16 +1085,16 @@ EwinShowInfo(const EWin * ewin)
 	     "WM_WINDOW_ROLE          %s\n"
 	     "WM_COMMAND              %s\n"
 	     "WM_CLIENT_MACHINE       %s\n"
-	     "Client window           %#10lx   x,y %4i,%4i   wxh %4ix%4i\n"
-	     "Container window        %#10lx\n"
-	     "Frame window            %#10lx   x,y %4i,%4i   wxh %4ix%4i\n"
+	     "Client window           %#10x   x,y %4i,%4i   wxh %4ix%4i\n"
+	     "Container window        %#10x\n"
+	     "Frame window            %#10x   x,y %4i,%4i   wxh %4ix%4i\n"
 #if USE_COMPOSITE
-	     "Named pixmap            %#10lx\n"
+	     "Named pixmap            %#10x\n"
 #endif
 	     "Border                  %s   lrtb %i,%i,%i,%i\n"
-	     "Icon window, pixmap, mask %#10lx, %#10lx, %#10lx\n"
-	     "Is group leader  %i  Window group leader %#lx   Client leader %#10lx\n"
-	     "Has transients   %i  Transient type  %i  Transient for %#10lx\n"
+	     "Icon window, pixmap, mask %#10x, %#10x, %#10x\n"
+	     "Is group leader  %i  Window group leader %#x   Client leader %#10x\n"
+	     "Has transients   %i  Transient type  %i  Transient for %#10x\n"
 	     "No resize H/V    %i/%i       Shaped      %i\n"
 	     "Base, min, max, inc w/h %ix%i, %ix%i, %ix%i %ix%i\n"
 	     "Aspect min, max         %5.5f, %5.5f\n"
@@ -1208,7 +1208,7 @@ IPC_ObjInfo(const char *params __UNUSED__)
      {
 	eo = lst[i];
 	IpcPrintf
-	   (" %2d %#9lx %2d %d %d %2d/%2d  %3d %d  %d %3d %5d,%5d %4dx%4d %d %d %s\n",
+	   (" %2d %#9x %2d %d %d %2d/%2d  %3d %d  %d %3d %5d,%5d %4dx%4d %d %d %s\n",
 	    i, EobjGetXwin(eo), WinGetDepth(EobjGetWin(eo)), eo->type,
 	    eo->shown, eo->shaped, EShapeCheck(EobjGetWin(eo)), eo->desk->num,
 	    eo->sticky, eo->floating, eo->ilayer,
@@ -1389,7 +1389,7 @@ static const struct _keyset ks[] = {
 static void
 IPC_InsertKeys(const char *params, Client * c __UNUSED__)
 {
-   Window              win = 0;
+   EX_Window           win = 0;
    int                 i, rev;
    const char         *s;
    XKeyEvent           ev;

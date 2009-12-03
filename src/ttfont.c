@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2009 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -164,7 +164,7 @@ _ift_TextDraw(TextState * ts, int x, int y, const char *text,
 
 static int
 _ift_FdcInit(TextState * ts __UNUSED__, Win win __UNUSED__,
-	     Drawable draw __UNUSED__)
+	     EX_Drawable draw __UNUSED__)
 {
    return 0;
 }
@@ -201,7 +201,7 @@ main(int argc, char **argv)
    Efont              *f;
    GC                  gc;
    XGCValues           gcv;
-   Window              win;
+   EX_Window           win;
    int                 i, j;
 
    disp = XOpenDisplay(NULL);

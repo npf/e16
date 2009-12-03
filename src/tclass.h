@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -53,7 +53,7 @@ typedef struct {
 				   int *pwidth, int textwidth_limit);
    void                (*TextDraw) (TextState * ts, int x, int y,
 				    const char *text, int len);
-   int                 (*FdcInit) (TextState * ts, Win win, Drawable draw);
+   int                 (*FdcInit) (TextState * ts, Win win, EX_Drawable draw);
    void                (*FdcFini) (TextState * ts);
    void                (*FdcSetDrawable) (TextState * ts, unsigned long draw);
    void                (*FdcSetColor) (TextState * ts, unsigned int color);
@@ -100,19 +100,20 @@ TextState          *TextclassGetTextState(TextClass * tclass, int state,
 					  int active, int sticky);
 __EXPORT__ void     TextstateTextFit(TextState * ts, char **ptext, int *pw,
 				     int textwidth_limit);
-void                TextstateTextDraw(TextState * ts, Win win, Drawable draw,
-				      const char *text, int x, int y, int w,
-				      int h, const EImageBorder * pad,
-				      int fsize, int justh, int justv);
+void                TextstateTextDraw(TextState * ts, Win win,
+				      EX_Drawable draw, const char *text,
+				      int x, int y, int w, int h,
+				      const EImageBorder * pad, int fsize,
+				      int justh, int justv);
 void                TextSize(TextClass * tclass, int active, int sticky,
 			     int state, const char *text, int *width,
 			     int *height, int fsize);
-void                TextDraw(TextClass * tclass, Win win, Drawable draw,
+void                TextDraw(TextClass * tclass, Win win, EX_Drawable draw,
 			     int active, int sticky, int state,
 			     const char *text, int x, int y, int w, int h,
 			     int fsize, int justification);
 
-__EXPORT__ int      _xft_FdcInit(TextState * ts, Win win, Drawable draw);
+__EXPORT__ int      _xft_FdcInit(TextState * ts, Win win, EX_Drawable draw);
 __EXPORT__ void     _xft_FdcFini(TextState * ts);
 __EXPORT__ void     _xft_FdcSetDrawable(TextState * ts, unsigned long draw);
 __EXPORT__ void     _xft_FdcSetColor(TextState * ts, unsigned int color);

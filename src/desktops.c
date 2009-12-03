@@ -487,7 +487,7 @@ DeskGetBackgroundObj(const Desk * dsk)
    return (dsk) ? dsk->bg.o : NULL;
 }
 
-Pixmap
+EX_Pixmap
 DeskGetBackgroundPixmap(const Desk * dsk)
 {
    if (!dsk)
@@ -505,12 +505,12 @@ static void
 DeskBackgroundConfigure(Desk * dsk)
 {
    Win                 win;
-   Pixmap              pmap = dsk->bg.pmap;
+   EX_Pixmap           pmap = dsk->bg.pmap;
    unsigned int        pixel = dsk->bg.pixel;
 
    if (EDebug(EDBUG_TYPE_DESKS))
       Eprintf
-	 ("DeskBackgroundConfigure %d v=%d %#lx/%#lx: ext=%d pmap=%#lx/%#lx pixel=%#x/%#x\n",
+	 ("DeskBackgroundConfigure %d v=%d %#x/%#x: ext=%d pmap=%#x/%#x pixel=%#x/%#x\n",
 	  dsk->num, dsk->viewable, EoGetXwin(dsk), EobjGetXwin(dsk->bg.o),
 	  BackgroundIsNone(dsk->bg.bg), pmap, dsk->bg.pmap_set, pixel,
 	  dsk->bg.pixel);
@@ -576,13 +576,13 @@ static void
 DeskBackgroundRefresh(Desk * dsk, int why)
 {
    Background         *bg = dsk->bg.bg;
-   Pixmap              pmap = dsk->bg.pmap;
+   EX_Pixmap           pmap = dsk->bg.pmap;
    unsigned int        pixel = dsk->bg.pixel;
    int                 changed = 0;
    int                 reconfigure = 0;
 
    if (EDebug(EDBUG_TYPE_DESKS))
-      Eprintf("DeskBackgroundRefresh %d v=%d why=%d pmap=%#lx pixel=%#x\n",
+      Eprintf("DeskBackgroundRefresh %d v=%d why=%d pmap=%#x pixel=%#x\n",
 	      dsk->num, dsk->viewable, why, pmap, pixel);
 
    switch (why)
@@ -1422,7 +1422,7 @@ DeskRestackSimple(Desk * dsk)
    eo->stacked = 1;
 
    if (EDebug(EDBUG_TYPE_STACKING))
-      Eprintf("DeskRestackSimple %#lx %s\n", EobjGetXwin(eo), EobjGetName(eo));
+      Eprintf("DeskRestackSimple %#x %s\n", EobjGetXwin(eo), EobjGetName(eo));
 
    if (i < num - 1)
      {
@@ -1436,20 +1436,20 @@ DeskRestackSimple(Desk * dsk)
      }
    value_mask = CWSibling | CWStackMode;
    if (EDebug(EDBUG_TYPE_STACKING))
-      Eprintf("DeskRestackSimple %#10lx %s %#10lx\n", EobjGetXwin(eo),
+      Eprintf("DeskRestackSimple %#10x %s %#10lx\n", EobjGetXwin(eo),
 	      (xwc.stack_mode == Above) ? "Above" : "Below", xwc.sibling);
    XConfigureWindow(disp, EobjGetXwin(eo), value_mask, &xwc);
 }
 
 #define _APPEND_TO_WIN_LIST(win) \
   { \
-     wl = EREALLOC(Window, wl, ++tot); \
+     wl = EREALLOC(EX_Window, wl, ++tot); \
      wl[tot - 1] = win; \
   }
 void
 DeskRestack(Desk * dsk)
 {
-   Window             *wl;
+   EX_Window          *wl;
    int                 i, num, tot;
    EObj               *const *lst, *eo;
 
@@ -1480,7 +1480,7 @@ DeskRestack(Desk * dsk)
      {
 	Eprintf("DeskRestack %d (%d):\n", dsk->num, dsk->stack.dirty);
 	for (i = 0; i < tot; i++)
-	   Eprintf(" win=%#10lx parent=%#10lx\n", wl[i],
+	   Eprintf(" win=%#10x parent=%#10x\n", wl[i],
 		   EXWindowGetParent(wl[i]));
      }
 
@@ -2054,14 +2054,14 @@ DeskGetAclass(void *data __UNUSED__)
 static void
 DeskPropertyChange(Desk * dsk, XEvent * ev)
 {
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
 
    if (ev->xproperty.atom == E_XROOTPMAP_ID)
      {
 	/* Possible race here? */
 	pmap = HintsGetRootPixmap(EoGetWin(dsk));
 	if (EDebug(EDBUG_TYPE_DESKS))
-	   Eprintf("DeskPropertyChange win=%#lx _XROOTPMAP_ID=%#lx\n",
+	   Eprintf("DeskPropertyChange win=%#lx _XROOTPMAP_ID=%#x\n",
 		   ev->xany.window, pmap);
 	if (ev->xany.window != WinGetXwin(VROOT))
 	   return;
@@ -2415,7 +2415,7 @@ CB_DesktopDisplayRedraw(Dialog * d, int val, void *data)
 	     bg = DeskBackgroundGet(DeskGet(i));
 	     if (bg)
 	       {
-		  Pixmap              pmap;
+		  EX_Pixmap           pmap;
 
 		  pmap = EGetWindowBackgroundPixmap(dd->wins[i]);
 		  BackgroundApplyPmap(bg, dd->wins[i], pmap,
@@ -2636,7 +2636,7 @@ CB_AreaDisplayRedraw(Dialog * d, int val, void *data)
    if (val == 1)
      {
 	ImageClass         *ic;
-	Pixmap              pmap;
+	EX_Pixmap           pmap;
 
 	ic = ImageclassFind("SETTINGS_AREA_AREA", 1);
 	ImageclassApply(ic, win, 0, 0, STATE_NORMAL, ST_SOLID);
@@ -2841,7 +2841,7 @@ DesksIpcDesk(const char *params)
 	  {
 	     dsk = _DeskGet(desk);
 	     IpcPrintf
-		("Desk %d: viewable=%d order=%d  x,y=%4d,%4d wxh=%4dx%4d  area x,y=%d,%d  pmap=%#lx\n",
+		("Desk %d: viewable=%d order=%d  x,y=%4d,%4d wxh=%4dx%4d  area x,y=%d,%d  pmap=%#x\n",
 		 desk, dsk->viewable, desks.order[desk],
 		 EoGetX(dsk), EoGetY(dsk), EoGetW(dsk), EoGetH(dsk),
 		 dsk->current_area_x, dsk->current_area_y, dsk->bg.pmap);

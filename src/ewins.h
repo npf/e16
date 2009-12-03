@@ -169,19 +169,19 @@ struct _ewin {
       /* WM_HINTS */
       char                need_input;
       char                start_iconified;
-      Pixmap              icon_pmap, icon_mask;
-      Window              icon_win;
-      Window              group;
+      EX_Pixmap           icon_pmap, icon_mask;
+      EX_Window           icon_win;
+      EX_Window           group;
       char                urgency;
       /* WM_PROTOCOLS */
       char                take_focus;
       char                delete_window;
       /* WM_TRANSIENT_FOR */
       signed char         transient;
-      Window              transient_for;	/* We are a transient for ... */
+      EX_Window           transient_for;	/* We are a transient for ... */
       int                 transient_count;	/* We have <N> transients */
       /* WM_CLIENT_LEADER */
-      Window              client_leader;
+      EX_Window           client_leader;
 
       /* WM_NORMAL_HINTS */
       int                 width_min, width_max;
@@ -354,7 +354,7 @@ int                 DrawEwinShapeNeedsGrab(int mode);
 #define EWIN_CHANGE_OPACITY     (1<<5)
 #define EWIN_CHANGE_ATTENTION   (1<<6)
 
-Window              EwinGetClientXwin(const EWin * ewin);
+EX_Window           EwinGetClientXwin(const EWin * ewin);
 
 void                EwinShapeSet(EWin * ewin);
 int                 EwinRaise(EWin * ewin);
@@ -458,7 +458,7 @@ void                EwinOpFullscreen(EWin * ewin, int source, int on);
 
 /* finders.c */
 EWin               *EwinFindByPtr(const EWin * ewin);
-EWin               *EwinFindByClient(Window win);
+EWin               *EwinFindByClient(EX_Window win);
 EWin              **EwinsFindByExpr(const char *match, int *pnum, int *pflags);
 EWin               *EwinFindByExpr(const char *match);
 

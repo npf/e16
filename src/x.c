@@ -49,7 +49,7 @@ Display            *disp;
 
 #if USE_COMPOSITE
 static Visual      *argb_visual = NULL;
-static Colormap     argb_cmap = NoXID;
+static EX_Colormap  argb_cmap = NoXID;
 #endif
 
 static XContext     xid_context = 0;
@@ -151,7 +151,7 @@ _EXidDel(Win win)
 #define EXidLookup ELookupXwin
 
 Win
-EXidLookup(Window xwin)
+EXidLookup(EX_Window xwin)
 {
    Win                 win;
    XPointer            xp;
@@ -168,8 +168,8 @@ EXidLookup(Window xwin)
 }
 
 static              Win
-_EXidSet(Window xwin, Win parent, int x, int y, int w, int h, int depth,
-	 Visual * visual, Colormap cmap)
+_EXidSet(EX_Window xwin, Win parent, int x, int y, int w, int h, int depth,
+	 Visual * visual, EX_Colormap cmap)
 {
    Win                 win;
 
@@ -279,7 +279,7 @@ Win
 ECreateWindow(Win parent, int x, int y, int w, int h, int saveunder)
 {
    Win                 win;
-   Window              xwin;
+   EX_Window           xwin;
    XSetWindowAttributes attr;
 
    attr.backing_store = NotUseful;
@@ -308,10 +308,10 @@ ECreateWindow(Win parent, int x, int y, int w, int h, int saveunder)
 #if USE_COMPOSITE
 static              Win
 _ECreateWindowVDC(Win parent, int x, int y, int w, int h,
-		  Visual * vis, unsigned int depth, Colormap cmap)
+		  Visual * vis, unsigned int depth, EX_Colormap cmap)
 {
    Win                 win;
-   Window              xwin;
+   EX_Window           xwin;
    XSetWindowAttributes attr;
 
    attr.background_pixmap = NoXID;
@@ -335,7 +335,7 @@ ECreateArgbWindow(Win parent, int x, int y, int w, int h, Win cwin)
 {
    int                 depth;
    Visual             *vis;
-   Colormap            cmap;
+   EX_Colormap         cmap;
 
    if (cwin && Conf.testing.argb_clients_inherit_attr)
      {
@@ -365,7 +365,7 @@ static              Win
 _ECreateWindowVD(Win parent, int x, int y, int w, int h,
 		 Visual * vis, unsigned int depth)
 {
-   Colormap            cmap;
+   EX_Colormap         cmap;
 
    if (!vis || depth == 0)
       return 0;
@@ -438,7 +438,7 @@ Win
 ECreateEventWindow(Win parent, int x, int y, int w, int h)
 {
    Win                 win;
-   Window              xwin;
+   EX_Window           xwin;
    XSetWindowAttributes attr;
 
    attr.override_redirect = False;
@@ -469,7 +469,7 @@ ECreateFocusWindow(Win parent, int x, int y, int w, int h)
    attr.save_under = False;
    attr.event_mask = KeyPressMask | FocusChangeMask;
 
-   Window              xwin, xpar;
+   EX_Window           xwin, xpar;
 
    win = XCreateWindow(disp, parent, x, y, w, h, 0, 0, InputOnly,
 		       CopyFromParent,
@@ -644,8 +644,8 @@ EWindowSetMapped(Win win, int mapped)
    win->mapped = mapped;
 }
 
-Window
-EXWindowGetParent(Window xwin)
+EX_Window
+EXWindowGetParent(EX_Window xwin)
 {
    Window              parent, rt;
    Window             *pch = NULL;
@@ -661,7 +661,7 @@ EXWindowGetParent(Window xwin)
 }
 
 Win
-ECreateWinFromXwin(Window xwin)
+ECreateWinFromXwin(EX_Window xwin)
 {
    Win                 win;
    Window              rr;
@@ -697,7 +697,7 @@ EDestroyWin(Win win)
 }
 
 Win
-ERegisterWindow(Window xwin, XWindowAttributes * pxwa)
+ERegisterWindow(EX_Window xwin, XWindowAttributes * pxwa)
 {
    Win                 win;
    XWindowAttributes   xwa;
@@ -726,7 +726,7 @@ ERegisterWindow(Window xwin, XWindowAttributes * pxwa)
 }
 
 void
-EUnregisterXwin(Window xwin)
+EUnregisterXwin(EX_Window xwin)
 {
    Win                 win;
 
@@ -737,7 +737,7 @@ EUnregisterXwin(Window xwin)
    /* FIXME - We shouldn't go here */
    _EXidDel(win);
 #if 1				/* Debug - Fix code if we get here */
-   Eprintf("*** FIXME - %s %#lx\n", __func__, xwin);
+   Eprintf("*** FIXME - %s %#x\n", __func__, xwin);
 #endif
 }
 
@@ -750,7 +750,7 @@ EUnregisterWindow(Win win)
    if (win->cbl.lst)
      {
 	if (EDebug(1))
-	   Eprintf("%s(%#lx) Ignored (%d callbacks remain)\n",
+	   Eprintf("%s(%#x) Ignored (%d callbacks remain)\n",
 		   __func__, win->xwin, win->cbl.num);
 	return;
      }
@@ -836,13 +836,13 @@ EMapRaised(Win win)
 }
 
 int
-EXGetWindowAttributes(Window xwin, XWindowAttributes * pxwa)
+EXGetWindowAttributes(EX_Window xwin, XWindowAttributes * pxwa)
 {
    return XGetWindowAttributes(disp, xwin, pxwa);
 }
 
 int
-EXGetGeometry(Drawable draw, Window * root_return, int *x, int *y,
+EXGetGeometry(EX_Drawable draw, EX_Window * root_return, int *x, int *y,
 	      int *w, int *h, int *bw, int *depth)
 {
    int                 ok;
@@ -878,7 +878,7 @@ EXGetGeometry(Drawable draw, Window * root_return, int *x, int *y,
 }
 
 int
-EGetGeometry(Win win, Window * root_return, int *x, int *y,
+EGetGeometry(Win win, EX_Window * root_return, int *x, int *y,
 	     int *w, int *h, int *bw, int *depth)
 {
    if (!win)
@@ -956,7 +956,7 @@ EConfigureWindow(Win win, unsigned int mask, XWindowChanges * wc)
 #endif
 
 void
-ESetWindowBackgroundPixmap(Win win, Pixmap pmap, int kept)
+ESetWindowBackgroundPixmap(Win win, EX_Pixmap pmap, int kept)
 {
    if (!win)
       return;
@@ -970,10 +970,10 @@ ESetWindowBackgroundPixmap(Win win, Pixmap pmap, int kept)
    XSetWindowBackgroundPixmap(disp, win->xwin, pmap);
 }
 
-Pixmap
+EX_Pixmap
 EGetWindowBackgroundPixmap(Win win)
 {
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
 
    if (!win)
       return NoXID;
@@ -1135,9 +1135,24 @@ ELowerWindow(Win win)
 }
 
 void
-EXRestackWindows(Window * windows, int nwindows)
+EXRestackWindows(EX_Window * windows, int nwindows)
 {
-   XRestackWindows(disp, windows, nwindows);
+#if SIZEOF_INT == SIZEOF_LONG
+   XRestackWindows(disp, (Window *) windows, nwindows);
+#else
+   int                 i;
+   Window             *_wins;
+
+   _wins = EMALLOC(Window, nwindows);
+   if (!_wins)
+      return;
+
+   for (i = 0; i < nwindows; i++)
+      _wins[i] = windows[i];
+   XRestackWindows(disp, _wins, nwindows);
+
+   Efree(_wins);
+#endif
 }
 
 void
@@ -1161,19 +1176,22 @@ EClearArea(Win win, int x, int y, unsigned int w, unsigned int h)
 int
 ETranslateCoordinates(Win src_w, Win dst_w, int src_x, int src_y,
 		      int *dest_x_return, int *dest_y_return,
-		      Window * child_return)
+		      EX_Window * child_return)
 {
    Window              child;
+   Bool                rc;
 
-   if (!child_return)
-      child_return = &child;
+   rc = XTranslateCoordinates(disp, src_w->xwin, dst_w->xwin, src_x, src_y,
+			      dest_x_return, dest_y_return, &child);
 
-   return XTranslateCoordinates(disp, src_w->xwin, dst_w->xwin, src_x, src_y,
-				dest_x_return, dest_y_return, child_return);
+   if (child_return)
+      *child_return = child;
+
+   return rc;
 }
 
 void
-EXWarpPointer(Window xwin, int x, int y)
+EXWarpPointer(EX_Window xwin, int x, int y)
 {
    XWarpPointer(disp, NoXID, xwin, 0, 0, 0, 0, x, y);
 }
@@ -1185,12 +1203,13 @@ EWarpPointer(Win win, int x, int y)
 }
 
 int
-EXQueryPointer(Window xwin, int *px, int *py, Window * pchild,
+EXQueryPointer(EX_Window xwin, int *px, int *py, EX_Window * pchild,
 	       unsigned int *pmask)
 {
    Window              root, child;
    int                 root_x, root_y;
    unsigned int        mask;
+   Bool                rc;
 
    if (xwin == NoXID)
       xwin = WinGetXwin(VROOT);
@@ -1199,19 +1218,23 @@ EXQueryPointer(Window xwin, int *px, int *py, Window * pchild,
       px = &root_x;
    if (!py)
       py = &root_y;
-   if (!pchild)
-      pchild = &child;
    if (!pmask)
       pmask = &mask;
 
-   return XQueryPointer(disp, xwin, &root, pchild, &root_x, &root_y, px, py,
-			pmask);
+   rc = XQueryPointer(disp, xwin, &root, &child, &root_x, &root_y, px, py,
+		      pmask);
+
+   if (pchild)
+      *pchild = child;
+
+   return rc;
 }
 
 int
-EQueryPointer(Win win, int *px, int *py, Window * pchild, unsigned int *pmask)
+EQueryPointer(Win win, int *px, int *py, EX_Window * pchild,
+	      unsigned int *pmask)
 {
-   Window              xwin;
+   EX_Window           xwin;
 
    xwin = (win) ? win->xwin : WinGetXwin(VROOT);
 
@@ -1219,7 +1242,7 @@ EQueryPointer(Win win, int *px, int *py, Window * pchild, unsigned int *pmask)
 }
 
 int
-EXDrawableOk(Drawable draw)
+EXDrawableOk(EX_Drawable draw)
 {
    if (draw == NoXID)
       return 0;
@@ -1228,7 +1251,7 @@ EXDrawableOk(Drawable draw)
 }
 
 int
-EXWindowOk(Window xwin)
+EXWindowOk(EX_Window xwin)
 {
    XWindowAttributes   xwa;
 
@@ -1238,13 +1261,13 @@ EXWindowOk(Window xwin)
    return EXGetWindowAttributes(xwin, &xwa);
 }
 
-KeyCode
-EKeysymToKeycode(KeySym keysym)
+EX_KeyCode
+EKeysymToKeycode(EX_KeySym keysym)
 {
    return XKeysymToKeycode(disp, keysym);
 }
 
-KeyCode
+EX_KeyCode
 EKeynameToKeycode(const char *name)
 {
    return XKeysymToKeycode(disp, XStringToKeysym(name));
@@ -1255,7 +1278,7 @@ EKeynameToKeycode(const char *name)
 
 #if DEBUG_SHAPE_OPS || DEBUG_SHAPE_PROPAGATE
 static void
-_EShapeShow(const char *txt, Window xwin, XRectangle * pr, int nr)
+_EShapeShow(const char *txt, EX_Window xwin, XRectangle * pr, int nr)
 {
    int                 i;
 
@@ -1315,7 +1338,7 @@ EShapeUpdate(Win win)
 }
 
 static void
-_EShapeCombineMask(Win win, int dest, int x, int y, Pixmap pmap, int op)
+_EShapeCombineMask(Win win, int dest, int x, int y, EX_Pixmap pmap, int op)
 {
    char                wasshaped = 0;
 
@@ -1345,11 +1368,11 @@ _EShapeCombineMask(Win win, int dest, int x, int y, Pixmap pmap, int op)
 
 static void
 _EShapeCombineMaskTiled(Win win, int dest, int x, int y,
-			Pixmap pmap, int op, int w, int h)
+			EX_Pixmap pmap, int op, int w, int h)
 {
    XGCValues           gcv;
    GC                  gc;
-   Window              tm;
+   EX_Window           tm;
 
    gcv.fill_style = FillTiled;
    gcv.tile = pmap;
@@ -1529,19 +1552,19 @@ EShapeCheck(Win win)
 }
 
 void
-EShapeSetMask(Win win, int x, int y, Pixmap mask)
+EShapeSetMask(Win win, int x, int y, EX_Pixmap mask)
 {
    _EShapeCombineMask(win, ShapeBounding, x, y, mask, ShapeSet);
 }
 
 void
-EShapeUnionMask(Win win, int x, int y, Pixmap mask)
+EShapeUnionMask(Win win, int x, int y, EX_Pixmap mask)
 {
    _EShapeCombineMask(win, ShapeBounding, x, y, mask, ShapeUnion);
 }
 
 void
-EShapeSetMaskTiled(Win win, int x, int y, Pixmap mask, int w, int h)
+EShapeSetMaskTiled(Win win, int x, int y, EX_Pixmap mask, int w, int h)
 {
    _EShapeCombineMaskTiled(win, ShapeBounding, x, y, mask, ShapeSet, w, h);
 }
@@ -1568,10 +1591,10 @@ EShapeSetShape(Win win, int x, int y, Win src_win)
    return win->num_rect != 0;
 }
 
-static              Pixmap
+static              EX_Pixmap
 _EWindowGetShapePixmap(Win win, unsigned int fg, unsigned int bg)
 {
-   Pixmap              mask;
+   EX_Pixmap           mask;
    GC                  gc;
    int                 i;
    const XRectangle   *rect;
@@ -1597,24 +1620,24 @@ _EWindowGetShapePixmap(Win win, unsigned int fg, unsigned int bg)
 }
 
 /* Build mask from window shape rects */
-Pixmap
+EX_Pixmap
 EWindowGetShapePixmap(Win win)
 {
    return _EWindowGetShapePixmap(win, 1, 0);
 }
 
 /* Build inverted mask from window shape rects */
-Pixmap
+EX_Pixmap
 EWindowGetShapePixmapInverted(Win win)
 {
    return _EWindowGetShapePixmap(win, 0, 1);
 }
 
-Pixmap
+EX_Pixmap
 ECreatePixmap(Win win, unsigned int width, unsigned int height,
 	      unsigned int depth)
 {
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
 
    if (depth == 0)
       depth = win->depth;
@@ -1627,7 +1650,7 @@ ECreatePixmap(Win win, unsigned int width, unsigned int height,
 }
 
 void
-EFreePixmap(Pixmap pmap)
+EFreePixmap(EX_Pixmap pmap)
 {
 #if DEBUG_PIXMAP
    Eprintf("%s: %#lx\n", __func__, pmap);
@@ -1635,11 +1658,11 @@ EFreePixmap(Pixmap pmap)
    XFreePixmap(disp, pmap);
 }
 
-Pixmap
-EXCreatePixmapCopy(Pixmap src, unsigned int w, unsigned int h,
+EX_Pixmap
+EXCreatePixmapCopy(EX_Pixmap src, unsigned int w, unsigned int h,
 		   unsigned int depth)
 {
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
    GC                  gc;
 
    pmap = XCreatePixmap(disp, src, w, h, depth);
@@ -1653,14 +1676,14 @@ EXCreatePixmapCopy(Pixmap src, unsigned int w, unsigned int h,
 }
 
 void
-EXCopyAreaGC(Drawable src, Drawable dst, GC gc, int sx, int sy,
+EXCopyAreaGC(EX_Drawable src, EX_Drawable dst, GC gc, int sx, int sy,
 	     unsigned int w, unsigned int h, int dx, int dy)
 {
    XCopyArea(disp, src, dst, gc, sx, sy, w, h, dx, dy);
 }
 
 void
-EXCopyArea(Drawable src, Drawable dst, int sx, int sy,
+EXCopyArea(EX_Drawable src, EX_Drawable dst, int sx, int sy,
 	   unsigned int w, unsigned int h, int dx, int dy)
 {
    GC                  gc;
@@ -1671,8 +1694,8 @@ EXCopyArea(Drawable src, Drawable dst, int sx, int sy,
 }
 
 void
-EXCopyAreaTiled(Drawable src, Pixmap mask, Drawable dst, int sx, int sy,
-		unsigned int w, unsigned int h, int dx, int dy)
+EXCopyAreaTiled(EX_Drawable src, EX_Pixmap mask, EX_Drawable dst,
+		int sx, int sy, unsigned int w, unsigned int h, int dx, int dy)
 {
    GC                  gc;
    XGCValues           gcv;
@@ -1690,7 +1713,7 @@ EXCopyAreaTiled(Drawable src, Pixmap mask, Drawable dst, int sx, int sy,
 }
 
 void
-EXFillAreaSolid(Drawable dst, int x, int y, unsigned int w, unsigned int h,
+EXFillAreaSolid(EX_Drawable dst, int x, int y, unsigned int w, unsigned int h,
 		unsigned int pixel)
 {
    GC                  gc;
@@ -1703,7 +1726,7 @@ EXFillAreaSolid(Drawable dst, int x, int y, unsigned int w, unsigned int h,
 }
 
 static void
-_EXDrawRectangle(Drawable dst, GC gc, int x, int y,
+_EXDrawRectangle(EX_Drawable dst, GC gc, int x, int y,
 		 unsigned int w, unsigned int h, unsigned int pixel)
 {
    XSetForeground(disp, gc, pixel);
@@ -1711,7 +1734,7 @@ _EXDrawRectangle(Drawable dst, GC gc, int x, int y,
 }
 
 static void
-_EXFillRectangle(Drawable dst, GC gc, int x, int y,
+_EXFillRectangle(EX_Drawable dst, GC gc, int x, int y,
 		 unsigned int w, unsigned int h, unsigned int pixel)
 {
    XSetForeground(disp, gc, pixel);
@@ -1719,7 +1742,7 @@ _EXFillRectangle(Drawable dst, GC gc, int x, int y,
 }
 
 void
-EXPaintRectangle(Drawable dst, int x, int y,
+EXPaintRectangle(EX_Drawable dst, int x, int y,
 		 unsigned int w, unsigned int h,
 		 unsigned int fg, unsigned int bg)
 {
@@ -1735,7 +1758,7 @@ EXPaintRectangle(Drawable dst, int x, int y,
 }
 
 GC
-EXCreateGC(Drawable draw, unsigned int mask, XGCValues * val)
+EXCreateGC(EX_Drawable draw, unsigned int mask, XGCValues * val)
 {
    XGCValues           xgcv;
 
@@ -1761,13 +1784,13 @@ EXFreeGC(GC gc)
 }
 
 void
-EXSendEvent(Window xwin, unsigned int event_mask, XEvent * ev)
+EXSendEvent(EX_Window xwin, unsigned int event_mask, XEvent * ev)
 {
    XSendEvent(disp, xwin, False, event_mask, ev);
 }
 
 unsigned int
-EAllocColor(Colormap cmap, unsigned int argb)
+EAllocColor(EX_Colormap cmap, unsigned int argb)
 {
    XColor              xc;
 
@@ -1982,10 +2005,10 @@ EVisualIsARGB(Visual * vis)
  * Misc
  */
 
-Time
+EX_Time
 EGetTimestamp(void)
 {
-   static Window       win_ts = NoXID;
+   static EX_Window    win_ts = NoXID;
    XSetWindowAttributes attr;
    XEvent              ev;
 
@@ -2009,7 +2032,7 @@ EGetTimestamp(void)
 
 #include <X11/extensions/Xcomposite.h>
 
-Pixmap
+EX_Pixmap
 EWindowGetPixmap(const Win win)
 {
    XWindowAttributes   xwa;
@@ -2032,10 +2055,10 @@ EWindowGetPixmap(const Win win)
 #define _G(x) (((x) >>  8) & 0xff)
 #define _B(x) (((x)      ) & 0xff)
 
-Picture
-EPictureCreate(Win win, Drawable draw)
+EX_Picture
+EPictureCreate(Win win, EX_Drawable draw)
 {
-   Picture             pict;
+   EX_Picture          pict;
    XRenderPictFormat  *pictfmt;
 
    if (!win)
@@ -2046,12 +2069,12 @@ EPictureCreate(Win win, Drawable draw)
    return pict;
 }
 
-Picture
-EPictureCreateSolid(Window xwin, int argb, unsigned int a, unsigned int rgb)
+EX_Picture
+EPictureCreateSolid(EX_Window xwin, int argb, unsigned int a, unsigned int rgb)
 {
    Display            *dpy = disp;
-   Pixmap              pmap;
-   Picture             pict;
+   EX_Pixmap           pmap;
+   EX_Picture          pict;
    XRenderPictFormat  *pictfmt;
    XRenderPictureAttributes pa;
    XRenderColor        c;
@@ -2074,11 +2097,11 @@ EPictureCreateSolid(Window xwin, int argb, unsigned int a, unsigned int rgb)
    return pict;
 }
 
-Picture
-EPictureCreateBuffer(Win win, int w, int h, Pixmap * ppmap)
+EX_Picture
+EPictureCreateBuffer(Win win, int w, int h, EX_Pixmap * ppmap)
 {
-   Picture             pict;
-   Pixmap              pmap;
+   EX_Picture          pict;
+   EX_Pixmap           pmap;
    XRenderPictFormat  *pictfmt;
 
    pmap = XCreatePixmap(disp, WinGetXwin(win), w, h, WinGetDepth(win));
@@ -2093,7 +2116,7 @@ EPictureCreateBuffer(Win win, int w, int h, Pixmap * ppmap)
 }
 
 void
-EPictureDestroy(Picture pict)
+EPictureDestroy(EX_Picture pict)
 {
    XRenderFreePicture(disp, pict);
 }
@@ -2103,7 +2126,7 @@ EPictureDestroy(Picture pict)
 #if USE_COMPOSITE
 
 void
-EPictureSetClip(Picture pict, XserverRegion clip)
+EPictureSetClip(EX_Picture pict, EX_SrvRegion clip)
 {
    XFixesSetPictureClipRegion(disp, pict, 0, 0, clip);
 }
@@ -2118,10 +2141,10 @@ static int          n_rgn_c = 0;
 static int          n_rgn_d = 0;
 #endif
 
-XserverRegion
+EX_SrvRegion
 ERegionCreate(void)
 {
-   XserverRegion       rgn;
+   EX_SrvRegion        rgn;
 
    rgn = XFixesCreateRegion(disp, NULL, 0);
 
@@ -2133,10 +2156,10 @@ ERegionCreate(void)
    return rgn;
 }
 
-XserverRegion
+EX_SrvRegion
 ERegionCreateRect(int x, int y, int w, int h)
 {
-   XserverRegion       rgn;
+   EX_SrvRegion        rgn;
    XRectangle          rct;
 
    rct.x = x;
@@ -2154,10 +2177,10 @@ ERegionCreateRect(int x, int y, int w, int h)
 }
 
 #if USE_DESK_EXPOSE
-XserverRegion
+EX_SrvRegion
 ERegionCreateFromRects(XRectangle * rectangles, int nrectangles)
 {
-   XserverRegion       rgn;
+   EX_SrvRegion        rgn;
 
    rgn = XFixesCreateRegion(disp, rectangles, nrectangles);
 
@@ -2170,10 +2193,10 @@ ERegionCreateFromRects(XRectangle * rectangles, int nrectangles)
 }
 #endif
 
-XserverRegion
+EX_SrvRegion
 ERegionCreateFromWindow(Win win)
 {
-   XserverRegion       rgn;
+   EX_SrvRegion        rgn;
 
    rgn =
       XFixesCreateRegionFromWindow(disp, WinGetXwin(win), WindowRegionBounding);
@@ -2186,17 +2209,17 @@ ERegionCreateFromWindow(Win win)
    return rgn;
 }
 
-XserverRegion
-ERegionCopy(XserverRegion rgn, XserverRegion src)
+EX_SrvRegion
+ERegionCopy(EX_SrvRegion rgn, EX_SrvRegion src)
 {
    XFixesCopyRegion(disp, rgn, src);
    return rgn;
 }
 
-XserverRegion
-ERegionClone(XserverRegion src)
+EX_SrvRegion
+ERegionClone(EX_SrvRegion src)
 {
-   XserverRegion       rgn;
+   EX_SrvRegion        rgn;
 
    rgn = ERegionCreate();
    ERegionCopy(rgn, src);
@@ -2205,7 +2228,7 @@ ERegionClone(XserverRegion src)
 }
 
 void
-ERegionDestroy(XserverRegion rgn)
+ERegionDestroy(EX_SrvRegion rgn)
 {
 #if DEBUG_REGIONS
    n_rgn_d++;
@@ -2216,13 +2239,13 @@ ERegionDestroy(XserverRegion rgn)
 }
 
 void
-ERegionEmpty(XserverRegion rgn)
+ERegionEmpty(EX_SrvRegion rgn)
 {
    XFixesSetRegion(disp, rgn, NULL, 0);
 }
 
 void
-ERegionSetRect(XserverRegion rgn, int x, int y, int w, int h)
+ERegionSetRect(EX_SrvRegion rgn, int x, int y, int w, int h)
 {
    XRectangle          rct;
 
@@ -2234,7 +2257,7 @@ ERegionSetRect(XserverRegion rgn, int x, int y, int w, int h)
 }
 
 void
-ERegionTranslate(XserverRegion rgn, int dx, int dy)
+ERegionTranslate(EX_SrvRegion rgn, int dx, int dy)
 {
    if (dx == 0 && dy == 0)
       return;
@@ -2242,29 +2265,29 @@ ERegionTranslate(XserverRegion rgn, int dx, int dy)
 }
 
 void
-ERegionIntersect(XserverRegion dst, XserverRegion src)
+ERegionIntersect(EX_SrvRegion dst, EX_SrvRegion src)
 {
    XFixesIntersectRegion(disp, dst, dst, src);
 }
 
 void
-ERegionUnion(XserverRegion dst, XserverRegion src)
+ERegionUnion(EX_SrvRegion dst, EX_SrvRegion src)
 {
    XFixesUnionRegion(disp, dst, dst, src);
 }
 
 void
-ERegionSubtract(XserverRegion dst, XserverRegion src)
+ERegionSubtract(EX_SrvRegion dst, EX_SrvRegion src)
 {
    XFixesSubtractRegion(disp, dst, dst, src);
 }
 
 void
-ERegionIntersectOffset(XserverRegion dst, int dx, int dy, XserverRegion src,
-		       XserverRegion tmp)
+ERegionIntersectOffset(EX_SrvRegion dst, int dx, int dy, EX_SrvRegion src,
+		       EX_SrvRegion tmp)
 {
    Display            *dpy = disp;
-   XserverRegion       rgn;
+   EX_SrvRegion        rgn;
 
    rgn = src;
    if (dx != 0 || dy != 0)
@@ -2276,11 +2299,11 @@ ERegionIntersectOffset(XserverRegion dst, int dx, int dy, XserverRegion src,
 }
 
 void
-ERegionSubtractOffset(XserverRegion dst, int dx, int dy, XserverRegion src,
-		      XserverRegion tmp)
+ERegionSubtractOffset(EX_SrvRegion dst, int dx, int dy, EX_SrvRegion src,
+		      EX_SrvRegion tmp)
 {
    Display            *dpy = disp;
-   XserverRegion       rgn;
+   EX_SrvRegion        rgn;
 
    rgn = src;
    if (dx != 0 || dy != 0)
@@ -2293,11 +2316,11 @@ ERegionSubtractOffset(XserverRegion dst, int dx, int dy, XserverRegion src,
 
 #if 0				/* Unused */
 void
-ERegionUnionOffset(XserverRegion dst, int dx, int dy, XserverRegion src,
-		   XserverRegion tmp)
+ERegionUnionOffset(EX_SrvRegion dst, int dx, int dy, EX_SrvRegion src,
+		   EX_SrvRegion tmp)
 {
    Display            *dpy = disp;
-   XserverRegion       rgn;
+   EX_SrvRegion        rgn;
 
    rgn = src;
    if (dx != 0 || dy != 0)
@@ -2311,7 +2334,7 @@ ERegionUnionOffset(XserverRegion dst, int dx, int dy, XserverRegion src,
 
 #if 0				/* Unused (for debug) */
 int
-ERegionIsEmpty(XserverRegion rgn)
+ERegionIsEmpty(EX_SrvRegion rgn)
 {
    int                 nr;
    XRectangle         *pr;
@@ -2324,7 +2347,7 @@ ERegionIsEmpty(XserverRegion rgn)
 #endif
 
 void
-ERegionShow(const char *txt, XserverRegion rgn,
+ERegionShow(const char *txt, EX_SrvRegion rgn,
 	    void (*prf) (const char *fmt, ...))
 {
    int                 i, nr;

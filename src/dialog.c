@@ -144,7 +144,7 @@ struct _ditem {
 };
 
 typedef struct {
-   KeyCode             keycode;
+   EX_KeyCode          keycode;
    DialogCallbackFunc *func;
    int                 val;
    void               *data;

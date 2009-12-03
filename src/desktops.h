@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -48,8 +48,8 @@ struct _desk {
 #if USE_COMPOSITE
       EObj               *o_bg;
 #endif
-      Pixmap              pmap;
-      Pixmap              pmap_set;
+      EX_Pixmap           pmap;
+      EX_Pixmap           pmap_set;
       unsigned int        pixel;
       unsigned int        seq_no;
    } bg;
@@ -71,7 +71,7 @@ void                DeskGoto(Desk * dsk);
 void                DeskGotoNum(unsigned int desk);
 void                DeskRestack(Desk * dsk);
 EObj               *DeskGetBackgroundObj(const Desk * dsk);
-Pixmap              DeskGetBackgroundPixmap(const Desk * dsk);
+EX_Pixmap           DeskGetBackgroundPixmap(const Desk * dsk);
 
 Background         *DeskBackgroundGet(const Desk * dsk);
 void                DeskBackgroundSet(Desk * dsk, Background * bg);

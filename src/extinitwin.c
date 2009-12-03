@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -34,20 +34,20 @@
 #endif
 
 typedef struct {
-   Cursor              curs;
+   EX_Cursor           curs;
    XSetWindowAttributes attr;
-   Window              cwin;
+   EX_Window           cwin;
 } EiwData;
 
-typedef void        (EiwLoopFunc) (Window win, EImage * im, EiwData * d);
+typedef void        (EiwLoopFunc) (EX_Window win, EImage * im, EiwData * d);
 
 #if USE_EIWC_RENDER
 #include <Imlib2.h>
 
-static void         _eiw_render_loop(Window win, EImage * im, EiwData * d);
+static void         _eiw_render_loop(EX_Window win, EImage * im, EiwData * d);
 
 static EiwLoopFunc *
-_eiw_render_init(Window win __UNUSED__, EiwData * d)
+_eiw_render_init(EX_Window win __UNUSED__, EiwData * d)
 {
    Visual             *vis;
 
@@ -64,12 +64,12 @@ _eiw_render_init(Window win __UNUSED__, EiwData * d)
 }
 
 static void
-_eiw_render_loop(Window win, EImage * im, EiwData * d)
+_eiw_render_loop(EX_Window win, EImage * im, EiwData * d)
 {
    int                 w, h;
    XRenderPictFormat  *pictfmt;
-   Pixmap              pmap;
-   Picture             pict;
+   EX_Pixmap           pmap;
+   EX_Picture          pict;
 
    EImageGetSize(im, &w, &h);
 
@@ -93,12 +93,12 @@ _eiw_render_loop(Window win, EImage * im, EiwData * d)
 
 #if USE_EIWC_WINDOW
 
-static void         _eiw_window_loop(Window win, EImage * im, EiwData * d);
+static void         _eiw_window_loop(EX_Window win, EImage * im, EiwData * d);
 
 static EiwLoopFunc *
-_eiw_window_init(Window win, EiwData * d)
+_eiw_window_init(EX_Window win, EiwData * d)
 {
-   Pixmap              pmap, mask;
+   EX_Pixmap           pmap, mask;
    XColor              cl;
 
    d->cwin = XCreateWindow(disp, win, 0, 0, 32, 32, 0, CopyFromParent,
@@ -120,9 +120,9 @@ _eiw_window_init(Window win, EiwData * d)
 }
 
 static void
-_eiw_window_loop(Window win, EImage * im, EiwData * d)
+_eiw_window_loop(EX_Window win, EImage * im, EiwData * d)
 {
-   Pixmap              pmap, mask;
+   EX_Pixmap           pmap, mask;
    Window              ww;
    int                 dd, x, y, w, h;
    unsigned int        mm;
@@ -140,14 +140,14 @@ _eiw_window_loop(Window win, EImage * im, EiwData * d)
 
 #endif /* USE_EIWC_WINDOW */
 
-static              Window
+static              EX_Window
 ExtInitWinMain(void)
 {
    int                 i, loop, err;
    EX_Window           win;
    XGCValues           gcv;
    GC                  gc;
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
    EX_Atom             a;
    EiwData             eiwd;
    EiwLoopFunc        *eiwc_loop_func;
@@ -248,11 +248,11 @@ ExtInitWinMain(void)
    exit(0);
 }
 
-Window
+EX_Window
 ExtInitWinCreate(void)
 {
    EX_Window           win_ex;	/* Hmmm.. */
-   Window              win;
+   EX_Window           win;
    EX_Atom             a;
 
    if (EDebug(EDBUG_TYPE_SESSION))
@@ -281,7 +281,7 @@ ExtInitWinCreate(void)
 
 	win = win_ex;
 	if (EDebug(EDBUG_TYPE_SESSION))
-	   Eprintf("ExtInitWinCreate - parent - %#lx\n", win);
+	   Eprintf("ExtInitWinCreate - parent - %#x\n", win);
 
 	return win;
      }
@@ -304,15 +304,15 @@ ExtInitWinCreate(void)
    return NoXID;
 }
 
-static Window       init_win_ext = NoXID;
+static EX_Window    init_win_ext = NoXID;
 
 void
-ExtInitWinSet(Window win)
+ExtInitWinSet(EX_Window win)
 {
    init_win_ext = win;
 }
 
-Window
+EX_Window
 ExtInitWinGet(void)
 {
    return init_win_ext;
@@ -325,7 +325,7 @@ ExtInitWinKill(void)
       return;
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("Kill init window %#lx\n", init_win_ext);
+      Eprintf("Kill init window %#x\n", init_win_ext);
    XUnmapWindow(disp, init_win_ext);
    init_win_ext = NoXID;
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -179,7 +179,7 @@ doEwinMoveResize(EWin * ewin, Desk * dsk, int x, int y, int w, int h, int flags)
    call_depth++;
 
    if (EDebug(EDBUG_TYPE_MOVERESIZE))
-      Eprintf("doEwinMoveResize(%d,%d) %#lx f=%x d=%d %d+%d %d*%d %s\n",
+      Eprintf("doEwinMoveResize(%d,%d) %#x f=%x d=%d %d+%d %d*%d %s\n",
 	      call_depth, Mode.mode, EwinGetClientXwin(ewin), flags,
 	      (dsk) ? (int)dsk->num : -1, x, y, w, h, EwinGetTitle(ewin));
 

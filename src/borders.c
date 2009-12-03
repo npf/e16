@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -128,7 +128,7 @@ BorderWinpartITclassApply(EWin * ewin, int i, int force)
 	im = EwinIconImageGet(ewin, 16, Conf.warplist.icon_mode);
 	if (im)
 	  {
-	     Pixmap              pmap;
+	     EX_Pixmap           pmap;
 	     EImageBorder       *pad;
 	     int                 x, y, w, h;
 
@@ -597,10 +597,10 @@ EwinBorderSetTo(EWin * ewin, const Border * b)
      }
 
    {
-      Window             *wl;
+      EX_Window          *wl;
       int                 j = 0;
 
-      wl = EMALLOC(Window, b->num_winparts + 1);
+      wl = EMALLOC(EX_Window, b->num_winparts + 1);
       if (!wl)
 	 return;
       for (i = b->num_winparts - 1; i >= 0; i--)

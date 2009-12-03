@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -108,7 +108,7 @@ IB_SnapEWin(EWin * ewin, int size)
    int                 w, h, ww, hh;
    int                 was_shaded;
    EImage             *im;
-   Drawable            draw;
+   EX_Drawable         draw;
 
    if (!EoIsShown(ewin))
       return NULL;
@@ -131,7 +131,7 @@ IB_SnapEWin(EWin * ewin, int size)
    draw = EoGetPixmap(ewin);
    if (draw != NoXID)
      {
-	Pixmap              mask;
+	EX_Pixmap           mask;
 
 	mask = EWindowGetShapePixmap(EoGetWin(ewin));
 	im = EImageGrabDrawableScaled(EoGetWin(ewin), draw, mask, 0, 0, ww, hh,

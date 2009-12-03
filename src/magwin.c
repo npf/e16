@@ -49,7 +49,7 @@ typedef struct {
    int                 scale;	/* Zoom level */
    int                 sx, sy;	/* Scene x,y */
    int                 sw, sh;	/* Scene wxh */
-   Time                grab_time;
+   EX_Time             grab_time;
    char                disable_text;
    char                configured;
    char                btn_down;
@@ -83,7 +83,7 @@ MagwinDrawText(MagWindow * mw, int x, int y, const char *txt)
 }
 
 static unsigned int
-MagwinGetPixel(Drawable draw, unsigned int x, unsigned int y)
+MagwinGetPixel(EX_Drawable draw, unsigned int x, unsigned int y)
 {
    EImage             *im;
    unsigned int       *pd, pixel = 0;
@@ -106,7 +106,7 @@ MagwinRedraw(MagWindow * mw, int paint)
    int                 sx, sy, sw, sh;
    float               scale;
    int                 zoom_res;
-   Drawable            draw;
+   EX_Drawable         draw;
    char                buf[128];
    int                 px, py;
    int                 qx, qy;
@@ -240,7 +240,7 @@ _MagwinGrabRelease(MagWindow * mw)
 }
 
 static int
-MagwinKeyPress(MagWindow * mw, KeySym keysym)
+MagwinKeyPress(MagWindow * mw, EX_KeySym keysym)
 {
    switch (keysym)
      {
@@ -312,7 +312,7 @@ static void
 MagwinEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 {
    MagWindow          *mw = (MagWindow *) prm;
-   KeySym              keysym;
+   EX_KeySym           keysym;
    int                 done = 0;
 
    switch (ev->type)

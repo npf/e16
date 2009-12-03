@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2010 Kim Woelders
+ * Copyright (C) 2007-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -41,11 +41,11 @@ void                EGlExit(void);
 Visual             *EGlGetVisual(void);
 unsigned int        EGlGetDepth(void);
 
-void                EGlWindowConnect(Window xwin);
+void                EGlWindowConnect(EX_Window xwin);
 void                EGlWindowDisconnect(void);
 
 ETexture           *EGlTextureFromImage(EImage * im, int mode);
-ETexture           *EGlTextureFromDrawable(Drawable draw, int mode);
+ETexture           *EGlTextureFromDrawable(EX_Drawable draw, int mode);
 void                EGlTextureDestroy(ETexture * et);
 void                EGlTextureInvalidate(ETexture * et);
 

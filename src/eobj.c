@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -235,14 +235,14 @@ EobjInit(EObj * eo, int type, Win win, int x, int y, int w, int h,
       EobjListStackAdd(eo, 1);
 
    if (EDebug(EDBUG_TYPE_EWINS))
-      Eprintf("%s: %#lx %s\n", __func__, EobjGetXwin(eo), EobjGetName(eo));
+      Eprintf("%s: %#x %s\n", __func__, EobjGetXwin(eo), EobjGetName(eo));
 }
 
 void
 EobjFini(EObj * eo)
 {
    if (EDebug(EDBUG_TYPE_EWINS))
-      Eprintf("%s: %#lx %s\n", __func__, EobjGetXwin(eo), EobjGetName(eo));
+      Eprintf("%s: %#x %s\n", __func__, EobjGetXwin(eo), EobjGetName(eo));
 
    EobjListStackDel(eo);
 
@@ -269,7 +269,7 @@ void
 EobjDestroy(EObj * eo)
 {
    if (EDebug(EDBUG_TYPE_EWINS))
-      Eprintf("%s: %#lx %s\n", __func__, EobjGetXwin(eo), EobjGetName(eo));
+      Eprintf("%s: %#x %s\n", __func__, EobjGetXwin(eo), EobjGetName(eo));
 
    EobjFini(eo);
 
@@ -306,7 +306,7 @@ EobjWindowDestroy(EObj * eo)
 }
 
 EObj               *
-EobjRegisterOR(Window xwin __UNUSED__, XWindowAttributes * pxwa __UNUSED__,
+EobjRegisterOR(EX_Window xwin __UNUSED__, XWindowAttributes * pxwa __UNUSED__,
 	       int mapped __UNUSED__)
 {
    EObj               *eo = NULL;
@@ -371,7 +371,7 @@ EobjRegisterOR(Window xwin __UNUSED__, XWindowAttributes * pxwa __UNUSED__,
      }
 
 #if 0
-   Eprintf("%s: %#lx depth=%d argb=%d %s\n", __func__,
+   Eprintf("%s: %#x depth=%d argb=%d %s\n", __func__,
 	   EobjGetXwin(eo), win->depth, win->argb, EobjGetName(eo));
 #endif
 
@@ -384,7 +384,7 @@ void
 EobjUnregister(EObj * eo)
 {
 #if 0
-   Eprintf("%s: %#lx type=%d: %s\n", __func__, EobjGetXwin(eo), eo->type,
+   Eprintf("%s: %#x type=%d: %s\n", __func__, EobjGetXwin(eo), eo->type,
 	   EobjGetName(eo));
 #endif
    EobjDestroy(eo);
@@ -576,13 +576,13 @@ EobjShapeUpdate(EObj * eo, int propagate)
 }
 
 #if USE_COMPOSITE
-Pixmap
+EX_Pixmap
 EobjGetPixmap(const EObj * eo)
 {
    return ECompMgrWinGetPixmap(eo);
 }
 #else
-Pixmap
+EX_Pixmap
 EobjGetPixmap(const EObj * eo __UNUSED__)
 {
    return NoXID;

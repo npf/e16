@@ -474,7 +474,7 @@ GlwinRun(EObj * eobj __UNUSED__, int remaining __UNUSED__,
 }
 
 static int
-GlwinKeyPress(GLWindow * gw, KeySym keysym)
+GlwinKeyPress(GLWindow * gw, EX_KeySym keysym)
 {
    switch (keysym)
      {
@@ -576,7 +576,7 @@ static void
 GlwinEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 {
    GLWindow           *gw = (GLWindow *) prm;
-   KeySym              keysym;
+   EX_KeySym           keysym;
    int                 done = 0;
 
    switch (ev->type)

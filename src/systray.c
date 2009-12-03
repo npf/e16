@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -63,7 +63,7 @@ static void         SystrayItemEvent(Win win, XEvent * ev, void *prm);
 #define XEMBED_MAPPED               (1 << 0)
 
 static int
-SystrayGetXembedInfo(Window xwin, unsigned int *info)
+SystrayGetXembedInfo(EX_Window xwin, unsigned int *info)
 {
    int                 num;
 
@@ -97,7 +97,7 @@ SystrayGetXembedInfo(Window xwin, unsigned int *info)
  * Return index, -1 if not found.
  */
 static int
-SystrayObjFind(Container * ct, Window xwin)
+SystrayObjFind(Container * ct, EX_Window xwin)
 {
    int                 i;
 
@@ -109,12 +109,12 @@ SystrayObjFind(Container * ct, Window xwin)
 }
 
 static              Win
-SystrayObjManage(Container * ct, Window xwin)
+SystrayObjManage(Container * ct, EX_Window xwin)
 {
    Win                 win;
 
 #if DEBUG_SYSTRAY
-   Eprintf("%s: %#lx\n", __func__, xwin);
+   Eprintf("%s: %#x\n", __func__, xwin);
 #endif
    win = ERegisterWindow(xwin, NULL);
    if (!win)
@@ -132,7 +132,7 @@ static void
 SystrayObjUnmanage(Container * ct __UNUSED__, Win win, int gone)
 {
 #if DEBUG_SYSTRAY
-   Eprintf("%s: %#lx gone=%d\n", __func__, WinGetXwin(win), gone);
+   Eprintf("%s: %#x gone=%d\n", __func__, WinGetXwin(win), gone);
 #endif
 
    if (!gone)
@@ -147,7 +147,7 @@ SystrayObjUnmanage(Container * ct __UNUSED__, Win win, int gone)
 }
 
 static void
-SystrayObjAdd(Container * ct, Window xwin)
+SystrayObjAdd(Container * ct, EX_Window xwin)
 {
    SWin               *swin = NULL;
    Win                 win;
@@ -162,14 +162,14 @@ SystrayObjAdd(Container * ct, Window xwin)
    switch (SystrayGetXembedInfo(xwin, xembed_info))
      {
      case -1:			/* Error - assume invalid window */
-	Eprintf("%s: %#lx: Hmm.. Invalid window? Ignoring.\n", __func__, xwin);
+	Eprintf("%s: %#x: Hmm.. Invalid window? Ignoring.\n", __func__, xwin);
 	goto bail_out;
      case 0:			/* Assume broken - proceed anyway */
-	Eprintf("%s: %#lx: Hmm.. No _XEMBED_INFO?\n", __func__, xwin);
+	Eprintf("%s: %#x: Hmm.. No _XEMBED_INFO?\n", __func__, xwin);
 	break;
      default:
 	if (EDebug(EDBUG_TYPE_ICONBOX))
-	   Eprintf("%s: %#lx: _XEMBED_INFO: %u %u\n", __func__, xwin,
+	   Eprintf("%s: %#x: _XEMBED_INFO: %u %u\n", __func__, xwin,
 		   xembed_info[0], xembed_info[1]);
 	break;
      }
@@ -218,7 +218,7 @@ SystrayObjDel(Container * ct, Win win, int gone)
       return;
 
    if (EDebug(EDBUG_TYPE_ICONBOX))
-      Eprintf("%s: %#lx\n", __func__, WinGetXwin(win));
+      Eprintf("%s: %#x\n", __func__, WinGetXwin(win));
 
    swin = (SWin *) ct->objs[i].obj;
 
@@ -231,7 +231,7 @@ SystrayObjDel(Container * ct, Win win, int gone)
 }
 
 static void
-SystrayObjMapUnmap(Container * ct, Window xwin)
+SystrayObjMapUnmap(Container * ct, EX_Window xwin)
 {
    int                 i, map;
    SWin               *swin;
@@ -246,7 +246,7 @@ SystrayObjMapUnmap(Container * ct, Window xwin)
    if (SystrayGetXembedInfo(xwin, xembed_info) >= 0)
      {
 	if (EDebug(EDBUG_TYPE_ICONBOX))
-	   Eprintf("%s: %#lx: _XEMBED_INFO: %u %u\n", __func__, xwin,
+	   Eprintf("%s: %#x: _XEMBED_INFO: %u %u\n", __func__, xwin,
 		   xembed_info[0], xembed_info[1]);
 
 	map = (xembed_info[1] & XEMBED_MAPPED) != 0;
@@ -261,7 +261,7 @@ SystrayObjMapUnmap(Container * ct, Window xwin)
    else
      {
 	if (EDebug(EDBUG_TYPE_ICONBOX))
-	   Eprintf("%s: %#lx: _XEMBED_INFO: gone?\n", __func__, xwin);
+	   Eprintf("%s: %#x: _XEMBED_INFO: gone?\n", __func__, xwin);
 
 	map = 0;
 	if (map == swin->mapped)
@@ -275,7 +275,7 @@ SystrayObjMapUnmap(Container * ct, Window xwin)
 static void
 SystrayEventClientMessage(Container * ct, XClientMessageEvent * ev)
 {
-   Window              xwin;
+   EX_Window           xwin;
 
    if (EDebug(EDBUG_TYPE_ICONBOX))
       Eprintf("%s: ev->type=%ld ev->data.l: %#lx %#lx %#lx %#lx\n", __func__,
@@ -343,7 +343,7 @@ SystrayEvent(Win _win __UNUSED__, XEvent * ev, void *prm __UNUSED__)
       Eprintf("%s: %2d %#lx\n", __func__, ev->type, ev->xany.window);
 
 #if 0				/* FIXME - Need this one at all? ConfigureRequest? */
-   Window              xwin;
+   EX_Window           xwin;
 
    switch (ev->type)
      {

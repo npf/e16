@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -23,13 +23,7 @@
 #ifndef _XPROP_H_
 #define _XPROP_H_
 
-#define EX_ID       unsigned int
-#define EX_Drawable EX_ID
-#define EX_Window   EX_ID
-#define EX_Pixmap   EX_ID
-#define EX_Atom     EX_ID
-#define EX_Time     EX_ID
-#define EX_GC       GC
+#include "xtypes.h"
 
 EX_Atom             ex_atom_get(const char *name);
 void                ex_atoms_get(const char *const *names,

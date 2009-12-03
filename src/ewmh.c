@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2013 Kim Woelders
+ * Copyright (C) 2003-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -93,7 +93,7 @@ atom_list_set(EX_Atom * atoms, int size, int *count, EX_Atom atom, int set)
  * Initialize EWMH stuff
  */
 void
-EWMH_Init(Window win_wm_check)
+EWMH_Init(EX_Window win_wm_check)
 {
    EX_Atom             atom_list[64];
    int                 atom_count;
@@ -341,9 +341,9 @@ EWMH_SetClientStacking(void)
 }
 
 void
-EWMH_SetActiveWindow(Window win)
+EWMH_SetActiveWindow(EX_Window win)
 {
-   static Window       win_last_set = NoXID;
+   static EX_Window    win_last_set = NoXID;
 
    if (win == win_last_set)
       return;
@@ -357,7 +357,7 @@ EWMH_SetActiveWindow(Window win)
  */
 
 void
-EWMH_SetWindowName(Window win, const char *name)
+EWMH_SetWindowName(EX_Window win, const char *name)
 {
    const char         *str;
 
@@ -817,7 +817,7 @@ EWMH_DelWindowHints(const EWin * ewin)
  * Process property change
  */
 int
-EWMH_ProcessPropertyChange(EWin * ewin, Atom atom_change)
+EWMH_ProcessPropertyChange(EWin * ewin, EX_Atom atom_change)
 {
    if (atom_change == EX_ATOM_NET_WM_NAME)
      {
@@ -874,7 +874,7 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 {
    int                 source;
 
-/* Time                ts; */
+/* EX_Time          ts; */
 
    if (ev->message_type == EX_ATOM_NET_ACTIVE_WINDOW)
      {
@@ -915,7 +915,7 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 	 * in one message.
 	 */
 	unsigned int        action;
-	Atom                atom, atom2;
+	EX_Atom             atom, atom2;
 
 	action = ev->data.l[0];
 	atom = ev->data.l[1];

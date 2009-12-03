@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -66,7 +66,7 @@ IB_Animate_A(char iconify, EWin * ewin, EWin * ibox)
    float               a, aa, spd;
    int                 x, y, x1, y1, x2, y2, x3, y3, x4, y4, w, h;
    int                 fx, fy, fw, fh, tx, ty, tw, th;
-   Window              root = WinGetXwin(VROOT);
+   EX_Window           root = WinGetXwin(VROOT);
    GC                  gc;
    XGCValues           gcv;
 
@@ -163,7 +163,7 @@ IB_Animate_B(char iconify, EWin * ewin, EWin * ibox)
    float               a, spd;
    int                 x, y, w, h;
    int                 fx, fy, fw, fh, tx, ty, tw, th;
-   Window              root = WinGetXwin(VROOT);
+   EX_Window           root = WinGetXwin(VROOT);
    GC                  gc;
    XGCValues           gcv;
 

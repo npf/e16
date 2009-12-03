@@ -65,7 +65,7 @@ static unsigned int desk_info = 0;
 void
 HintsInit(void)
 {
-   Window              win;
+   EX_Window           win;
 
    ex_atoms_get(atoms_misc_names, N_ITEMS(atoms_misc_names), atoms_misc);
 
@@ -160,7 +160,7 @@ HintsSetDesktopViewport(void)
 }
 
 void
-HintsSetActiveWindow(Window win)
+HintsSetActiveWindow(EX_Window win)
 {
    EWMH_SetActiveWindow(win);
 }
@@ -312,7 +312,7 @@ HintsProcessRootClientMessage(XClientMessageEvent * event)
      }
 }
 
-Pixmap
+EX_Pixmap
 HintsGetRootPixmap(Win win)
 {
    EX_Pixmap           pm;
@@ -324,7 +324,7 @@ HintsGetRootPixmap(Win win)
 }
 
 void
-HintsSetRootInfo(Win win, Pixmap pmap, unsigned int color)
+HintsSetRootInfo(Win win, EX_Pixmap pmap, unsigned int color)
 {
    EX_Pixmap           pm;
 
@@ -384,7 +384,7 @@ EHintsSetInfo(const EWin * ewin)
 			     ewin->normal_border->name);
 
    if (EDebug(EDBUG_TYPE_SNAPS))
-      Eprintf("Snap set einf  %#lx: %4d+%4d %4dx%4d: %s\n",
+      Eprintf("Snap set einf  %#x: %4d+%4d %4dx%4d: %s\n",
 	      EwinGetClientXwin(ewin), ewin->client.x, ewin->client.y,
 	      ewin->client.w, ewin->client.h, EwinGetTitle(ewin));
 }
@@ -447,7 +447,7 @@ EHintsGetInfo(EWin * ewin)
    Efree(str);
 
    if (EDebug(EDBUG_TYPE_SNAPS))
-      Eprintf("Snap get einf  %#lx: %4d+%4d %4dx%4d: %s\n",
+      Eprintf("Snap get einf  %#x: %4d+%4d %4dx%4d: %s\n",
 	      EwinGetClientXwin(ewin), ewin->client.x, ewin->client.y,
 	      ewin->client.w, ewin->client.h, EwinGetTitle(ewin));
 }
@@ -576,7 +576,7 @@ EHintsSetInfoOnAll(void)
 
 struct _selection {
    EX_Atom             atom;
-   Time                time;
+   EX_Time             time;
    Win                 win;
    EventCallbackFunc  *func;
    void               *data;
@@ -622,7 +622,7 @@ SelectionAcquire(const char *name, EventCallbackFunc * func, void *data)
 			    WinGetXwin(sel->win), 0, 0);
 
    if (EDebug(EDBUG_TYPE_SELECTION))
-      Eprintf("Window %#lx is now %s owner, time=%lu\n",
+      Eprintf("Window %#x is now %s owner, time=%u\n",
 	      WinGetXwin(sel->win), buf, sel->time);
 
    return sel;
@@ -635,7 +635,7 @@ SelectionRelease(ESelection * sel)
       return;
 
    if (EDebug(EDBUG_TYPE_SELECTION))
-      Eprintf("Window %#lx is no longer %s owner\n",
+      Eprintf("Window %#x is no longer %s owner\n",
 	      WinGetXwin(sel->win), XGetAtomName(disp, sel->atom));
 
    XSetSelectionOwner(disp, sel->atom, NoXID, sel->time);

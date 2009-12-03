@@ -3,7 +3,7 @@
 /*****************************************************************************/
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -210,7 +210,7 @@ typedef struct {
       char                show_icons;
       int                 icon_size;
       struct {
-	 KeySym              left, right, up, down, escape, ret;
+	 EX_KeySym           left, right, up, down, escape, ret;
       } key;
    } menus;
    struct {
@@ -345,18 +345,18 @@ typedef struct {
       char                xinerama_active;
 #endif
 #if USE_XSYNC
-      XID                 server_time;
+      EX_ID               server_time;
 #endif
    } display;
    struct {
       unsigned int        time_ms;	/* Local ms time */
-      Time                time;	/* Latest X event time */
+      EX_Time             time;	/* Latest X event time */
       int                 cx, cy;	/* Any detected pointer movement */
       int                 mx, my;	/* Motion event */
       int                 px, py;	/* Previous motion event */
-      Time                last_btime;
-      Window              last_bpress;
-      Window              last_bpress2;
+      EX_Time             last_btime;
+      EX_Window           last_bpress;
+      EX_Window           last_bpress2;
       unsigned int        last_button;
       unsigned int        last_keycode;
       unsigned int        last_keystate;
@@ -373,7 +373,7 @@ typedef struct {
    } events;
    struct {
       char                pointer_grab_active;
-      Window              pointer_grab_window;
+      EX_Window           pointer_grab_window;
    } grabs;
    struct {
       const char         *lang;
@@ -403,7 +403,7 @@ typedef struct {
       unsigned int        extensions;
    } server;
    struct {
-      Pixmap              ext_pmap;
+      EX_Pixmap           ext_pmap;
       char                ext_pmap_valid;
    } root;
    struct {
@@ -438,12 +438,12 @@ typedef struct {
    EWin               *focuswin;
    EWin               *mouse_over_ewin;
    EWin               *context_ewin;
-   Colormap            current_cmap;
+   EX_Colormap         current_cmap;
    Win                 context_win;
    char                constrained;
    char                nogroup;
    char                showing_desktop;
-   Window              button_proxy_win;
+   EX_Window           button_proxy_win;
    char                firsttime;
    char                debug_exit;
 } EMode;
@@ -520,9 +520,9 @@ void                EdgeWindowsShow(void);
 void                EdgeWindowsHide(void);
 
 /* extinitwin.c */
-Window              ExtInitWinCreate(void);
-void                ExtInitWinSet(Window win);
-Window              ExtInitWinGet(void);
+EX_Window           ExtInitWinCreate(void);
+void                ExtInitWinSet(EX_Window win);
+EX_Window           ExtInitWinGet(void);
 void                ExtInitWinKill(void);
 
 /* fonts.c */

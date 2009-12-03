@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -74,7 +74,7 @@ FocusEwinValid(EWin * ewin, int want_on_screen, int click, int want_visible)
       return 0;
 
 #if 0
-   Eprintf("FocusEwinValid %#lx %s: st=%d sh=%d inh=%d cl=%d(%d) vis=%d(%d)\n",
+   Eprintf("FocusEwinValid %#x %s: st=%d sh=%d inh=%d cl=%d(%d) vis=%d(%d)\n",
 	   EwinGetClientXwin(ewin), EwinGetTitle(ewin),
 	   ewin->state.state, EoIsShown(ewin), ewin->state.inhibit_focus,
 	   click, ewin->props.focusclick, want_visible, ewin->state.visibility);
@@ -224,7 +224,7 @@ ClickGrabsSet(EWin * ewin)
 	     GrabButtonSet(AnyButton, AnyModifier, EwinGetClientConWin(ewin),
 			   ButtonPressMask, ECSR_PGRAB, 1);
 	     if (EDebug(EDBUG_TYPE_GRABS))
-		Eprintf("ClickGrabsSet: %#lx set %s\n",
+		Eprintf("ClickGrabsSet: %#x set %s\n",
 			EwinGetClientXwin(ewin), EwinGetTitle(ewin));
 	     ewin->state.click_grab_isset = 1;
 	  }
@@ -236,7 +236,7 @@ ClickGrabsSet(EWin * ewin)
 	     GrabButtonRelease(AnyButton, AnyModifier,
 			       EwinGetClientConWin(ewin));
 	     if (EDebug(EDBUG_TYPE_GRABS))
-		Eprintf("ClickGrabsSet: %#lx unset %s\n",
+		Eprintf("ClickGrabsSet: %#x unset %s\n",
 			EwinGetClientXwin(ewin), EwinGetTitle(ewin));
 	     ewin->state.click_grab_isset = 0;
 	  }
@@ -291,7 +291,7 @@ doFocusToEwin(EWin * ewin, int why)
       return;
 
    if (EDebug(EDBUG_TYPE_FOCUS))
-      Eprintf("doFocusToEWin %#lx %s why=%d\n",
+      Eprintf("doFocusToEWin %#x %s why=%d\n",
 	      (ewin) ? EwinGetClientXwin(ewin) : 0,
 	      (ewin) ? EwinGetTitle(ewin) : "None", why);
 
@@ -466,7 +466,7 @@ void
 FocusToEWin(EWin * ewin, int why)
 {
    if (EDebug(EDBUG_TYPE_FOCUS))
-      Eprintf("FocusToEWin(%d) %#lx %s why=%d\n", focus_inhibit,
+      Eprintf("FocusToEWin(%d) %#x %s why=%d\n", focus_inhibit,
 	      (ewin) ? EwinGetClientXwin(ewin) : 0,
 	      (ewin) ? EwinGetTitle(ewin) : "None", why);
 
@@ -539,7 +539,7 @@ FocusNewDesk(void)
 }
 
 static void
-_FocusScreenSendEvent(Window xwin, int x, int y, Time t, int enter)
+_FocusScreenSendEvent(EX_Window xwin, int x, int y, EX_Time t, int enter)
 {
    XEvent              xe;
 
@@ -562,8 +562,8 @@ _FocusScreenSendEvent(Window xwin, int x, int y, Time t, int enter)
 void
 FocusScreen(int scr)
 {
-   Window              xwin;
-   Time                t;
+   EX_Window           xwin;
+   EX_Time             t;
    int                 x, y;
 
    if (scr < 0 || scr >= ScreenCount(disp))
@@ -701,7 +701,7 @@ FocusHandleClick(EWin * ewin, Win win)
 
    /* Allow click to pass thorugh */
    if (EDebug(EDBUG_TYPE_GRABS))
-      Eprintf("FocusHandleClick %#lx %#lx\n", WinGetXwin(win),
+      Eprintf("FocusHandleClick %#x %#x\n", WinGetXwin(win),
 	      EwinGetContainerXwin(ewin));
    if (win == EwinGetClientConWin(ewin))
      {
@@ -1067,7 +1067,7 @@ FocusIpc(const char *params)
 
 	ewin = GetFocusEwin();
 	if (ewin)
-	   IpcPrintf("Focused: %#lx\n", EwinGetClientXwin(ewin));
+	   IpcPrintf("Focused: %#x\n", EwinGetClientXwin(ewin));
 	else
 	   IpcPrintf("Focused: none\n");
      }

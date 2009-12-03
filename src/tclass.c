@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -417,7 +417,7 @@ TextclassIpc(const char *params)
 
    if (!strcmp(param2, "apply"))
      {
-	Window              xwin;
+	EX_Window           xwin;
 	Win                 win;
 	char                state[20];
 	int                 x, y, st;
@@ -427,7 +427,7 @@ TextclassIpc(const char *params)
 	x = y = 0;
 	state[0] = '\0';
 	l = 0;
-	sscanf(p, "%lx %d %d %16s %n", &xwin, &x, &y, state, &l);
+	sscanf(p, "%x %d %d %16s %n", &xwin, &x, &y, state, &l);
 	p += l;
 
 	if (!strcmp(state, "normal"))

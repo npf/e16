@@ -39,6 +39,9 @@
 #include "timers.h"
 #include "tooltips.h"
 #include "xwin.h"
+#if USE_XRENDER
+#include <X11/extensions/Xrender.h>
+#endif
 
 #define DEBUG_PAGER 0
 #if DEBUG_PAGER
@@ -88,7 +91,7 @@ typedef struct {
    Win                 win;
    int                 w, h;
    char               *name;
-   Pixmap              bgpmap;
+   EX_Pixmap           bgpmap;
    Desk               *dsk;
    int                 dw, dh;
    int                 screen_w, screen_h;
@@ -271,7 +274,7 @@ static void
 PagerEwinUpdateMini(Pager * p, EWin * ewin)
 {
    int                 w, h, update, use_iclass, serdif;
-   Drawable            draw;
+   EX_Drawable         draw;
    int                 pager_mode = PagersGetMode();
 
    w = (EoGetW(ewin) * p->dw) / WinGetW(VROOT);
@@ -299,7 +302,7 @@ PagerEwinUpdateMini(Pager * p, EWin * ewin)
    if (!update)
       return;
 
-   Dprintf("%s %#lx/%#lx wxh=%dx%d ser=%#x/%#x dif=%d: %s\n", __func__,
+   Dprintf("%s %#x/%#x wxh=%dx%d ser=%#x/%#x dif=%d: %s\n", __func__,
 	   EwinGetClientXwin(ewin), EoGetXwin(ewin), w, h,
 	   EoGetSerial(ewin), p->serial, serdif, EwinGetTitle(ewin));
 
@@ -323,13 +326,13 @@ PagerEwinUpdateMini(Pager * p, EWin * ewin)
 	ic = ImageclassFind("PAGER_WIN", 1);
 	ImageclassApplySimple(ic, EoGetWin(ewin), ewin->mini_pmm.pmap,
 			      STATE_NORMAL, 0, 0, w, h);
-	Dprintf("Use Iclass, pmap=%#lx\n", ewin->mini_pmm.pmap);
+	Dprintf("Use Iclass, pmap=%#x\n", ewin->mini_pmm.pmap);
      }
    else
      {
 	ScaleRect(EoGetWin(ewin), draw, EoGetWin(ewin), ewin->mini_pmm.pmap,
 		  0, 0, EoGetW(ewin), EoGetH(ewin), 0, 0, w, h, HIQ);
-	Dprintf("Grab scaled, pmap=%#lx\n", ewin->mini_pmm.pmap);
+	Dprintf("Grab scaled, pmap=%#x\n", ewin->mini_pmm.pmap);
      }
 
 #if 0				/* FIXME - Remove? */
@@ -346,10 +349,10 @@ doPagerUpdate(Pager * p)
    EWin               *const *lst;
    int                 i, num, update_screen_included, update_screen_only;
    int                 pager_mode = PagersGetMode();
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
 
 #if USE_COMPOSITE
-   Picture             pager_pict, pict, alpha;
+   EX_Picture          pager_pict, pict, alpha;
    XRenderPictureAttributes pa;
 #endif
 
@@ -557,7 +560,7 @@ PagerReconfigure(Pager * p, int apply)
 static void
 PagerUpdateBg(Pager * p)
 {
-   Pixmap              pmap;
+   EX_Pixmap           pmap;
    Background         *bg;
    ImageClass         *ic;
    int                 pager_mode = PagersGetMode();
@@ -997,19 +1000,19 @@ PagerMenuShow(Pager * p, int x, int y)
 
 	MenuSetTransient(m);	/* Destroy when hidden */
 
-	Esnprintf(s, sizeof(s), "wop %#lx ic", EwinGetClientXwin(ewin));
+	Esnprintf(s, sizeof(s), "wop %#x ic", EwinGetClientXwin(ewin));
 	mi = MenuItemCreate(_("Iconify"), NULL, s, NULL);
 	MenuAddItem(m, mi);
 
-	Esnprintf(s, sizeof(s), "wop %#lx close", EwinGetClientXwin(ewin));
+	Esnprintf(s, sizeof(s), "wop %#x close", EwinGetClientXwin(ewin));
 	mi = MenuItemCreate(_("Close"), NULL, s, NULL);
 	MenuAddItem(m, mi);
 
-	Esnprintf(s, sizeof(s), "wop %#lx kill", EwinGetClientXwin(ewin));
+	Esnprintf(s, sizeof(s), "wop %#x kill", EwinGetClientXwin(ewin));
 	mi = MenuItemCreate(_("Annihilate"), NULL, s, NULL);
 	MenuAddItem(m, mi);
 
-	Esnprintf(s, sizeof(s), "wop %#lx st", EwinGetClientXwin(ewin));
+	Esnprintf(s, sizeof(s), "wop %#x st", EwinGetClientXwin(ewin));
 	mi = MenuItemCreate(_("Stick / Unstick"), NULL, s, NULL);
 	MenuAddItem(m, mi);
 

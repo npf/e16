@@ -1197,8 +1197,8 @@ MenuFindNextItem(Menu * m, MenuItem * mi, int inc)
    return NULL;
 }
 
-static              KeySym
-MenuKeyPressConversion(KeySym keysym)
+static              EX_KeySym
+MenuKeyPressConversion(EX_KeySym keysym)
 {
    if (keysym == Conf.menus.key.left)
       return XK_Left;
@@ -1221,7 +1221,7 @@ MenuKeyPressConversion(KeySym keysym)
 static void
 MenuEventKeyPress(Menu * m, XEvent * ev)
 {
-   KeySym              keysym;
+   EX_KeySym           keysym;
    MenuItem           *mi;
    EWin               *ewin;
 

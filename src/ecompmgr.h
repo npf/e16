@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -42,7 +42,7 @@ int                 ECompMgrIsActive(void);
 
 void                ECompMgrDeskConfigure(Desk * dsk);
 
-Pixmap              ECompMgrGetRootBuffer(void);
+EX_Pixmap           ECompMgrGetRootBuffer(void);
 
 void                ECompMgrWinNew(EObj * eo);
 void                ECompMgrWinDel(EObj * eo);
@@ -58,8 +58,8 @@ void                ECompMgrWinChangeShape(EObj * eo);
 void                ECompMgrWinSetOpacity(EObj * eo, unsigned int opacity);
 void                ECompMgrWinChangeOpacity(EObj * eo, unsigned int opacity);
 void                ECompMgrWinChangeShadow(EObj * eo, int shadow);
-Pixmap              ECompMgrWinGetPixmap(const EObj * eo);
-Picture             ECompMgrWinGetAlphaPict(const EObj * eo);
+EX_Pixmap           ECompMgrWinGetPixmap(const EObj * eo);
+EX_Picture          ECompMgrWinGetAlphaPict(const EObj * eo);
 void                ECompMgrWinClipToGC(EObj * eo, GC gc);
 
 void                ECompMgrConfigGet(cfg_composite * cfg);

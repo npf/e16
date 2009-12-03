@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2006-2009 Kim Woelders
+ * Copyright (C) 2006-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -43,8 +43,8 @@
 ECursor            *ECursorAlloc(const char *name);
 void                ECursorFree(ECursor * ec);
 void                ECursorApply(ECursor * ec, Win win);
-Cursor              ECsrGet(int which);
-void                ECsrApply(int which, Window win);
+EX_Cursor           ECsrGet(int which);
+void                ECsrApply(int which, EX_Window win);
 
 int                 ECursorConfigLoad(FILE * fs);
 

@@ -373,11 +373,11 @@ EImageTile(EImage * im, EImage * tile, int flags, int tw, int th,
 }
 
 EImage             *
-EImageGrabDrawable(Drawable draw, Pixmap mask, int x, int y, int w, int h,
-		   int grab)
+EImageGrabDrawable(EX_Drawable draw, EX_Pixmap mask, int x, int y, int w,
+		   int h, int grab)
 {
    EImage             *im;
-   Colormap            cm;
+   EX_Colormap         cm;
 
    cm = imlib_context_get_colormap();
    imlib_context_set_colormap(NoXID);	/* Fix for grabbing bitmaps */
@@ -389,7 +389,7 @@ EImageGrabDrawable(Drawable draw, Pixmap mask, int x, int y, int w, int h,
 }
 
 EImage             *
-EImageGrabDrawableScaled(Win win, Drawable draw, Pixmap mask,
+EImageGrabDrawableScaled(Win win, EX_Drawable draw, EX_Pixmap mask,
 			 int x, int y, int w, int h,
 			 int iw, int ih, int grab, int get_mask_from_shape)
 {
@@ -411,7 +411,7 @@ EImageGrabDrawableScaled(Win win, Drawable draw, Pixmap mask,
 }
 
 void
-EImageRenderOnDrawable(EImage * im, Win win, Drawable draw, int flags,
+EImageRenderOnDrawable(EImage * im, Win win, EX_Drawable draw, int flags,
 		       int x, int y, int w, int h)
 {
    Visual             *vis;
@@ -434,10 +434,10 @@ EImageRenderOnDrawable(EImage * im, Win win, Drawable draw, int flags,
 
 void
 EImageRenderPixmaps(EImage * im, Win win, int flags,
-		    Pixmap * pmap, Pixmap * mask, int w, int h)
+		    EX_Pixmap * ppmap, EX_Pixmap * pmask, int w, int h)
 {
    Visual             *vis;
-   Pixmap              m;
+   Pixmap              pmap, mask, *pm;
 
    imlib_context_set_image(im);
    imlib_context_set_drawable((win) ? WinGetXwin(win) : WinGetXwin(VROOT));
@@ -445,27 +445,28 @@ EImageRenderPixmaps(EImage * im, Win win, int flags,
    if (vis)
       imlib_context_set_visual(vis);
 
-   *pmap = NoXID;
-   if (!mask)			/* Imlib2 <= 1.3.0 needs a mask pointer */
-      mask = &m;		/* ... to avoid bogus error messages    */
-   if (mask)
-      *mask = NoXID;
+   pmap = mask = NoXID;
+   pm = pmask ? &mask : NULL;
 
    if (flags)
       _EImageFlagsSet(flags);
    if (w <= 0 || h <= 0)
-      imlib_render_pixmaps_for_whole_image(pmap, mask);
+      imlib_render_pixmaps_for_whole_image(&pmap, pm);
    else
-      imlib_render_pixmaps_for_whole_image_at_size(pmap, mask, w, h);
+      imlib_render_pixmaps_for_whole_image_at_size(&pmap, pm, w, h);
    if (flags)
       _EImageFlagsReset();
 
    if (vis)
       imlib_context_set_visual(WinGetVisual(VROOT));
+
+   *ppmap = pmap;
+   if (pmask)
+      *pmask = mask;
 }
 
 void
-EImagePixmapsFree(Pixmap pmap, Pixmap mask __UNUSED__)
+EImagePixmapsFree(EX_Pixmap pmap, EX_Pixmap mask __UNUSED__)
 {
    imlib_free_pixmap_and_mask(pmap);
 }
@@ -473,7 +474,7 @@ EImagePixmapsFree(Pixmap pmap, Pixmap mask __UNUSED__)
 void
 EImageApplyToWin(EImage * im, Win win, int flags, int w, int h)
 {
-   Pixmap              pmap, mask;
+   EX_Pixmap           pmap, mask;
 
    EImageRenderPixmaps(im, win, flags, &pmap, &mask, w, h);
    ESetWindowBackgroundPixmap(win, pmap, 0);
@@ -484,7 +485,7 @@ EImageApplyToWin(EImage * im, Win win, int flags, int w, int h)
 }
 
 void
-ScaleRect(Win wsrc, Drawable src, Win wdst, Pixmap dst,
+ScaleRect(Win wsrc, EX_Drawable src, Win wdst, EX_Pixmap dst,
 	  int sx, int sy, int sw, int sh,
 	  int dx, int dy, int dw, int dh, int flags)
 {
@@ -494,7 +495,7 @@ ScaleRect(Win wsrc, Drawable src, Win wdst, Pixmap dst,
 	XRenderPictFormat  *pictfmt;
 	XRenderPictureAttributes pa;
 	XTransform          tr;
-	Picture             psrc, pdst;
+	EX_Picture          psrc, pdst;
 	double              scale_x, scale_y;
 
 	scale_x = (double)sw / (double)dw;
@@ -544,7 +545,7 @@ ScaleRect(Win wsrc, Drawable src, Win wdst, Pixmap dst,
 }
 
 void
-ScaleTile(Win wsrc, Drawable src, Win wdst, Pixmap dst,
+ScaleTile(Win wsrc, EX_Drawable src, Win wdst, EX_Pixmap dst,
 	  int dx, int dy, int dw, int dh, int scale)
 {
    Imlib_Image         im, tim;
@@ -581,7 +582,7 @@ ScaleTile(Win wsrc, Drawable src, Win wdst, Pixmap dst,
 
 #if 0				/* Unused */
 void
-EDrawableDumpImage(Drawable draw, const char *txt)
+EDrawableDumpImage(EX_Drawable draw, const char *txt)
 {
    static int          seqn = 0;
    char                buf[1024];

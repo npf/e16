@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -70,8 +70,8 @@ struct _button {
    void               *cb_prm;
 
 #if 0				/* Unused */
-   Window              inside_win;
-   Window              event_win;
+   EX_Window           inside_win;
+   EX_Window           event_win;
 #endif
    unsigned int        ref_count;
 };
@@ -387,7 +387,7 @@ ButtonDoShowDefault(const Button * b)
 
 #if 0				/* Unused */
 int
-ButtonEmbedWindow(Button * b, Window WindowToEmbed)
+ButtonEmbedWindow(Button * b, EX_Window WindowToEmbed)
 {
 
    int                 w, h;
@@ -495,7 +495,7 @@ ButtonEventMouseDown(Button * b, XEvent * ev)
 #if 0				/* Unused */
    if (b->inside_win)
      {
-	Window              win = ev->xbutton.window;
+	EX_Window           win = ev->xbutton.window;
 
 	ev->xbutton.window = b->inside_win;
 	EXSendEvent(b->inside_win, ButtonPressMask, ev);
@@ -525,7 +525,7 @@ ButtonEventMouseUp(Button * b, XEvent * ev)
 #if 0				/* Unused */
    if (b->inside_win && !Mode_buttons.action_inhibit)
      {
-	Window              win = ev->xbutton.window;
+	EX_Window           win = ev->xbutton.window;
 
 	ev->xbutton.window = b->inside_win;
 	EXSendEvent(b->inside_win, ButtonReleaseMask, ev);
@@ -1044,7 +1044,7 @@ ButtonsIpc(const char *params)
      {
 	IpcPrintf("Win       d  s  l     x     y     w     h name\n");
 	LIST_FOR_EACH(Button, &button_list, b)
-	   IpcPrintf("%#lx %2d %2d %2d %5d+%5d %5dx%5d %s\n",
+	   IpcPrintf("%#x %2d %2d %2d %5d+%5d %5dx%5d %s\n",
 		     EoGetXwin(b), EoGetDeskNum(b), EoIsSticky(b),
 		     EoGetLayer(b), EoGetX(b), EoGetY(b), EoGetW(b), EoGetH(b),
 		     EoGetName(b));
