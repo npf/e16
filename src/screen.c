@@ -37,6 +37,80 @@ typedef struct {
 static EScreen     *p_screens = NULL;
 static int          n_screens = 0;
 
+#if USE_XRANDR
+#include <X11/extensions/Xrandr.h>
+#define RANDR_VERSION (RANDR_MAJOR * 100 + RANDR_MINOR)
+
+static void
+_ScreenInitXrandr(void)
+{
+}
+
+static void
+_ScreenShowInfoXrandr(void)
+{
+#if RANDR_VERSION >= 102	/* >= 1.2 */
+   char                buf[4096];
+   XRRScreenResources *psr;
+   XRRCrtcInfo        *pci;
+   XRROutputInfo      *poi;
+   XRRModeInfo        *pmi;
+   int                 i, j, l;
+
+   psr = XRRGetScreenResources(disp, WinGetXwin(VROOT));
+   if (!psr)
+      return;
+
+   IpcPrintf("Crtc  ID      X,Y         WxH     mode   rot   nout\n");
+   for (i = 0; i < psr->ncrtc; i++)
+     {
+	pci = XRRGetCrtcInfo(disp, psr, psr->crtcs[i]);
+	if (!pci)
+	   break;
+	IpcPrintf("%3d  %#04lx  %4d,%4d   %4ux%4u  %#04lx %4d %5d\n",
+		  i, psr->crtcs[i],
+		  pci->x, pci->y, pci->width, pci->height,
+		  pci->mode, pci->rotation, pci->noutput);
+	XRRFreeCrtcInfo(pci);
+     }
+
+   IpcPrintf("Outp  ID  Name            WxH     crtc  Crtcs clOnes Modes\n");
+   for (i = 0; i < psr->noutput; i++)
+     {
+	poi = XRRGetOutputInfo(disp, psr, psr->outputs[i]);
+	if (!poi)
+	   break;
+	l = Esnprintf(buf, sizeof(buf),
+		      "%3d  %#04lx %-8s     %4lux%4lu  %#04lx",
+		      i, psr->outputs[i],
+		      poi->name, poi->mm_width, poi->mm_height, poi->crtc);
+	l += Esnprintf(buf + l, sizeof(buf) - l, " c:");
+	for (j = 0; j < poi->ncrtc; j++)
+	   l += Esnprintf(buf + l, sizeof(buf) - l, " %#04lx", poi->crtcs[j]);
+	l += Esnprintf(buf + l, sizeof(buf) - l, " o:");
+	for (j = 0; j < poi->nclone; j++)
+	   l += Esnprintf(buf + l, sizeof(buf) - l, " %#04lx", poi->clones[j]);
+	l += Esnprintf(buf + l, sizeof(buf) - l, " m:");
+	for (j = 0; j < poi->nmode; j++)
+	   l += Esnprintf(buf + l, sizeof(buf) - l, " %#04lx", poi->modes[j]);
+	IpcPrintf("%s\n", buf);
+	XRRFreeOutputInfo(poi);
+     }
+
+   IpcPrintf("Mode  ID  Name            WxH\n");
+   for (i = 0; i < psr->nmode; i++)
+     {
+	pmi = psr->modes + i;
+	IpcPrintf("%3d  %#04lx %-8s     %4ux%4u\n",
+		  i, pmi->id, pmi->name, pmi->width, pmi->height);
+     }
+
+   XRRFreeScreenResources(psr);
+#endif
+}
+
+#endif /* USE_XRANDR */
+
 #if USE_XINERAMA
 #include <X11/extensions/Xinerama.h>
 
@@ -130,6 +204,9 @@ ScreenInit(void)
    if (Mode.wm.window)
       return;
 
+#if USE_XRANDR
+   _ScreenInitXrandr();
+#endif
 #if USE_XINERAMA
    _ScreenInitXinerama();
 #endif
@@ -168,6 +245,9 @@ ScreenShowInfo(const char *prm __UNUSED__)
    IpcPrintf(" %2d     %2d       %5d     %5d     %5d     %5d\n",
 	     0, Dpy.screen, 0, 0, WinGetW(VROOT), WinGetH(VROOT));
 
+#if USE_XRANDR
+   _ScreenShowInfoXrandr();
+#endif
 #if USE_XINERAMA
    _ScreenShowInfoXinerama();
 #endif
