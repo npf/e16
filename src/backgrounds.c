@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -1860,8 +1860,8 @@ CB_BGNext(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
 static int
 BG_SortFileCompare(const void *_bg1, const void *_bg2)
 {
-   const Background   *bg1 = (const Background *)_bg1;
-   const Background   *bg2 = (const Background *)_bg2;
+   const Background   *bg1 = *(const Background **)_bg1;
+   const Background   *bg2 = *(const Background **)_bg2;
    const char         *name1, *name2;
 
    /* return < 0 is b1 <  b2 */
@@ -1892,7 +1892,7 @@ CB_BGSortFile(Dialog * d __UNUSED__, int val __UNUSED__, void *data __UNUSED__)
    /* remove them all from the list */
    for (i = 0; i < num; i++)
       ecore_list_node_remove(bg_list, bglist[i]);
-   Quicksort((void **)bglist, 0, num - 2, BG_SortFileCompare);
+   qsort(bglist, num - 1, sizeof(Background *), BG_SortFileCompare);
    for (i = 0; i < num; i++)
       ecore_list_append(bg_list, bglist[i]);
    Efree(bglist);

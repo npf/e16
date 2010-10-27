@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -26,76 +26,6 @@
 #include "xwin.h"
 #include <sys/time.h>
 #include <time.h>
-
-/* This is a general quicksort algorithm, using median-of-three strategy.
- * 
- * Parameters:
- * ===========
- * a:            array of items to be sorted (list of void pointers).
- * l:            left edge of sub-array to be sorted. Toplevel call has 0 here.
- * r:            right edge of sub-array to be sorted. Toplevel call has |a| - 1 here.
- * CompareFunc:  Pointer to a function that accepts two general items d1 and d2
- * and returns values as follows:
- * 
- * < 0  --> d1 "smaller" than d2
- * > 0  --> d1 "larger"  than d2
- * 0    --> d1 "==" d2.
- * 
- * See sample application in ipc.c's IPC_Help.
- */
-void
-Quicksort(void **a, int l, int r,
-	  int (*CompareFunc) (const void *d1, const void *d2))
-{
-   int                 i, j, m;
-   void               *v, *t;
-
-   if (r > l)
-     {
-
-	m = (r + l) / 2 + 1;
-	if (CompareFunc(a[l], a[r]) > 0)
-	  {
-	     t = a[l];
-	     a[l] = a[r];
-	     a[r] = t;
-	  }
-	if (CompareFunc(a[l], a[m]) > 0)
-	  {
-	     t = a[l];
-	     a[l] = a[m];
-	     a[m] = t;
-	  }
-	if (CompareFunc(a[r], a[m]) > 0)
-	  {
-	     t = a[r];
-	     a[r] = a[m];
-	     a[m] = t;
-	  }
-
-	v = a[r];
-	i = l - 1;
-	j = r;
-
-	for (;;)
-	  {
-	     while (CompareFunc(a[++i], v) < 0)
-		;
-	     while (CompareFunc(a[--j], v) > 0)
-		;
-	     if (i >= j)
-		break;
-	     t = a[i];
-	     a[i] = a[j];
-	     a[j] = t;
-	  }
-	t = a[i];
-	a[i] = a[r];
-	a[r] = t;
-	Quicksort(a, l, i - 1, CompareFunc);
-	Quicksort(a, i + 1, r, CompareFunc);
-     }
-}
 
 /*
  * Debug/error message printing.

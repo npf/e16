@@ -1802,7 +1802,7 @@ EFuncDefer(EWin * ewin, const char *cmd)
 static int
 ipccmp(const void *p1, const void *p2)
 {
-   return strcmp(((const IpcItem *)p1)->name, ((const IpcItem *)p2)->name);
+   return strcmp((*(const IpcItem **)p1)->name, (*(const IpcItem **)p2)->name);
 }
 
 static void
@@ -1822,7 +1822,7 @@ IPC_Help(const char *params)
 		    "Use \"help <command>\" for an individual description\n\n"));
 	IpcPrintf(_("Commands currently available:\n"));
 
-	Quicksort((void **)lst, 0, num - 1, ipccmp);
+	qsort(lst, num, sizeof(IpcItem *), ipccmp);
 
 	for (i = 0; i < num; i++)
 	  {

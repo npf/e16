@@ -549,11 +549,6 @@ __NORETURN__ void   EExit(int exitcode);
 
 void                Etmp(char *s);
 
-/* misc.c */
-void                Quicksort(void **a, int l, int r,
-			      int (*CompareFunc) (const void *d1,
-						  const void *d2));
-
 /* mod-misc.c */
 void                autosave(void);
 

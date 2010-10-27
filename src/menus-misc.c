@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2011 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -463,8 +463,8 @@ static int
 BorderNameCompare(const void *b1, const void *b2)
 {
    if (b1 && b2)
-      return strcmp(BorderGetName((const Border *)b1),
-		    BorderGetName((const Border *)b2));
+      return strcmp(BorderGetName(*(const Border **)b1),
+		    BorderGetName(*(const Border **)b2));
 
    return 0;
 }
@@ -485,7 +485,7 @@ MenuCreateFromBorders(const char *name, MenuStyle * ms)
    if (!lst)
       return m;
 
-   Quicksort((void **)lst, 0, num - 1, BorderNameCompare);
+   qsort(lst, num, sizeof(Border *), BorderNameCompare);
    for (i = 0; i < num; i++)
      {
 	/* if its not internal (ie doesnt start with _ ) */
