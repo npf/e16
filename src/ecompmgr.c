@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -103,6 +103,7 @@ typedef struct _cmhook ECmWinInfo;
 struct _cmhook {
    EObj               *next;	/* Paint order */
    EObj               *prev;	/* Paint order */
+   Animator           *anim_fade;
    EX_Pixmap           pixmap;
    int                 rcx, rcy, rcw, rch;
    int                 mode;
@@ -994,6 +995,7 @@ doECompMgrWinFade(EObj * eo, int run, void *data __UNUSED__)
       ModulesSignal(eo->shown ? ESIGNAL_EWIN_CHANGE : ESIGNAL_EWIN_UNMAP, eo);
 
  done:
+   cw->anim_fade = NULL;
    return ANIM_RET_CANCEL_ANIM;
 }
 
@@ -1009,8 +1011,10 @@ ECompMgrWinFade(EObj * eo, unsigned int op_from, unsigned int op_to)
 	return;
      }
 
-   if (!eo->fading)
-      AnimatorAdd(eo, ANIM_FADE, doECompMgrWinFade, -1, 0, 0, NULL);
+   if (!eo->fading && !cw->anim_fade)
+      cw->anim_fade =
+	 AnimatorAdd(eo, ANIM_FADE, doECompMgrWinFade, -1, 0, 0, NULL);
+
    cw->opacity_to = op_to;
 
    eo->fading = 1;
@@ -1057,9 +1061,13 @@ ECompMgrWinFadeEnd(EObj * eo, int done)
 	ECompMgrDamageMergeObject(eo, cw->extents);
 	_ECM_SET_CLIP_CHANGED();
      }
+
    eo->fading = 0;
-   if (done)
-      AnimatorsDelCat(eo, ANIM_FADE, 0);
+   if (done && cw->anim_fade)
+     {
+	AnimatorDel(eo, cw->anim_fade);
+	cw->anim_fade = NULL;
+     }
 }
 
 void
