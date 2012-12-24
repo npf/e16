@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2012-12-09 11:00+0100\n"
+"POT-Creation-Date: 2012-12-16 12:17+0100\n"
 "PO-Revision-Date: 2010-02-14 04:53+0000\n"
 "Last-Translator: Teylo Laundos Aguiar <teylo.aguiar@gmail.com>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -36,8 +36,8 @@ msgid ""
 "Kim Woelders - kim@woelders.dk\n"
 msgstr ""
 
-#: src/aclass.c:216 src/backgrounds.c:254 src/borders.c:695 src/buttons.c:187
-#: src/cursors.c:139 src/iclass.c:337 src/tclass.c:121 src/tooltips.c:133
+#: src/aclass.c:221 src/backgrounds.c:254 src/borders.c:695 src/buttons.c:187
+#: src/cursors.c:139 src/iclass.c:357 src/tclass.c:121 src/tooltips.c:133
 #, c-format
 msgid "%u references remain"
 msgstr "%u referências remanescentes"
@@ -165,7 +165,7 @@ msgstr "Sair do Enlightenment"
 msgid "Attention !!!"
 msgstr "Atenção !!!"
 
-#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1900 src/events.c:94
+#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1896 src/events.c:94
 #: src/setup.c:159 src/setup.c:172 src/sound.c:310
 msgid "OK"
 msgstr "OK"
@@ -300,11 +300,11 @@ msgstr ""
 "Área de trabalho do Enlightenment\n"
 "Diálogo de configuração do plano de fundo"
 
-#: src/comms.c:241
+#: src/comms.c:244
 msgid "E IPC Error"
 msgstr "Erro de IPC do E"
 
-#: src/comms.c:242
+#: src/comms.c:245
 #, c-format
 msgid ""
 "Received Unknown Client Message.\n"
@@ -868,11 +868,11 @@ msgstr ""
 "Efeitos especiais do Enlightenment\n"
 "Diálogo de configurações"
 
-#: src/groups.c:701
+#: src/groups.c:708
 msgid "Window Group Selection"
 msgstr "Seleção de Grupo de Janela"
 
-#: src/groups.c:704
+#: src/groups.c:711
 msgid ""
 "Enlightenment Window Group\n"
 "Selection Dialog"
@@ -880,11 +880,11 @@ msgstr ""
 "Grupo de janelas do Enlightenment\n"
 "Diálogo de seleção"
 
-#: src/groups.c:727 src/groups.c:736 src/groups.c:744 src/groups.c:919
+#: src/groups.c:734 src/groups.c:743 src/groups.c:751 src/groups.c:928
 msgid "Window Group Error"
 msgstr "Erro de Grupo de Janela"
 
-#: src/groups.c:729
+#: src/groups.c:736
 msgid ""
 "This window currently does not belong to any groups.\n"
 "You can only destroy groups or remove windows from groups\n"
@@ -894,7 +894,7 @@ msgstr ""
 "Você só pode destruir grupos ou remover janelas de grupos\n"
 "através de uma janela que pertença a, pelo menos, um grupo."
 
-#: src/groups.c:737
+#: src/groups.c:744
 msgid ""
 "Currently, no groups exist or this window\n"
 "already belongs to all existing groups.\n"
@@ -905,15 +905,15 @@ msgstr ""
 "existentes.\n"
 "Você deve criar outros grupos antes."
 
-#: src/groups.c:746
+#: src/groups.c:753
 msgid "Currently, no groups exist. You have to start a group first."
 msgstr "Atualmente, nenhum grupo existe. Você deve criar um novo grupo antes."
 
-#: src/groups.c:830
+#: src/groups.c:837
 msgid "Pick the group to configure:"
 msgstr "Selecione o grupo a configurar:"
 
-#: src/groups.c:861
+#: src/groups.c:870
 msgid ""
 "The following actions are\n"
 "applied to all group members:"
@@ -921,39 +921,39 @@ msgstr ""
 "As seguintes ações são aplicadas\n"
 "a todos os membros do grupo:"
 
-#: src/groups.c:866 src/groups.c:962
+#: src/groups.c:875 src/groups.c:971
 msgid "Changing Border Style"
 msgstr "Mudar o Estilo da Borda"
 
-#: src/groups.c:871 src/groups.c:967
+#: src/groups.c:880 src/groups.c:976
 msgid "Iconifying"
 msgstr "Iconificar"
 
-#: src/groups.c:876 src/groups.c:972
+#: src/groups.c:885 src/groups.c:981
 msgid "Killing"
 msgstr "Matar"
 
-#: src/groups.c:881 src/groups.c:977
+#: src/groups.c:890 src/groups.c:986
 msgid "Moving"
 msgstr "Mover"
 
-#: src/groups.c:886 src/groups.c:982
+#: src/groups.c:895 src/groups.c:991
 msgid "Raising/Lowering"
 msgstr "Levantar/Baixar"
 
-#: src/groups.c:891 src/groups.c:987
+#: src/groups.c:900 src/groups.c:996
 msgid "Sticking"
 msgstr "Grudar"
 
-#: src/groups.c:896 src/groups.c:992
+#: src/groups.c:905 src/groups.c:1001
 msgid "Shading"
 msgstr "Deslizar"
 
-#: src/groups.c:903
+#: src/groups.c:912
 msgid "Window Group Settings"
 msgstr "Configurações de Grupos de Janelas"
 
-#: src/groups.c:906
+#: src/groups.c:915
 msgid ""
 "Enlightenment Window Group\n"
 "Settings Dialog"
@@ -961,32 +961,32 @@ msgstr ""
 "Grupo de janelas do Enlightenment\n"
 "Diálogo de configuração"
 
-#: src/groups.c:920
+#: src/groups.c:929
 msgid "This window currently does not belong to any groups."
 msgstr "Essa janela atualmente não pertence a nenhum grupo."
 
-#: src/groups.c:955
+#: src/groups.c:964
 msgid "Per-group settings:"
 msgstr "Configurações de grupo:"
 
-#: src/groups.c:1001
+#: src/groups.c:1010
 msgid "Global settings:"
 msgstr "COnfigurações globais:"
 
-#: src/groups.c:1005
+#: src/groups.c:1014
 msgid "Swap Window Locations"
 msgstr ""
 
-#: src/groups.c:1011 src/menus-misc.c:646 config/strings.c:138
+#: src/groups.c:1020 src/menus-misc.c:646 config/strings.c:138
 msgid "Groups"
 msgstr ""
 
 # sinceramente eu não entendi isso aqui...
-#: src/groups.c:1012
+#: src/groups.c:1021
 msgid "Default Group Control Settings"
 msgstr "Configurações Padrões de Grupos"
 
-#: src/groups.c:1015
+#: src/groups.c:1024
 msgid ""
 "Enlightenment Default\n"
 "Group Control Settings Dialog"
@@ -994,15 +994,15 @@ msgstr ""
 "Padrão de Enlightenment\n"
 "Diálogo de configuração de controle de grupo"
 
-#: src/groups.c:1042
+#: src/groups.c:1051
 msgid "Pick the group the window will belong to:"
 msgstr ""
 
-#: src/groups.c:1048
+#: src/groups.c:1057
 msgid "Select the group to remove the window from:"
 msgstr ""
 
-#: src/groups.c:1053
+#: src/groups.c:1062
 msgid "Select the group to break:"
 msgstr ""
 
