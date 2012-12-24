@@ -69,7 +69,7 @@ EXInit(void)
 }
 
 static              Win
-EXidCreate(void)
+_EXidCreate(void)
 {
    Win                 win;
 
@@ -81,7 +81,7 @@ EXidCreate(void)
 }
 
 static void
-EXidDestroy(Win win)
+_EXidDestroy(Win win)
 {
 #if DEBUG_XWIN
    Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
@@ -93,7 +93,7 @@ EXidDestroy(Win win)
 }
 
 static void
-EXidAdd(Win win)
+_EXidAdd(Win win)
 {
 #if DEBUG_XWIN
    Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
@@ -116,7 +116,7 @@ EXidAdd(Win win)
 }
 
 static void
-EXidDel(Win win)
+_EXidDel(Win win)
 {
 #if DEBUG_XWIN
    Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
@@ -148,7 +148,7 @@ EXidDel(Win win)
    if (win->in_use)
       win->do_del = 1;
    else
-      EXidDestroy(win);
+      _EXidDestroy(win);
 }
 
 #define EXidLookup ELookupXwin
@@ -171,12 +171,12 @@ EXidLookup(Window xwin)
 }
 
 static              Win
-EXidSet(Window xwin, Win parent, int x, int y, int w, int h, int depth,
-	Visual * visual, Colormap cmap)
+_EXidSet(Window xwin, Win parent, int x, int y, int w, int h, int depth,
+	 Visual * visual, Colormap cmap)
 {
    Win                 win;
 
-   win = EXidCreate();
+   win = _EXidCreate();
    win->parent = parent;
    win->xwin = xwin;
    win->x = x;
@@ -190,7 +190,7 @@ EXidSet(Window xwin, Win parent, int x, int y, int w, int h, int depth,
 #if DEBUG_XWIN
    Eprintf("%s: %#lx\n", __func__, win->xwin);
 #endif
-   EXidAdd(win);
+   _EXidAdd(win);
 
    return win;
 }
@@ -271,7 +271,7 @@ EventCallbacksProcess(Win win, XEvent * ev)
 	eci->func(win, ev, eci->prm);
 	if (win->do_del)
 	  {
-	     EXidDestroy(win);
+	     _EXidDestroy(win);
 	     return;
 	  }
      }
@@ -302,16 +302,16 @@ ECreateWindow(Win parent, int x, int y, int w, int h, int saveunder)
 			CopyFromParent, InputOutput, CopyFromParent,
 			CWOverrideRedirect | CWSaveUnder | CWBackingStore |
 			CWColormap | CWBackPixmap | CWBorderPixel, &attr);
-   win = EXidSet(xwin, parent, x, y, w, h, parent->depth, parent->visual,
-		 parent->cmap);
+   win = _EXidSet(xwin, parent, x, y, w, h, parent->depth, parent->visual,
+		  parent->cmap);
 
    return win;
 }
 
 #if USE_COMPOSITE
 static              Win
-ECreateWindowVDC(Win parent, int x, int y, int w, int h,
-		 Visual * vis, unsigned int depth, Colormap cmap)
+_ECreateWindowVDC(Win parent, int x, int y, int w, int h,
+		  Visual * vis, unsigned int depth, Colormap cmap)
 {
    Win                 win;
    Window              xwin;
@@ -328,7 +328,7 @@ ECreateWindowVDC(Win parent, int x, int y, int w, int h,
 			depth, InputOutput, vis,
 			CWOverrideRedirect | CWSaveUnder | CWBackingStore |
 			CWColormap | CWBackPixmap | CWBorderPixel, &attr);
-   win = EXidSet(xwin, parent, x, y, w, h, depth, vis, cmap);
+   win = _EXidSet(xwin, parent, x, y, w, h, depth, vis, cmap);
 
    return win;
 }
@@ -360,13 +360,13 @@ ECreateArgbWindow(Win parent, int x, int y, int w, int h, Win cwin)
 	cmap = argb_cmap;
      }
 
-   return ECreateWindowVDC(parent, x, y, w, h, vis, depth, cmap);
+   return _ECreateWindowVDC(parent, x, y, w, h, vis, depth, cmap);
 }
 
 #if USE_GLX
 static              Win
-ECreateWindowVD(Win parent, int x, int y, int w, int h,
-		Visual * vis, unsigned int depth)
+_ECreateWindowVD(Win parent, int x, int y, int w, int h,
+		 Visual * vis, unsigned int depth)
 {
    Colormap            cmap;
 
@@ -375,7 +375,7 @@ ECreateWindowVD(Win parent, int x, int y, int w, int h,
 
    cmap = XCreateColormap(disp, WinGetXwin(VROOT), vis, AllocNone);
 
-   return ECreateWindowVDC(parent, x, y, w, h, vis, depth, cmap);
+   return _ECreateWindowVDC(parent, x, y, w, h, vis, depth, cmap);
 }
 #endif
 
@@ -402,7 +402,7 @@ ECreateObjectWindow(Win parent, int x, int y, int w, int h, int saveunder,
 #if USE_GLX
      case WIN_TYPE_GLX:	/* Internal GL */
 	win =
-	   ECreateWindowVD(parent, x, y, w, h, EGlGetVisual(), EGlGetDepth());
+	   _ECreateWindowVD(parent, x, y, w, h, EGlGetVisual(), EGlGetDepth());
 	return win;
 #endif
      }
@@ -448,7 +448,7 @@ ECreateEventWindow(Win parent, int x, int y, int w, int h)
 
    xwin = XCreateWindow(disp, parent->xwin, x, y, w, h, 0, 0, InputOnly,
 			CopyFromParent, CWOverrideRedirect, &attr);
-   win = EXidSet(xwin, parent, x, y, w, h, 0, NULL, None);
+   win = _EXidSet(xwin, parent, x, y, w, h, 0, NULL, None);
 
    return win;
 }
@@ -548,7 +548,7 @@ EMoveResizeWindow(Win win, int x, int y, int w, int h)
 }
 
 static int
-ExDelTree(Win win)
+_ExDelTree(Win win)
 {
    Win                 win2;
    int                 nsub;
@@ -560,7 +560,7 @@ ExDelTree(Win win)
      {
 	if (win2->parent != win)
 	   continue;
-	ExDelTree(win2);
+	_ExDelTree(win2);
 	nsub++;
      }
 
@@ -586,11 +586,11 @@ EDestroyWindow(Win win)
      }
 
    /* Mark the ones to be deleted */
-   nsub = ExDelTree(win);
+   nsub = _ExDelTree(win);
    if (nsub == 0)
      {
 	/* No children */
-	EXidDel(win);
+	_EXidDel(win);
 	return;
      }
 
@@ -599,7 +599,7 @@ EDestroyWindow(Win win)
      {
 	next = win->next;
 	if (win->do_del < 0)
-	   EXidDel(win);
+	   _EXidDel(win);
      }
 }
 
@@ -674,7 +674,7 @@ ECreateWinFromXwin(Window xwin)
    if (!XGetGeometry(disp, xwin, &rr, &x, &y, &w, &h, &bw, &depth))
       return NULL;
 
-   win = EXidCreate();
+   win = _EXidCreate();
    if (!win)
       return NULL;
 
@@ -696,7 +696,7 @@ ECreateWinFromXwin(Window xwin)
 void
 EDestroyWin(Win win)
 {
-   EXidDestroy(win);
+   _EXidDestroy(win);
 }
 
 Win
@@ -719,8 +719,8 @@ ERegisterWindow(Window xwin, XWindowAttributes * pxwa)
 #if 0
    Eprintf("%s %#lx %d+%d %dx%d\n", __func__, win, x, y, w, h);
 #endif
-   win = EXidSet(xwin, None, pxwa->x, pxwa->y, pxwa->width, pxwa->height,
-		 pxwa->depth, pxwa->visual, pxwa->colormap);
+   win = _EXidSet(xwin, None, pxwa->x, pxwa->y, pxwa->width, pxwa->height,
+		  pxwa->depth, pxwa->visual, pxwa->colormap);
    win->mapped = pxwa->map_state != IsUnmapped;
    win->attached = 1;
 
@@ -738,7 +738,7 @@ EUnregisterXwin(Window xwin)
       return;
 
    /* FIXME - We shouldn't go here */
-   EXidDel(win);
+   _EXidDel(win);
 #if 1				/* Debug - Fix code if we get here */
    Eprintf("*** FIXME - %s %#lx\n", __func__, xwin);
 #endif
@@ -758,7 +758,7 @@ EUnregisterWindow(Win win)
 	return;
      }
 
-   EXidDel(win);
+   _EXidDel(win);
 }
 
 void
@@ -1222,7 +1222,7 @@ EInternAtom(const char *name)
 
 #if DEBUG_SHAPE_OPS || DEBUG_SHAPE_PROPAGATE
 static void
-EShapeShow(const char *txt, Window xwin, XRectangle * pr, int nr)
+_EShapeShow(const char *txt, Window xwin, XRectangle * pr, int nr)
 {
    int                 i;
 
@@ -1276,13 +1276,13 @@ EShapeUpdate(Win win)
 	win->num_rect = -1;
      }
 #if DEBUG_SHAPE_OPS
-   EShapeShow(__func__, win->xwin, win->rects, win->num_rect);
+   _EShapeShow(__func__, win->xwin, win->rects, win->num_rect);
 #endif
    return win->num_rect != 0;
 }
 
 static void
-EShapeCombineMask(Win win, int dest, int x, int y, Pixmap pmap, int op)
+_EShapeCombineMask(Win win, int dest, int x, int y, Pixmap pmap, int op)
 {
    char                wasshaped = 0;
 
@@ -1311,8 +1311,8 @@ EShapeCombineMask(Win win, int dest, int x, int y, Pixmap pmap, int op)
 }
 
 static void
-EShapeCombineMaskTiled(Win win, int dest, int x, int y,
-		       Pixmap pmap, int op, int w, int h)
+_EShapeCombineMaskTiled(Win win, int dest, int x, int y,
+			Pixmap pmap, int op, int w, int h)
 {
    XGCValues           gcv;
    GC                  gc;
@@ -1327,13 +1327,13 @@ EShapeCombineMaskTiled(Win win, int dest, int x, int y,
 		   GCTileStipXOrigin | GCTileStipYOrigin, &gcv);
    XFillRectangle(disp, tm, gc, 0, 0, w, h);
    EXFreeGC(gc);
-   EShapeCombineMask(win, dest, x, y, tm, op);
+   _EShapeCombineMask(win, dest, x, y, tm, op);
    EFreePixmap(tm);
 }
 
 static void
-EShapeCombineRectangles(Win win, int dest, int x, int y,
-			XRectangle * rect, int n_rects, int op, int ordering)
+_EShapeCombineRectangles(Win win, int dest, int x, int y,
+			 XRectangle * rect, int n_rects, int op, int ordering)
 {
    if (!win)
       return;
@@ -1370,8 +1370,8 @@ EShapeCombineRectangles(Win win, int dest, int x, int y,
 }
 
 static void
-EShapeCombineShape(Win win, int dest, int x, int y,
-		   Win src_win, int src_kind, int op)
+_EShapeCombineShape(Win win, int dest, int x, int y,
+		    Win src_win, int src_kind, int op)
 {
    XShapeCombineShape(disp, win->xwin, dest, x, y, src_win->xwin, src_kind, op);
    EShapeUpdate(win);
@@ -1461,28 +1461,28 @@ EShapePropagate(Win win)
      }
 
 #if DEBUG_SHAPE_PROPAGATE
-   EShapeShow(__func__, win->xwin, rects, num_rects);
+   _EShapeShow(__func__, win->xwin, rects, num_rects);
 #endif
 
    /* set the rects as the shape mask */
    if (rects)
      {
-	EShapeCombineRectangles(win, ShapeBounding, 0, 0, rects,
-				num_rects, ShapeSet, Unsorted);
+	_EShapeCombineRectangles(win, ShapeBounding, 0, 0, rects,
+				 num_rects, ShapeSet, Unsorted);
 	Efree(rects);
      }
    else
      {
 	/* Empty shape */
-	EShapeCombineRectangles(win, ShapeBounding, 0, 0, NULL, 0, ShapeSet,
-				Unsorted);
+	_EShapeCombineRectangles(win, ShapeBounding, 0, 0, NULL, 0, ShapeSet,
+				 Unsorted);
      }
 
    return win->num_rect;
 
  bail_out:
    Efree(rects);
-   EShapeCombineMask(win, ShapeBounding, 0, 0, None, ShapeSet);
+   _EShapeCombineMask(win, ShapeBounding, 0, 0, None, ShapeSet);
    return 0;
 }
 
@@ -1498,40 +1498,40 @@ EShapeCheck(Win win)
 void
 EShapeSetMask(Win win, int x, int y, Pixmap mask)
 {
-   EShapeCombineMask(win, ShapeBounding, x, y, mask, ShapeSet);
+   _EShapeCombineMask(win, ShapeBounding, x, y, mask, ShapeSet);
 }
 
 void
 EShapeUnionMask(Win win, int x, int y, Pixmap mask)
 {
-   EShapeCombineMask(win, ShapeBounding, x, y, mask, ShapeUnion);
+   _EShapeCombineMask(win, ShapeBounding, x, y, mask, ShapeUnion);
 }
 
 void
 EShapeSetMaskTiled(Win win, int x, int y, Pixmap mask, int w, int h)
 {
-   EShapeCombineMaskTiled(win, ShapeBounding, x, y, mask, ShapeSet, w, h);
+   _EShapeCombineMaskTiled(win, ShapeBounding, x, y, mask, ShapeSet, w, h);
 }
 
 void
 EShapeSetRects(Win win, int x, int y, XRectangle * rect, int n_rects)
 {
-   EShapeCombineRectangles(win, ShapeBounding, x, y, rect, n_rects,
-			   ShapeSet, Unsorted);
+   _EShapeCombineRectangles(win, ShapeBounding, x, y, rect, n_rects,
+			    ShapeSet, Unsorted);
 }
 
 void
 EShapeUnionRects(Win win, int x, int y, XRectangle * rect, int n_rects)
 {
-   EShapeCombineRectangles(win, ShapeBounding, x, y, rect, n_rects,
-			   ShapeUnion, Unsorted);
+   _EShapeCombineRectangles(win, ShapeBounding, x, y, rect, n_rects,
+			    ShapeUnion, Unsorted);
 }
 
 int
 EShapeSetShape(Win win, int x, int y, Win src_win)
 {
-   EShapeCombineShape(win, ShapeBounding, x, y,
-		      src_win, ShapeBounding, ShapeSet);
+   _EShapeCombineShape(win, ShapeBounding, x, y,
+		       src_win, ShapeBounding, ShapeSet);
    return win->num_rect != 0;
 }
 
@@ -1764,7 +1764,7 @@ static EXErrorHandler *EXErrorFunc = NULL;
 static EXIOErrorHandler *EXIOErrorFunc = NULL;
 
 static int
-HandleXError(Display * dpy __UNUSED__, XErrorEvent * ev)
+_HandleXError(Display * dpy __UNUSED__, XErrorEvent * ev)
 {
    if (EDebug(1) && EXErrorFunc)
       EXErrorFunc(ev);
@@ -1775,7 +1775,7 @@ HandleXError(Display * dpy __UNUSED__, XErrorEvent * ev)
 }
 
 static int
-HandleXIOError(Display * dpy __UNUSED__)
+_HandleXIOError(Display * dpy __UNUSED__)
 {
    disp = NULL;
 
@@ -1790,11 +1790,11 @@ EDisplaySetErrorHandlers(EXErrorHandler * error, EXIOErrorHandler * fatal)
 {
    /* set up an error handler for then E would normally have fatal X errors */
    EXErrorFunc = error;
-   XSetErrorHandler(HandleXError);
+   XSetErrorHandler(_HandleXError);
 
    /* set up a handler for when the X Connection goes down */
    EXIOErrorFunc = fatal;
-   XSetIOErrorHandler(HandleXIOError);
+   XSetIOErrorHandler(_HandleXIOError);
 }
 
 /*
