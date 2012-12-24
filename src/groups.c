@@ -222,9 +222,12 @@ EwinGetGroups(const EWin * ewin, int *num)
 static Group      **
 ListWinGroups(const EWin * ewin, char group_select, int *num)
 {
-   Group             **groups = NULL;
-   Group             **groups2 = NULL;
-   int                 i, j, killed = 0;
+   Group             **groups;
+   Group             **groups2;
+   int                 i, j, n, killed;
+
+   groups = NULL;
+   *num = 0;
 
    switch (group_select)
      {
@@ -239,8 +242,8 @@ ListWinGroups(const EWin * ewin, char group_select, int *num)
 	groups2 = GroupsGetList(num);
 	if (!groups2)
 	   break;
-
-	for (i = 0; i < (*num); i++)
+	n = *num;
+	for (i = killed = 0; i < n; i++)
 	  {
 	     for (j = 0; j < ewin->num_groups; j++)
 	       {
@@ -251,14 +254,16 @@ ListWinGroups(const EWin * ewin, char group_select, int *num)
 		    }
 	       }
 	  }
-	groups = EMALLOC(Group *, *num - killed);
-	if (groups)
+	if (n - killed > 0)
 	  {
-	     j = 0;
-	     for (i = 0; i < (*num); i++)
-		if (groups2[i])
-		   groups[j++] = groups2[i];
-	     (*num) -= killed;
+	     groups = EMALLOC(Group *, n - killed);
+	     if (groups)
+	       {
+		  for (i = j = 0; i < n; i++)
+		     if (groups2[i])
+			groups[j++] = groups2[i];
+		  *num = n - killed;
+	       }
 	  }
 	Efree(groups2);
 	break;
@@ -673,6 +678,8 @@ _DlgFillGroupChoose(Dialog * d, DItem * table, void *data)
 
    num_groups = tmp_group_num;
    group_member_strings = GetWinGroupMemberNames(tmp_groups, num_groups);
+   if (!group_member_strings)
+      return;			/* Silence clang - It should not be possible to go here */
 
    radio = di = DialogAddItem(table, DITEM_RADIOBUTTON);
    DialogItemSetColSpan(di, 2);
@@ -710,7 +717,7 @@ static void
 ChooseGroupDialog(EWin * ewin, const char *message, char group_select,
 		  int action)
 {
-   int                 num_groups;
+   int                 num_groups = 0;
 
    if (!ewin)
       return;
@@ -831,6 +838,8 @@ _DlgFillGroups(Dialog * d, DItem * table, void *data)
 
    group_member_strings =
       GetWinGroupMemberNames(ewin->groups, ewin->num_groups);
+   if (!group_member_strings)
+      return;			/* Silence clang - It should not be possible to go here */
 
    radio = di = DialogAddItem(table, DITEM_RADIOBUTTON);
    DialogItemSetColSpan(di, 2);

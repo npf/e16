@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2010 Kim Woelders
+ * Copyright (C) 2004-2012 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -78,11 +78,11 @@ ThemePathName(const char *path)
       return Estrdup(p + 1);	/* Regular path */
 
    /* <path>/<themename>/e16 */
-   s = strdup(path);
+   s = Estrdup(path);
    s[p - path] = '\0';
    p = strrchr(s, '/');
    if (!p)
-      return Estrdup(path);	/* Should not happen */
+      return s;			/* Should not happen */
    p++;
    memmove(s, p, strlen(p) + 1);
    return s;

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2011 Kim Woelders
+ * Copyright (C) 2004-2012 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -134,6 +134,9 @@ ActionAddTo(Action * aa, const char *params)
 {
    ActionType         *pptr, *ptr, *at;
 
+   if (!aa)
+      return;
+
    at = EMALLOC(ActionType, 1);
    if (!at)
       return;
@@ -161,6 +164,8 @@ ActionAddTo(Action * aa, const char *params)
 void
 ActionclassAddAction(ActionClass * ac, Action * aa)
 {
+   if (!ac || !aa)
+      return;
    ac->num++;
    ac->list = EREALLOC(Action *, ac->list, ac->num);
    ac->list[ac->num - 1] = aa;
@@ -658,6 +663,7 @@ ActionEncode(Action * aa, char *buf, int len)
 			(aa->action->params) ? aa->action->params : "");
 	break;
 
+#if 0				/* Not implemented */
      case EVENT_FOCUS_IN:
 	event = "FocusIn";
 	goto encode_fc;
@@ -666,6 +672,7 @@ ActionEncode(Action * aa, char *buf, int len)
 	goto encode_fc;
       encode_fc:
 	break;
+#endif
      }
 
    return len;
@@ -736,9 +743,6 @@ AclassConfigLineParse(char *s, ActionClass ** pac, Action ** paa)
 	   return;
 
 	aa = ActionDecode(s);
-	if (!aa)
-	   return;
-
 	ActionclassAddAction(ac, aa);
 	GrabActionKey(aa);
      }
@@ -1324,7 +1328,7 @@ GrabActionKey(Action * aa)
 {
    int                 mod;
 
-   if (!aa->key)
+   if (!aa || !aa->key)
       return;
 
    mod = (aa->anymodifier) ? AnyModifier : aa->modifiers;

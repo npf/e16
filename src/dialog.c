@@ -1034,15 +1034,11 @@ DialogRealizeItem(Dialog * d, DItem * di)
 		int                 i, r, c, x, y;
 		int                *col_size, *row_size;
 
-		col_size = EMALLOC(int, cols);
-		row_size = EMALLOC(int, rows);
+		col_size = ECALLOC(int, cols);
+		row_size = ECALLOC(int, rows);
 
 		if (!col_size || !row_size)
 		   goto bail_out;
-
-		row_size[0] = 0;
-		for (i = 0; i < cols; i++)
-		   col_size[i] = 0;
 
 		r = c = 0;
 		for (i = 0; i < di->item.table.num_items; i++)

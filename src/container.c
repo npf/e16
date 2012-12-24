@@ -1756,9 +1756,8 @@ _ContainersConfigLoad(FILE * fs)
    char                s[FILEPATH_LEN_MAX];
    char                s2[FILEPATH_LEN_MAX];
    int                 i1, i2;
-   Container          *ct, ct_dummy;
+   Container          *ct = NULL;
 
-   ct = &ct_dummy;
    while (fgets(s, sizeof(s), fs))
      {
 	i1 = ConfigParseline1(s, s2, NULL, NULL);
@@ -1769,18 +1768,25 @@ _ContainersConfigLoad(FILE * fs)
 	     err = -1;
 	     if (i2 != CONFIG_OPEN)
 		goto done;
-	     break;
+	     continue;
 	  case CONFIG_CLOSE:
-	     ct = &ct_dummy;
+	     ct = NULL;
 	     err = 0;
-	     break;
-
+	     continue;
 	  case CONFIG_CLASSNAME:	/* __NAME %s */
 	     ct = ContainerFind(s2);
 	     if (ct)
 		EwinHide(ct->ewin);
 	     ct = ContainerCreate(s2);
-	     break;
+	     continue;
+	  }
+
+	/* ct needed */
+	if (!ct)
+	   break;
+
+	switch (i1)
+	  {
 	  case TEXT_ORIENTATION:	/* __ORIENTATION [ __HORIZONTAL | __VERTICAL ] */
 	     ct->orientation = i2;
 	     break;

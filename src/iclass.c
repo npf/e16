@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2010 Kim Woelders
+ * Copyright (C) 2004-2012 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -176,6 +176,8 @@ ImagestateColorsSetGray(ImageState * is,
 			unsigned int hihi, unsigned int hi,
 			unsigned int bg, unsigned int lo, unsigned int lolo)
 {
+   if (!is)
+      return;
    COLOR32_FROM_RGB(is->hihi, hihi, hihi, hihi);
    COLOR32_FROM_RGB(is->hi, hi, hi, hi);
    COLOR32_FROM_RGB(is->bg, bg, bg, bg);
@@ -196,6 +198,24 @@ ImagestateCreate(const char *file)
    ImagestateColorsSetGray(is, 255, 200, 160, 120, 64);
    is->bevelstyle = BEVEL_NONE;
    is->im_file = Estrdup(file);
+
+   return is;
+}
+
+static ImageState  *
+ImagestateCreateX(unsigned int hihi, unsigned int hi,
+		  unsigned int lo, unsigned int lolo,
+		  unsigned int bg_r, unsigned int bg_g, unsigned int bg_b)
+{
+   ImageState         *is;
+
+   is = ImagestateCreate(NULL);
+   if (!is)
+      return NULL;
+
+   ImagestateColorsSetGray(is, hihi, hi, 0, lo, lolo);
+   COLOR32_FROM_RGB(is->bg, bg_r, bg_g, bg_b);
+   is->bevelstyle = BEVEL_AMIGA;
 
    return is;
 }
@@ -1330,32 +1350,12 @@ ImageclassGetFallback(void)
    if (!ic)
       return ic;
 
-   ic->norm.normal = ImagestateCreate(NULL);
-   ImagestateColorsSetGray(ic->norm.normal, 255, 255, 160, 0, 0);
-   ic->norm.normal->bevelstyle = BEVEL_AMIGA;
-
-   ic->norm.hilited = ImagestateCreate(NULL);
-   ImagestateColorsSetGray(ic->norm.hilited, 255, 255, 192, 0, 0);
-   ic->norm.hilited->bevelstyle = BEVEL_AMIGA;
-
-   ic->norm.clicked = ImagestateCreate(NULL);
-   ImagestateColorsSetGray(ic->norm.clicked, 0, 0, 192, 255, 255);
-   ic->norm.clicked->bevelstyle = BEVEL_AMIGA;
-
-   ic->active.normal = ImagestateCreate(NULL);
-   ImagestateColorsSetGray(ic->active.normal, 255, 255, 0, 0, 0);
-   COLOR32_FROM_RGB(ic->active.normal->bg, 180, 140, 160);
-   ic->active.normal->bevelstyle = BEVEL_AMIGA;
-
-   ic->active.hilited = ImagestateCreate(NULL);
-   ImagestateColorsSetGray(ic->active.hilited, 255, 255, 0, 0, 0);
-   COLOR32_FROM_RGB(ic->active.hilited->bg, 230, 190, 210);
-   ic->active.hilited->bevelstyle = BEVEL_AMIGA;
-
-   ic->active.clicked = ImagestateCreate(NULL);
-   ImagestateColorsSetGray(ic->active.clicked, 0, 0, 0, 255, 255);
-   COLOR32_FROM_RGB(ic->active.clicked->bg, 230, 190, 210);
-   ic->active.clicked->bevelstyle = BEVEL_AMIGA;
+   ic->norm.normal = ImagestateCreateX(255, 255, 0, 0, 160, 160, 160);
+   ic->norm.hilited = ImagestateCreateX(255, 255, 0, 0, 192, 192, 192);
+   ic->norm.clicked = ImagestateCreateX(0, 0, 255, 255, 192, 192, 192);
+   ic->active.normal = ImagestateCreateX(255, 255, 0, 0, 180, 140, 160);
+   ic->active.hilited = ImagestateCreateX(255, 255, 0, 0, 230, 190, 210);
+   ic->active.clicked = ImagestateCreateX(0, 0, 255, 255, 230, 190, 210);
 
    ic->padding.left = 4;
    ic->padding.right = 4;

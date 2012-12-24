@@ -49,6 +49,7 @@ _user_init(void)
 	ss = getenv("TMPDIR");
 	if (ss)
 	   usr_home = ss;
+	return;
      }
 
    ss = Estrdup(pwd->pw_name);

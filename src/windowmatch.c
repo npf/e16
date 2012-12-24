@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2005-2009 Kim Woelders
+ * Copyright (C) 2005-2012 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -281,7 +281,7 @@ WindowMatchConfigLoad(FILE * fs)
    return err;
 }
 
-static WindowMatch *
+static void
 WindowMatchDecode(const char *line)
 {
    char                match[32], value[1024], op[32];
@@ -292,10 +292,10 @@ WindowMatchDecode(const char *line)
    match[0] = value[0] = op[0] = '\0';
    num = sscanf(line, "%32s %1024s %32s %n", match, value, op, &w1);
    if (num < 3)
-      return NULL;
+      return;
    args = line + w1;
    if (*args == '\0')
-      return NULL;
+      return;
 
    err = 0;
 
@@ -309,7 +309,7 @@ WindowMatchDecode(const char *line)
 
    wm = WindowMatchCreate(NULL);
    if (!wm)
-      return NULL;
+      return;
 
    wm->match = num;
 
@@ -408,7 +408,6 @@ WindowMatchDecode(const char *line)
      {
 	ecore_list_append(wm_list, ecore_list_node_remove(wm_list, wm));
      }
-   return wm;
 }
 
 static char        *

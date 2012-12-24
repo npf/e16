@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2011 Kim Woelders
+ * Copyright (C) 2004-2012 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -169,7 +169,7 @@ WarpFocusWinShow(WarpFocusWin * fw)
 		Esnprintf(ss, sizeof(ss), "[%d] ", EoGetDeskNum(ewin));
 	  }
 	Esnprintf(s, sizeof(s), fmt, ss, EwinGetTitle(ewin));
-	wi->txt = strdup(s);
+	wi->txt = Estrdup(s);
 	TextSize(fw->tc, 0, 0, 0, wi->txt, &ww, &hh, 17);
 	if (ww > w)
 	   w = ww;
@@ -369,7 +369,7 @@ WarpFocus(int delta)
 	warpFocusIndex = 0;
      }
 
-   if (!warplist)
+   if (!warplist || warplist_num <= 0)
       return;
 
    warpFocusIndex = (warpFocusIndex + warplist_num + delta) % warplist_num;

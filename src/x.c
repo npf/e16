@@ -1373,9 +1373,6 @@ static void
 EShapeCombineShape(Win win, int dest, int x, int y,
 		   Win src_win, int src_kind, int op)
 {
-   if (!win)
-      return;
-
    XShapeCombineShape(disp, win->xwin, dest, x, y, src_win->xwin, src_kind, op);
    EShapeUpdate(win);
 }
