@@ -84,7 +84,7 @@ static void
 EXidDestroy(Win win)
 {
 #if DEBUG_XWIN
-   Eprintf("EXidDestroy: %p %#lx\n", win, win->xwin);
+   Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
 #endif
    if (win->rects)
       XFree(win->rects);
@@ -96,7 +96,7 @@ static void
 EXidAdd(Win win)
 {
 #if DEBUG_XWIN
-   Eprintf("EXidAdd: %p %#lx\n", win, win->xwin);
+   Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
 #endif
    if (!xid_context)
       xid_context = XUniqueContext();
@@ -119,7 +119,7 @@ static void
 EXidDel(Win win)
 {
 #if DEBUG_XWIN
-   Eprintf("EXidDel: %p %#lx\n", win, win->xwin);
+   Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
 #endif
    if (win == win_first)
      {
@@ -188,7 +188,7 @@ EXidSet(Window xwin, Win parent, int x, int y, int w, int h, int depth,
    win->cmap = cmap;
    win->argb = depth == 32;
 #if DEBUG_XWIN
-   Eprintf("EXidSet: %#lx\n", win->xwin);
+   Eprintf("%s: %#lx\n", __func__, win->xwin);
 #endif
    EXidAdd(win);
 
@@ -203,7 +203,7 @@ EventCallbackRegister(Win win, EventCallbackFunc * func, void *prm)
    if (!win)
       return;
 #if 0
-   Eprintf("EventCallbackRegister: %p %#lx: func=%p prm=%p\n", win, win->xwin,
+   Eprintf("%s: %p %#lx: func=%p prm=%p\n", __func__, win, win->xwin,
 	   func, prm);
 #endif
 
@@ -224,7 +224,7 @@ EventCallbackUnregister(Win win, EventCallbackFunc * func, void *prm)
    if (!win)
       return;
 #if 0
-   Eprintf("EventCallbackUnregister: %p %#lx: func=%p prm=%p\n", win, win->xwin,
+   Eprintf("%s: %p %#lx: func=%p prm=%p\n", __func__, win, win->xwin,
 	   func, prm);
 #endif
 
@@ -266,7 +266,7 @@ EventCallbacksProcess(Win win, XEvent * ev)
    for (i = 0; i < ecl->num; i++, eci++)
      {
 	if (EDebug(EDBUG_TYPE_DISPATCH))
-	   Eprintf("EventDispatch: type=%d win=%#lx func=%p prm=%p\n",
+	   Eprintf("%s: type=%d win=%#lx func=%p prm=%p\n", __func__,
 		   ev->type, ev->xany.window, eci->func, eci->prm);
 	eci->func(win, ev, eci->prm);
 	if (win->do_del)
@@ -495,7 +495,7 @@ EMoveWindow(Win win, int x, int y)
       return;
 
 #if 0
-   Eprintf("EMoveWindow: %p %#lx: %d,%d %dx%d -> %d,%d\n",
+   Eprintf("%s: %p %#lx: %d,%d %dx%d -> %d,%d\n", __func__,
 	   win, win->xwin, win->x, win->y, win->w, win->h, x, y);
 #endif
    if ((x == win->x) && (y == win->y))
@@ -530,7 +530,7 @@ EMoveResizeWindow(Win win, int x, int y, int w, int h)
       return;
 
 #if 0
-   Eprintf("EMoveResizeWindow: %p %#lx: %d,%d %dx%d -> %d,%d %dx%d\n",
+   Eprintf("%s: %p %#lx: %d,%d %dx%d -> %d,%d %dx%d\n", __func__,
 	   win, win->xwin, win->x, win->y, win->w, win->h, x, y, w, h);
 #endif
    if ((w == win->w) && (h == win->h) && (x == win->x) && (y == win->y))
@@ -577,7 +577,7 @@ EDestroyWindow(Win win)
       return;
 
 #if DEBUG_XWIN
-   Eprintf("EDestroyWindow: %p %#lx\n", win, win->xwin);
+   Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
 #endif
    if (win->parent != None)
      {
@@ -615,7 +615,7 @@ EWindowSync(Win win)
 
    XGetGeometry(disp, win->xwin, &rr, &x, &y, &w, &h, &bw, &depth);
 #if 0
-   Eprintf("EWindowSync: %p %#lx: %d,%d %dx%d -> %d,%d %dx%d\n",
+   Eprintf("%s: %p %#lx: %d,%d %dx%d -> %d,%d %dx%d\n", __func__,
 	   win, win->xwin, win->x, win->y, win->w, win->h, x, y, w, h);
 #endif
    win->x = x;
@@ -687,7 +687,7 @@ ECreateWinFromXwin(Window xwin)
    win->visual = WinGetVisual(VROOT);
    win->cmap = WinGetCmap(VROOT);
 #if DEBUG_XWIN
-   Eprintf("EXidWFX: %p %#lx\n", win, win->xwin);
+   Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
 #endif
 
    return win;
@@ -717,7 +717,7 @@ ERegisterWindow(Window xwin, XWindowAttributes * pxwa)
      }
 
 #if 0
-   Eprintf("ERegisterWindow %#lx %d+%d %dx%d\n", win, x, y, w, h);
+   Eprintf("%s %#lx %d+%d %dx%d\n", __func__, win, x, y, w, h);
 #endif
    win = EXidSet(xwin, None, pxwa->x, pxwa->y, pxwa->width, pxwa->height,
 		 pxwa->depth, pxwa->visual, pxwa->colormap);
@@ -740,7 +740,7 @@ EUnregisterXwin(Window xwin)
    /* FIXME - We shouldn't go here */
    EXidDel(win);
 #if 1				/* Debug - Fix code if we get here */
-   Eprintf("*** FIXME - EUnregisterXwin %#lx\n", xwin);
+   Eprintf("*** FIXME - %s %#lx\n", __func__, xwin);
 #endif
 }
 
@@ -753,8 +753,8 @@ EUnregisterWindow(Win win)
    if (win->cbl.lst)
      {
 	if (EDebug(1))
-	   Eprintf("EUnregisterWindow(%#lx) Ignored (%d callbacks remain)\n",
-		   win->xwin, win->cbl.num);
+	   Eprintf("%s(%#lx) Ignored (%d callbacks remain)\n",
+		   __func__, win->xwin, win->cbl.num);
 	return;
      }
 
@@ -795,7 +795,7 @@ EReparentWindow(Win win, Win parent, int x, int y)
 
 #if 0
    Eprintf
-      ("EReparentWindow: %p %#lx: %d %#lx->%#lx %d,%d %dx%d -> %d,%d\n",
+      ("%s: %p %#lx: %d %#lx->%#lx %d,%d %dx%d -> %d,%d\n", __func__,
        win, win->xwin, win->mapped, (win->parent) ? win->parent->xwin : None,
        parent->xwin, win->x, win->y, win->w, win->h, x, y);
 #endif
@@ -869,7 +869,7 @@ EXGetGeometry(Drawable draw, Window * root_return, int *x, int *y,
  done:
 #if 0				/* Debug */
    if (!ok)
-      Eprintf("EGetGeometry win=%#x, error %d\n", (unsigned)win, ok);
+      Eprintf("%s win=%#x, error %d\n", __func__, (unsigned)win, ok);
 #endif
    return ok;
 }
@@ -1262,7 +1262,7 @@ EShapeUpdate(Win win)
 	  }
 	else if (win->num_rect > 4096)
 	  {
-	     Eprintf("*** EShapeUpdate: nrect=%d - Not likely, ignoring.\n",
+	     Eprintf("*** %s: nrect=%d - Not likely, ignoring.\n", __func__,
 		     win->num_rect);
 	     XShapeCombineMask(disp, win->xwin, ShapeBounding, 0, 0, None,
 			       ShapeSet);
@@ -1276,7 +1276,7 @@ EShapeUpdate(Win win)
 	win->num_rect = -1;
      }
 #if DEBUG_SHAPE_OPS
-   EShapeShow("EShapeUpdate", win->xwin, win->rects, win->num_rect);
+   EShapeShow(__func__, win->xwin, win->rects, win->num_rect);
 #endif
    return win->num_rect != 0;
 }
@@ -1298,7 +1298,7 @@ EShapeCombineMask(Win win, int dest, int x, int y, Pixmap pmap, int op)
 	wasshaped = 1;
      }
 #if DEBUG_SHAPE_OPS
-   Eprintf("EShapeCombineMask %#lx %d,%d %dx%d mask=%#lx wassh=%d\n",
+   Eprintf("%s %#lx %d,%d %dx%d mask=%#lx wassh=%d\n", __func__,
 	   win->xwin, win->x, win->y, win->w, win->h, pmap, wasshaped);
 #endif
    if (pmap)
@@ -1338,7 +1338,7 @@ EShapeCombineRectangles(Win win, int dest, int x, int y,
    if (!win)
       return;
 #if DEBUG_SHAPE_OPS
-   Eprintf("EShapeCombineRectangles %#lx %d\n", win->xwin, n_rects);
+   Eprintf("%s %#lx %d\n", __func__, win->xwin, n_rects);
 #endif
 
    if (n_rects == 1 && op == ShapeSet)
@@ -1390,7 +1390,7 @@ EShapePropagate(Win win)
       return 0;
 
 #if DEBUG_SHAPE_PROPAGATE
-   Eprintf("EShapePropagate %#lx %d,%d %dx%d\n", win->xwin,
+   Eprintf("%s %#lx %d,%d %dx%d\n", __func__, win->xwin,
 	   win->x, win->y, win->w, win->h);
 #endif
 
@@ -1461,7 +1461,7 @@ EShapePropagate(Win win)
      }
 
 #if DEBUG_SHAPE_PROPAGATE
-   EShapeShow("EShapePropagate", win->xwin, rects, num_rects);
+   EShapeShow(__func__, win->xwin, rects, num_rects);
 #endif
 
    /* set the rects as the shape mask */
@@ -1807,7 +1807,7 @@ EGrabServer(void)
    if (Dpy.server_grabbed <= 0)
      {
 	if (EDebug(EDBUG_TYPE_GRABS))
-	   Eprintf("EGrabServer\n");
+	   Eprintf("%s\n", __func__);
 	XGrabServer(disp);
      }
    Dpy.server_grabbed++;
@@ -1821,7 +1821,7 @@ EUngrabServer(void)
 	XUngrabServer(disp);
 	XFlush(disp);
 	if (EDebug(EDBUG_TYPE_GRABS))
-	   Eprintf("EUngrabServer\n");
+	   Eprintf("%s\n", __func__);
      }
    Dpy.server_grabbed--;
    if (Dpy.server_grabbed < 0)
