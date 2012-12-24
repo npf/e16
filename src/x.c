@@ -1032,7 +1032,7 @@ ESelectInput(Win win, unsigned int event_mask)
 
    win->event_mask = event_mask;
 
-   if (Mode.server.extensions & XEXT_XI)
+   if (XEXT_AVAILABLE(XEXT_XI))
      {
 	XIEventMask         em;
 	unsigned char       mask[(XI_LASTEVENT + 8) / 8];
