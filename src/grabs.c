@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2008 Kim Woelders
+ * Copyright (C) 2004-2012 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -26,19 +26,32 @@
 #include "grabs.h"
 #include "xwin.h"
 
-int
-GrabKeyboardSet(Win win)
+static int
+_GrabKeyboard(Win win, int sync_kbd)
 {
    int                 rc;
 
-   rc =
-      XGrabKeyboard(disp, WinGetXwin(win), False, GrabModeAsync, GrabModeAsync,
-		    CurrentTime);
+   rc = XGrabKeyboard(disp, WinGetXwin(win), False,
+		      GrabModeAsync, sync_kbd ? GrabModeSync : GrabModeAsync,
+		      CurrentTime);
 
 #if 0
-   Eprintf("GrabKeyboardSet %#lx %d\n", WinGetXwin(win), rc);
+   Eprintf("%s: %#lx sync=%d rc=%d\n", __func__, WinGetXwin(win), sync_kbd, rc);
 #endif
+
    return rc;
+}
+
+int
+GrabKeyboardSet(Win win)
+{
+   return _GrabKeyboard(win, 0);
+}
+
+int
+GrabKeyboardFreeze(Win win)
+{
+   return _GrabKeyboard(win, 1);
 }
 
 int
@@ -49,7 +62,7 @@ GrabKeyboardRelease(void)
    rc = XUngrabKeyboard(disp, CurrentTime);
 
 #if 0
-   Eprintf("GrabKeyboardRelease %d\n", rc);
+   Eprintf("%s: %d\n", __func__, rc);
 #endif
    return rc;
 }
@@ -57,23 +70,23 @@ GrabKeyboardRelease(void)
 int
 GrabPointerSet(Win win, unsigned int csr, int confine)
 {
-   int                 ret;
+   int                 rc;
    Window              confine_to = (confine) ? WinGetXwin(VROOT) : None;
 
-   ret = XGrabPointer(disp, WinGetXwin(win), False,
-		      ButtonPressMask | ButtonReleaseMask | PointerMotionMask |
-		      ButtonMotionMask | EnterWindowMask | LeaveWindowMask,
-		      GrabModeAsync, GrabModeAsync, confine_to, ECsrGet(csr),
-		      CurrentTime);
+   rc = XGrabPointer(disp, WinGetXwin(win), False,
+		     ButtonPressMask | ButtonReleaseMask | PointerMotionMask |
+		     ButtonMotionMask | EnterWindowMask | LeaveWindowMask,
+		     GrabModeAsync, GrabModeAsync, confine_to, ECsrGet(csr),
+		     CurrentTime);
 
    Mode.grabs.pointer_grab_window = WinGetXwin(win);
    Mode.grabs.pointer_grab_active = 1;
 
    if (EDebug(EDBUG_TYPE_GRABS))
-      Eprintf("GrabPointerSet: %#lx, ret=%d\n", Mode.grabs.pointer_grab_window,
-	      ret);
+      Eprintf("%s: %#lx, rc=%d\n", __func__, Mode.grabs.pointer_grab_window,
+	      rc);
 
-   return ret;
+   return rc;
 }
 
 void
@@ -82,7 +95,7 @@ GrabPointerRelease(void)
    XUngrabPointer(disp, CurrentTime);
 
    if (EDebug(EDBUG_TYPE_GRABS))
-      Eprintf("GrabPointerRelease: %#lx\n", Mode.grabs.pointer_grab_window);
+      Eprintf("%s: %#lx\n", __func__, Mode.grabs.pointer_grab_window);
 
    Mode.grabs.pointer_grab_active = 0;
    Mode.grabs.pointer_grab_window = None;

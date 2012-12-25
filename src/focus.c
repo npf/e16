@@ -521,8 +521,7 @@ void
 FocusNewDeskBegin(void)
 {
    /* Freeze keyboard */
-   XGrabKeyboard(disp, WinGetXwin(VROOT), False, GrabModeAsync,
-		 GrabModeSync, CurrentTime);
+   GrabKeyboardFreeze(VROOT);
 
    focus_pending_new = NULL;
    doFocusToEwin(NULL, FOCUS_DESK_LEAVE);
@@ -536,7 +535,7 @@ FocusNewDesk(void)
    FocusToEWin(NULL, FOCUS_DESK_ENTER);
 
    /* Unfreeze keyboard */
-   XUngrabKeyboard(disp, CurrentTime);
+   GrabKeyboardRelease();
 }
 
 static void
