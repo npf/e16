@@ -1025,14 +1025,16 @@ void
 ESelectInput(Win win, unsigned int event_mask)
 {
 #if USE_XI2
+   unsigned int        evold_mask;
 
-#define EVENTS_TO_XI \
-  (/* KeyPressMask | KeyReleaseMask | */ \
-   ButtonPressMask | ButtonReleaseMask | PointerMotionMask)
+#define EVENTS_TO_XI_KBD (KeyPressMask | KeyReleaseMask)
+#define EVENTS_TO_XI_PTR (ButtonPressMask | ButtonReleaseMask | PointerMotionMask)
+#define EVENTS_TO_XI (EVENTS_TO_XI_PTR)
 
+   evold_mask = win->event_mask;
    win->event_mask = event_mask;
 
-   if (XEXT_AVAILABLE(XEXT_XI))
+   if (((event_mask ^ evold_mask) & EVENTS_TO_XI) && XEXT_AVAILABLE(XEXT_XI))
      {
 	XIEventMask         em;
 	unsigned char       mask[(XI_LASTEVENT + 8) / 8];
@@ -1054,20 +1056,25 @@ ESelectInput(Win win, unsigned int event_mask)
 	if (event_mask & PointerMotionMask)
 	   XISetMask(mask, XI_Motion);
 	XISelectEvents(disp, win->xwin, &em, 1);
-	event_mask &= ~EVENTS_TO_XI;
-     }
-#endif
 
+	event_mask &= ~EVENTS_TO_XI;
+	evold_mask &= ~EVENTS_TO_XI;
+     }
+
+   if (event_mask ^ evold_mask)
+     {
+	XSelectInput(disp, win->xwin, event_mask);
+     }
+#else
    XSelectInput(disp, win->xwin, event_mask);
+#endif
 }
 
 void
 ESelectInputChange(Win win, unsigned int set, unsigned int clear)
 {
 #if USE_XI2
-   win->event_mask |= set;
-   win->event_mask &= ~clear;
-   ESelectInput(win, win->event_mask);
+   ESelectInput(win, (win->event_mask | set) & ~clear);
 #else
    XWindowAttributes   xwa;
 
