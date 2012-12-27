@@ -223,34 +223,37 @@ static void
 ExtInitInput(int available)
 {
    int                 i, j, nd;
-   XDeviceInfo        *dvi, *dvis;
-   char               *p;
+   XIDeviceInfo       *dvi, *dvis;
 
    if (!available)
       return;
 
-   if (!EDebug(EDBUG_TYPE_VERBOSE))
-      return;
-
-   dvis = XListInputDevices(disp, &nd);
-   Eprintf("Dev  id nc use name\n");
+   dvis = XIQueryDevice(disp, XIAllDevices, &nd);
    for (i = 0; i < nd; i++)
      {
 	dvi = dvis + i;
-	Eprintf(" %2d %#3lx  %d  %d %-32s", i,
-		dvi->id, dvi->num_classes, dvi->use, dvi->name);
-	p = (char *)dvi->inputclassinfo;
+
+	if (dvi->use == XIMasterPointer && Mode.events.xi2_ptr == 0)
+	   Mode.events.xi2_ptr = dvi->deviceid;
+	else if (dvi->use == XIMasterKeyboard && Mode.events.xi2_kbd == 0)
+	   Mode.events.xi2_kbd = dvi->deviceid;
+
+	if (!EDebug(EDBUG_TYPE_VERBOSE))
+	   continue;
+
+	if (i == 0)
+	   Eprintf("Dev id use att ena name\n");
+	Eprintf(" %2d %2d %3d %3d %3d %-32s %2d", i,
+		dvi->deviceid, dvi->use, dvi->attachment, dvi->enabled,
+		dvi->name, dvi->num_classes);
 	for (j = 0; j < dvi->num_classes; j++)
 	  {
-	     XAnyClassPtr        pcany = (XAnyClassPtr) p;
-
-	     printf("  %#3lx %3d", pcany->class, pcany->length);
-	     p += pcany->length;
+	     printf(" %2d/%2d", dvi->classes[j]->type,
+		    dvi->classes[j]->sourceid);
 	  }
 	printf("\n");
-
      }
-   XFreeDeviceList(dvis);
+   XIFreeDeviceInfo(dvis);
 }
 #endif
 
@@ -786,43 +789,64 @@ EventsCompress(XEvent * evq, int count)
 }
 
 #if USE_XI2
+typedef union {
+   XIEvent             gen;	/* Generic XI2 */
+   XIDeviceEvent       dev;	/* Device events */
+   XIEnterEvent        elf;	/* Enter/leave, focus in/out */
+} xie_t;
+
 static void
 EventFetchXI2(XEvent * ev)
 {
    XGenericEventCookie gec;
-   XIDeviceEvent      *xie;
+   xie_t              *xie;
 
    if (!XGetEventData(disp, &ev->xcookie))
       return;
 
-   xie = (XIDeviceEvent *) ev->xcookie.data;
+   xie = (xie_t *) ev->xcookie.data;
 
    if (EDebug(EDBUG_TYPE_XI2))
-      Eprintf("%s: %#lx: XI2 ext=%d type=%d devid=%d srcid=%d\n",
-	      "EventsFetch", xie->event, xie->extension,
-	      xie->evtype, xie->deviceid, xie->sourceid);
+      Eprintf("%s: %#lx: type=%d devid=%d srcid=%d\n",
+	      __func__, xie->dev.event, xie->gen.evtype,
+	      xie->dev.deviceid, xie->dev.sourceid);
 
    gec = ev->xcookie;		/* Save copy for XFreeEventData() */
 
-   switch (ev->xcookie.evtype)
+   switch (xie->gen.evtype)
      {
      default:
 	break;
+     case XI_KeyPress:
+     case XI_KeyRelease:
      case XI_ButtonPress:
      case XI_ButtonRelease:
      case XI_Motion:
-	ev->type = ev->xcookie.evtype;
-	ev->xbutton.window = xie->event;
-	ev->xbutton.root = xie->root;
-	ev->xbutton.subwindow = xie->child;
-	ev->xbutton.time = xie->time;
-	ev->xbutton.x = (int)xie->event_x;
-	ev->xbutton.y = (int)xie->event_y;
-	ev->xbutton.x_root = (int)xie->root_x;
-	ev->xbutton.y_root = (int)xie->root_y;
-	ev->xbutton.button = xie->detail;
-	ev->xbutton.state = xie->mods.effective;
-	ev->xbutton.same_screen = 1;	/* FIXME */
+	ev->type = xie->gen.evtype;	/* Same as core */
+#if 0
+	/* Keep those. At least serial seems to be bad in xie. */
+	ev->xany.serial = xie->gen.serial;
+	ev->xany.send_event = xie->gen.send_event;
+	ev->xany.display = xie->gen.display;
+#endif
+	ev->xkey.window = xie->dev.event;
+	ev->xkey.root = xie->dev.root;
+	ev->xkey.subwindow = xie->dev.child;
+	ev->xkey.time = xie->gen.time;
+	ev->xkey.x = (int)xie->dev.event_x;
+	ev->xkey.y = (int)xie->dev.event_y;
+	ev->xkey.x_root = (int)xie->dev.root_x;
+	ev->xkey.y_root = (int)xie->dev.root_y;
+	ev->xkey.state = xie->dev.mods.effective;
+	ev->xkey.keycode = xie->dev.detail;
+#if 0
+	/* These are the only differences between the key/button/motion
+	 * structs. The Xlib struct layout should ensure that things land
+	 * appropriately (xmotion.is_hint is not used) */
+	ev->xbutton.button = xie->dev.detail;
+	ev->xmotion.is_hint = xie->dev.detail;	/* ??? */
+#endif
+	ev->xkey.same_screen = xie->dev.deviceid;	/* FIXME */
 	break;
      }
 

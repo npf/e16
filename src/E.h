@@ -369,6 +369,10 @@ typedef struct {
 #if USE_COMPOSITE
       unsigned int        damage_count;
 #endif
+#if USE_XI2
+      unsigned char       xi2_ptr;
+      unsigned char       xi2_kbd;
+#endif
    } events;
    struct {
       char                pointer_grab_active;

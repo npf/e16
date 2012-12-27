@@ -1021,6 +1021,30 @@ ESetWindowBackground(Win win, unsigned int col)
    XSetWindowBackground(disp, win->xwin, col);
 }
 
+#if USE_XI2
+void
+EXIMaskSetup(EXIEventMask * em, int dev, unsigned int event_mask)
+{
+   em->em.mask_len = sizeof(em->mb);
+   em->em.mask = em->mb;
+   memset(em->mb, 0, sizeof(em->mb));
+
+   em->em.deviceid = dev;
+
+   if (event_mask & KeyPressMask)
+      XISetMask(em->mb, XI_KeyPress);
+   if (event_mask & KeyReleaseMask)
+      XISetMask(em->mb, XI_KeyRelease);
+
+   if (event_mask & ButtonPressMask)
+      XISetMask(em->mb, XI_ButtonPress);
+   if (event_mask & ButtonReleaseMask)
+      XISetMask(em->mb, XI_ButtonRelease);
+   if (event_mask & PointerMotionMask)
+      XISetMask(em->mb, XI_Motion);
+}
+#endif
+
 void
 ESelectInput(Win win, unsigned int event_mask)
 {
@@ -1029,33 +1053,17 @@ ESelectInput(Win win, unsigned int event_mask)
 
 #define EVENTS_TO_XI_KBD (KeyPressMask | KeyReleaseMask)
 #define EVENTS_TO_XI_PTR (ButtonPressMask | ButtonReleaseMask | PointerMotionMask)
-#define EVENTS_TO_XI (EVENTS_TO_XI_PTR)
+#define EVENTS_TO_XI (EVENTS_TO_XI_KBD | EVENTS_TO_XI_PTR)
 
    evold_mask = win->event_mask;
    win->event_mask = event_mask;
 
    if (((event_mask ^ evold_mask) & EVENTS_TO_XI) && XEXT_AVAILABLE(XEXT_XI))
      {
-	XIEventMask         em;
-	unsigned char       mask[(XI_LASTEVENT + 8) / 8];
+	EXIEventMask        em;
 
-	em.deviceid = XIAllMasterDevices;	/* XIAllDevices; */
-	em.mask_len = sizeof(mask);
-	em.mask = mask;
-	memset(mask, 0, sizeof(mask));
-#if 0
-	if (event_mask & KeyPressMask)
-	   XISetMask(mask, XI_KeyPress);
-	if (event_mask & KeyReleaseMask)
-	   XISetMask(mask, XI_KeyRelease);
-#endif
-	if (event_mask & ButtonPressMask)
-	   XISetMask(mask, XI_ButtonPress);
-	if (event_mask & ButtonReleaseMask)
-	   XISetMask(mask, XI_ButtonRelease);
-	if (event_mask & PointerMotionMask)
-	   XISetMask(mask, XI_Motion);
-	XISelectEvents(disp, win->xwin, &em, 1);
+	EXIMaskSetup(&em, XIAllMasterDevices, event_mask & EVENTS_TO_XI);
+	XISelectEvents(disp, win->xwin, &em.em, 1);
 
 	event_mask &= ~EVENTS_TO_XI;
 	evold_mask &= ~EVENTS_TO_XI;

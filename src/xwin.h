@@ -343,4 +343,16 @@ Pixmap              EWindowGetPixmap(const Win win);
 
 #endif /* USE_COMPOSITE */
 
+#if USE_XI2
+#include "X11/extensions/XInput2.h"
+
+typedef struct {
+   XIEventMask         em;
+   unsigned char       mb[(XI_LASTEVENT + 8) / 8];	/* Mask bits */
+} EXIEventMask;
+
+void                EXIMaskSetup(EXIEventMask * em, int dev,
+				 unsigned int event_mask);
+#endif
+
 #endif /* _XWIN_H_ */

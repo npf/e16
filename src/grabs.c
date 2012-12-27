@@ -25,15 +25,29 @@
 #include "cursors.h"
 #include "grabs.h"
 #include "xwin.h"
+#if USE_XI2
+#include "X11/extensions/XInput2.h"
+#define DEV_PTR Mode.events.xi2_ptr
+#define DEV_KBD Mode.events.xi2_kbd
+#endif
 
 static int
 _GrabKeyboard(Win win, int sync_kbd)
 {
    int                 rc;
 
+#if USE_XI2
+   EXIEventMask        em;
+
+   EXIMaskSetup(&em, DEV_KBD, KeyPressMask | KeyReleaseMask);
+   rc = XIGrabDevice(disp, DEV_KBD, WinGetXwin(win), CurrentTime, None,
+		     GrabModeAsync, sync_kbd ? GrabModeSync : GrabModeAsync,
+		     False, &em.em);
+#else
    rc = XGrabKeyboard(disp, WinGetXwin(win), False,
 		      GrabModeAsync, sync_kbd ? GrabModeSync : GrabModeAsync,
 		      CurrentTime);
+#endif
 
 #if 0
    Eprintf("%s: %#lx sync=%d rc=%d\n", __func__, WinGetXwin(win), sync_kbd, rc);
@@ -59,7 +73,11 @@ GrabKeyboardRelease(void)
 {
    int                 rc;
 
+#if USE_XI2
+   rc = XIUngrabDevice(disp, DEV_KBD, CurrentTime);
+#else
    rc = XUngrabKeyboard(disp, CurrentTime);
+#endif
 
 #if 0
    Eprintf("%s: %d\n", __func__, rc);
@@ -68,9 +86,18 @@ GrabKeyboardRelease(void)
 }
 
 int
-GrabPointerSet(Win win, unsigned int csr, int confine)
+GrabPointerSet(Win win, unsigned int csr, int confine __UNUSED__)
 {
    int                 rc;
+
+#if USE_XI2
+   EXIEventMask        em;
+
+   EXIMaskSetup(&em, DEV_PTR,
+		ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
+   rc = XIGrabDevice(disp, DEV_PTR, WinGetXwin(win), CurrentTime, ECsrGet(csr),
+		     GrabModeAsync, GrabModeAsync, False, &em.em);
+#else
    Window              confine_to = (confine) ? WinGetXwin(VROOT) : None;
 
    rc = XGrabPointer(disp, WinGetXwin(win), False,
@@ -78,6 +105,7 @@ GrabPointerSet(Win win, unsigned int csr, int confine)
 		     ButtonMotionMask | EnterWindowMask | LeaveWindowMask,
 		     GrabModeAsync, GrabModeAsync, confine_to, ECsrGet(csr),
 		     CurrentTime);
+#endif
 
    Mode.grabs.pointer_grab_window = WinGetXwin(win);
    Mode.grabs.pointer_grab_active = 1;
@@ -92,7 +120,11 @@ GrabPointerSet(Win win, unsigned int csr, int confine)
 void
 GrabPointerRelease(void)
 {
+#if USE_XI2
+   XIUngrabDevice(disp, DEV_PTR, CurrentTime);
+#else
    XUngrabPointer(disp, CurrentTime);
+#endif
 
    if (EDebug(EDBUG_TYPE_GRABS))
       Eprintf("%s: %#lx\n", __func__, Mode.grabs.pointer_grab_window);
@@ -104,18 +136,53 @@ GrabPointerRelease(void)
 void
 GrabPointerThaw(void)
 {
+#if USE_XI2
+   XIAllowEvents(disp, DEV_PTR, XIReplayDevice, CurrentTime);
+#else
    XAllowEvents(disp, ReplayPointer, CurrentTime);
+#endif
 }
 
 void
 GrabButtonSet(unsigned int button, unsigned int modifiers, Win win,
-	      unsigned int event_mask, unsigned int csr, int confine)
+	      unsigned int event_mask, unsigned int csr, int confine __UNUSED__)
 {
    Bool                owner_events = False;
    int                 pointer_mode = GrabModeSync;
    int                 keyboard_mode = GrabModeAsync;
-   Window              confine_to = (confine) ? WinGetXwin(win) : None;
    int                 i;
+
+#if USE_XI2
+   EXIEventMask        em;
+   XIGrabModifiers     modifiers_inouts[8];
+   int                 num_modifiers;
+
+   EXIMaskSetup(&em, DEV_PTR, event_mask);
+
+   if (modifiers == AnyModifier)
+     {
+	num_modifiers = 1;
+	modifiers_inouts[0].modifiers = XIAnyModifier;
+	modifiers_inouts[0].status = 0;
+     }
+   else
+     {
+	num_modifiers = 0;
+	for (i = 0; i < 8; i++)
+	  {
+	     if (i && !Mode.masks.mod_combos[i])
+		continue;
+	     modifiers_inouts[num_modifiers].modifiers =
+		modifiers | Mode.masks.mod_combos[i];
+	     modifiers_inouts[num_modifiers].status = 0;
+	     num_modifiers++;
+	  }
+     }
+   XIGrabButton(disp, DEV_PTR, button, WinGetXwin(win), ECsrGet(csr),
+		pointer_mode, keyboard_mode, owner_events,
+		&em.em, num_modifiers, modifiers_inouts);
+#else
+   Window              confine_to = (confine) ? WinGetXwin(win) : None;
 
    if (modifiers == AnyModifier)
      {
@@ -133,6 +200,7 @@ GrabButtonSet(unsigned int button, unsigned int modifiers, Win win,
 		    WinGetXwin(win), owner_events, event_mask, pointer_mode,
 		    keyboard_mode, confine_to, ECsrGet(csr));
      }
+#endif
 }
 
 void
@@ -140,6 +208,32 @@ GrabButtonRelease(unsigned int button, unsigned int modifiers, Win win)
 {
    int                 i;
 
+#if USE_XI2
+   XIGrabModifiers     modifiers_inouts[8];
+   int                 num_modifiers;
+
+   if (modifiers == AnyModifier)
+     {
+	num_modifiers = 1;
+	modifiers_inouts[0].modifiers = XIAnyModifier;
+	modifiers_inouts[0].status = 0;
+     }
+   else
+     {
+	num_modifiers = 0;
+	for (i = 0; i < 8; i++)
+	  {
+	     if (i && !Mode.masks.mod_combos[i])
+		continue;
+	     modifiers_inouts[num_modifiers].modifiers =
+		modifiers | Mode.masks.mod_combos[i];
+	     modifiers_inouts[num_modifiers].status = 0;
+	     num_modifiers++;
+	  }
+     }
+   XIUngrabButton(disp, DEV_PTR, button, WinGetXwin(win),
+		  num_modifiers, modifiers_inouts);
+#else
    if (modifiers == AnyModifier)
      {
 	XUngrabButton(disp, button, modifiers, WinGetXwin(win));
@@ -153,6 +247,7 @@ GrabButtonRelease(unsigned int button, unsigned int modifiers, Win win)
 	XUngrabButton(disp, button, modifiers | Mode.masks.mod_combos[i],
 		      WinGetXwin(win));
      }
+#endif
 }
 
 void
@@ -162,6 +257,37 @@ GrabKeySet(unsigned int key, unsigned int modifiers, Win win)
    int                 pointer_mode = GrabModeAsync;
    int                 keyboard_mode = GrabModeSync;
    int                 i;
+
+#if USE_XI2
+   EXIEventMask        em;
+   XIGrabModifiers     modifiers_inouts[8];
+   int                 num_modifiers;
+
+   EXIMaskSetup(&em, DEV_KBD, KeyPressMask | KeyReleaseMask);
+
+   if (modifiers == AnyModifier)
+     {
+	num_modifiers = 1;
+	modifiers_inouts[0].modifiers = XIAnyModifier;
+	modifiers_inouts[0].status = 0;
+     }
+   else
+     {
+	num_modifiers = 0;
+	for (i = 0; i < 8; i++)
+	  {
+	     if (i && !Mode.masks.mod_combos[i])
+		continue;
+	     modifiers_inouts[num_modifiers].modifiers =
+		modifiers | Mode.masks.mod_combos[i];
+	     modifiers_inouts[num_modifiers].status = 0;
+	     num_modifiers++;
+	  }
+     }
+   XIGrabKeycode(disp, DEV_KBD, key, WinGetXwin(win),
+		 keyboard_mode, pointer_mode, owner_events,
+		 &em.em, num_modifiers, modifiers_inouts);
+#else
 
    if (modifiers == AnyModifier)
      {
@@ -177,12 +303,40 @@ GrabKeySet(unsigned int key, unsigned int modifiers, Win win)
 	XGrabKey(disp, key, modifiers | Mode.masks.mod_combos[i],
 		 WinGetXwin(win), owner_events, pointer_mode, keyboard_mode);
      }
+#endif
 }
 
 void
 GrabKeyRelease(unsigned int key, unsigned int modifiers, Win win)
 {
    int                 i;
+
+#if USE_XI2
+   XIGrabModifiers     modifiers_inouts[8];
+   int                 num_modifiers;
+
+   if (modifiers == AnyModifier)
+     {
+	num_modifiers = 1;
+	modifiers_inouts[0].modifiers = XIAnyModifier;
+	modifiers_inouts[0].status = 0;
+     }
+   else
+     {
+	num_modifiers = 0;
+	for (i = 0; i < 8; i++)
+	  {
+	     if (i && !Mode.masks.mod_combos[i])
+		continue;
+	     modifiers_inouts[num_modifiers].modifiers =
+		modifiers | Mode.masks.mod_combos[i];
+	     modifiers_inouts[num_modifiers].status = 0;
+	     num_modifiers++;
+	  }
+     }
+   XIUngrabKeycode(disp, DEV_KBD, key, WinGetXwin(win),
+		   num_modifiers, modifiers_inouts);
+#else
 
    if (modifiers == AnyModifier)
      {
@@ -197,4 +351,5 @@ GrabKeyRelease(unsigned int key, unsigned int modifiers, Win win)
 	XUngrabKey(disp, key, modifiers | Mode.masks.mod_combos[i],
 		   WinGetXwin(win));
      }
+#endif
 }
