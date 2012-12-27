@@ -789,6 +789,7 @@ EventsCompress(XEvent * evq, int count)
 static void
 EventFetchXI2(XEvent * ev)
 {
+   XGenericEventCookie gec;
    XIDeviceEvent      *xie;
 
    if (!XGetEventData(disp, &ev->xcookie))
@@ -800,6 +801,8 @@ EventFetchXI2(XEvent * ev)
       Eprintf("%s: %#lx: XI2 ext=%d type=%d devid=%d srcid=%d\n",
 	      "EventsFetch", xie->event, xie->extension,
 	      xie->evtype, xie->deviceid, xie->sourceid);
+
+   gec = ev->xcookie;		/* Save copy for XFreeEventData() */
 
    switch (ev->xcookie.evtype)
      {
@@ -822,7 +825,8 @@ EventFetchXI2(XEvent * ev)
 	ev->xbutton.same_screen = 1;	/* FIXME */
 	break;
      }
-   XFreeEventData(disp, &ev->xcookie);
+
+   XFreeEventData(disp, &gec);
 }
 #endif
 
