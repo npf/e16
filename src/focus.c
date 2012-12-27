@@ -706,7 +706,7 @@ FocusHandleClick(EWin * ewin, Win win)
    if (win == EwinGetContainerWin(ewin))
      {
 	ESync(ESYNC_FOCUS);
-	XAllowEvents(disp, ReplayPointer, CurrentTime);
+	GrabPointerThaw();
 	ESync(ESYNC_FOCUS);
      }
 }

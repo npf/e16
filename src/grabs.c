@@ -102,6 +102,12 @@ GrabPointerRelease(void)
 }
 
 void
+GrabPointerThaw(void)
+{
+   XAllowEvents(disp, ReplayPointer, CurrentTime);
+}
+
+void
 GrabButtonSet(unsigned int button, unsigned int modifiers, Win win,
 	      unsigned int event_mask, unsigned int csr, int confine)
 {
