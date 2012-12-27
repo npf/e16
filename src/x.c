@@ -1042,6 +1042,11 @@ EXIMaskSetup(EXIEventMask * em, int dev, unsigned int event_mask)
       XISetMask(em->mb, XI_ButtonRelease);
    if (event_mask & PointerMotionMask)
       XISetMask(em->mb, XI_Motion);
+
+   if (event_mask & EnterWindowMask)
+      XISetMask(em->mb, XI_Enter);
+   if (event_mask & LeaveWindowMask)
+      XISetMask(em->mb, XI_Leave);
 }
 #endif
 
@@ -1053,7 +1058,8 @@ ESelectInput(Win win, unsigned int event_mask)
 
 #define EVENTS_TO_XI_KBD (KeyPressMask | KeyReleaseMask)
 #define EVENTS_TO_XI_PTR (ButtonPressMask | ButtonReleaseMask | PointerMotionMask)
-#define EVENTS_TO_XI (EVENTS_TO_XI_KBD | EVENTS_TO_XI_PTR)
+#define EVENTS_TO_XI_WEL (EnterWindowMask | LeaveWindowMask)
+#define EVENTS_TO_XI (EVENTS_TO_XI_KBD | EVENTS_TO_XI_PTR | EVENTS_TO_XI_WEL)
 
    evold_mask = win->event_mask;
    win->event_mask = event_mask;

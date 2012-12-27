@@ -253,11 +253,16 @@ EwinManage(EWin * ewin)
 			   CWEventMask | CWDontPropagate, &att);
    EMapWindow(ewin->win_container);
 
-   att.event_mask = EWIN_TOP_EVENT_MASK;
    att.do_not_propagate_mask =
       KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask |
       PointerMotionMask;
+#if USE_XI2
+   EChangeWindowAttributes(EoGetWin(ewin), CWDontPropagate, &att);
+   ESelectInput(EoGetWin(ewin), EWIN_TOP_EVENT_MASK);
+#else
+   att.event_mask = EWIN_TOP_EVENT_MASK;
    EChangeWindowAttributes(EoGetWin(ewin), CWEventMask | CWDontPropagate, &att);
+#endif
 
    ewin->client.event_mask = EWIN_CLIENT_EVENT_MASK;
    ESelectInput(EwinGetClientWin(ewin), ewin->client.event_mask);

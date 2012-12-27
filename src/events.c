@@ -848,6 +848,31 @@ EventFetchXI2(XEvent * ev)
 #endif
 	ev->xkey.same_screen = xie->dev.deviceid;	/* FIXME */
 	break;
+     case XI_Enter:
+     case XI_Leave:
+	ev->type = xie->gen.evtype;	/* Same as core */
+#if 0
+	/* Keep those. At least serial seems to be bad in xie. */
+	ev->xany.serial = xie->gen.serial;
+	ev->xany.send_event = xie->gen.send_event;
+	ev->xany.display = xie->gen.display;
+#endif
+	ev->xcrossing.window = xie->elf.event;
+	ev->xcrossing.root = xie->elf.root;
+	ev->xcrossing.subwindow = xie->elf.child;
+	ev->xcrossing.time = xie->gen.time;
+	ev->xcrossing.x = (int)xie->elf.event_x;
+	ev->xcrossing.y = (int)xie->elf.event_y;
+	ev->xcrossing.x_root = (int)xie->elf.root_x;
+	ev->xcrossing.y_root = (int)xie->elf.root_y;
+	/* mode and detail values are the same in core/XI2.
+	 * XI2 has a few extra modes. */
+	ev->xcrossing.mode = xie->elf.mode;
+	ev->xcrossing.detail = xie->elf.detail;
+	ev->xcrossing.same_screen = xie->elf.deviceid;	/* FIXME */
+	ev->xcrossing.focus = xie->elf.focus;
+	ev->xcrossing.state = xie->elf.mods.effective;
+	break;
      }
 
    XFreeEventData(disp, &gec);
