@@ -873,6 +873,21 @@ EventFetchXI2(XEvent * ev)
 	ev->xcrossing.focus = xie->elf.focus;
 	ev->xcrossing.state = xie->elf.mods.effective;
 	break;
+     case XI_FocusIn:
+     case XI_FocusOut:
+	ev->type = xie->gen.evtype;	/* Same as core */
+#if 0
+	/* Keep those. At least serial seems to be bad in xie. */
+	ev->xany.serial = xie->gen.serial;
+	ev->xany.send_event = xie->gen.send_event;
+	ev->xany.display = xie->gen.display;
+#endif
+	ev->xfocus.window = xie->elf.event;
+	/* mode and detail values are the same in core/XI2.
+	 * XI2 has a few extra modes. */
+	ev->xfocus.mode = xie->elf.mode;
+	ev->xfocus.detail = xie->elf.detail;
+	break;
      }
 
    XFreeEventData(disp, &gec);
