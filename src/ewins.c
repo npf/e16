@@ -44,16 +44,13 @@
 #include <X11/extensions/shape.h>
 
 #define EWIN_TOP_EVENT_MASK \
-  (/* ButtonPressMask | ButtonReleaseMask | */ \
-   EnterWindowMask | LeaveWindowMask /* | PointerMotionMask */ /* | \
-   StructureNotifyMask */)
+  (EnterWindowMask | LeaveWindowMask)
 
 #define EWIN_CONTAINER_EVENT_MASK \
   (SubstructureNotifyMask | SubstructureRedirectMask)
 
 #define EWIN_CLIENT_EVENT_MASK \
-  (/* EnterWindowMask | LeaveWindowMask | */ FocusChangeMask | \
-   /* StructureNotifyMask | */ ResizeRedirectMask | \
+  (FocusChangeMask | ResizeRedirectMask | \
    PropertyChangeMask | ColormapChangeMask | VisibilityChangeMask)
 
 static void         EwinChangesStart(EWin * ewin);
@@ -111,10 +108,6 @@ EwinCreate(int type)
    ewin->icccm.aspect_max = 65535.0;
    ewin->icccm.grav = NorthWestGravity;
 
-#if 0				/* ENABLE_GNOME - Not actually used */
-   ewin->expanded_width = -1;
-   ewin->expanded_height = -1;
-#endif
    ewin->area_x = -1;
    ewin->area_y = -1;
 
@@ -1494,10 +1487,6 @@ EwinShow(EWin * ewin)
 
    if (EwinGetClientWin(ewin))
      {
-#if 0				/* FIXME - Why? */
-	if (ewin->state.shaded)
-	   EMoveResizeWindow(ewin->win_container, -30, -30, 1, 1);
-#endif
 	EMapWindow(EwinGetClientWin(ewin));
      }
 
@@ -2599,15 +2588,6 @@ EwinsSighan(int sig, void *prm)
      }
 }
 
-#if 0
-static const IpcItem EwinsIpcArray[] = {
-};
-#define N_IPC_FUNCS (sizeof(EwinsIpcArray)/sizeof(IpcItem))
-#else
-#define N_IPC_FUNCS   0
-#define EwinsIpcArray NULL
-#endif
-
 /*
  * Module descriptor
  */
@@ -2616,7 +2596,6 @@ extern const EModule ModEwins;
 const EModule       ModEwins = {
    "ewins", NULL,
    EwinsSighan,
-   {N_IPC_FUNCS, EwinsIpcArray}
-   ,
+   {0, NULL},
    {0, NULL}
 };
