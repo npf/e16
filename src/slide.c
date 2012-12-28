@@ -83,10 +83,7 @@ typedef struct {
    int                 fx, fy, fw, fh;
    int                 tx, ty, tw, th;
    int                 mode;
-   char                mouse_warp;
-   char                give_focus;
-   int                 mouse_x;
-   int                 mouse_y;
+   char                warp;
 } ewin_slide_params;
 
 static int
@@ -103,17 +100,12 @@ _EwinSlideSizeTo(EObj * eo, int remaining, void *state)
 
    EwinMoveResize(ewin, x, y, w, h, MRF_KEEP_MAXIMIZED);
 
-   if (p->mouse_warp)
-     {
-	EwinWarpTo(ewin, 1);
-	EWarpPointer(EoGetWin(ewin), p->mouse_x, p->mouse_y);
-     }
-
    if (!remaining)
      {
 	ewin->state.sliding = 0;
-	if (p->give_focus)
+	if (p->warp)
 	  {
+	     EwinWarpTo(ewin, 1);
 	     FocusToEWin(ewin, FOCUS_SET);
 	  }
      }
@@ -127,14 +119,22 @@ EwinSlideSizeTo(EWin * ewin, int tx, int ty, int tw, int th,
 {
    Animator           *an;
    ewin_slide_params   p;
-   int                 duration, warp;
+   int                 duration, warp, mx, my;
 
-   warp = (flags & SLIDE_WARP) && (ewin == GetEwinPointerInClient());
+   /* Warp pointer back into window (and focus) if SLIDE_WARP and window
+    * is focused on start and pointer lands outside window after resize.
+    * Manual pointer moves during animation are not considered for now. */
+   warp = (flags & SLIDE_WARP) && ewin->state.active;
+   if (warp)
+     {
+	EQueryPointer(NULL, &mx, &my, NULL, NULL);
+	warp = mx < tx || mx >= tx + tw || my < ty || my >= ty + th;
+     }
 
    if (speed == 0)
      {
 	EwinMoveResize(ewin, tx, ty, tw, th, MRF_KEEP_MAXIMIZED);
-	if (warp && ewin != GetEwinPointerInClient())
+	if (warp)
 	  {
 	     EwinWarpTo(ewin, 1);
 	     FocusToEWin(ewin, FOCUS_SET);
@@ -153,14 +153,7 @@ EwinSlideSizeTo(EWin * ewin, int tx, int ty, int tw, int th,
    p.tw = tw;
    p.th = th;
    p.mode = mode;
-   p.give_focus = (flags & SLIDE_FOCUS) != 0;
-   p.mouse_warp = warp;
-   EQueryPointer(EoGetWin(ewin), &p.mouse_x, &p.mouse_y, NULL, NULL);
-
-   if (p.mouse_x > tw)
-      p.mouse_x = tw / 2;
-   if (p.mouse_y > th)
-      p.mouse_y = th / 2;
+   p.warp = warp;
 
    if (speed <= 10)
       speed = 10;
@@ -178,7 +171,6 @@ Animator           *
 EwinSlideTo(EWin * ewin, int fx __UNUSED__, int fy __UNUSED__, int tx, int ty,
 	    int speed, int mode, int flags)
 {
-// EwinMove(ewin, fx, fy, 0);   // FIXME - WHY?
    return EwinSlideSizeTo(ewin, tx, ty, ewin->client.w, ewin->client.h,
 			  speed, mode, flags);
 }
