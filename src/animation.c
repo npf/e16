@@ -221,6 +221,12 @@ AnimatorsFree(EObj * eo)
      }
 }
 
+void               *
+AnimatorGetData(Animator * an)
+{
+   return (an) ? an + 1 : NULL;
+}
+
 /* Quarter period sinusoidal used in time limited animations */
 #define REMAINING(elapsed, duration) \
    (int)(1024 * (1. - cos(((M_PI / 2 * (elapsed)) / (duration)))))

@@ -92,4 +92,6 @@ int                 AnimatorsDelCatAll(animation_category category,
 
 void                AnimatorsFree(EObj * eo);
 
+void               *AnimatorGetData(Animator * an);
+
 #endif /* _ANIMATION_H_ */
