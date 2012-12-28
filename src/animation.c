@@ -271,8 +271,7 @@ _AnimatorsRun(Animator ** head, unsigned int frame_num, unsigned int next_frame)
 	if (an->duration > 0)
 	   first = 0;
 
-	if (an->category >= 0 && an->duration > 0 &&
-	    LATER(an->next_frame, frame_num))
+	if (an->category >= 0 && LATER(an->next_frame, frame_num))
 	   goto check_next_frame;
 
 	/*{ start of old _AnimatorRun() */
