@@ -1897,7 +1897,6 @@ ECompMgrPaintGhosts(Picture pict, XserverRegion damage)
 	/* Subtract window region from damage region */
 	ERegionSubtract(damage, eo->cmhook->shape);
      }
-   EPictureSetClip(pict, None);
 }
 
 void
@@ -1955,7 +1954,8 @@ ECompMgrRepaint(void)
 
    if (pbuf != rootPicture)
      {
-	EPictureSetClip(pbuf, Mode_compmgr.damage);
+	EPictureSetClip(pbuf, None);
+	EPictureSetClip(rootPicture, Mode_compmgr.damage);
 	XRenderComposite(disp, PictOpSrc, pbuf, None, rootPicture,
 			 0, 0, 0, 0, 0, 0, WinGetW(VROOT), WinGetH(VROOT));
      }
