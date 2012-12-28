@@ -406,10 +406,8 @@ FxSighan(int sig, void *prm __UNUSED__)
      case ESIGNAL_START:
 	FX_OpForEach(FX_OP_START);
 	break;
-     case ESIGNAL_AREA_SWITCH_START:
      case ESIGNAL_DESK_SWITCH_START:
 	break;
-     case ESIGNAL_AREA_SWITCH_DONE:
      case ESIGNAL_DESK_SWITCH_DONE:
 	FX_OpForEach(FX_OP_DESK);
 	break;
