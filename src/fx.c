@@ -32,9 +32,10 @@
 #include "xwin.h"
 #include <math.h>
 
-#ifndef M_PI_2
-#define M_PI_2 (3.141592654 / 2)
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
 #endif
+#define M_TWOPI (2 * M_PI)
 
 #define FX_OP_ENABLE  1		/* Enable, start */
 #define FX_OP_DISABLE 2		/* Disable, stop */
@@ -45,8 +46,7 @@
 typedef struct {
    const char         *name;
    void                (*init_func) (const char *name);
-   void                (*desk_func) (void);
-   void                (*quit_func) (void);
+   void                (*ops_func) (int op);
    char                enabled;
    char                active;
 } FXHandler;
@@ -60,70 +60,68 @@ typedef struct {
 
 /****************************** RIPPLES *************************************/
 
-#define fx_ripple_waterh 64
-static Pixmap       fx_ripple_above = None;
-static Win          fx_ripple_win = NULL;
-static int          fx_ripple_count = 0;
+#define FX_RIPPLE_WATERH 64
+
+typedef struct {
+   Win                 win;
+   Pixmap              above;
+   int                 count;
+   double              incv, inch;
+   GC                  gc1;
+} fx_ripple_data_t;
+
+static Animator    *fx_ripple = NULL;
 
 static int
-FX_ripple_timeout(EObj * eo __UNUSED__, int remaining __UNUSED__,
-		  void *state __UNUSED__)
+FX_ripple_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 {
-   static double       incv = 0, inch = 0;
-   static GC           gc1 = 0, gc = 0;
+   fx_ripple_data_t   *d = (fx_ripple_data_t *) state;
    int                 y;
    EObj               *bgeo;
 
    bgeo = DeskGetBackgroundObj(DesksGetCurrent());
 
-   if (fx_ripple_above == None)
+   if (!d->above)
      {
-	XGCValues           gcv;
-
-	fx_ripple_win = EobjGetWin(bgeo);
-
-	fx_ripple_above =
-	   ECreatePixmap(fx_ripple_win, WinGetW(VROOT),
-			 fx_ripple_waterh * 2, 0);
-	EXFreeGC(gc);
-	EXFreeGC(gc1);
-	gcv.subwindow_mode = IncludeInferiors;
-	gc = EXCreateGC(WinGetXwin(fx_ripple_win), GCSubwindowMode, &gcv);
-	gc1 = EXCreateGC(WinGetXwin(fx_ripple_win), 0L, &gcv);
+	d->win = EobjGetWin(bgeo);
+	d->above = ECreatePixmap(d->win, WinGetW(VROOT),
+				 FX_RIPPLE_WATERH * 2, 0);
+	if (!d->gc1)
+	   d->gc1 = EXCreateGC(WinGetXwin(d->win), 0, NULL);
      }
 
-   if (fx_ripple_count == 0)
-      XCopyArea(disp, WinGetXwin(fx_ripple_win), fx_ripple_above, gc, 0,
-		WinGetH(VROOT) - (fx_ripple_waterh * 3), WinGetW(VROOT),
-		fx_ripple_waterh * 2, 0, 0);
+   if (d->count == 0)
+      EXCopyArea(WinGetXwin(d->win), d->above,
+		 0, WinGetH(VROOT) - (FX_RIPPLE_WATERH * 3),
+		 WinGetW(VROOT), FX_RIPPLE_WATERH * 2, 0, 0);
 
-   fx_ripple_count++;
-   if (fx_ripple_count > 32)
-      fx_ripple_count = 0;
+   d->count++;
+   if (d->count > 32)
+      d->count = 0;
 
-   incv += 0.40;
-   if (incv > (M_PI_2 * 4))
-      incv = 0;
-   inch += 0.32;
-   if (inch > (M_PI_2 * 4))
-      inch = 0;
+   d->incv += 0.40;
+   if (d->incv > M_TWOPI)
+      d->incv = 0;
+   d->inch += 0.32;
+   if (d->inch > M_TWOPI)
+      d->inch = 0;
 
-   SET_GC_CLIP(bgeo, gc1);
+   SET_GC_CLIP(bgeo, d->gc1);
 
-   for (y = 0; y < fx_ripple_waterh; y++)
+   for (y = 0; y < FX_RIPPLE_WATERH; y++)
      {
 	double              aa, a, p;
 	int                 yoff, off, yy;
 
-	p = (((double)(fx_ripple_waterh - y)) / ((double)fx_ripple_waterh));
-	a = p * p * 48 + incv;
+	p = (((double)(FX_RIPPLE_WATERH - y)) / ((double)FX_RIPPLE_WATERH));
+	a = p * p * 48 + d->incv;
 	yoff = y + (int)(sin(a) * 7) + 1;
-	yy = (fx_ripple_waterh * 2) - yoff;
-	aa = p * p * 64 + inch;
+	yy = (FX_RIPPLE_WATERH * 2) - yoff;
+	aa = p * p * 64 + d->inch;
 	off = (int)(sin(aa) * 10 * (1 - p));
-	XCopyArea(disp, fx_ripple_above, WinGetXwin(fx_ripple_win), gc1, 0, yy,
+	XCopyArea(disp, d->above, WinGetXwin(d->win), d->gc1, 0, yy,
 		  WinGetW(VROOT), 1, off,
-		  WinGetH(VROOT) - fx_ripple_waterh + y);
+		  WinGetH(VROOT) - FX_RIPPLE_WATERH + y);
      }
 
    return 4;
@@ -132,27 +130,34 @@ FX_ripple_timeout(EObj * eo __UNUSED__, int remaining __UNUSED__,
 static void
 FX_Ripple_Init(const char *name __UNUSED__)
 {
-   fx_ripple_count = 0;
-   AnimatorAdd(NULL, ANIM_FX_RIPPLES, FX_ripple_timeout, -1, 0, 0, NULL);
+   fx_ripple_data_t    fxd = { 0 };
+
+   fx_ripple = AnimatorAdd(NULL, ANIM_FX_RIPPLES, FX_ripple_timeout, -1, 0,
+			   sizeof(fxd), &fxd);
 }
 
 static void
-FX_Ripple_Desk(void)
+FX_Ripple_Ops(int op)
 {
-   EFreePixmap(fx_ripple_above);
-   fx_ripple_count = 0;
-   fx_ripple_above = None;
-}
+   fx_ripple_data_t   *d;
 
-static void
-FX_Ripple_Quit(void)
-{
-   AnimatorsDelCatAll(ANIM_FX_RIPPLES, 0);
-   if (!fx_ripple_win)
+   d = (fx_ripple_data_t *) AnimatorGetData(fx_ripple);
+   if (!d)
       return;
-   EClearArea(fx_ripple_win, 0, WinGetH(VROOT) - fx_ripple_waterh,
-	      WinGetW(VROOT), fx_ripple_waterh);
-   FX_Ripple_Desk();
+
+   EFreePixmap(d->above);
+   d->above = None;
+   d->count = 0;
+
+   if (op != FX_OP_DISABLE)
+      return;
+
+   EClearArea(d->win, 0, WinGetH(VROOT) - FX_RIPPLE_WATERH,
+	      WinGetW(VROOT), FX_RIPPLE_WATERH);
+   EXFreeGC(d->gc1);
+
+   AnimatorDel(NULL, fx_ripple);
+   fx_ripple = NULL;
 }
 
 /****************************** WAVES ***************************************/
@@ -164,73 +169,68 @@ FX_Ripple_Quit(void)
 #define FX_WAVE_DEPTH  10
 #define FX_WAVE_GRABH  (FX_WAVE_WATERH + FX_WAVE_DEPTH)
 #define FX_WAVE_CROSSPERIOD 0.42
-static Pixmap       fx_wave_above = None;
-static Win          fx_wave_win = NULL;
-static int          fx_wave_count = 0;
+
+typedef struct {
+   Win                 win;
+   Pixmap              above;
+   int                 count;
+   double              incv, inch, incx;
+   GC                  gc1;
+} fx_waves_data_t;
+
+static Animator    *fx_waves = NULL;
 
 static int
-FX_Wave_timeout(EObj * eo __UNUSED__, int remaining __UNUSED__,
-		void *state __UNUSED__)
+FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 {
-   /* Variables */
-   static double       incv = 0, inch = 0;
-   static double       incx = 0;
+   fx_waves_data_t    *d = (fx_waves_data_t *) state;
    double              incx2;
-   static GC           gc1 = 0, gc = 0;
    int                 y;
    EObj               *bgeo;
 
    bgeo = DeskGetBackgroundObj(DesksGetCurrent());
 
    /* Check to see if we need to create stuff */
-   if (!fx_wave_above)
+   if (!d->above)
      {
-	XGCValues           gcv;
-
-	fx_wave_win = EobjGetWin(bgeo);
-
-	fx_wave_above =
-	   ECreatePixmap(fx_wave_win, WinGetW(VROOT), FX_WAVE_WATERH * 2, 0);
-
-	EXFreeGC(gc);
-	EXFreeGC(gc1);
-	gcv.subwindow_mode = IncludeInferiors;
-	gc = EXCreateGC(WinGetXwin(fx_wave_win), GCSubwindowMode, &gcv);
-	gc1 = EXCreateGC(WinGetXwin(fx_wave_win), 0L, &gcv);
+	d->win = EobjGetWin(bgeo);
+	d->above = ECreatePixmap(d->win, WinGetW(VROOT), FX_WAVE_WATERH * 2, 0);
+	if (!d->gc1)
+	   d->gc1 = EXCreateGC(WinGetXwin(d->win), 0, NULL);
      }
 
    /* On the zero, grab the desktop again. */
-   if (fx_wave_count == 0)
+   if (d->count == 0)
      {
-	XCopyArea(disp, WinGetXwin(fx_wave_win), fx_wave_above, gc, 0,
-		  WinGetH(VROOT) - (FX_WAVE_WATERH * 3), WinGetW(VROOT),
-		  FX_WAVE_WATERH * 2, 0, 0);
+	EXCopyArea(WinGetXwin(d->win), d->above,
+		   0, WinGetH(VROOT) - (FX_WAVE_WATERH * 3),
+		   WinGetW(VROOT), FX_WAVE_WATERH * 2, 0, 0);
      }
 
    /* Increment and roll the counter */
-   fx_wave_count++;
-   if (fx_wave_count > 32)
-      fx_wave_count = 0;
+   d->count++;
+   if (d->count > 32)
+      d->count = 0;
 
    /* Increment and roll some other variables */
-   incv += 0.40;
-   if (incv > (M_PI_2 * 4))
-      incv = 0;
+   d->incv += 0.40;
+   if (d->incv > M_TWOPI)
+      d->incv = 0;
 
-   inch += 0.32;
-   if (inch > (M_PI_2 * 4))
-      inch = 0;
+   d->inch += 0.32;
+   if (d->inch > M_TWOPI)
+      d->inch = 0;
 
-   incx += 0.32;
-   if (incx > (M_PI_2 * 4))
-      incx = 0;
+   d->incx += 0.32;
+   if (d->incx > M_TWOPI)
+      d->incx = 0;
 
-   SET_GC_CLIP(bgeo, gc1);
+   SET_GC_CLIP(bgeo, d->gc1);
 
    /* Copy the area to correct bugs */
-   if (fx_wave_count == 0)
+   if (d->count == 0)
      {
-	XCopyArea(disp, fx_wave_above, WinGetXwin(fx_wave_win), gc1, 0,
+	XCopyArea(disp, d->above, WinGetXwin(d->win), d->gc1, 0,
 		  WinGetH(VROOT) - FX_WAVE_GRABH, WinGetW(VROOT),
 		  FX_WAVE_DEPTH * 2, 0, WinGetH(VROOT) - FX_WAVE_GRABH);
      }
@@ -245,14 +245,14 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int remaining __UNUSED__,
 
 	/* Figure out the side-to-side movement */
 	p = (((double)(FX_WAVE_WATERH - y)) / ((double)FX_WAVE_WATERH));
-	a = p * p * 48 + incv;
+	a = p * p * 48 + d->incv;
 	yoff = y + (int)(sin(a) * 7) + 1;
 	yy = (FX_WAVE_WATERH * 2) - yoff;
-	aa = p * p * FX_WAVE_WATERH + inch;
+	aa = p * p * FX_WAVE_WATERH + d->inch;
 	off = (int)(sin(aa) * 10 * (1 - p));
 
 	/* Set up the next part */
-	incx2 = incx;
+	incx2 = d->incx;
 
 	/* Go through the width of the screen, in block sizes */
 	for (x = 0; x < WinGetW(VROOT); x += FX_WAVE_WATERW)
@@ -263,14 +263,14 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int remaining __UNUSED__,
 	     /* Add something to incx2 and roll it */
 	     incx2 += FX_WAVE_CROSSPERIOD;
 
-	     if (incx2 > (M_PI_2 * 4))
+	     if (incx2 > M_TWOPI)
 		incx2 = 0;
 
 	     /* Figure it out */
 	     sx = (int)(sin(incx2) * FX_WAVE_DEPTH);
 
 	     /* Display this block */
-	     XCopyArea(disp, fx_wave_above, WinGetXwin(fx_wave_win), gc1, x, yy,	/* x, y */
+	     XCopyArea(disp, d->above, WinGetXwin(d->win), d->gc1, x, yy,	/* x, y */
 		       FX_WAVE_WATERW, 1,	/* w, h */
 		       off + x, WinGetH(VROOT) - FX_WAVE_WATERH + y + sx	/* dx, dy */
 		);
@@ -283,27 +283,34 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int remaining __UNUSED__,
 static void
 FX_Waves_Init(const char *name __UNUSED__)
 {
-   fx_wave_count = 0;
-   AnimatorAdd(NULL, ANIM_FX_WAVES, FX_Wave_timeout, -1, 0, 0, NULL);
+   fx_waves_data_t     fxd = { 0 };
+
+   fx_waves = AnimatorAdd(NULL, ANIM_FX_WAVES, FX_Wave_timeout, -1, 0,
+			  sizeof(fxd), &fxd);
 }
 
 static void
-FX_Waves_Desk(void)
+FX_Waves_Ops(int op)
 {
-   EFreePixmap(fx_wave_above);
-   fx_wave_count = 0;
-   fx_wave_above = None;
-}
+   fx_waves_data_t    *d;
 
-static void
-FX_Waves_Quit(void)
-{
-   AnimatorsDelCatAll(ANIM_FX_WAVES, 0);
-   if (!fx_wave_win)
+   d = (fx_waves_data_t *) AnimatorGetData(fx_waves);
+   if (!d)
       return;
-   EClearArea(fx_wave_win, 0, WinGetH(VROOT) - FX_WAVE_WATERH,
+
+   EFreePixmap(d->above);
+   d->above = None;
+   d->count = 0;
+
+   if (op != FX_OP_DISABLE)
+      return;
+
+   EClearArea(d->win, 0, WinGetH(VROOT) - FX_WAVE_WATERH,
 	      WinGetW(VROOT), FX_WAVE_WATERH);
-   FX_Waves_Desk();
+   EXFreeGC(d->gc1);
+
+   AnimatorDel(NULL, fx_waves);
+   fx_waves = NULL;
 }
 
 /****************************************************************************/
@@ -312,12 +319,8 @@ FX_Waves_Quit(void)
 #define fx_wav fx_handlers[1]
 
 static FXHandler    fx_handlers[] = {
-   {"ripples",
-    FX_Ripple_Init, FX_Ripple_Desk, FX_Ripple_Quit,
-    0, 0},
-   {"waves",
-    FX_Waves_Init, FX_Waves_Desk, FX_Waves_Quit,
-    0, 0},
+   {"ripples", FX_Ripple_Init, FX_Ripple_Ops, 0, 0},
+   {"waves", FX_Waves_Init, FX_Waves_Ops, 0, 0},
 };
 #define N_FX_HANDLERS (sizeof(fx_handlers)/sizeof(FXHandler))
 
@@ -356,14 +359,14 @@ FX_Op(FXHandler * fxh, int op)
       do_stop:
 	if (!fxh->active)
 	   break;
-	fxh->quit_func();
+	fxh->ops_func(FX_OP_DISABLE);
 	fxh->active = 0;
 	break;
 
      case FX_OP_DESK:
 	if (!fxh->enabled)
 	   break;
-	fxh->desk_func();
+	fxh->ops_func(FX_OP_DESK);
 	break;
      }
 }
