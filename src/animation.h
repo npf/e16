@@ -84,6 +84,7 @@ void                AnimatorSetSound(Animator * an,
 				     esound_e start_sound, esound_e end_sound);
 void                AnimatorSetDoneFunc(Animator * an, AnimDoneFunc * done);
 
+int                 AnimatorDel(EObj * eo, Animator * an);
 int                 AnimatorsDelCat(EObj * eo, animation_category category,
 				    int complete);
 int                 AnimatorsDelCatAll(animation_category category,

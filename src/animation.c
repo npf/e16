@@ -186,14 +186,6 @@ AnimatorAdd(EObj * eo, animation_category category, AnimCbFunc * func,
    return an;
 }
 
-static void
-_AnimatorDel(Animator * an)
-{
-   Dprintf("%s: %u/%u: %#lx %p C%d\n", __func__,
-	   current_frame_num, skip_to_frame_num, EOW(an->eo), an, an->category);
-   Efree(an);
-}
-
 void
 AnimatorSetSound(Animator * an, esound_e start_sound, esound_e end_sound)
 {
@@ -207,6 +199,14 @@ void
 AnimatorSetDoneFunc(Animator * an, AnimDoneFunc * done)
 {
    an->done = done;
+}
+
+static void
+_AnimatorDel(Animator * an)
+{
+   Dprintf("%s: %u/%u: %#lx %p C%d\n", __func__,
+	   current_frame_num, skip_to_frame_num, EOW(an->eo), an, an->category);
+   Efree(an);
 }
 
 void
@@ -373,6 +373,24 @@ _AnimatorsRunAll(unsigned int frame_num)
    next_frame = _AnimatorsRun(&global_animators, frame_num, next_frame);
 
    return next_frame;
+}
+
+int
+AnimatorDel(EObj * eo, Animator * anx)
+{
+   Animator           *an;
+
+   for (an = (eo) ? eo->animations : global_animators; an; an = an->next)
+     {
+	if (an != anx)
+	   continue;
+	Dprintf("%s: %u/%u: %#lx %p C%d\n", __func__,
+		current_frame_num, skip_to_frame_num, EOW(an->eo), an,
+		an->category);
+	an->cancelled = 1;
+	return 1;
+     }
+   return 0;
 }
 
 int
