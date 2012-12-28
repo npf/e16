@@ -87,8 +87,10 @@ void                AnimatorSetDoneFunc(Animator * an, AnimDoneFunc * done);
 int                 AnimatorDel(EObj * eo, Animator * an);
 int                 AnimatorsDelCat(EObj * eo, animation_category category,
 				    int complete);
+#if 0				/* Unused */
 int                 AnimatorsDelCatAll(animation_category category,
 				       int complete);
+#endif
 
 void                AnimatorsFree(EObj * eo);
 

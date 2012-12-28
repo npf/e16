@@ -419,6 +419,7 @@ AnimatorsDelCat(EObj * eo, animation_category category, int complete)
    return accum;
 }
 
+#if 0				/* Unused */
 int
 AnimatorsDelCatAll(animation_category category, int complete)
 {
@@ -434,6 +435,7 @@ AnimatorsDelCatAll(animation_category category, int complete)
      }
    return accum;
 }
+#endif
 
 static unsigned int
 _FrameNum(void)
