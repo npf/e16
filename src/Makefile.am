@@ -84,7 +84,6 @@ e16_SOURCES = \
 	mwm.c			\
 	pager.c                 \
 	parse.c                 parse.h                 \
-	piximg.c                piximg.h                \
 	progress.c		progress.h		\
 	regex.c			\
 	screen.c                screen.h                \
