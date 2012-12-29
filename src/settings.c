@@ -137,35 +137,6 @@ _DlgFillMoveResize(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
    DialogItemRadioButtonSetFirst(di, radio2);
    DialogItemRadioButtonGroupSetVal(di, MR_BOX);
 
-#if ENABLE_OLDMOVRES
-   di = DialogAddItem(table, DITEM_RADIOBUTTON);
-   DialogItemSetText(di, _("Shaded"));
-   DialogItemRadioButtonSetFirst(di, radio1);
-   DialogItemRadioButtonGroupSetVal(di, MR_SHADED);
-
-   di = DialogAddItem(table, DITEM_RADIOBUTTON);
-   DialogItemSetText(di, _("Shaded"));
-   DialogItemRadioButtonSetFirst(di, radio2);
-   DialogItemRadioButtonGroupSetVal(di, MR_SHADED);
-
-   di = DialogAddItem(table, DITEM_RADIOBUTTON);
-   DialogItemSetText(di, _("Semi-Solid"));
-   DialogItemRadioButtonSetFirst(di, radio1);
-   DialogItemRadioButtonGroupSetVal(di, MR_SEMI_SOLID);
-
-   di = DialogAddItem(table, DITEM_RADIOBUTTON);
-   DialogItemSetText(di, _("Semi-Solid"));
-   DialogItemRadioButtonSetFirst(di, radio2);
-   DialogItemRadioButtonGroupSetVal(di, MR_SEMI_SOLID);
-
-   di = DialogAddItem(table, DITEM_RADIOBUTTON);
-   DialogItemSetText(di, _("Translucent"));
-   DialogItemRadioButtonSetFirst(di, radio1);
-   DialogItemRadioButtonGroupSetVal(di, MR_TRANSLUCENT);
-
-   DialogAddItem(table, DITEM_NONE);
-#endif /* ENABLE_OLDMOVRES */
-
    DialogItemRadioButtonGroupSetValPtr(radio1, &dd->move);
    DialogItemRadioButtonGroupSetValPtr(radio2, &dd->resize);
 
@@ -437,18 +408,6 @@ _DlgFillPlacement(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
    DialogItemSetText(di, _("Box"));
    DialogItemRadioButtonSetFirst(di, radio);
    DialogItemRadioButtonGroupSetVal(di, MR_BOX);
-
-#if ENABLE_OLDMOVRES
-   di = DialogAddItem(table, DITEM_RADIOBUTTON);
-   DialogItemSetText(di, _("Shaded"));
-   DialogItemRadioButtonSetFirst(di, radio);
-   DialogItemRadioButtonGroupSetVal(di, MR_SHADED);
-
-   di = DialogAddItem(table, DITEM_RADIOBUTTON);
-   DialogItemSetText(di, _("Semi-Solid"));
-   DialogItemRadioButtonSetFirst(di, radio);
-   DialogItemRadioButtonGroupSetVal(di, MR_SEMI_SOLID);
-#endif /* ENABLE_OLDMOVRES */
 
    DialogItemRadioButtonGroupSetValPtr(radio, &dd->slide_mode);
 

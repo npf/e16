@@ -107,10 +107,6 @@ MoveResizeMoveStart(EWin * ewin, int kbd, int constrained, int nogroup)
 
    Conf.movres.mode_move = MoveResizeModeValidateMove(Conf.movres.mode_move);
    Mode_mr.mode = Conf.movres.mode_move;
-#if ENABLE_OLDMOVRES
-   if (num > 1 && Conf.movres.mode_move == MR_TRANSLUCENT)
-      Mode_mr.mode = MR_OPAQUE;
-#endif
    Mode_mr.grab_server = DrawEwinShapeNeedsGrab(Mode_mr.mode);
 
    for (i = 0; i < num; i++)
@@ -247,11 +243,7 @@ _MoveResizeMoveResume(void)
 
    GrabPointerSet(Mode_mr.events, ECSR_ACT_MOVE, 1);
 
-#if ENABLE_OLDMOVRES
-   fl = (Mode_mr.mode == MR_TRANSLUCENT) ? 4 : 0;
-#else
    fl = 0;
-#endif
    if (Mode.mode == MODE_MOVE_PENDING)
      {
 	Mode.mode = MODE_MOVE;

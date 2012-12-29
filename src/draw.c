@@ -25,39 +25,10 @@
 #include "desktops.h"
 #include "eobj.h"
 #include "ewins.h"
-#include "piximg.h"
 #include "xwin.h"
 
-#if ENABLE_OLDMOVRES
-#define MR_ENABLE_STIPPLED         1	/* Enable shaded/semi-solid modes */
-#define MR_ENABLE_TRANSLUCENT      1	/* Enable translucent mode */
-#define MR_MODES_MOVE           0x7f	/* MR_OPAQUE through MR_TECH_OPAQUE */
-#define MR_MODES_RESIZE         0x5f	/* MR_OPAQUE through MR_SEMI_SOLID and MR_TECH_OPAQUE */
-#else
 #define MR_MODES_MOVE           0x47	/* MR_OPAQUE through MR_BOX and MR_TECH_OPAQUE */
 #define MR_MODES_RESIZE         0x47	/* MR_OPAQUE through MR_BOX and MR_TECH_OPAQUE */
-#endif
-
-#if MR_ENABLE_STIPPLED
-#if 0
-#include <X11/bitmaps/gray>
-#include <X11/bitmaps/gray3>
-#else
-/* Include contents of X11/bitmaps/gray+gray3.
- * (avoid build failure if x11 bitmap package isn't installed) */
-
-#define gray_width 2
-#define gray_height 2
-static const char   gray_bits[] = { 0x01, 0x02 };
-
-#define gray3_width 4
-#define gray3_height 4
-static const char   gray3_bits[] = { 0x01, 0x00, 0x04, 0x00 };
-#endif
-
-static Pixmap       b2 = None;	/* Used in modes 3,4 */
-static Pixmap       b3 = None;	/* Used in mode 3 */
-#endif /* MR_ENABLE_STIPPLED */
 
 static Font         font = None;	/* Used in mode 1 (technical) */
 
@@ -143,48 +114,12 @@ do_draw_boxy(Drawable dr, GC gc,
    XDrawRectangle(disp, dr, gc, a + bl + 1, b + bt + 1, c - 3, d - 3);
 }
 
-#if MR_ENABLE_STIPPLED
-static void
-do_draw_shaded(Drawable dr, GC gc,
-	       int a, int b, int c, int d, int bl, int br, int bt, int bb)
-{
-   XSetFillStyle(disp, gc, FillStippled);
-   XSetStipple(disp, gc, b2);
-
-   if ((c + bl + br > 0) && (bt > 0))
-      XFillRectangle(disp, dr, gc, a, b, c + bl + br, bt);
-   if ((c + bl + br > 0) && (bb > 0))
-      XFillRectangle(disp, dr, gc, a, b + d + bt, c + bl + br, bb);
-   if ((d > 0) && (bl > 0))
-      XFillRectangle(disp, dr, gc, a, b + bt, bl, d);
-   if ((d > 0) && (br > 0))
-      XFillRectangle(disp, dr, gc, a + c + bl, b + bt, br, d);
-   XSetStipple(disp, gc, b3);
-   if ((c > 0) && (d > 0))
-      XFillRectangle(disp, dr, gc, a + bl + 1, b + bt + 1, c - 3, d - 3);
-}
-
-static void
-do_draw_semi_solid(Drawable dr, GC gc,
-		   int a, int b, int c, int d, int bl, int br, int bt, int bb)
-{
-   XSetFillStyle(disp, gc, FillStippled);
-   XSetStipple(disp, gc, b2);
-   XFillRectangle(disp, dr, gc, a, b, c + bl + br, d + bt + bb);
-}
-#endif /* MR_ENABLE_STIPPLED */
-
 typedef struct {
    Window              root;
    GC                  gc;
    int                 xo, yo, wo, ho;
    int                 bl, br, bt, bb;
    ShapeWin           *shwin;
-#if MR_ENABLE_TRANSLUCENT
-   PixImg             *root_pi;
-   PixImg             *ewin_pi;
-   PixImg             *draw_pi;
-#endif
 } ShapeData;
 
 static void
@@ -216,11 +151,7 @@ typedef void        (DrawFunc) (Drawable dr, GC gc, int a, int b, int c, int d,
 
 static DrawFunc    *const draw_functions[] = {
    do_draw_technical, do_draw_boxy,
-#if MR_ENABLE_STIPPLED
-   do_draw_shaded, do_draw_semi_solid,
-#else
    NULL, NULL,
-#endif /* MR_ENABLE_STIPPLED */
    NULL, do_draw_technical,
 };
 
@@ -242,17 +173,6 @@ _ShapeDrawNontranslucent(EWin * ewin, int md, int firstlast,
 	gcv.subwindow_mode = IncludeInferiors;
 	psd->gc = EXCreateGC(psd->root,
 			     GCFunction | GCForeground | GCSubwindowMode, &gcv);
-#if MR_ENABLE_STIPPLED
-	if (md == MR_SHADED || md == MR_SEMI_SOLID)
-	  {
-	     if (!b2)
-		b2 = XCreateBitmapFromData(disp, psd->root, gray_bits,
-					   gray_width, gray_height);
-	     if (!b3)
-		b3 = XCreateBitmapFromData(disp, psd->root, gray3_bits,
-					   gray3_width, gray3_height);
-	  }
-#endif /* MR_ENABLE_STIPPLED */
      }
 
    drf = draw_functions[md - 1];
@@ -273,127 +193,6 @@ _ShapeDrawNontranslucent(EWin * ewin, int md, int firstlast,
 	psd->gc = NULL;
      }
 }
-
-#if MR_ENABLE_TRANSLUCENT
-static void
-_ShapeDrawTranslucent(EWin * ewin, int md __UNUSED__, int firstlast,
-		      int xn, int yn, int wn, int hn)
-{
-   ShapeData          *psd = (ShapeData *) ewin->shape_data;
-   XGCValues           gcv;
-   int                 dx, dy, adx, ady;
-   int                 xo, yo;
-
-   xo = psd->xo;
-   yo = psd->yo;
-
-   /* Using frame window size here */
-   wn = EoGetW(ewin);
-   hn = EoGetH(ewin);
-
-   switch (firstlast)
-     {
-     default:
-	break;
-     case 0:
-	gcv.subwindow_mode = IncludeInferiors;
-	psd->gc = EXCreateGC(psd->root, GCSubwindowMode, &gcv);
-
-	psd->root_pi =
-	   PixImgCreate(NULL, psd->gc, WinGetW(VROOT), WinGetH(VROOT));
-	psd->ewin_pi = PixImgCreate(NULL, psd->gc, wn, hn);
-	psd->draw_pi = PixImgCreate(VROOT, psd->gc, wn, hn);
-	if ((!psd->root_pi) || (!psd->ewin_pi) || (!psd->draw_pi))
-	  {
-	     /* Trouble - Fall back to opaque mode */
-	     Conf.movres.mode_move = MR_OPAQUE;
-	     goto do_cleanup;
-	  }
-
-	if (EoGetWin(ewin)->num_rect > 0)
-	  {
-	     Pixmap              mask;
-
-	     mask = EWindowGetShapePixmapInverted(EoGetWin(ewin));
-	     PixImgSetMask(psd->draw_pi, mask, 0, 0);
-	  }
-
-	PixImgFill(psd->root_pi, psd->root, 0, 0);
-	PixImgFill(psd->ewin_pi, psd->root, xn, yn);
-
-	PixImgBlend(psd->root_pi, psd->ewin_pi, psd->draw_pi, psd->root,
-		    xn, yn, wn, hn);
-	break;
-
-     case 1:
-	dx = xn - xo;
-	dy = yn - yo;
-	if (dx < 0)
-	   adx = -dx;
-	else
-	   adx = dx;
-	if (dy < 0)
-	   ady = -dy;
-	else
-	   ady = dy;
-	if ((adx <= wn) && (ady <= hn))
-	  {
-	     PixImgBlend(psd->root_pi, psd->ewin_pi, psd->draw_pi, psd->root,
-			 xn, yn, wn, hn);
-	     if (dx > 0)
-		PixImgPaste11(psd->root_pi, psd->draw_pi, xo, yo, dx, hn);
-	     else if (dx < 0)
-		PixImgPaste11(psd->root_pi, psd->draw_pi, xo + wn + dx,
-			      yo, -dx, hn);
-	     if (dy > 0)
-		PixImgPaste11(psd->root_pi, psd->draw_pi, xo, yo, wn, dy);
-	     else if (dy < 0)
-		PixImgPaste11(psd->root_pi, psd->draw_pi, xo,
-			      yo + hn + dy, wn, -dy);
-	  }
-	else
-	  {
-	     PixImgPaste11(psd->root_pi, psd->draw_pi, xo, yo, wn, hn);
-	     PixImgBlend(psd->root_pi, psd->ewin_pi, psd->draw_pi, psd->root,
-			 xn, yn, wn, hn);
-	  }
-	if (EoGetWin(ewin)->num_rect > 0)
-	  {
-	     PixImgSetMask(psd->draw_pi, 1, xn, yn);
-	     PixImgPaste11(psd->root_pi, psd->draw_pi, xn, yn, wn, hn);
-	     PixImgSetMask(psd->draw_pi, 0, 0, 0);
-	  }
-	break;
-
-     case 2:
-	PixImgPaste11(psd->root_pi, psd->draw_pi, xo, yo, wn, hn);
-      do_cleanup:
-	PixImgDestroy(psd->root_pi);
-	PixImgDestroy(psd->ewin_pi);
-	PixImgDestroy(psd->draw_pi);
-	psd->root_pi = NULL;
-	psd->ewin_pi = NULL;
-	psd->draw_pi = NULL;
-	EXFreeGC(psd->gc);
-	psd->gc = NULL;
-	break;
-
-     case 3:
-	PixImgPaste11(psd->root_pi, psd->draw_pi, xo, yo, wn, hn);
-	PixImgDestroy(psd->root_pi);
-	psd->root_pi = NULL;
-	break;
-
-     case 4:
-	psd->root_pi =
-	   PixImgCreate(NULL, psd->gc, WinGetW(VROOT), WinGetH(VROOT));
-	PixImgFill(psd->root_pi, psd->root, 0, 0);
-	PixImgBlend(psd->root_pi, psd->ewin_pi, psd->draw_pi, psd->root,
-		    xn, yn, wn, hn);
-	break;
-     }
-}
-#endif /* MR_ENABLE_TRANSLUCENT */
 
 void
 DrawEwinShape(EWin * ewin, int md, int x, int y, int w, int h,
@@ -462,18 +261,8 @@ DrawEwinShape(EWin * ewin, int md, int x, int y, int w, int h,
      case MR_TECHNICAL:
      case MR_TECH_OPAQUE:
      case MR_BOX:
-#if MR_ENABLE_STIPPLED
-     case MR_SHADED:
-     case MR_SEMI_SOLID:
-#endif
 	_ShapeDrawNontranslucent(ewin, md, firstlast, x, y, w, h);
 	break;
-#if MR_ENABLE_TRANSLUCENT
-     case MR_TRANSLUCENT:
-	_ShapeDrawTranslucent(ewin, md, firstlast, x, y, w, h);
-	CoordsShow(ewin);
-	break;
-#endif
      default:
 	/* Fall back to opaque mode */
 	Conf.movres.mode_move = MR_OPAQUE;

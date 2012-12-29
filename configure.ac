@@ -410,13 +410,6 @@ if test "x$enable_dialogs" = "xyes"; then
   AC_DEFINE(ENABLE_DIALOGS, 1, [Configuration dialog support])
 fi
 
-AC_ARG_ENABLE(oldmovres,
-  [  --enable-oldmovres      enable support for old move/resize modes @<:@default=no@:>@],,
-  enable_oldmovres=no)
-if test "x$enable_oldmovres" = "xyes"; then
-  AC_DEFINE(ENABLE_OLDMOVRES, 1, [Support old move/resize modes (shaded, semi-solid, translucent)])
-fi
-
 AM_MISSING_PROG(XMLTO, xmlto)
 AC_ARG_ENABLE(mans,
   [  --enable-mans           install man page @<:@default=yes@:>@],,

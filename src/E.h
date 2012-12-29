@@ -500,9 +500,11 @@ void                DialogOKstr(const char *title, const char *txt);
 #define MR_OPAQUE       0
 #define MR_TECHNICAL    1
 #define MR_BOX          2
+#if 0				/* Obsolete */
 #define MR_SHADED       3
 #define MR_SEMI_SOLID   4
 #define MR_TRANSLUCENT  5
+#endif
 #define MR_TECH_OPAQUE  6
 
 int                 MoveResizeModeValidateMove(int md);
