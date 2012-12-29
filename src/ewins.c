@@ -1051,6 +1051,7 @@ EwinUnmap1(EWin * ewin)
    Zoom(ewin, 0);
 
    MoveResizeEnd(ewin);
+   DrawEwinShapeEnd(ewin);
 }
 
 static void

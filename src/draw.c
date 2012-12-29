@@ -175,11 +175,11 @@ do_draw_semi_solid(Drawable dr, GC gc,
 #endif /* MR_ENABLE_STIPPLED */
 
 typedef struct {
-   EWin               *ewin;
    Window              root;
    GC                  gc;
    int                 xo, yo, wo, ho;
    int                 bl, br, bt, bb;
+   ShapeWin           *shwin;
 #if MR_ENABLE_TRANSLUCENT
    PixImg             *root_pi;
    PixImg             *ewin_pi;
@@ -188,26 +188,26 @@ typedef struct {
 } ShapeData;
 
 static void
-_ShapeDrawNograb_tech_box(ShapeData * psd, int md, int firstlast,
+_ShapeDrawNograb_tech_box(EWin * ewin, int md, int firstlast,
 			  int xn, int yn, int wn, int hn, int seqno)
 {
-   static ShapeWin    *shape_win = NULL;
+   ShapeData          *psd = (ShapeData *) ewin->shape_data;
 
-   if (firstlast == 0 && !shape_win)
-      shape_win = ShapewinCreate(md);
-   if (!shape_win)
+   if (firstlast == 0 && !psd->shwin)
+      psd->shwin = ShapewinCreate(md);
+   if (!psd->shwin)
       return;
 
-   ShapewinShapeSet(shape_win, md, xn, yn, wn, hn, psd->bl, psd->br, psd->bt,
+   ShapewinShapeSet(psd->shwin, md, xn, yn, wn, hn, psd->bl, psd->br, psd->bt,
 		    psd->bb, seqno);
-   EoMap(shape_win, 0);
+   EoMap(psd->shwin, 0);
 
-   CoordsShow(psd->ewin);
+   CoordsShow(ewin);
 
    if (firstlast == 2)
      {
-	ShapewinDestroy(shape_win);
-	shape_win = NULL;
+	ShapewinDestroy(psd->shwin);
+	psd->shwin = NULL;
      }
 }
 
@@ -225,9 +225,10 @@ static DrawFunc    *const draw_functions[] = {
 };
 
 static void
-_ShapeDrawNontranslucent(ShapeData * psd, int md, int firstlast,
+_ShapeDrawNontranslucent(EWin * ewin, int md, int firstlast,
 			 int xn, int yn, int wn, int hn)
 {
+   ShapeData          *psd = (ShapeData *) ewin->shape_data;
    DrawFunc           *drf;
 
    if (firstlast == 0)
@@ -260,7 +261,7 @@ _ShapeDrawNontranslucent(ShapeData * psd, int md, int firstlast,
       drf(psd->root, psd->gc, psd->xo, psd->yo, psd->wo, psd->ho,
 	  psd->bl, psd->br, psd->bt, psd->bb);
 
-   CoordsShow(psd->ewin);
+   CoordsShow(ewin);
 
    if (firstlast < 2)
       drf(psd->root, psd->gc, xn, yn, wn, hn,
@@ -275,9 +276,10 @@ _ShapeDrawNontranslucent(ShapeData * psd, int md, int firstlast,
 
 #if MR_ENABLE_TRANSLUCENT
 static void
-_ShapeDrawTranslucent(ShapeData * psd, int md __UNUSED__, int firstlast,
+_ShapeDrawTranslucent(EWin * ewin, int md __UNUSED__, int firstlast,
 		      int xn, int yn, int wn, int hn)
 {
+   ShapeData          *psd = (ShapeData *) ewin->shape_data;
    XGCValues           gcv;
    int                 dx, dy, adx, ady;
    int                 xo, yo;
@@ -286,8 +288,8 @@ _ShapeDrawTranslucent(ShapeData * psd, int md __UNUSED__, int firstlast,
    yo = psd->yo;
 
    /* Using frame window size here */
-   wn = EoGetW(psd->ewin);
-   hn = EoGetH(psd->ewin);
+   wn = EoGetW(ewin);
+   hn = EoGetH(ewin);
 
    switch (firstlast)
      {
@@ -308,11 +310,11 @@ _ShapeDrawTranslucent(ShapeData * psd, int md __UNUSED__, int firstlast,
 	     goto do_cleanup;
 	  }
 
-	if (EoGetWin(psd->ewin)->num_rect > 0)
+	if (EoGetWin(ewin)->num_rect > 0)
 	  {
 	     Pixmap              mask;
 
-	     mask = EWindowGetShapePixmapInverted(EoGetWin(psd->ewin));
+	     mask = EWindowGetShapePixmapInverted(EoGetWin(ewin));
 	     PixImgSetMask(psd->draw_pi, mask, 0, 0);
 	  }
 
@@ -355,7 +357,7 @@ _ShapeDrawTranslucent(ShapeData * psd, int md __UNUSED__, int firstlast,
 	     PixImgBlend(psd->root_pi, psd->ewin_pi, psd->draw_pi, psd->root,
 			 xn, yn, wn, hn);
 	  }
-	if (EoGetWin(psd->ewin)->num_rect > 0)
+	if (EoGetWin(ewin)->num_rect > 0)
 	  {
 	     PixImgSetMask(psd->draw_pi, 1, xn, yn);
 	     PixImgPaste11(psd->root_pi, psd->draw_pi, xn, yn, wn, hn);
@@ -397,8 +399,7 @@ void
 DrawEwinShape(EWin * ewin, int md, int x, int y, int w, int h,
 	      int firstlast, int seqno)
 {
-   static ShapeData    sd, *const psd = &sd;
-   Window              root = WinGetXwin(VROOT);
+   ShapeData          *psd;
    int                 dx, dy;
 
    /* Quit if no change */
@@ -420,9 +421,16 @@ DrawEwinShape(EWin * ewin, int md, int x, int y, int w, int h,
      {
 	EwinShapeSet(ewin);
 
-	psd->ewin = ewin;
-	psd->root = root;
+	psd = ECALLOC(ShapeData, 1);
+	ewin->shape_data = psd;
+	if (!psd)
+	   goto done;
+	psd->root = WinGetXwin(VROOT);
+	EwinBorderGetSize(ewin, &psd->bl, &psd->br, &psd->bt, &psd->bb);
      }
+   psd = (ShapeData *) ewin->shape_data;
+   if (!psd)
+      goto done;
 
    dx = EoGetX(EoGetDesk(ewin));
    dy = EoGetY(EoGetDesk(ewin));
@@ -442,12 +450,10 @@ DrawEwinShape(EWin * ewin, int md, int x, int y, int w, int h,
 	h = ewin->shape_h;
      }
 
-   EwinBorderGetSize(ewin, &psd->bl, &psd->br, &psd->bt, &psd->bb);
-
    if (((md <= MR_BOX) || (md == MR_TECH_OPAQUE)) &&
        Conf.movres.avoid_server_grab)
      {
-	_ShapeDrawNograb_tech_box(psd, md, firstlast, x, y, w, h, seqno);
+	_ShapeDrawNograb_tech_box(ewin, md, firstlast, x, y, w, h, seqno);
 	goto done;
      }
 
@@ -460,11 +466,11 @@ DrawEwinShape(EWin * ewin, int md, int x, int y, int w, int h,
      case MR_SHADED:
      case MR_SEMI_SOLID:
 #endif
-	_ShapeDrawNontranslucent(psd, md, firstlast, x, y, w, h);
+	_ShapeDrawNontranslucent(ewin, md, firstlast, x, y, w, h);
 	break;
 #if MR_ENABLE_TRANSLUCENT
      case MR_TRANSLUCENT:
-	_ShapeDrawTranslucent(psd, md, firstlast, x, y, w, h);
+	_ShapeDrawTranslucent(ewin, md, firstlast, x, y, w, h);
 	CoordsShow(ewin);
 	break;
 #endif
@@ -485,8 +491,25 @@ DrawEwinShape(EWin * ewin, int md, int x, int y, int w, int h,
 	ewin->req_x = ewin->shape_x;
 	ewin->req_y = ewin->shape_y;
 	if (firstlast == 2)
-	   CoordsHide();
+	  {
+	     CoordsHide();
+	     Efree(ewin->shape_data);
+	     ewin->shape_data = NULL;
+	  }
      }
+}
+
+void
+DrawEwinShapeEnd(EWin * ewin)
+{
+   ShapeData          *psd = (ShapeData *) ewin->shape_data;
+
+   if (!psd)
+      return;
+   if (psd->shwin)
+      ShapewinDestroy(psd->shwin);
+   Efree(psd);
+   ewin->shape_data = NULL;
 }
 
 int

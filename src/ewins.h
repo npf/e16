@@ -266,6 +266,8 @@ struct _ewin {
    const EWinOps      *ops;
 
    Timer              *timer;	/* Autoshade timer */
+
+   void               *shape_data;	/* Shape drawing data hook */
 };
 
 #define EWIN_STATE_NEW          0	/* New */
@@ -327,6 +329,7 @@ void                DockIt(EWin * ewin);
 /* draw.c */
 void                DrawEwinShape(EWin * ewin, int md, int x, int y, int w,
 				  int h, int firstlast, int seqno);
+void                DrawEwinShapeEnd(EWin * ewin);
 int                 DrawEwinShapeNeedsGrab(int mode);
 
 /* ewins.c */
