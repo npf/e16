@@ -84,6 +84,7 @@ typedef struct {
    int                 tx, ty, tw, th;
    int                 mode;
    char                warp;
+   char                firstlast;
 } ewin_slide_params;
 
 static int
@@ -98,11 +99,20 @@ _EwinSlideSizeTo(EObj * eo, int remaining, void *state)
    w = (p->fw * (1024 - k) + p->tw * k) >> 10;
    h = (p->fh * (1024 - k) + p->th * k) >> 10;
 
-   EwinMoveResize(ewin, x, y, w, h, MRF_KEEP_MAXIMIZED);
+   if (p->mode == MR_OPAQUE)
+      EoMove(ewin, x, y);
+   else
+      DrawEwinShape(ewin, p->mode, x, y, w, h, p->firstlast, 0);
+   if (p->firstlast == 0)
+      p->firstlast = 1;
 
    if (!remaining)
      {
 	ewin->state.sliding = 0;
+	if (p->mode != MR_OPAQUE)
+	   DrawEwinShape(ewin, p->mode, p->tx, p->ty,
+			 ewin->client.w, ewin->client.h, 2, 0);
+	EwinMove(ewin, p->tx, p->ty, MRF_NOCHECK_ONSCREEN);
 	if (p->warp)
 	  {
 	     EwinWarpTo(ewin, 1);
@@ -152,7 +162,8 @@ EwinSlideSizeTo(EWin * ewin, int tx, int ty, int tw, int th,
    p.ty = ty;
    p.tw = tw;
    p.th = th;
-   p.mode = mode;
+   p.mode = DrawEwinShapeNeedsGrab(mode) ? MR_OPAQUE : mode;
+   p.firstlast = 0;
    p.warp = warp;
 
    if (speed <= 10)
