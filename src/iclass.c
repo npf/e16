@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -811,12 +811,15 @@ pt_get_bg_image(Win win, int w, int h, int use_root)
 #endif
 
 EImage             *
-ImageclassGetImageBlended(ImageClass * ic, Win win, int w, int h, int active,
-			  int sticky, int state, int image_type)
+ImageclassGetImageBlended(ImageClass * ic, Win win __UNUSED__, int w, int h,
+			  int active, int sticky, int state,
+			  int image_type __UNUSED__)
 {
+#ifdef ENABLE_TRANSPARENCY
+   int                 flags;
+#endif
    ImageState         *is;
    EImage             *im, *bg;
-   int                 flags;
 
    if (!ic)
       return NULL;
@@ -843,9 +846,6 @@ ImageclassGetImageBlended(ImageClass * ic, Win win, int w, int h, int active,
 	     goto done;
 	  }
      }
-#else
-   flags = image_type;
-   win = None;
 #endif
 
    if (is->pixmapfillstyle == FILL_STRETCH)
@@ -883,7 +883,8 @@ ImageclassGetImageBlended(ImageClass * ic, Win win, int w, int h, int active,
 
 static void
 ImagestateMakePmapMask(ImageState * is, Win win, PmapMask * pmm,
-		       int pmapflags, int w, int h, int image_type)
+		       int pmapflags __UNUSED__, int w, int h,
+		       int image_type __UNUSED__)
 {
 #ifdef ENABLE_TRANSPARENCY
    EImage             *ii = NULL;
@@ -940,9 +941,6 @@ ImagestateMakePmapMask(ImageState * is, Win win, PmapMask * pmm,
 	EImageDecache(ii);
      }
    else
-#else
-   pmapflags = 0;
-   image_type = 0;
 #endif /* ENABLE_TRANSPARENCY */
    if (is->pixmapfillstyle == FILL_STRETCH)
      {

@@ -410,6 +410,14 @@ if test "x$enable_dialogs" = "xyes"; then
   AC_DEFINE(ENABLE_DIALOGS, 1, [Configuration dialog support])
 fi
 
+AC_ARG_ENABLE(pseudotrans,
+  [  --enable-pseudotrans    enable support for pseudo-transparency @<:@default=no@:>@],,
+  enable_pseudotrans=no)
+if test "x$enable_pseudotrans" = "xyes"; then
+  AC_DEFINE(ENABLE_TRANSPARENCY,       1, [Enable pseudotransparency])
+  AC_DEFINE(ENABLE_THEME_TRANSPARENCY, 1, [Enable adjusting theme element pseudotransparency])
+fi
+
 AM_MISSING_PROG(XMLTO, xmlto)
 AC_ARG_ENABLE(mans,
   [  --enable-mans           install man page @<:@default=yes@:>@],,
@@ -436,9 +444,6 @@ AC_DEFINE(_GNU_SOURCE, 1, [Enable extensions])
 AC_DEFINE(USE_EXT_INIT_WIN,          1, [Use external init window during restart])
 
 AC_DEFINE(ENABLE_DESKRAY,            0, [Enable deskrays (not functional)])
-
-AC_DEFINE(ENABLE_TRANSPARENCY,       1, [Enable pseudotransparency])
-AC_DEFINE(ENABLE_THEME_TRANSPARENCY, 1, [Enable adjusting theme element pseudotransparency])
 
 AC_SUBST(E_X_LIBS)
 
@@ -497,6 +502,7 @@ echo "  Modules ...................... $enable_modules"
 echo "  Visibility hiding ............ $enable_visibility_hiding (only useful with modules)"
 echo "  Window mode helper library ... $enable_libhack"
 echo "  Dialogs ...................... $enable_dialogs"
+echo "  Pseudo-transparency .......... $enable_pseudotrans"
 echo
 echo "Experimental options - DO NOT USE unless you know what you are doing"
 echo "  Compile with ecore/ecore_x ... $enable_ecore"
