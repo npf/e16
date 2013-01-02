@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2012-12-16 12:17+0100\n"
+"POT-Creation-Date: 2013-01-02 20:08+0100\n"
 "PO-Revision-Date: 2009-12-02 09:48+0000\n"
 "Last-Translator: Michael Kim <Unknown>\n"
 "Language-Team: Korean <translation-team-ko@lists.sourceforge.net>\n"
@@ -464,7 +464,7 @@ msgstr "양쪽 끝"
 msgid "End"
 msgstr "끝"
 
-#: src/container.c:1656 src/focus.c:990
+#: src/container.c:1656 src/focus.c:989
 msgid "None"
 msgstr "없음"
 
@@ -485,7 +485,7 @@ msgid "Whirl"
 msgstr ""
 
 #: src/container.c:1688 src/settings.c:131 src/settings.c:136
-#: src/settings.c:437
+#: src/settings.c:408
 msgid "Box"
 msgstr "상자"
 
@@ -704,116 +704,116 @@ msgstr ""
 "\n"
 "종료.\n"
 
-#: src/focus.c:831
+#: src/focus.c:830
 msgid "Focus follows pointer"
 msgstr "포커스가 포인터 따라감"
 
-#: src/focus.c:837
+#: src/focus.c:836
 msgid "Focus follows pointer sloppily"
 msgstr "포커스가 포인터를 적당히 따라감"
 
-#: src/focus.c:843
+#: src/focus.c:842
 msgid "Focus follows mouse clicks"
 msgstr "포커스가 마우스 클릭을 따라감"
 
-#: src/focus.c:853
+#: src/focus.c:852
 msgid "Clicking in a window always raises it"
 msgstr "창안에서 클릭하면 항상 창을 위로 올림"
 
-#: src/focus.c:861
+#: src/focus.c:860
 msgid "All new windows first get the focus"
 msgstr "모든 새로운 창이 먼저 포커스를 가짐"
 
-#: src/focus.c:868
+#: src/focus.c:867
 msgid "New windows get the focus if their window group is focused"
 msgstr ""
 
-#: src/focus.c:873
+#: src/focus.c:872
 msgid "Only new dialog windows get the focus"
 msgstr "오직 새로운 대화상자 창만 포커스 가짐"
 
-#: src/focus.c:880
+#: src/focus.c:879
 msgid "Only new dialogs whose owner is focused get the focus"
 msgstr "오직 포커스를 가진 창의 새로운 대화상자만 포커스 가짐"
 
-#: src/focus.c:885
+#: src/focus.c:884
 msgid "Raise windows while switching focus"
 msgstr ""
 
-#: src/focus.c:891
+#: src/focus.c:890
 msgid "Send mouse pointer to window while switching focus"
 msgstr ""
 
-#: src/focus.c:897
+#: src/focus.c:896
 msgid "Always send mouse pointer to window on focus switch"
 msgstr ""
 
-#: src/focus.c:905
+#: src/focus.c:904
 msgid "Raise windows automatically"
 msgstr "창을 자동으로 올리기"
 
-#: src/focus.c:911
+#: src/focus.c:910
 msgid "Autoraise delay:"
 msgstr "자동올리기 지연:"
 
-#: src/focus.c:924
+#: src/focus.c:923
 msgid "Display and use focus list"
 msgstr "포커스 목록을 표시하고 사용"
 
-#: src/focus.c:929
+#: src/focus.c:928
 msgid "Include sticky windows in focus list"
 msgstr "포커스 목록에 스틱키 창 포함"
 
-#: src/focus.c:934
+#: src/focus.c:933
 msgid "Include shaded windows in focus list"
 msgstr "포커스 목록에 음영 창 포함"
 
-#: src/focus.c:939
+#: src/focus.c:938
 msgid "Include iconified windows in focus list"
 msgstr "포커스 목록에 아이콘 창 포함"
 
-#: src/focus.c:944
+#: src/focus.c:943
 msgid "Include windows on other desks in focus list"
 msgstr ""
 
-#: src/focus.c:949
+#: src/focus.c:948
 msgid "Focus windows while switching"
 msgstr "바꾸는 동안에 창 포커스"
 
-#: src/focus.c:954
+#: src/focus.c:953
 #, fuzzy
 msgid "Outline windows while switching"
 msgstr "바꾸는 동안에 창 포커스"
 
-#: src/focus.c:959
+#: src/focus.c:958
 msgid "Raise windows after focus switch"
 msgstr "포커스가 바뀐 후에 창 올리기"
 
-#: src/focus.c:964
+#: src/focus.c:963
 msgid "Send mouse pointer to window after focus switch"
 msgstr "포커스가 바뀐 후 마우스 포인터를 그 창으로 보냄"
 
-#: src/focus.c:974
+#: src/focus.c:973
 msgid "Focuslist image display policy (if one operation fails, try the next):"
 msgstr ""
 
-#: src/focus.c:978
+#: src/focus.c:977
 msgid "First E Icon, then App Icon"
 msgstr ""
 
-#: src/focus.c:984
+#: src/focus.c:983
 msgid "First App Icon, then E Icon"
 msgstr ""
 
-#: src/focus.c:998
+#: src/focus.c:997
 msgid "Focus"
 msgstr ""
 
-#: src/focus.c:999
+#: src/focus.c:998
 msgid "Focus Settings"
 msgstr "포커스 설정"
 
-#: src/focus.c:1002
+#: src/focus.c:1001
 msgid ""
 "Enlightenment Focus\n"
 "Settings Dialog"
@@ -821,31 +821,27 @@ msgstr ""
 "인라이튼먼트 포커스\n"
 "설정 대화상자"
 
-#: src/fx.c:825
+#: src/fx.c:454
 msgid "Effects"
 msgstr "효과"
 
-#: src/fx.c:827
+#: src/fx.c:456
 msgid "Ripples"
 msgstr "잔물결"
 
-#: src/fx.c:830
+#: src/fx.c:459
 msgid "Waves"
 msgstr "물결"
 
-#: src/fx.c:835
-msgid "Raindrops"
-msgstr ""
-
-#: src/fx.c:842
+#: src/fx.c:465
 msgid "FX"
 msgstr ""
 
-#: src/fx.c:843
+#: src/fx.c:466
 msgid "Special FX Settings"
 msgstr "특수효과 설정"
 
-#: src/fx.c:846
+#: src/fx.c:469
 msgid ""
 "Enlightenment Special Effects\n"
 "Settings Dialog"
@@ -1290,7 +1286,7 @@ msgid "Tooltips:"
 msgstr ""
 
 #: src/mod-trans.c:172 src/settings.c:101 src/settings.c:106
-#: src/settings.c:422
+#: src/settings.c:393
 msgid "Opaque"
 msgstr "불투명"
 
@@ -1522,96 +1518,84 @@ msgstr "이동 방법:"
 msgid "Resize Methods:"
 msgstr "크기조정 방법:"
 
-#: src/settings.c:111 src/settings.c:116 src/settings.c:427
+#: src/settings.c:111 src/settings.c:116 src/settings.c:398
 msgid "Technical"
 msgstr "공예"
 
-#: src/settings.c:121 src/settings.c:126 src/settings.c:432
+#: src/settings.c:121 src/settings.c:126 src/settings.c:403
 #, fuzzy
 msgid "TechOpaque"
 msgstr "불투명"
 
-#: src/settings.c:142 src/settings.c:147 src/settings.c:443
-msgid "Shaded"
-msgstr "음영"
-
-#: src/settings.c:152 src/settings.c:157 src/settings.c:448
-msgid "Semi-Solid"
-msgstr "반고체"
-
-#: src/settings.c:162
-msgid "Translucent"
-msgstr "반투명"
-
-#: src/settings.c:174
+#: src/settings.c:145
 msgid "Avoid server grab"
 msgstr ""
 
-#: src/settings.c:184
+#: src/settings.c:155
 msgid "Move/Resize Geometry Info Postion:"
 msgstr "이동/크기변경 위치 정보:"
 
-#: src/settings.c:188
+#: src/settings.c:159
 msgid "Window Center (O/T/B Methods)"
 msgstr "화면 가운데 (O/T/B 메소드)"
 
-#: src/settings.c:194
+#: src/settings.c:165
 msgid "Always Screen corner"
 msgstr "항상 화면의 가장자리"
 
-#: src/settings.c:200
+#: src/settings.c:171
 msgid "Don't show"
 msgstr "보이지 않음"
 
-#: src/settings.c:212
+#: src/settings.c:183
 msgid "Default Resize Policy:"
 msgstr ""
 
-#: src/settings.c:216
+#: src/settings.c:187
 msgid "Conservative"
 msgstr ""
 
-#: src/settings.c:222
+#: src/settings.c:193
 msgid "Available"
 msgstr ""
 
-#: src/settings.c:228
+#: src/settings.c:199
 msgid "Absolute"
 msgstr ""
 
-#: src/settings.c:238
+#: src/settings.c:209
 msgid "Update window while moving"
 msgstr ""
 
-#: src/settings.c:243
+#: src/settings.c:214
 msgid "Synchronize move/resize with application"
 msgstr ""
 
-#: src/settings.c:248
+#: src/settings.c:219
 msgid "Do not cover dragbar"
 msgstr ""
 
-#: src/settings.c:253
+#: src/settings.c:224
 msgid "Enable smart maximization"
 msgstr ""
 
-#: src/settings.c:258
+#: src/settings.c:229
 msgid "Animate window maximization"
 msgstr ""
 
-#: src/settings.c:264
+#: src/settings.c:235
 msgid "Maximization animation speed:"
 msgstr ""
 
-#: src/settings.c:275
+#: src/settings.c:246
 msgid "Move/Resize"
 msgstr ""
 
-#: src/settings.c:276
+#: src/settings.c:247
 msgid "Move & Resize Settings"
 msgstr "이동과 크기조정 설정"
 
-#: src/settings.c:279
+#: src/settings.c:250
 msgid ""
 "Enlightenment Move & Resize\n"
 "Method Settings Dialog"
@@ -1619,83 +1603,83 @@ msgstr ""
 "인라이튼먼트 이동과 크기조정\n"
 "방법 설정 대화상자"
 
-#: src/settings.c:381
+#: src/settings.c:352
 msgid "Dialog windows appear together with their owner"
 msgstr "대화상자는 그 소유자와 함께 나타남"
 
-#: src/settings.c:386
+#: src/settings.c:357
 msgid "Switch to desktop where dialog appears"
 msgstr "대화상자가 나타난 데스크탑으로 전환"
 
-#: src/settings.c:394
+#: src/settings.c:365
 msgid "Place windows manually"
 msgstr "창을 수동으로 배치"
 
-#: src/settings.c:399
+#: src/settings.c:370
 msgid "Place windows under mouse"
 msgstr "창을 마우스 아래에 배치"
 
-#: src/settings.c:404
+#: src/settings.c:375
 msgid "Center windows when desk is full"
 msgstr ""
 
-#: src/settings.c:409
+#: src/settings.c:380
 msgid "Slide windows in when they appear"
 msgstr "창이 나타날 때 미끄러짐"
 
-#: src/settings.c:414
+#: src/settings.c:385
 msgid "Slide windows around when cleaning up"
 msgstr "깨끗하게 할 때 창 미끄러짐"
 
-#: src/settings.c:419
+#: src/settings.c:390
 msgid "Slide Method:"
 msgstr "미끄러짐 방법:"
 
-#: src/settings.c:458
+#: src/settings.c:417
 msgid "Appear Slide speed:"
 msgstr ""
 
-#: src/settings.c:469
+#: src/settings.c:428
 msgid "Cleanup Slide speed:"
 msgstr ""
 
-#: src/settings.c:482
+#: src/settings.c:441
 msgid "Animate shading and unshading of windows"
 msgstr "창 접고 펼칠 때 에니메이트"
 
-#: src/settings.c:488
+#: src/settings.c:447
 msgid "Window Shading speed:"
 msgstr ""
 
-#: src/settings.c:501
+#: src/settings.c:460
 msgid "Ignore struts/panels for placing normal windows"
 msgstr ""
 
-#: src/settings.c:506
+#: src/settings.c:465
 msgid "Ignore struts/panels when windows are fullscreen"
 msgstr ""
 
-#: src/settings.c:511
+#: src/settings.c:470
 msgid "Ignore struts/panels when maximizing windows"
 msgstr ""
 
-#: src/settings.c:516
+#: src/settings.c:475
 msgid "Raise fullscreen windows"
 msgstr ""
 
-#: src/settings.c:524
+#: src/settings.c:483
 msgid "Place windows on another head when full"
 msgstr "다른창 보다 위에 배치"
 
-#: src/settings.c:532
+#: src/settings.c:491
 msgid "Placement"
 msgstr ""
 
-#: src/settings.c:533
+#: src/settings.c:492
 msgid "Window Placement Settings"
 msgstr "창 배치 설정"
 
-#: src/settings.c:536
+#: src/settings.c:495
 msgid ""
 "Enlightenment Window Placement\n"
 "Settings Dialog"
@@ -1703,35 +1687,35 @@ msgstr ""
 "인라이튼먼트 창 위치\n"
 "설정 대화상자"
 
-#: src/settings.c:586
+#: src/settings.c:545
 msgid "Enable Dialog Headers"
 msgstr "대화상자 머리 사용"
 
-#: src/settings.c:592
+#: src/settings.c:551
 msgid "Enable Button Images"
 msgstr ""
 
-#: src/settings.c:601
+#: src/settings.c:560
 msgid "Enable sliding startup windows"
 msgstr ""
 
-#: src/settings.c:609
+#: src/settings.c:568
 msgid "Use saveunders to reduce window exposures"
 msgstr "창 노출을 줄이기 위해 세이브언더 사용"
 
-#: src/settings.c:618
+#: src/settings.c:577
 msgid "Magwin zoom resolution"
 msgstr ""
 
-#: src/settings.c:630 config/strings.c:136 config/strings.c:152
+#: src/settings.c:589 config/strings.c:136 config/strings.c:152
 msgid "Miscellaneous"
 msgstr ""
 
-#: src/settings.c:631
+#: src/settings.c:590
 msgid "Miscellaneous Settings"
 msgstr "기타 설정"
 
-#: src/settings.c:634
+#: src/settings.c:593
 msgid ""
 "Enlightenment Miscellaneous\n"
 "Settings Dialog"
@@ -1739,61 +1723,61 @@ msgstr ""
 "인라이튼먼트 기타\n"
 "설정 대화상자"
 
-#: src/settings.c:678
+#: src/settings.c:637
 msgid "Enable Composite"
 msgstr ""
 
-#: src/settings.c:686
+#: src/settings.c:645
 msgid "Enable Fading"
 msgstr ""
 
-#: src/settings.c:692
+#: src/settings.c:651
 msgid "Fading Speed:"
 msgstr ""
 
-#: src/settings.c:705
+#: src/settings.c:664
 msgid "Shadows Off"
 msgstr ""
 
-#: src/settings.c:711
+#: src/settings.c:670
 msgid "Shadows Sharp"
 msgstr ""
 
-#: src/settings.c:717
+#: src/settings.c:676
 msgid "Shadows Sharp2"
 msgstr ""
 
-#: src/settings.c:723
+#: src/settings.c:682
 msgid "Shadows Blurred"
 msgstr ""
 
-#: src/settings.c:734
+#: src/settings.c:693
 msgid "Default focused window opacity:"
 msgstr ""
 
-#: src/settings.c:745
+#: src/settings.c:704
 msgid "Default unfocused window opacity:"
 msgstr ""
 
-#: src/settings.c:756
+#: src/settings.c:715
 msgid "Default pop-up window opacity:"
 msgstr ""
 
-#: src/settings.c:767
+#: src/settings.c:726
 msgid "Composite"
 msgstr ""
 
-#: src/settings.c:768
+#: src/settings.c:727
 msgid "Composite Settings"
 msgstr ""
 
-#: src/settings.c:771
+#: src/settings.c:730
 msgid ""
 "Enlightenment Composite\n"
 "Settings Dialog"
 msgstr ""
 
-#: src/settings.c:856
+#: src/settings.c:815
 msgid "Enlightenment Settings"
 msgstr ""
 
@@ -2647,6 +2631,15 @@ msgstr "위치"
 #: config/strings.c:192
 msgid "Epplets"
 msgstr ""
+
+#~ msgid "Shaded"
+#~ msgstr "음영"
+
+#~ msgid "Semi-Solid"
+#~ msgstr "반고체"
+
+#~ msgid "Translucent"
+#~ msgstr "반투명"
 
 #~ msgid "Ignore struts"
 #~ msgstr "무시"
