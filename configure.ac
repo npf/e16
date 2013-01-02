@@ -497,7 +497,6 @@ echo "  Modules ...................... $enable_modules"
 echo "  Visibility hiding ............ $enable_visibility_hiding (only useful with modules)"
 echo "  Window mode helper library ... $enable_libhack"
 echo "  Dialogs ...................... $enable_dialogs"
-echo "  Old move/resize modes ........ $enable_oldmovres (shaded, semi-solid, translucent)"
 echo
 echo "Experimental options - DO NOT USE unless you know what you are doing"
 echo "  Compile with ecore/ecore_x ... $enable_ecore"
