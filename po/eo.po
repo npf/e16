@@ -7,17 +7,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: e16 0.99.99.003\n"
-"Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-01-02 20:08+0100\n"
-"PO-Revision-Date: 2012-12-18 23:01+0000\n"
-"Last-Translator: Michael Moroni <michael.moroni@mailoo.org>\n"
+"Report-Msgid-Bugs-To: $MSGID_BUGS_ADDRESS\n"
+"POT-Creation-Date: 2013-01-05 11:32+0100\n"
+"PO-Revision-Date: 2013-01-06 22:20+0000\n"
+"Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
-"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-19 05:18+0000\n"
-"X-Generator: Launchpad (build 16378)\n"
+"X-Launchpad-Export-Date: 2013-01-07 04:50+0000\n"
+"X-Generator: Launchpad (build 16402)\n"
+"Language: eo\n"
 
 #: src/about.c:35
 #, c-format
@@ -808,7 +808,8 @@ msgid "Send mouse pointer to window after focus switch"
 msgstr ""
 
 #: src/focus.c:973
-msgid "Focuslist image display policy (if one operation fails, try the next):"
+msgid ""
+"Focuslist image display policy (if one operation fails, try the next):"
 msgstr ""
 
 #: src/focus.c:977
@@ -1288,7 +1289,7 @@ msgstr "Neniigi"
 
 #: src/pager.c:1032
 msgid "Stick / Unstick"
-msgstr ""
+msgstr "Fiksi / Malfiksi"
 
 #: src/pager.c:1039
 msgid "Desktop Options"
@@ -1691,7 +1692,7 @@ msgstr ""
 
 #: src/settings.c:664
 msgid "Shadows Off"
-msgstr ""
+msgstr "Malŝaltitaj ombrojn"
 
 #: src/settings.c:670
 msgid "Shadows Sharp"
@@ -1862,7 +1863,7 @@ msgstr "Opakeco"
 
 #: src/snaps.c:863
 msgid "Shadowing"
-msgstr ""
+msgstr "Ombrado"
 
 #: src/snaps.c:869
 msgid "Flags"
@@ -2247,10 +2248,11 @@ msgstr "Mallevi ĉi tiun fenestron."
 
 #: config/strings.c:60 config/strings.c:129
 msgid "Stick/Unstick"
-msgstr ""
+msgstr "Fiksi / Malfiksi"
 
 #: config/strings.c:61
-msgid "Toggle the Omnipresent (visible on all Desktops) state of this window."
+msgid ""
+"Toggle the Omnipresent (visible on all Desktops) state of this window."
 msgstr ""
 
 #: config/strings.c:63
@@ -2592,15 +2594,3 @@ msgstr "Aplikaĵoj"
 #: config/strings.c:192
 msgid "Epplets"
 msgstr "Ekcesoraĵoj"
-
-#~ msgid "Raindrops"
-#~ msgstr "Pluvgutoj"
-
-#~ msgid "Shaded"
-#~ msgstr "Volvita"
-
-#~ msgid "Semi-Solid"
-#~ msgstr "Duonsolida"
-
-#~ msgid "Translucent"
-#~ msgstr "Travidebla"
