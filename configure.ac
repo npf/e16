@@ -6,6 +6,8 @@ m4_define([rpm_revision], m4_ifdef([pkg_revision], ["0.%(date '+%y%m%d')"], [1])
 AC_INIT([e16], [pkg_version], [enlightenment-devel@lists.sourceforge.net])
 AM_INIT_AUTOMAKE([foreign])
 
+AC_CONFIG_MACRO_DIR([m4])
+
 AC_SUBST(E_RPM_REVISION, [rpm_revision])
 
 # reasonable guesses for where stuff is installed
