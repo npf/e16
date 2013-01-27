@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -221,7 +221,7 @@ ClickGrabsSet(EWin * ewin)
      {
 	if (!ewin->state.click_grab_isset)
 	  {
-	     GrabButtonSet(AnyButton, AnyModifier, EwinGetContainerWin(ewin),
+	     GrabButtonSet(AnyButton, AnyModifier, EwinGetClientConWin(ewin),
 			   ButtonPressMask, ECSR_PGRAB, 1);
 	     if (EDebug(EDBUG_TYPE_GRABS))
 		Eprintf("ClickGrabsSet: %#lx set %s\n",
@@ -234,7 +234,7 @@ ClickGrabsSet(EWin * ewin)
 	if (ewin->state.click_grab_isset)
 	  {
 	     GrabButtonRelease(AnyButton, AnyModifier,
-			       EwinGetContainerWin(ewin));
+			       EwinGetClientConWin(ewin));
 	     if (EDebug(EDBUG_TYPE_GRABS))
 		Eprintf("ClickGrabsSet: %#lx unset %s\n",
 			EwinGetClientXwin(ewin), EwinGetTitle(ewin));
@@ -703,7 +703,7 @@ FocusHandleClick(EWin * ewin, Win win)
    if (EDebug(EDBUG_TYPE_GRABS))
       Eprintf("FocusHandleClick %#lx %#lx\n", WinGetXwin(win),
 	      EwinGetContainerXwin(ewin));
-   if (win == EwinGetContainerWin(ewin))
+   if (win == EwinGetClientConWin(ewin))
      {
 	ESync(ESYNC_FOCUS);
 	GrabPointerThaw();

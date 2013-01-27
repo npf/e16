@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -351,17 +351,14 @@ doEwinMoveResize(EWin * ewin, Desk * dsk, int x, int y, int w, int h, int flags)
    if (flags & MRF_RESIZE)
      {
 	if (!ewin->state.shaded)
-	   EMoveResizeWindow(ewin->win_container,
+	   EMoveResizeWindow(EwinGetClientConWin(ewin),
 			     ewin->border->border.left,
 			     ewin->border->border.top,
 			     ewin->client.w, ewin->client.h);
-#if 0
-	else
-	   EMoveResizeWindow(ewin->win_container, -30, -30, 1, 1);
-#endif
-
+#if USE_CONTAINER_WIN
 	EMoveResizeWindow(EwinGetClientWin(ewin), 0, 0, ewin->client.w,
 			  ewin->client.h);
+#endif
 	EwinBorderCalcSizes(ewin, 0);
 	if (resize && ewin->state.shaped)
 	   ewin->update.shape = 1;
@@ -792,7 +789,12 @@ EwinInstantShade(EWin * ewin, int force)
 
    ewin->state.shaded = 2;
    EoMoveResize(ewin, x, y, w, h);
+#if USE_CONTAINER_WIN
    EMoveResizeWindow(ewin->win_container, -30, -30, 1, 1);
+#else
+   EMoveResizeWindow(EwinGetClientWin(ewin), 100, 100,
+		     ewin->client.w, ewin->client.h);
+#endif
    EwinMoveResize(ewin, x, y, ewin->client.w, ewin->client.h,
 		  MRF_KEEP_MAXIMIZED);
 }
@@ -839,11 +841,19 @@ EwinInstantUnShade(EWin * ewin)
 		  MRF_KEEP_MAXIMIZED);
 }
 
+#if USE_CONTAINER_WIN
 #define _EWIN_ADJUST_SHAPE(ewin, xo, yo) \
   do { \
     EShapeSetShape(ewin->win_container, xo, yo, EwinGetClientWin(ewin)); \
     ewin->update.shape = 1; \
   } while (0)
+#else
+#define _EWIN_ADJUST_SHAPE(ewin, xo, yo) \
+  do { \
+    EShapeUpdate(EwinGetClientWin(ewin)); \
+    ewin->update.shape = 1; \
+  } while (0)
+#endif
 
 typedef struct {
    int                 x, y, w, h;
@@ -916,7 +926,13 @@ _EwinShadeEnd(_ewin_shade_data * esd)
 
    EoMoveResize(ewin, esd->final.x, esd->final.y, esd->final.w, esd->final.h);
    ewin->state.shaded = 2;
+#if USE_CONTAINER_WIN
    EMoveResizeWindow(ewin->win_container, -30, -30, 1, 1);
+#else
+   EMoveResizeWindow(EwinGetClientWin(ewin), 100, 100,
+		     ewin->client.w, ewin->client.h);
+   ewin->update.shape = 1;
+#endif
    if (ewin->state.shaped)
       _EWIN_ADJUST_SHAPE(ewin, 0, 0);
 
@@ -935,7 +951,9 @@ _EwinShadeRun(EObj * eobj, int remaining, void *state)
 {
    _ewin_shade_data   *esd = (_ewin_shade_data *) state;
    EWin               *ewin = (EWin *) eobj;
-   int                 k, x, y, w, h, ww, hh, cow, coh, shx, shy;
+   int                 k, x, y, w, h, ww, hh;
+   int cow             __UNUSED__, coh __UNUSED__;
+   int shx             __UNUSED__, shy __UNUSED__;
 
    k = 1024 - remaining;
 
@@ -994,9 +1012,11 @@ _EwinShadeRun(EObj * eobj, int remaining, void *state)
 	shy = hh - ewin->client.h;
 	break;
      }
+#if USE_CONTAINER_WIN
    EMoveResizeWindow(ewin->win_container,
 		     ewin->border->border.left,
 		     ewin->border->border.top, cow, coh);
+#endif
    if (ewin->state.shaped)
       _EWIN_ADJUST_SHAPE(ewin, shx, shy);
    EoMoveResize(ewin, x, y, w, h);
@@ -1042,7 +1062,7 @@ static void
 _EwinUnshadeStart(_ewin_shade_data * esd)
 {
    EWin               *ewin = esd->ewin;
-   int                 cow, coh, clx, cly;
+   int cow             __UNUSED__, coh __UNUSED__, clx, cly;
    XSetWindowAttributes att;
 
    esd->start.x = EoGetX(ewin);
@@ -1102,12 +1122,19 @@ _EwinUnshadeStart(_ewin_shade_data * esd)
      }
 
    EChangeWindowAttributes(EwinGetClientWin(ewin), CWWinGravity, &att);
+   EWindowSync(EwinGetClientWin(ewin));	/* Gravity - recache */
+#if USE_CONTAINER_WIN
    EMoveResizeWindow(ewin->win_container,
 		     ewin->border->border.left, ewin->border->border.top,
 		     cow, coh);
-   EWindowSync(EwinGetClientWin(ewin));	/* Gravity - recache */
    EMoveResizeWindow(EwinGetClientWin(ewin), clx, cly,
 		     ewin->client.w, ewin->client.h);
+#else
+   EMoveResizeWindow(EwinGetClientWin(ewin),
+		     ewin->border->border.left + clx,
+		     ewin->border->border.top + cly,
+		     ewin->client.w, ewin->client.h);
+#endif
 }
 
 static void
@@ -1122,10 +1149,15 @@ _EwinUnshadeEnd(_ewin_shade_data * esd)
    att.win_gravity = NorthWestGravity;
    EChangeWindowAttributes(EwinGetClientWin(ewin), CWWinGravity, &att);
 
-   EMoveResizeWindow(EwinGetClientWin(ewin), 0, 0, ewin->client.w,
-		     ewin->client.h);
-   EMoveResizeWindow(ewin->win_container, ewin->border->border.left,
-		     ewin->border->border.top, ewin->client.w, ewin->client.h);
+#if USE_CONTAINER_WIN
+   EMoveResizeWindow(EwinGetClientWin(ewin), 0, 0,
+		     ewin->client.w, ewin->client.h);
+   EMoveResizeWindow(ewin->win_container,
+		     ewin->border->border.left, ewin->border->border.top,
+		     ewin->client.w, ewin->client.h);
+#else
+   EWindowSync(EwinGetClientWin(ewin));	/* Gravity - recache */
+#endif
 
    if (ewin->state.shaped)
       _EWIN_ADJUST_SHAPE(ewin, 0, 0);
@@ -1145,7 +1177,8 @@ _EwinUnshadeRun(EObj * eobj, int remaining, void *state)
 {
    _ewin_shade_data   *esd = (_ewin_shade_data *) state;
    EWin               *ewin = (EWin *) eobj;
-   int                 k, x, y, w, h, ww, hh, cow, coh, shx, shy;
+   int                 k, x, y, w, h, ww, hh;
+   int cow             __UNUSED__, coh __UNUSED__, shx, shy;
 
    k = 1024 - remaining;
 
@@ -1196,9 +1229,16 @@ _EwinUnshadeRun(EObj * eobj, int remaining, void *state)
 	shy = hh - ewin->client.h;
 	break;
      }
+#if USE_CONTAINER_WIN
    EMoveResizeWindow(ewin->win_container,
 		     ewin->border->border.left,
 		     ewin->border->border.top, cow, coh);
+#else
+   EMoveResizeWindow(EwinGetClientWin(ewin),
+		     ewin->border->border.left + shx,
+		     ewin->border->border.top + shy,
+		     ewin->client.w, ewin->client.h);
+#endif
    if (ewin->state.shaped)
       _EWIN_ADJUST_SHAPE(ewin, shx, shy);
    EoMoveResize(ewin, x, y, w, h);

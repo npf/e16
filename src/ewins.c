@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -57,7 +57,10 @@ static void         EwinChangesStart(EWin * ewin);
 static void         EwinChangesProcess(EWin * ewin);
 
 static void         EwinHandleEventsToplevel(Win win, XEvent * ev, void *prm);
+
+#if USE_CONTAINER_WIN
 static void         EwinHandleEventsContainer(Win win, XEvent * ev, void *prm);
+#endif
 static void         EwinHandleEventsClient(Win win, XEvent * ev, void *prm);
 
 static void         EwinUnmap1(EWin * ewin);
@@ -231,36 +234,43 @@ EwinManage(EWin * ewin)
 	   ECreateObjectWindow(VROOT, ewin->client.x, ewin->client.y,
 			       ewin->client.w, ewin->client.h, 0, type,
 			       EwinGetClientWin(ewin));
-	ewin->win_container =
-	   ECreateWindow(frame, 0, 0, ewin->client.w, ewin->client.h, 0);
-
 	EoInit(ewin, EOBJ_TYPE_EWIN, frame, ewin->client.x, ewin->client.y,
 	       ewin->client.w, ewin->client.h, 1, NULL);
+	EventCallbackRegister(EoGetWin(ewin), EwinHandleEventsToplevel, ewin);
+
+#if USE_CONTAINER_WIN
+	ewin->win_container =
+	   ECreateWindow(frame, 0, 0, ewin->client.w, ewin->client.h, 0);
+	EventCallbackRegister(ewin->win_container, EwinHandleEventsContainer,
+			      ewin);
+#endif
+	EventCallbackRegister(EwinGetClientWin(ewin), EwinHandleEventsClient,
+			      ewin);
 
 	EobjListFocusAdd(&ewin->o, 1);
 	EobjListOrderAdd(&ewin->o);
-
-	EventCallbackRegister(EoGetWin(ewin), EwinHandleEventsToplevel, ewin);
-	EventCallbackRegister(ewin->win_container, EwinHandleEventsContainer,
-			      ewin);
-	EventCallbackRegister(EwinGetClientWin(ewin), EwinHandleEventsClient,
-			      ewin);
      }
 
+#if USE_CONTAINER_WIN
    att.event_mask = EWIN_CONTAINER_EVENT_MASK;
    att.do_not_propagate_mask = ButtonPressMask | ButtonReleaseMask;
    EChangeWindowAttributes(ewin->win_container,
 			   CWEventMask | CWDontPropagate, &att);
    EMapWindow(ewin->win_container);
+#endif
 
+#if USE_CONTAINER_WIN
+   att.event_mask = EWIN_TOP_EVENT_MASK;
+#else
+   att.event_mask = EWIN_TOP_EVENT_MASK | EWIN_CONTAINER_EVENT_MASK;
+#endif
    att.do_not_propagate_mask =
       KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask |
       PointerMotionMask;
 #if USE_XI2
    EChangeWindowAttributes(EoGetWin(ewin), CWDontPropagate, &att);
-   ESelectInput(EoGetWin(ewin), EWIN_TOP_EVENT_MASK);
+   ESelectInput(EoGetWin(ewin), att.event_mask);
 #else
-   att.event_mask = EWIN_TOP_EVENT_MASK;
    EChangeWindowAttributes(EoGetWin(ewin), CWEventMask | CWDontPropagate, &att);
 #endif
 
@@ -281,8 +291,12 @@ EwinManage(EWin * ewin)
 
    ICCCM_AdoptStart(ewin);
 
+#if USE_CONTAINER_WIN
    /* We must reparent after getting original window position */
    EReparentWindow(EwinGetClientWin(ewin), ewin->win_container, 0, 0);
+#else
+   EReparentWindow(EwinGetClientWin(ewin), frame, 0, 0);
+#endif
 
    /* Something (e.g. a match) may have changed the window size */
    EResizeWindow(EwinGetClientWin(ewin), ewin->client.w, ewin->client.h);
@@ -387,8 +401,10 @@ EwinDestroy(EWin * ewin)
 	      ewin->state.state, EwinGetTitle(ewin));
 
    EventCallbackUnregister(EoGetWin(ewin), EwinHandleEventsToplevel, ewin);
+#if USE_CONTAINER_WIN
    EventCallbackUnregister(ewin->win_container, EwinHandleEventsContainer,
 			   ewin);
+#endif
    EventCallbackUnregister(EwinGetClientWin(ewin), EwinHandleEventsClient,
 			   ewin);
    if (!EwinIsInternal(ewin))
@@ -650,7 +666,11 @@ void
 EwinUpdateShapeInfo(EWin * ewin)
 {
    ewin->state.shaped =
+#if USE_CONTAINER_WIN
       EShapeSetShape(ewin->win_container, 0, 0, EwinGetClientWin(ewin));
+#else
+      EShapeUpdate(EwinGetClientWin(ewin));
+#endif
 
    if (EDebug(EX_EVENT_SHAPE_NOTIFY))
       Eprintf("EwinUpdateShapeInfo %#lx cont=%#lx shaped=%d\n",
@@ -1119,7 +1139,8 @@ EwinEventMapRequest(EWin * ewin, XEvent * ev)
 	     if (EDebug(EDBUG_TYPE_EWINS))
 		Eprintf("AddToFamily: Already managing %s %#lx\n", "A",
 			EwinGetClientXwin(ewin));
-	     EReparentWindow(EwinGetClientWin(ewin), ewin->win_container, 0, 0);
+	     EReparentWindow(EwinGetClientWin(ewin), EwinGetContainerWin(ewin),
+			     0, 0);
 	  }
      }
    else
@@ -1133,7 +1154,8 @@ EwinEventMapRequest(EWin * ewin, XEvent * ev)
 	     if (EDebug(EDBUG_TYPE_EWINS))
 		Eprintf("AddToFamily: Already managing %s %#lx\n", "B",
 			EwinGetClientXwin(ewin));
-	     EReparentWindow(EwinGetClientWin(ewin), ewin->win_container, 0, 0);
+	     EReparentWindow(EwinGetClientWin(ewin), EwinGetContainerWin(ewin),
+			     0, 0);
 	     EwinShow(ewin);
 	  }
 	else
@@ -2319,52 +2341,13 @@ _EwinEventEwinFind(XEvent * ev, Window xwin)
    return _EwinEventEwinCheck("root", ev, ewin);
 }
 
-static void
-EwinHandleEventsToplevel(Win win __UNUSED__, XEvent * ev, void *prm)
+static int
+EwinHandleContainerEvents(EWin * ewin, XEvent * ev)
 {
-   EWin               *ewin = (EWin *) prm;
-
-   if (!_EwinEventEwinCheck("frm", ev, ewin))
-      return;
-
-   switch (ev->type)
-     {
-     case ButtonPress:
-	ActionsCheck("BUTTONBINDINGS", ewin, ev);
-	break;
-     case ButtonRelease:
-	ActionsCheck("BUTTONBINDINGS", ewin, ev);
-	break;
-     case EnterNotify:
-	FocusHandleEnter(ewin, ev);
-	break;
-     case LeaveNotify:
-	FocusHandleLeave(ewin, ev);
-	break;
-     default:
-#if DEBUG_EWIN_EVENTS
-	Eprintf("EwinHandleEventsToplevel: type=%2d win=%#lx: %s\n",
-		ev->type, EwinGetClientXwin(ewin), EwinGetTitle(ewin));
-#endif
-	break;
-     }
-}
-
-static void
-EwinHandleEventsContainer(Win win __UNUSED__, XEvent * ev, void *prm)
-{
-   EWin               *ewin = (EWin *) prm;
    Window              xwin = EwinGetClientXwin(ewin);
 
-   if (!_EwinEventEwinCheck("cont", ev, ewin))
-      return;
-
    switch (ev->type)
      {
-     case ButtonPress:
-	FocusHandleClick(ewin, EwinGetContainerWin(ewin));
-	break;
-
      case MapRequest:
 	if (ev->xmaprequest.window != xwin)
 	   break;
@@ -2428,13 +2411,73 @@ EwinHandleEventsContainer(Win win __UNUSED__, XEvent * ev, void *prm)
 	break;
 
      default:
+	return 0;		/* Not handled */
+     }
+
+   return 1;			/* Handled */
+}
+
+static void
+EwinHandleEventsToplevel(Win win __UNUSED__, XEvent * ev, void *prm)
+{
+   EWin               *ewin = (EWin *) prm;
+
+   if (!_EwinEventEwinCheck("frm", ev, ewin))
+      return;
+
+   switch (ev->type)
+     {
+     case ButtonPress:
+	ActionsCheck("BUTTONBINDINGS", ewin, ev);
+	break;
+     case ButtonRelease:
+	ActionsCheck("BUTTONBINDINGS", ewin, ev);
+	break;
+
+     case EnterNotify:
+	FocusHandleEnter(ewin, ev);
+	break;
+     case LeaveNotify:
+	FocusHandleLeave(ewin, ev);
+	break;
+
+     default:
+	if (EwinHandleContainerEvents(ewin, ev))
+	   break;
 #if DEBUG_EWIN_EVENTS
-	Eprintf("EwinHandleEventsContainer: type=%2d win=%#lx: %s\n",
-		ev->type, xwin, EwinGetTitle(ewin));
+	Eprintf("EwinHandleEventsToplevel: type=%2d win=%#lx: %s\n",
+		ev->type, EwinGetClientXwin(ewin), EwinGetTitle(ewin));
 #endif
 	break;
      }
 }
+
+#if USE_CONTAINER_WIN
+static void
+EwinHandleEventsContainer(Win win __UNUSED__, XEvent * ev, void *prm)
+{
+   EWin               *ewin = (EWin *) prm;
+
+   if (!_EwinEventEwinCheck("cont", ev, ewin))
+      return;
+
+   switch (ev->type)
+     {
+     case ButtonPress:
+	FocusHandleClick(ewin, EwinGetContainerWin(ewin));
+	break;
+
+     default:
+	if (EwinHandleContainerEvents(ewin, ev))
+	   break;
+#if DEBUG_EWIN_EVENTS
+	Eprintf("EwinHandleEventsContainer: type=%2d win=%#lx: %s\n",
+		ev->type, EwinGetClientXwin(ewin), EwinGetTitle(ewin));
+#endif
+	break;
+     }
+}
+#endif
 
 static void
 EwinHandleEventsClient(Win win __UNUSED__, XEvent * ev, void *prm)
@@ -2446,6 +2489,12 @@ EwinHandleEventsClient(Win win __UNUSED__, XEvent * ev, void *prm)
 
    switch (ev->type)
      {
+#if !USE_CONTAINER_WIN
+     case ButtonPress:
+	FocusHandleClick(ewin, EwinGetClientConWin(ewin));
+	break;
+#endif
+
      case FocusIn:
      case FocusOut:
 	if (ev->xfocus.detail == NotifyInferior)
@@ -2454,9 +2503,11 @@ EwinHandleEventsClient(Win win __UNUSED__, XEvent * ev, void *prm)
 	   ActionclassEvent(ewin->border->aclass, ev, ewin);
 	FocusHandleChange(ewin, ev);
 	break;
+
      case ConfigureNotify:
      case GravityNotify:
 	break;
+
      case VisibilityNotify:
 	EwinEventVisibility(ewin, ev->xvisibility.state);
 	break;

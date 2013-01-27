@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -23,6 +23,8 @@
  */
 #ifndef _EWIN_H_
 #define _EWIN_H_
+
+#include "config.h"
 
 #include "eobj.h"
 #include "etypes.h"
@@ -65,7 +67,9 @@ typedef struct {
 struct _ewin {
    EObj                o;
    char                type;
+#if USE_CONTAINER_WIN
    Win                 win_container;
+#endif
    unsigned int        serial;
 
    const Border       *border;
@@ -297,7 +301,13 @@ struct _ewin {
 #define EwinGetWindowGroup(ewin)	((ewin)->icccm.group)
 
 #define EwinGetClientWin(ewin)		((ewin)->client.win)
+#if USE_CONTAINER_WIN
 #define EwinGetContainerWin(ewin)	((ewin)->win_container)
+#define EwinGetClientConWin(ewin)	((ewin)->win_container)
+#else
+#define EwinGetContainerWin(ewin)	EoGetWin(ewin)
+#define EwinGetClientConWin(ewin)	((ewin)->client.win)
+#endif
 #define EwinGetContainerXwin(ewin)	WinGetXwin(EwinGetContainerWin(ewin))
 
 #define EwinGetIcccmName(ewin)          EoGetName(ewin)

@@ -420,6 +420,13 @@ if test "x$enable_pseudotrans" = "xyes"; then
   AC_DEFINE(ENABLE_THEME_TRANSPARENCY, 1, [Enable adjusting theme element pseudotransparency])
 fi
 
+AC_ARG_ENABLE(container,
+  [  --enable-container      use container window (experimental) @<:@default=yes@:>@],,
+  enable_container=yes)
+if test "x$enable_container" = "xyes"; then
+  AC_DEFINE(USE_CONTAINER_WIN, 1, [Use container window])
+fi
+
 AM_MISSING_PROG(XMLTO, xmlto)
 AC_ARG_ENABLE(mans,
   [  --enable-mans           install man page @<:@default=yes@:>@],,
@@ -512,6 +519,7 @@ echo "  GLX .......................... $enable_glx"
 echo "  ScreenSaver .................. $enable_xscrnsaver"
 echo "  D-Bus ........................ $enable_dbus"
 echo "  XI2 .......................... $enable_xi2"
+echo "  Use container window ......... $enable_container"
 echo
 echo "Installation path .............. $prefix"
 echo "  Install HTML docs ............ $enable_docs"

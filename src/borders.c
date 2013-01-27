@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -608,7 +608,7 @@ EwinBorderSetTo(EWin * ewin, const Border * b)
 	   if (b->part[i].ontop)
 	      wl[j++] = WinGetXwin(ewin->bits[i].win);
 	}
-      wl[j++] = WinGetXwin(ewin->win_container);
+      wl[j++] = WinGetXwin(EwinGetClientConWin(ewin));
       for (i = b->num_winparts - 1; i >= 0; i--)
 	{
 	   if (!b->part[i].ontop)
@@ -618,8 +618,10 @@ EwinBorderSetTo(EWin * ewin, const Border * b)
       Efree(wl);
    }
 
+#if USE_CONTAINER_WIN
    if (!ewin->state.shaded)
       EMoveWindow(ewin->win_container, b->border.left, b->border.top);
+#endif
 
    ewin->update.shape = 1;
    EwinBorderCalcSizes(ewin, 0);
