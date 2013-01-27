@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -70,6 +70,8 @@ typedef struct {
    GC                  gc1;
 } fx_ripple_data_t;
 
+#define FX_RIPPLE_DATA_INIT { NULL, 0, 0, 0., 0., NULL }
+
 static Animator    *fx_ripple = NULL;
 
 static int
@@ -130,7 +132,7 @@ FX_ripple_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 static void
 FX_Ripple_Init(const char *name __UNUSED__)
 {
-   fx_ripple_data_t    fxd = { 0 };
+   fx_ripple_data_t    fxd = FX_RIPPLE_DATA_INIT;
 
    fx_ripple = AnimatorAdd(NULL, ANIM_FX_RIPPLES, FX_ripple_timeout, -1, 0,
 			   sizeof(fxd), &fxd);
@@ -177,6 +179,8 @@ typedef struct {
    double              incv, inch, incx;
    GC                  gc1;
 } fx_waves_data_t;
+
+#define FX_WAVE_DATA_INIT { NULL, 0, 0, 0., 0., 0., NULL }
 
 static Animator    *fx_waves = NULL;
 
@@ -283,7 +287,7 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 static void
 FX_Waves_Init(const char *name __UNUSED__)
 {
-   fx_waves_data_t     fxd = { 0 };
+   fx_waves_data_t     fxd = FX_WAVE_DATA_INIT;
 
    fx_waves = AnimatorAdd(NULL, ANIM_FX_WAVES, FX_Wave_timeout, -1, 0,
 			  sizeof(fxd), &fxd);
