@@ -100,7 +100,7 @@ _EwinSlideSizeTo(EObj * eo, int remaining, void *state)
    h = (p->fh * (1024 - k) + p->th * k) >> 10;
 
    if (p->mode == MR_OPAQUE)
-      EoMove(ewin, x, y);
+      EwinMoveResize(ewin, x, y, w, h, MRF_KEEP_MAXIMIZED);
    else
       DrawEwinShape(ewin, p->mode, x, y, w, h, p->firstlast, 0);
    if (p->firstlast == 0)
@@ -112,7 +112,7 @@ _EwinSlideSizeTo(EObj * eo, int remaining, void *state)
 	if (p->mode != MR_OPAQUE)
 	   DrawEwinShape(ewin, p->mode, p->tx, p->ty,
 			 ewin->client.w, ewin->client.h, 2, 0);
-	EwinMove(ewin, p->tx, p->ty, MRF_NOCHECK_ONSCREEN);
+	EwinMove(ewin, p->tx, p->ty, MRF_NOCHECK_ONSCREEN | MRF_KEEP_MAXIMIZED);
 	if (p->warp)
 	  {
 	     EwinWarpTo(ewin, 1);
