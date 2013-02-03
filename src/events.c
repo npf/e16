@@ -150,6 +150,16 @@ ExtInitSS(int available)
 
 #if USE_XRANDR
 static void
+EventsRRUpdateInfo(void)
+{
+   XRRScreenConfiguration *sc;
+
+   sc = XRRGetScreenInfo(disp, WinGetXwin(VROOT));
+   Mode.screen.fps = XRRConfigCurrentRate(sc);
+   XRRFreeScreenConfigInfo(sc);
+}
+
+static void
 ExtInitRR(int available)
 {
    Rotation            rot;
@@ -159,12 +169,16 @@ ExtInitRR(int available)
 
    /* Listen for RandR events */
    XRRSelectInput(disp, WinGetXwin(VROOT), RRScreenChangeNotifyMask);
+
    XRRRotations(disp, Dpy.screen, &rot);
    Mode.screen.rotation = rot;
 
-#if 0				/* Debug */
+   EventsRRUpdateInfo();
+
    if (EDebug(EDBUG_TYPE_VERBOSE))
      {
+	Eprintf("Screen refresh rate = %d Hz\n", Mode.screen.fps);
+#if 0				/* Debug */
 	XRRScreenResources *psr;
 	XRRCrtcInfo        *pci;
 	XRROutputInfo      *poi;
@@ -201,10 +215,22 @@ ExtInitRR(int available)
 	  }
 
 	XRRFreeScreenResources(psr);
+#endif
      }
-#endif
 }
-#endif
+
+void
+EventsRandrScreenChange(XEvent * ev)
+{
+   const XRRScreenChangeNotifyEvent *rrev = (XRRScreenChangeNotifyEvent *) ev;
+
+   XRRUpdateConfiguration(ev);
+
+   Mode.screen.rotation = rrev->rotation;
+
+   EventsRRUpdateInfo();
+}
+#endif /* USE_XRANDR */
 
 #if USE_XI2
 static              Status
@@ -358,6 +384,9 @@ EventsInit(void)
 
    for (i = 0; i < sizeof(Extensions) / sizeof(EServerExt); i++)
       ExtQuery(Extensions + i);
+
+   if (Mode.screen.fps <= 0 || Mode.screen.fps > 240)
+      Mode.screen.fps = 60;	/* If not randr or weirdness */
 
 #if USE_COMPOSITE
 #define XEXT_MASK_CM_ALL ((1 << XEXT_COMPOSITE) | (1 << XEXT_DAMAGE) | \

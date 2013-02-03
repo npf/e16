@@ -397,6 +397,7 @@ typedef struct {
    struct {
       int                 w_old;
       int                 h_old;
+      short               fps;
 #ifdef USE_XRANDR
       unsigned short      rotation;
 #endif

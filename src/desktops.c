@@ -2128,8 +2128,8 @@ DeskHandleEvents(Win win __UNUSED__, XEvent * ev, void *prm)
 	{
 	   XRRScreenChangeNotifyEvent *rrev = (XRRScreenChangeNotifyEvent *) ev;
 
-	   XRRUpdateConfiguration(ev);
-	   Mode.screen.rotation = rrev->rotation;
+	   EventsRandrScreenChange(ev);
+
 	   DeskRootResize(1, rrev->width, rrev->height);
 	}
 	break;

@@ -41,6 +41,8 @@
 #define D3printf(fmt...)
 #endif /* ENABLE_DEBUG */
 
+#define FPS Mode.screen.fps
+
 static int          timing_engine(void);
 
 /*
@@ -53,8 +55,6 @@ static struct {
 } Mode_anim =
 {
 NULL, NULL, 0};
-
-#define FPS 60
 
 static int
 _AnimatorsTimer(void *timer_call)

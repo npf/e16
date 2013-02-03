@@ -51,4 +51,6 @@ void                EventFdUnregister(EventFdDesc * efd);
 int                 EventsUpdateXY(int *px, int *py);
 void                EventsBlock(int mode);
 
+void                EventsRandrScreenChange(XEvent * xev);
+
 #endif /* _EVENTS_H_ */
