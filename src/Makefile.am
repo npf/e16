@@ -130,7 +130,6 @@ CPPFLAGS = \
 	-D ENLIGHTENMENT_ROOT=\"$(pkgdatadir)\"
 
 e16_CPPFLAGS = -I$(top_builddir) \
-	$(ECORE_CFLAGS) \
 	$(MODULE_CFLAGS) \
 	$(IMLIB2_CFLAGS) \
 	$(DBUS_CFLAGS) \
@@ -141,7 +140,6 @@ e16_CPPFLAGS = -I$(top_builddir) \
 LDADD = \
 	$(LTLIBINTL)		\
 	$(LTLIBICONV)		\
-	$(ECORE_LIBS)		\
 	$(IMLIB2_LIBS)		\
 	$(MODULE_LIBS)		\
 	$(GLX_LIBS)		\

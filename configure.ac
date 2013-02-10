@@ -186,13 +186,6 @@ if test "x$enable_xi2" = "xyes"; then
   PKG_CHECK_MODULES(XI, xi >= 1.3, AC_DEFINE(USE_XI2, 1, [XI2 support]), enable_xi2=no)
 fi
 
-AC_ARG_ENABLE(ecore,
-  [  --enable-ecore          use ecore functions (for testing only - DO NOT USE!) @<:@default=no@:>@],,
-  enable_ecore=no)
-if test "x$enable_ecore" = "xyes"; then
-  PKG_CHECK_MODULES(ECORE, ecore-x, AC_DEFINE(USE_ECORE_X, 1, [Use libecore_x]), enable_ecore=no)
-fi
-
 # Is this reasonably correct?
 AC_ARG_ENABLE(glx,
   [  --enable-glx            compile with GLX support (experimental) @<:@default=no@:>@],,
@@ -514,7 +507,6 @@ echo "  Dialogs ...................... $enable_dialogs"
 echo "  Pseudo-transparency .......... $enable_pseudotrans"
 echo
 echo "Experimental options - DO NOT USE unless you know what you are doing"
-echo "  Compile with ecore/ecore_x ... $enable_ecore"
 echo "  GLX .......................... $enable_glx"
 echo "  ScreenSaver .................. $enable_xscrnsaver"
 echo "  D-Bus ........................ $enable_dbus"

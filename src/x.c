@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -27,9 +27,6 @@
 #include "xwin.h"
 #include <string.h>
 #include <unistd.h>
-#ifdef USE_ECORE_X
-#include <Ecore_X.h>
-#endif
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 #include <X11/Xresource.h>
@@ -1748,12 +1745,7 @@ EDisplayOpen(const char *dstr, int scr)
    dstr = dbuf;
 
  do_open:
-#ifdef USE_ECORE_X
-   ecore_x_init(dstr);
-   disp = ecore_x_display_get();
-#else
    disp = XOpenDisplay(dstr);
-#endif
 
    return (disp) ? 0 : -1;
 }
@@ -1763,11 +1755,7 @@ EDisplayClose(void)
 {
    if (!disp)
       return;
-#ifdef USE_ECORE_X
-   ecore_x_shutdown();
-#else
    XCloseDisplay(disp);
-#endif
    XSetErrorHandler(NULL);
    XSetIOErrorHandler(NULL);
    disp = NULL;
@@ -1778,11 +1766,7 @@ EDisplayDisconnect(void)
 {
    if (!disp)
       return;
-#ifdef USE_ECORE_X
-   ecore_x_disconnect();
-#else
    close(ConnectionNumber(disp));
-#endif
    XSetErrorHandler(NULL);
    XSetIOErrorHandler(NULL);
 

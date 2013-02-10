@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -20,9 +20,6 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-/*
- * Stuff for compiling without ecore_x.
- */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,30 +34,6 @@
 #define ECORE_X_PROP_LIST_REMOVE    0
 #define ECORE_X_PROP_LIST_ADD       1
 #define ECORE_X_PROP_LIST_TOGGLE    2
-
-#ifdef USE_ECORE_X
-
-extern Display     *_ecore_x_disp;
-
-void
-ecore_x_icccm_state_set_iconic(Ecore_X_Window win)
-{
-   ecore_x_icccm_state_set(win, ECORE_X_WINDOW_STATE_HINT_ICONIC);
-}
-
-void
-ecore_x_icccm_state_set_normal(Ecore_X_Window win)
-{
-   ecore_x_icccm_state_set(win, ECORE_X_WINDOW_STATE_HINT_NORMAL);
-}
-
-void
-ecore_x_icccm_state_set_withdrawn(Ecore_X_Window win)
-{
-   ecore_x_icccm_state_set(win, ECORE_X_WINDOW_STATE_HINT_WITHDRAWN);
-}
-
-#else /* USE_ECORE_X */
 
 #define DEBUG_CHECK 0
 #if DEBUG_CHECK
@@ -224,8 +197,6 @@ ecore_x_window_prop_card32_list_get(Ecore_X_Window win, Ecore_X_Atom atom,
    return _ecore_x_window_prop32_list_get(win, atom, XA_CARDINAL, plst, -1);
 }
 
-#endif /* USE_ECORE_X */
-
 /*
  * Set simple string list property
  */
@@ -299,8 +270,6 @@ ecore_x_window_prop_string_list_get(Ecore_X_Window win, Ecore_X_Atom atom,
       items = 0;
    return items;
 }
-
-#ifndef USE_ECORE_X
 
 /*
  * Set simple string property
@@ -573,9 +542,6 @@ ecore_x_window_prop_window_list_get(Ecore_X_Window win, Ecore_X_Atom atom,
    return ecore_x_window_prop_xid_list_get(win, atom, XA_WINDOW, plst);
 }
 
-#endif /* USE_ECORE_X */
-
-#ifndef USE_ECORE_X
 /*
  * ICCCM stuff
  */
@@ -716,9 +682,6 @@ ecore_x_icccm_name_class_get(Ecore_X_Window win, char **name, char **clss)
      }
 }
 
-#endif /* USE_ECORE_X */
-
-#ifndef USE_ECORE_X
 /*
  * _NET_WM hints (EWMH)
  */
@@ -1122,5 +1085,3 @@ ecore_x_netwm_startup_id_get(Ecore_X_Window win, char **id)
 
    return ! !s;
 }
-
-#endif /* USE_ECORE_X */

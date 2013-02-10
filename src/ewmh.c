@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2012 Kim Woelders
+ * Copyright (C) 2003-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -99,9 +99,7 @@ EWMH_Init(Window win_wm_check)
    Ecore_X_Atom        atom_list[64];
    int                 atom_count;
 
-#ifndef USE_ECORE_X
    ecore_x_netwm_init();
-#endif
 
    atom_count = 0;
 

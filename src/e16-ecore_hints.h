@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -20,12 +20,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifdef USE_ECORE_X
-
-#include <Ecore_X.h>
-#include <Ecore_X_Atoms.h>
-
-#else
+#ifndef _E16_ECORE_HINTS_H_
+#define _E16_ECORE_HINTS_H_
 
 #define Ecore_X_ID       unsigned int
 #define Ecore_X_Drawable Ecore_X_ID
@@ -328,8 +324,6 @@ void                ecore_x_netwm_startup_id_set(Ecore_X_Window win,
 						 const char *id);
 int                 ecore_x_netwm_startup_id_get(Ecore_X_Window win, char **id);
 
-#endif
-
 void                ecore_x_icccm_state_set_iconic(Ecore_X_Window win);
 void                ecore_x_icccm_state_set_normal(Ecore_X_Window win);
 void                ecore_x_icccm_state_set_withdrawn(Ecore_X_Window win);
@@ -340,3 +334,5 @@ void                ecore_x_window_prop_string_list_set(Ecore_X_Window win,
 int                 ecore_x_window_prop_string_list_get(Ecore_X_Window win,
 							Ecore_X_Atom atom,
 							char ***plst);
+
+#endif /* _E16_ECORE_HINTS_H_ */
