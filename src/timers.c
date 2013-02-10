@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2006-2012 Kim Woelders
+ * Copyright (C) 2006-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -161,11 +161,11 @@ TimersRun(unsigned int t_ms)
      }
 }
 
-unsigned int
+int
 TimersRunNextIn(unsigned int t_ms)
 {
    Timer              *timer;
-   unsigned int        tn;
+   int                 dt;
 
    timer = q_first;
 
@@ -175,14 +175,14 @@ TimersRunNextIn(unsigned int t_ms)
     * The (mean) amount of work done in a timer function should of course not
     * exceed the timeout time. */
    if (timer)
-      tn = (int)(timer->at_time - t_ms) > 0 ? timer->at_time - t_ms : 1;
+      dt = (int)(timer->at_time - t_ms) > 0 ? (int)(timer->at_time - t_ms) : 1;
    else
-      tn = 0;
+      dt = 0;
 
    if (EDebug(EDBUG_TYPE_TIMERS))
-      Eprintf("%s - next in %8u\n", __func__, tn);
+      Eprintf("%s - next in %8d\n", __func__, dt);
 
-   return tn;
+   return dt;
 }
 
 void

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -1071,7 +1071,7 @@ EventsMain(void)
 	IdlersRun();
 
 	/* Get time to first non-expired (0 means none) */
-	time2 = TimersRunNextIn(time2);
+	dt = TimersRunNextIn(time2);
 
 	if (Mode.wm.exit_mode)
 	   break;
@@ -1096,10 +1096,10 @@ EventsMain(void)
 	  }
 	fdsize++;
 
-	if (time2 > 0.)
+	if (dt > 0.)
 	  {
-	     tval.tv_sec = (long)time2 / 1000;
-	     tval.tv_usec = ((long)time2 - tval.tv_sec * 1000) * 1000;
+	     tval.tv_sec = (long)dt / 1000;
+	     tval.tv_usec = ((long)dt - tval.tv_sec * 1000) * 1000;
 	     count = select(fdsize, &fdset, NULL, NULL, &tval);
 	  }
 	else

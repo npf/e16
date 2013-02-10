@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -30,7 +30,7 @@ Timer              *TimerAdd(int dt_ms, int (*func) (void *data), void *data);
 void                TimerDel(Timer * timer);
 void                TimerSetInterval(Timer * timer, int dt_ms);
 void                TimersRun(unsigned int t_ms);
-unsigned int        TimersRunNextIn(unsigned int t_ms);
+int                 TimersRunNextIn(unsigned int t_ms);
 
 #define TIMER_ADD(timer, in, func, prm) \
    timer = TimerAdd(in, func, prm)
