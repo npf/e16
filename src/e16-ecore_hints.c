@@ -157,6 +157,12 @@ _ecore_x_window_prop32_list_get(Ecore_X_Window win, Ecore_X_Atom atom,
    return num;
 }
 
+void
+ecore_x_window_prop_del(Ecore_X_Window win, Ecore_X_Atom atom)
+{
+   XDeleteProperty(_ecore_x_disp, win, atom);
+}
+
 /*
  * Set CARD32 (array) property
  */

@@ -40,6 +40,9 @@ int                 ecore_x_client_message32_send(Ecore_X_Window win,
 						  unsigned int d3,
 						  unsigned int d4);
 
+void                ecore_x_window_prop_del(Ecore_X_Window win,
+					    Ecore_X_Atom atom);
+
 void                ecore_x_window_prop_card32_set(Ecore_X_Window win,
 						   Ecore_X_Atom atom,
 						   unsigned int *val,

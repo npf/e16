@@ -796,8 +796,9 @@ EWMH_GetWindowHints(EWin * ewin)
 void
 EWMH_DelWindowHints(const EWin * ewin)
 {
-   XDeleteProperty(disp, EwinGetClientXwin(ewin), ECORE_X_ATOM_NET_WM_DESKTOP);
-   XDeleteProperty(disp, EwinGetClientXwin(ewin), ECORE_X_ATOM_NET_WM_STATE);
+   ecore_x_window_prop_del(EwinGetClientXwin(ewin),
+			   ECORE_X_ATOM_NET_WM_DESKTOP);
+   ecore_x_window_prop_del(EwinGetClientXwin(ewin), ECORE_X_ATOM_NET_WM_STATE);
 }
 
 /*
