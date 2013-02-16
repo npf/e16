@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -1963,13 +1963,31 @@ ECompMgrRepaint(void)
    Mode_compmgr.got_damage = 0;
 }
 
-static void
-_ECompMgrIdler(void *data __UNUSED__)
+int
+ECompMgrRender(int dt)
 {
+   static unsigned int ecm_render_last;
+   unsigned int        tnow;
+   int                 dt_rendr, dt_frame;
+
    /* Do we get here on auto? */
    if (!Mode_compmgr.got_damage /* || Mode_compmgr.mode == ECM_MODE_AUTO */ )
-      return;
-   ECompMgrRepaint();
+      return dt;
+
+   tnow = GetTimeMs();
+   dt_rendr = tnow - ecm_render_last;
+   dt_frame = 1000 / Mode.screen.fps;
+   if (dt_rendr >= dt_frame)
+     {
+	ecm_render_last = tnow;
+	ECompMgrRepaint();
+	return dt;
+     }
+   else
+     {
+	dt_rendr = dt_frame - dt_rendr;
+	return dt == 0 || dt > dt_rendr ? dt_rendr : dt;
+     }
 }
 
 static void
@@ -2524,7 +2542,6 @@ ECompMgrSighan(int sig, void *prm __UNUSED__)
 	ECompMgrInit();
 	if (Conf_compmgr.enable)
 	   ECompMgrStart();
-	IdlerAdd(_ECompMgrIdler, NULL);
 	break;
      }
 }

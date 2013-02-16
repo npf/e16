@@ -23,6 +23,7 @@
  */
 #include "E.h"
 #include "aclass.h"
+#include "ecompmgr.h"
 #include "emodule.h"
 #include "events.h"
 #include "timers.h"
@@ -1072,6 +1073,9 @@ EventsMain(void)
 
 	/* Get time to first non-expired (0 means none) */
 	dt = TimersRunNextIn(time2);
+
+	/* Do composite rendering */
+	dt = ECompMgrRender(dt);
 
 	if (Mode.wm.exit_mode)
 	   break;

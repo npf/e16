@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -66,12 +66,15 @@ void                ECompMgrConfigGet(cfg_composite * cfg);
 void                ECompMgrConfigSet(const cfg_composite * cfg);
 
 void                ECompMgrRepaint(void);
+int                 ECompMgrRender(int dt);
 
 #else
 
 #define ECompMgrIsActive()          0
 
 #define ECompMgrGetRootBuffer()     WinGetXwin(VROOT)
+
+#define ECompMgrRender(dt)          dt
 
 #endif
 
