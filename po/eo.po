@@ -7,17 +7,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: e16 0.99.99.003\n"
-"Report-Msgid-Bugs-To: $MSGID_BUGS_ADDRESS\n"
-"POT-Creation-Date: 2013-01-05 11:32+0100\n"
+"Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
+"POT-Creation-Date: 2013-02-16 00:08+0100\n"
 "PO-Revision-Date: 2013-01-06 22:20+0000\n"
 "Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
+"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2013-01-07 04:50+0000\n"
 "X-Generator: Launchpad (build 16402)\n"
-"Language: eo\n"
 
 #: src/about.c:35
 #, c-format
@@ -47,7 +47,7 @@ msgstr ""
 "Mandrake - mandrake@mandrake.net\n"
 "Kim WOELDERS - kim@woelders.dk\n"
 
-#: src/aclass.c:221 src/backgrounds.c:254 src/borders.c:695 src/buttons.c:187
+#: src/aclass.c:221 src/backgrounds.c:254 src/borders.c:697 src/buttons.c:187
 #: src/cursors.c:139 src/iclass.c:357 src/tclass.c:121 src/tooltips.c:133
 #, c-format
 msgid "%u references remain"
@@ -176,7 +176,7 @@ msgstr "Eliri Enlightenment"
 msgid "Attention !!!"
 msgstr "Atentu!!!"
 
-#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1896 src/events.c:94
+#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1896 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:310
 msgid "OK"
 msgstr "Bone"
@@ -683,7 +683,7 @@ msgstr ""
 msgid "Apply"
 msgstr "Apliki"
 
-#: src/ecompmgr.c:2287
+#: src/ecompmgr.c:2305
 msgid ""
 "Cannot enable Composite Manager.\n"
 "Use xdpyinfo to check that\n"
@@ -695,11 +695,11 @@ msgstr ""
 "etendaĵoj pri kunmeto, damaĝo, korektoj\n"
 "kaj bildigo estas ŝargitaj."
 
-#: src/events.c:94
+#: src/events.c:95
 msgid "X server setup error"
 msgstr "Eraro dum agordado de X-servilo"
 
-#: src/events.c:95
+#: src/events.c:96
 msgid ""
 "FATAL ERROR:\n"
 "\n"
@@ -808,8 +808,7 @@ msgid "Send mouse pointer to window after focus switch"
 msgstr ""
 
 #: src/focus.c:973
-msgid ""
-"Focuslist image display policy (if one operation fails, try the next):"
+msgid "Focuslist image display policy (if one operation fails, try the next):"
 msgstr ""
 
 #: src/focus.c:977
@@ -836,27 +835,27 @@ msgstr ""
 "Fokuso de Enlightenment\n"
 "Dialogo de agordoj"
 
-#: src/fx.c:454
+#: src/fx.c:458
 msgid "Effects"
 msgstr "Efektoj"
 
-#: src/fx.c:456
+#: src/fx.c:460
 msgid "Ripples"
 msgstr "Ondetoj"
 
-#: src/fx.c:459
+#: src/fx.c:463
 msgid "Waves"
 msgstr "Ondoj"
 
-#: src/fx.c:465
+#: src/fx.c:469
 msgid "FX"
 msgstr "FX"
 
-#: src/fx.c:466
+#: src/fx.c:470
 msgid "Special FX Settings"
 msgstr "Specialaj agordoj por FX"
 
-#: src/fx.c:469
+#: src/fx.c:473
 msgid ""
 "Enlightenment Special Effects\n"
 "Settings Dialog"
@@ -2251,8 +2250,7 @@ msgid "Stick/Unstick"
 msgstr "Fiksi / Malfiksi"
 
 #: config/strings.c:61
-msgid ""
-"Toggle the Omnipresent (visible on all Desktops) state of this window."
+msgid "Toggle the Omnipresent (visible on all Desktops) state of this window."
 msgstr ""
 
 #: config/strings.c:63

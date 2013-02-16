@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-01-02 20:08+0100\n"
+"POT-Creation-Date: 2013-02-16 00:08+0100\n"
 "PO-Revision-Date: 2010-05-09 01:21+0000\n"
 "Last-Translator: Peter Wehrfritz <Unknown>\n"
 "Language-Team: Enlightenment l10n <enlightenment-intl@lists.sourceforge."
@@ -53,7 +53,7 @@ msgstr ""
 "Mandrake - mandrake@mandrake.net\n"
 "Kim Woelders - kim@woelders.dk\n"
 
-#: src/aclass.c:221 src/backgrounds.c:254 src/borders.c:695 src/buttons.c:187
+#: src/aclass.c:221 src/backgrounds.c:254 src/borders.c:697 src/buttons.c:187
 #: src/cursors.c:139 src/iclass.c:357 src/tclass.c:121 src/tooltips.c:133
 #, c-format
 msgid "%u references remain"
@@ -206,7 +206,7 @@ msgstr "Achtung!"
 # src/settings.c:1460 src/settings.c:1522 src/settings.c:1610
 # src/settings.c:2012 src/settings.c:3405 src/settings.c:3750
 # src/settings.c:4048 src/settings.c:4186 src/snaps.c:547 src/sound.c:262
-#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1896 src/events.c:94
+#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1896 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:310
 msgid "OK"
 msgstr "OK"
@@ -844,7 +844,7 @@ msgstr ""
 msgid "Apply"
 msgstr "Übernehmen"
 
-#: src/ecompmgr.c:2287
+#: src/ecompmgr.c:2305
 msgid ""
 "Cannot enable Composite Manager.\n"
 "Use xdpyinfo to check that\n"
@@ -857,12 +857,12 @@ msgstr ""
 "Render-Erweiterungen geladen sind."
 
 # src/setup.c:294 src/setup.c:340
-#: src/events.c:94
+#: src/events.c:95
 msgid "X server setup error"
 msgstr "Einstellungsfehler im X-Server"
 
 # src/setup.c:296
-#: src/events.c:95
+#: src/events.c:96
 msgid ""
 "FATAL ERROR:\n"
 "\n"
@@ -1024,29 +1024,29 @@ msgstr ""
 "Enlightenment Fokus-\n"
 "Einstellungsdialog"
 
-#: src/fx.c:454
+#: src/fx.c:458
 msgid "Effects"
 msgstr "Effekte"
 
-#: src/fx.c:456
+#: src/fx.c:460
 msgid "Ripples"
 msgstr "Plätschern"
 
-#: src/fx.c:459
+#: src/fx.c:463
 msgid "Waves"
 msgstr "Wellen"
 
-#: src/fx.c:465
+#: src/fx.c:469
 msgid "FX"
 msgstr "Effekte"
 
 # src/settings.c:1710
-#: src/fx.c:466
+#: src/fx.c:470
 msgid "Special FX Settings"
 msgstr "Spezialeffekt-Einstellungen"
 
 # src/main.c:89
-#: src/fx.c:469
+#: src/fx.c:473
 msgid ""
 "Enlightenment Special Effects\n"
 "Settings Dialog"

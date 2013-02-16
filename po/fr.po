@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16 svn-rev69488\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-01-02 20:08+0100\n"
+"POT-Creation-Date: 2013-02-16 00:08+0100\n"
 "PO-Revision-Date: 2012-03-17 16:02+0100\n"
 "Last-Translator: Trinine <trinine@free.fr>\n"
 "Language-Team: French\n"
@@ -44,7 +44,7 @@ msgstr ""
 "Mandrake - mandrake@mandrake.net\n"
 "Kim Woelders - kim@woelders.dk\n"
 
-#: src/aclass.c:221 src/backgrounds.c:254 src/borders.c:695 src/buttons.c:187
+#: src/aclass.c:221 src/backgrounds.c:254 src/borders.c:697 src/buttons.c:187
 #: src/cursors.c:139 src/iclass.c:357 src/tclass.c:121 src/tooltips.c:133
 #, c-format
 msgid "%u references remain"
@@ -173,7 +173,7 @@ msgstr "Quitter Enlightenment"
 msgid "Attention !!!"
 msgstr "Attention !!!"
 
-#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1896 src/events.c:94
+#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1896 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:310
 msgid "OK"
 msgstr "OK"
@@ -702,7 +702,7 @@ msgstr ""
 msgid "Apply"
 msgstr "Appliquer"
 
-#: src/ecompmgr.c:2287
+#: src/ecompmgr.c:2305
 msgid ""
 "Cannot enable Composite Manager.\n"
 "Use xdpyinfo to check that\n"
@@ -714,11 +714,11 @@ msgstr ""
 "les extensions Composite, Damage,\n"
 "Fixes, et Render sont bien chargées."
 
-#: src/events.c:94
+#: src/events.c:95
 msgid "X server setup error"
 msgstr "Erreur de configuration du serveur X"
 
-#: src/events.c:95
+#: src/events.c:96
 msgid ""
 "FATAL ERROR:\n"
 "\n"
@@ -858,27 +858,27 @@ msgstr ""
 "Dialogue de paramétrage du\n"
 "Focus"
 
-#: src/fx.c:454
+#: src/fx.c:458
 msgid "Effects"
 msgstr "Effets"
 
-#: src/fx.c:456
+#: src/fx.c:460
 msgid "Ripples"
 msgstr "Ondes"
 
-#: src/fx.c:459
+#: src/fx.c:463
 msgid "Waves"
 msgstr "Vagues"
 
-#: src/fx.c:465
+#: src/fx.c:469
 msgid "FX"
 msgstr "Effets spéciaux"
 
-#: src/fx.c:466
+#: src/fx.c:470
 msgid "Special FX Settings"
 msgstr "Paramètres des Effets spéciaux"
 
-#: src/fx.c:469
+#: src/fx.c:473
 msgid ""
 "Enlightenment Special Effects\n"
 "Settings Dialog"

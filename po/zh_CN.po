@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-01-02 20:08+0100\n"
+"POT-Creation-Date: 2013-02-16 00:08+0100\n"
 "PO-Revision-Date: 2010-05-09 01:20+0000\n"
 "Last-Translator: luojie-dune <Unknown>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -46,7 +46,7 @@ msgstr ""
 "Mandrake - mandrake@mandrake.net\n"
 "Kim Woelders - kim@woelders.dk\n"
 
-#: src/aclass.c:221 src/backgrounds.c:254 src/borders.c:695 src/buttons.c:187
+#: src/aclass.c:221 src/backgrounds.c:254 src/borders.c:697 src/buttons.c:187
 #: src/cursors.c:139 src/iclass.c:357 src/tclass.c:121 src/tooltips.c:133
 #, c-format
 msgid "%u references remain"
@@ -174,7 +174,7 @@ msgstr "退出 Enlightenment"
 msgid "Attention !!!"
 msgstr "注意！！！"
 
-#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1896 src/events.c:94
+#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1896 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:310
 msgid "OK"
 msgstr "确定"
@@ -692,7 +692,7 @@ msgstr ""
 msgid "Apply"
 msgstr "应用"
 
-#: src/ecompmgr.c:2287
+#: src/ecompmgr.c:2305
 msgid ""
 "Cannot enable Composite Manager.\n"
 "Use xdpyinfo to check that\n"
@@ -704,11 +704,11 @@ msgstr ""
 "上海，修复以及渲染扩展\n"
 "的装载情况。"
 
-#: src/events.c:94
+#: src/events.c:95
 msgid "X server setup error"
 msgstr "X 服务设置错误"
 
-#: src/events.c:95
+#: src/events.c:96
 msgid ""
 "FATAL ERROR:\n"
 "\n"
@@ -843,27 +843,27 @@ msgstr ""
 "Enlightenment 焦点\n"
 "设置对话框"
 
-#: src/fx.c:454
+#: src/fx.c:458
 msgid "Effects"
 msgstr "效果"
 
-#: src/fx.c:456
+#: src/fx.c:460
 msgid "Ripples"
 msgstr "波纹"
 
-#: src/fx.c:459
+#: src/fx.c:463
 msgid "Waves"
 msgstr "波浪"
 
-#: src/fx.c:465
+#: src/fx.c:469
 msgid "FX"
 msgstr "FX 图形效果"
 
-#: src/fx.c:466
+#: src/fx.c:470
 msgid "Special FX Settings"
 msgstr "特殊 FX 设置"
 
-#: src/fx.c:469
+#: src/fx.c:473
 msgid ""
 "Enlightenment Special Effects\n"
 "Settings Dialog"

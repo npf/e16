@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-01-02 20:08+0100\n"
+"POT-Creation-Date: 2013-02-16 00:08+0100\n"
 "PO-Revision-Date: 2009-12-02 09:48+0000\n"
 "Last-Translator: Michael Kim <Unknown>\n"
 "Language-Team: Korean <translation-team-ko@lists.sourceforge.net>\n"
@@ -36,7 +36,7 @@ msgid ""
 "Kim Woelders - kim@woelders.dk\n"
 msgstr ""
 
-#: src/aclass.c:221 src/backgrounds.c:254 src/borders.c:695 src/buttons.c:187
+#: src/aclass.c:221 src/backgrounds.c:254 src/borders.c:697 src/buttons.c:187
 #: src/cursors.c:139 src/iclass.c:357 src/tclass.c:121 src/tooltips.c:133
 #, c-format
 msgid "%u references remain"
@@ -163,7 +163,7 @@ msgstr "인라이튼먼트 종료"
 msgid "Attention !!!"
 msgstr "주목 !!!"
 
-#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1896 src/events.c:94
+#: src/alert.c:578 src/dialog.c:692 src/dialog.c:1896 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:310
 msgid "OK"
 msgstr "확인"
@@ -672,7 +672,7 @@ msgstr ""
 msgid "Apply"
 msgstr "적용"
 
-#: src/ecompmgr.c:2287
+#: src/ecompmgr.c:2305
 msgid ""
 "Cannot enable Composite Manager.\n"
 "Use xdpyinfo to check that\n"
@@ -680,11 +680,11 @@ msgid ""
 "extensions are loaded."
 msgstr ""
 
-#: src/events.c:94
+#: src/events.c:95
 msgid "X server setup error"
 msgstr "X 서버 설정 오류"
 
-#: src/events.c:95
+#: src/events.c:96
 msgid ""
 "FATAL ERROR:\n"
 "\n"
@@ -821,27 +821,27 @@ msgstr ""
 "인라이튼먼트 포커스\n"
 "설정 대화상자"
 
-#: src/fx.c:454
+#: src/fx.c:458
 msgid "Effects"
 msgstr "효과"
 
-#: src/fx.c:456
+#: src/fx.c:460
 msgid "Ripples"
 msgstr "잔물결"
 
-#: src/fx.c:459
+#: src/fx.c:463
 msgid "Waves"
 msgstr "물결"
 
-#: src/fx.c:465
+#: src/fx.c:469
 msgid "FX"
 msgstr ""
 
-#: src/fx.c:466
+#: src/fx.c:470
 msgid "Special FX Settings"
 msgstr "특수효과 설정"
 
-#: src/fx.c:469
+#: src/fx.c:473
 msgid ""
 "Enlightenment Special Effects\n"
 "Settings Dialog"
