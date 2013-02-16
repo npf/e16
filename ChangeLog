@@ -5614,7 +5614,6 @@ Japanese translation update (Yasufumi Haga).
 Sat Sep  8 08:47:00 CEST 2012
 
 --- 1.0.10.002 ---
-
 Fix coords placement in techopaque mode (Daniel Manjarres).
 Remove unused code.
 Fix (if experimenting with USE_DESK_EXPOSE).
@@ -5644,3 +5643,50 @@ Wed Oct  3 21:12:02 CEST 2012
 Debug tweaks.
 Fix build error with ancient imlib2.
 Fix build error with ancient composite.
+
+-------------------------------------------------------------------------------
+
+Sat Feb 16 01:02:15 CET 2013
+
+--- 1.0.11.001 ---
+Enable using libsndfile for sound file loading.
+Focus update tweaks.
+Add EventsBlock().
+Add script to place pagers (James Bowlin).
+Introduce new animation engine (Daniel Manjarres).
+Fix various issues reported by clang. Minor cleanups.
+Fix test for XI2 availability.
+Use __func__ for function names in debug stuff.
+Window slide code cosmetics.
+Wrap some calls to XGrab/UngrabKeyboard() + cosmetics.
+Wrap XAllowEvents().
+Fix major memory leak when using XI2 events.
+Cleanup around XI2 event selection.
+When using XI2, handle all keyboard and pointer events via XI2.
+When using XI2, handle enter/leave events via XI2.
+When using XI2, handle focus change events via XI2.
+Restore old pointer warping behavior on maximization.
+Non-time-limited animations should not run until next ?!?
+CM: Set destination clip when rendering compositing buffer to screen.
+Remove long time disabled raindrops and imagespinner fx code.
+No need to adjust fx on area change.
+Add AnimatorDel().
+Add AnimatorGetData().
+Refactor fx.
+AnimatorsDelCatAll() is now unused.
+Resurrect slide shape.
+Enable setting shape on multiple windows.
+Remove code for shaded, semi-solid, and translucent move/resize modes.
+PixImg stuff is no longer used.
+Disable pseudo-transparency by default.
+Add AC_CONFIG_MACRO_DIR.
+Avoid warnings about uninitialised struct members.
+Enable not using a container window.
+Unbreak animated move/resize after recent changes.
+Get frame rate from randr.
+Remove obsolete ecore_x compatibility.
+Add/use ecore_x_window_prop_del().
+Cosmetic change around TimersRunNextIn().
+Switch default sound support to pulseaudio/libsndfile.
+Run composite rendering to screen separately from animators/idlers/timers.
+
