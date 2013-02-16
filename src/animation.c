@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012 Daniel Manjarres
- * Copyright (C) 2012 Kim Woelders
+ * Copyright (C) 2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
