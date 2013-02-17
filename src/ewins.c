@@ -947,7 +947,7 @@ AddToFamily(EWin * ewin, Window xwin, int startup)
 	     ewin2 = NULL;
 	     if (EwinGetTransientFor(ewin) != None)
 		ewin2 = EwinFindByClient(EwinGetTransientFor(ewin));
-	     parent = (ewin2) ? EoGetWin(ewin) : VROOT;
+	     parent = (ewin2) ? EoGetWin(ewin2) : VROOT;
 	     x = (WinGetW(parent) - EoGetW(ewin)) / 2;
 	     y = (WinGetH(parent) - EoGetH(ewin)) / 2;
 	  }
