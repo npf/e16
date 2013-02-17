@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2009 Kim Woelders
+ * Copyright (C) 2008-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -136,7 +136,7 @@ stream_write_callback(pa_stream * pas, size_t length, void *userdata)
 {
    D2printf("%s: state=%d length=%d\n", __func__, pa_stream_get_state(pas),
 	    length);
-   Sample             *s = userdata;
+   Sample             *s = (Sample *) userdata;
    unsigned int        left;
 
    left = s->ssd.size - s->written;
@@ -330,7 +330,7 @@ _sound_pa_Init(void)
    pa_context_set_state_callback(pa_ctx, context_state_callback, NULL);
 
    /* Connect the context */
-   err = pa_context_connect(pa_ctx, NULL, 0, NULL);
+   err = pa_context_connect(pa_ctx, NULL, PA_CONTEXT_NOFLAGS, NULL);
    if (err)
       Eprintf("pa_context_connect(): %s\n", pa_strerror(err));
 

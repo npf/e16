@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -103,7 +103,7 @@ SoundSampleGetData(const char *file, SoundSampleData * ssd)
       Eprintf("SoundSampleGetData frames=%u chan=%u width=%u rate=%u\n",
 	      frame_count, ssd->channels, ssd->bit_per_sample, ssd->rate);
 
-   frames_read = sf_readf_short(sf, ssd->data, frame_count);
+   frames_read = sf_readf_short(sf, (short *)ssd->data, frame_count);
 
    sf_close(sf);
 
