@@ -1032,7 +1032,7 @@ EventsMain(void)
    fd_set              fdset;
    struct timeval      tval;
    unsigned int        time1, time2;
-   int                 dt;
+   int                 dtl, dt;
    int                 count, pfetch;
    int                 fdsize, fd, i;
 
@@ -1061,9 +1061,9 @@ EventsMain(void)
 
 	/* time2 = current time */
 	time2 = GetTimeMs();
-	dt = time2 - time1;
+	dtl = time2 - time1;
 	Mode.events.time_ms = time1 = time2;
-	/* dt = time spent since we last were here */
+	/* dtl = time spent since we last were here */
 
 	/* Run all expired timers */
 	TimersRun(time2);
@@ -1113,9 +1113,9 @@ EventsMain(void)
 
 	if (EDebug(EDBUG_TYPE_EVENTS))
 	   Eprintf
-	      ("EventsMain - count=%d xfd=%d:%d dt=%.6lf time2=%.6lf\n",
-	       count, pfds[0].fd, FD_ISSET(pfds[0].fd, &fdset), dt * 1e-3,
-	       time2 * 1e-3);
+	      ("EventsMain - count=%d xfd=%d:%d dtl=%.6lf dt=%.6lf\n",
+	       count, pfds[0].fd, FD_ISSET(pfds[0].fd, &fdset),
+	       dtl * 1e-3, dt * 1e-3);
 
 	if (count <= 0)
 	   continue;		/* Timeout (or error) */

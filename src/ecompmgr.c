@@ -1966,7 +1966,7 @@ ECompMgrRepaint(void)
 int
 ECompMgrRender(int dt)
 {
-   static unsigned int ecm_render_last;
+   static unsigned int ecm_render_last = 0;
    unsigned int        tnow;
    int                 dt_rendr, dt_frame;
 
