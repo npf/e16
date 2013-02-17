@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -855,6 +855,9 @@ ArrangeEwinXY(EWin * ewin, int *px, int *py)
    int                 i, num;
    RectBox            *fixed, *ret, newrect;
 
+   if (!ewin)
+      return;
+
    fixed = NULL;
    *px = *py = 0;
 
@@ -876,7 +879,8 @@ ArrangeEwinXY(EWin * ewin, int *px, int *py)
 
    ret = ECALLOC(RectBox, num + 1);
    if (!ret)
-      return;
+      goto done;
+
    ArrangeRects(fixed, num, &newrect, 1, ret, 0, 0,
 		WinGetW(VROOT), WinGetH(VROOT), ARRANGE_BY_SIZE, 1);
 
@@ -889,6 +893,8 @@ ArrangeEwinXY(EWin * ewin, int *px, int *py)
 	     break;
 	  }
      }
+
+ done:
    Efree(ret);
    Efree(fixed);
 }
@@ -927,6 +933,8 @@ ArrangeEwins(const char *params)
 	  }
      }
 
+   fixed = floating = ret = NULL;
+
    lst = EwinListGetAll(&num);
    if (!lst)
       goto done;
@@ -935,7 +943,8 @@ ArrangeEwins(const char *params)
 
    ret = ECALLOC(RectBox, nflt + nfix);
    if (!ret)
-      return;
+      goto done;
+
    ArrangeRects(fixed, nfix, floating, nflt, ret, 0, 0,
 		WinGetW(VROOT), WinGetH(VROOT), method, 1);
 
@@ -956,10 +965,8 @@ ArrangeEwins(const char *params)
 	   EwinMove(ewin, ret[i].x, ret[i].y, 0);
      }
 
+ done:
    Efree(fixed);
    Efree(ret);
    Efree(floating);
-
- done:
-   return;
 }

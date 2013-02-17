@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2010 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -257,7 +257,7 @@ _SoundPlayByName(const char *name)
 
 #define _SoundMasked(i) \
     (((i) <= 32) ? Conf_sound.mask1 & (1 << ((i) - 1)) : \
-                   Conf_sound.mask2 & (1 << ((i) - 1)))
+                   Conf_sound.mask2 & (1 << ((i) - 33)))
 void
 SoundPlay(int sound)
 {
