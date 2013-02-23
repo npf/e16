@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -690,7 +690,7 @@ IpcWinop(const WinOp * wop, EWin * ewin, const char *prm)
 	break;
 
      case EWIN_OP_OPACITY:
-	a = OpacityToPercent(ewin->ewmh.opacity);
+	a = OpacityToPercent(ewin->props.opacity);
 	if (!strcmp(param1, "?"))
 	  {
 	     IpcPrintf("opacity: %u\n", a);
@@ -1153,7 +1153,7 @@ EwinShowInfo(const EWin * ewin)
 	     ewin->state.iconified, EoIsSticky(ewin), ewin->state.shaded,
 	     ewin->state.docked, ewin->state.state, EoIsShown(ewin),
 	     ewin->state.visibility, ewin->state.active, ewin->num_groups,
-	     OpacityToPercent(ewin->ewmh.opacity)
+	     OpacityToPercent(ewin->props.opacity)
 #if USE_COMPOSITE
 	     , EoGetOpacity(ewin),
 	     OpacityToPercent(ewin->props.focused_opacity), EoGetShadow(ewin),

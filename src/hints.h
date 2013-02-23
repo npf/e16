@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2011 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -67,7 +67,7 @@ void                EWMH_SetWindowName(Window win, const char *name);
 void                EWMH_SetWindowDesktop(const EWin * ewin);
 void                EWMH_SetWindowState(const EWin * ewin);
 void                EWMH_SetWindowBorder(const EWin * ewin);
-void                EWMH_SetWindowOpacity(const EWin * ewin);
+void                EWMH_SetWindowOpacity(EWin * ewin);
 void                EWMH_SetWindowActions(const EWin * ewin);
 void                EWMH_GetWindowHints(EWin * ewin);
 void                EWMH_DelWindowHints(const EWin * ewin);
@@ -112,7 +112,7 @@ void                HintsSetWindowClass(Win win, const char *name,
 void                HintsSetWindowDesktop(const EWin * ewin);
 void                HintsSetWindowArea(const EWin * ewin);
 void                HintsSetWindowState(const EWin * ewin);
-void                HintsSetWindowOpacity(const EWin * ewin);
+void                HintsSetWindowOpacity(EWin * ewin);
 void                HintsSetWindowBorder(const EWin * ewin);
 void                HintsGetWindowHints(EWin * ewin);
 void                HintsDelWindowHints(const EWin * ewin);

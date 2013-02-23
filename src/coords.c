@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2006-2011 Kim Woelders
+ * Copyright (C) 2006-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -74,7 +74,7 @@ _CoordsShow(EWin * ewin, int mode)
      case 1:
 	Esnprintf(s, sizeof(s), _("Focused/unfocused opacity: %d/%d %%"),
 		  OpacityToPercent(ewin->props.focused_opacity),
-		  OpacityToPercent(ewin->ewmh.opacity));
+		  OpacityToPercent(ewin->props.opacity));
 	break;
      }
    TextSize(tc, 0, 0, 0, s, &cw, &ch, 17);

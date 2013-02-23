@@ -132,6 +132,7 @@ struct _ewin {
    } state;
    struct {
       /* User config */
+      unsigned int        opacity;
       unsigned int        focused_opacity;
       unsigned            never_use_area:1;
       unsigned            ignorearrange:1;
@@ -210,6 +211,7 @@ struct _ewin {
       char               *wm_icon_name;
       unsigned int       *wm_icon, wm_icon_len;
       unsigned int        opacity;
+      char                opacity_update;
 #if USE_XSYNC
       char                sync_request_enable;
       XID                 sync_request_counter;

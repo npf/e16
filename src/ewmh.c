@@ -446,10 +446,35 @@ EWMH_SetWindowBorder(const EWin * ewin)
 }
 
 void
-EWMH_SetWindowOpacity(const EWin * ewin)
+EWMH_SetWindowOpacity(EWin * ewin)
 {
-   ecore_x_netwm_opacity_set(EwinGetClientXwin(ewin), ewin->ewmh.opacity);
-   ecore_x_netwm_opacity_set(EoGetXwin(ewin), ewin->ewmh.opacity);
+   unsigned int        opacity;
+
+   if (!ewin->ewmh.opacity_update)
+      return;
+
+   opacity = ewin->props.opacity;
+   if (opacity != 0)
+     {
+	if (opacity != ewin->ewmh.opacity)
+	  {
+	     ewin->ewmh.opacity = opacity;
+	     ecore_x_netwm_opacity_set(EwinGetClientXwin(ewin), opacity);
+	  }
+	ecore_x_netwm_opacity_set(EoGetXwin(ewin), opacity);
+     }
+   else
+     {
+	if (opacity != ewin->ewmh.opacity)
+	  {
+	     ewin->ewmh.opacity = opacity;
+	     ecore_x_window_prop_del(EwinGetClientXwin(ewin),
+				     ECORE_X_ATOM_NET_WM_WINDOW_OPACITY);
+	  }
+	ecore_x_window_prop_del(EoGetXwin(ewin),
+				ECORE_X_ATOM_NET_WM_WINDOW_OPACITY);
+	ewin->ewmh.opacity_update = 0;
+     }
 }
 
 /*
@@ -689,17 +714,16 @@ EWMH_GetWindowMisc(EWin * ewin)
 static void
 EWMH_GetWindowOpacity(EWin * ewin)
 {
-   int                 num;
    unsigned int        opacity;
 
-   num = ecore_x_netwm_opacity_get(EwinGetClientXwin(ewin), &opacity);
-   if (num <= 0)
-      return;
-
+   opacity = 0;			/* Value zero is treated as unset, i.e. default */
+   ecore_x_netwm_opacity_get(EwinGetClientXwin(ewin), &opacity);
    if (ewin->ewmh.opacity == opacity)
       return;
 
+   ewin->ewmh.opacity_update = 1;
    ewin->ewmh.opacity = opacity;
+   ewin->props.opacity = opacity;
 
    EwinChange(ewin, EWIN_CHANGE_OPACITY);
 }

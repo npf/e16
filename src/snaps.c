@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -447,7 +447,7 @@ _SnapUpdateEwinGroups(Snapshot * sn, const EWin * ewin, char onoff)
 static void
 _SnapUpdateEwinOpacity(Snapshot * sn, const EWin * ewin)
 {
-   sn->opacity = OpacityToPercent(ewin->ewmh.opacity);
+   sn->opacity = OpacityToPercent(ewin->props.opacity);
    sn->focused_opacity = OpacityToPercent(ewin->props.focused_opacity);
 }
 
@@ -1487,8 +1487,9 @@ SnapshotEwinApply(EWin * ewin)
      {
 	sn->opacity = OpacityFix(sn->opacity, 0);
 	sn->focused_opacity = OpacityFix(sn->focused_opacity, 0);
-	ewin->ewmh.opacity = OpacityFromPercent(sn->opacity);
+	ewin->props.opacity = OpacityFromPercent(sn->opacity);
 	ewin->props.focused_opacity = OpacityFromPercent(sn->focused_opacity);
+	ewin->ewmh.opacity_update = 1;	/* Set opacity on client window */
      }
 
    if (use_flags & SNAP_USE_SHADOW)

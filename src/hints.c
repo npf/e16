@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2011 Kim Woelders
+ * Copyright (C) 2003-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -237,7 +237,7 @@ HintsSetWindowState(const EWin * ewin)
 }
 
 void
-HintsSetWindowOpacity(const EWin * ewin)
+HintsSetWindowOpacity(EWin * ewin)
 {
    EWMH_SetWindowOpacity(ewin);
 }

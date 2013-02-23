@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2005-2012 Kim Woelders
+ * Copyright (C) 2005-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -712,7 +712,8 @@ WindowMatchEwinOpsAction(EWin * ewin, int op, const char *args)
 
      case EWIN_OP_OPACITY:
 	a = atoi(args);
-	ewin->ewmh.opacity = OpacityFromPercent(OpacityFix(a, 0));
+	ewin->props.opacity = OpacityFromPercent(OpacityFix(a, 0));
+	ewin->ewmh.opacity_update = 1;	/* Set opacity on client window */
 	break;
 
      case EWIN_OP_FOCUSED_OPACITY:

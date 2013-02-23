@@ -1682,7 +1682,8 @@ EwinOpSetOpacity(EWin * ewin, int source __UNUSED__, int opacity)
    unsigned int        op;
 
    op = OpacityFromPercent(opacity);
-   ewin->ewmh.opacity = op;
+   ewin->props.opacity = op;
+   ewin->ewmh.opacity_update = 1;	/* Set opacity on client window */
    HintsSetWindowOpacity(ewin);
    EwinUpdateOpacity(ewin);
    SnapshotEwinUpdate(ewin, SNAP_USE_OPACITY);

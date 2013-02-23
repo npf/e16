@@ -116,9 +116,6 @@ EwinCreate(int type)
 
    ewin->place.gravity = -1;
 
-   ewin->ewmh.opacity = 0;	/* If 0, ignore */
-   ewin->props.focused_opacity = 0;
-
    return ewin;
 }
 
@@ -1990,7 +1987,7 @@ EwinUpdateOpacity(EWin * ewin)
    else if (ewin->state.active)
       opacity = ewin->props.focused_opacity;
    if (opacity == 0)
-      opacity = ewin->ewmh.opacity;
+      opacity = ewin->props.opacity;
    if (opacity == 0)
       opacity = ewin->state.active ?
 	 OpacityFromPercent(Conf.opacity.focused) :
@@ -2054,7 +2051,8 @@ EwinChangesProcess(EWin * ewin)
 
    if (EWinChanges.flags & EWIN_CHANGE_OPACITY)
      {
-	EoChangeOpacity(ewin, ewin->ewmh.opacity);
+	EwinUpdateOpacity(ewin);
+	HintsSetWindowOpacity(ewin);
 	SnapshotEwinUpdate(ewin, SNAP_USE_OPACITY);
      }
 
