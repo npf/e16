@@ -5690,3 +5690,12 @@ Cosmetic change around TimersRunNextIn().
 Switch default sound support to pulseaudio/libsndfile.
 Run composite rendering to screen separately from animators/idlers/timers.
 
+-------------------------------------------------------------------------------
+
+Sat Feb 23 09:46:40 CET 2013
+
+--- 1.0.11.002 ---
+Fix intended centering on parent of unplaced dialogs.
+Fix some issues reported by clang.
+Build silently (use AM_SILENT_RULES).
+Fix using e16 with xcompmgr.
