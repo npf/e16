@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -168,7 +168,6 @@ StartupWindowsOpen(void)
       return;
 
    Mode.place.enable_features--;
-   ESync(ESYNC_STARTUP);
 
    speed = Conf.desks.slidespeed > 0 ? Conf.desks.slidespeed : 500;
    duration = 2000000 / speed;
