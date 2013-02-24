@@ -2242,14 +2242,9 @@ EwinsManage(void)
 	   continue;
 
 	if (attr.override_redirect)
-	  {
-	     XUnmapWindow(disp, xwin);	/* Makes the CM catch it on map */
-	     XMapWindow(disp, xwin);
-	  }
+	   EobjRegisterOR(xwin);
 	else
-	  {
-	     AddToFamily(NULL, xwin, 1);
-	  }
+	   AddToFamily(NULL, xwin, 1);
      }
    XFree(xwins);
 }

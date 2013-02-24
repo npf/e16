@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -155,8 +155,10 @@ EObj               *EobjWindowCreate(int type, int x, int y, int w, int h,
 				     int su, const char *name);
 void                EobjWindowDestroy(EObj * eo);
 
-EObj               *EobjRegister(Window win, int type);
+EObj               *EobjRegister(Window xwin, int type);
 void                EobjUnregister(EObj * eo);
+
+void                EobjRegisterOR(Window xwin);
 
 void                EobjMap(EObj * eo, int raise);
 void                EobjUnmap(EObj * eo);

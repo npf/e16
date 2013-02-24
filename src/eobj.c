@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -370,6 +370,22 @@ EobjUnregister(EObj * eo)
 	   EobjGetName(eo));
 #endif
    EobjDestroy(eo);
+}
+
+void
+EobjRegisterOR(Window xwin __UNUSED__)
+{
+#if USE_COMPOSITE
+   EObj               *eo;
+
+   if (!ECompMgrIsActive())
+      return;
+
+   eo = EobjRegister(xwin, EOBJ_TYPE_EXT);
+   eo->shown = 1;
+   EobjListStackRaise(eo, 0);
+   ECompMgrWinMap(eo);
+#endif
 }
 
 void
