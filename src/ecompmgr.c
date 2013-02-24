@@ -35,6 +35,7 @@
 #include "emodule.h"
 #include "eobj.h"
 #include "events.h"
+#include "ewins.h"		/* EwinsManage() */
 #include "hints.h"
 #include "timers.h"
 #include "windowmatch.h"
@@ -2208,6 +2209,9 @@ ECompMgrStart(void)
 	if (lst[i]->shown)
 	   ECompMgrWinMap(lst[i]);
      }
+
+   if (!Mode.wm.startup)	/* If CM is enabled after startup, */
+      EwinsManage();		/* add the currently mapped OR windows. */
 
 #if !USE_BG_WIN_ON_ALL_DESKS
    DesksBackgroundRefresh(NULL, DESK_BG_RECONFIGURE_ALL);
