@@ -2216,7 +2216,9 @@ EwinsManage(void)
    unsigned int        i, num;
 
 #ifdef USE_EXT_INIT_WIN
-   Window              init_win = ExtInitWinGet();
+   xwin = ExtInitWinGet();
+   if (xwin)
+      XRaiseWindow(disp, xwin);
 #endif
 
    xwins = NULL;
@@ -2242,11 +2244,7 @@ EwinsManage(void)
 	if (attr.override_redirect)
 	  {
 	     XUnmapWindow(disp, xwin);	/* Makes the CM catch it on map */
-	     XMapRaised(disp, xwin);
-#ifdef USE_EXT_INIT_WIN
-	     if (init_win)
-		XRaiseWindow(disp, init_win);
-#endif
+	     XMapWindow(disp, xwin);
 	  }
 	else
 	  {
