@@ -1976,9 +1976,9 @@ ECompMgrRender(int dt)
       return dt;
 
    tnow = GetTimeMs();
-   dt_rendr = tnow - ecm_render_last;
+   dt_rendr = tnow - ecm_render_last;	/* May be < 0 on startup */
    dt_frame = 1000 / Mode.screen.fps;
-   if (dt_rendr >= dt_frame)
+   if (dt_rendr >= dt_frame || dt_rendr < 0)
      {
 	ecm_render_last = tnow;
 	ECompMgrRepaint();
