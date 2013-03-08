@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
 "POT-Creation-Date: 2013-02-16 00:08+0100\n"
-"PO-Revision-Date: 2010-05-09 01:23+0000\n"
+"PO-Revision-Date: 2013-03-08 20:48+0100\n"
 "Last-Translator: Kim Woelders <kim@woelders.dk>\n"
 "Language-Team: Danish\n"
 "Language: da\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2010-05-09 01:32+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: src/about.c:35
 #, c-format
@@ -738,7 +738,7 @@ msgstr "Alle nye vinduer får fokus"
 
 #: src/focus.c:867
 msgid "New windows get the focus if their window group is focused"
-msgstr ""
+msgstr "Nye vinduer får focus hvis deres vinduesgruppe har focus"
 
 #: src/focus.c:872
 msgid "Only new dialog windows get the focus"
@@ -793,9 +793,8 @@ msgid "Focus windows while switching"
 msgstr "Fokuser vinduer under fokusskift"
 
 #: src/focus.c:953
-#, fuzzy
 msgid "Outline windows while switching"
-msgstr "Fokuser vinduer under fokusskift"
+msgstr "Fremhæv vinduer under fokusskift"
 
 #: src/focus.c:958
 msgid "Raise windows after focus switch"
@@ -1468,9 +1467,8 @@ msgid "Technical"
 msgstr "Teknisk"
 
 #: src/settings.c:121 src/settings.c:126 src/settings.c:403
-#, fuzzy
 msgid "TechOpaque"
-msgstr "Ugennemsigtig"
+msgstr "Ugennemsigtig/teknisk"
 
 #: src/settings.c:145
 msgid "Avoid server grab"
@@ -1522,16 +1520,15 @@ msgstr "Dæk ikke skrivebordstræklinien"
 
 #: src/settings.c:224
 msgid "Enable smart maximization"
-msgstr ""
+msgstr "Aktivér smart placering"
 
 #: src/settings.c:229
 msgid "Animate window maximization"
-msgstr ""
+msgstr "Animér vinduesmaksimering"
 
 #: src/settings.c:235
-#, fuzzy
 msgid "Maximization animation speed:"
-msgstr "Animationshastighed:"
+msgstr "Animationshastighed under maksimering:"
 
 #: src/settings.c:246
 msgid "Move/Resize"
@@ -1649,7 +1646,7 @@ msgstr "Brug saveunders til at reducere vindueseksponeringer"
 
 #: src/settings.c:577
 msgid "Magwin zoom resolution"
-msgstr ""
+msgstr "Forstørrelsesvindues zoomopløsning"
 
 #: src/settings.c:589 config/strings.c:136 config/strings.c:152
 msgid "Miscellaneous"
@@ -2447,9 +2444,8 @@ msgid "Toggle Never Use Area"
 msgstr "Aktivér/deaktivér brug aldrig område"
 
 #: config/strings.c:159
-#, fuzzy
 msgid "Toggle Ignore Arrange"
-msgstr "Aktivér/deaktivér brug aldrig område"
+msgstr "Aktivér/deaktivér medtag under oprydning"
 
 #: config/strings.c:160
 msgid "Toggle Button Grabs"
@@ -2549,47 +2545,12 @@ msgstr "Zoom ind/ud"
 
 #: config/strings.c:190
 msgid "User Application List"
-msgstr "Brugerapplikationsliste"
+msgstr "Brugerapplikationer"
 
 #: config/strings.c:191
-#, fuzzy
 msgid "Applications"
-msgstr "Brugerapplikationsliste"
+msgstr "Applikationer"
 
 #: config/strings.c:192
 msgid "Epplets"
 msgstr "Epplets"
-
-#~ msgid "Shaded"
-#~ msgstr "Oprullet"
-
-#~ msgid "Semi-Solid"
-#~ msgstr "Semi-solid"
-
-#~ msgid "Translucent"
-#~ msgstr "Gennemsigtig"
-
-#~ msgid "Other"
-#~ msgstr "Andet"
-
-#~ msgid "Ignore struts"
-#~ msgstr "Ignorér 'struts'"
-
-#~ msgid "Animate when iconifying to this Iconbox"
-#~ msgstr "Animering ved minimering til denne ikonboks"
-
-#~ msgid "Enable Effect: Raindrops"
-#~ msgstr "Aktivér effekt: Regndråber"
-
-#~ msgid "Autoraise"
-#~ msgstr "Autoløft"
-
-#~ msgid "Autoraise Settings"
-#~ msgstr "Autoløftindstillinger"
-
-#~ msgid ""
-#~ "Enlightenment Automatic Raising\n"
-#~ "of Windows Settings Dialog\n"
-#~ msgstr ""
-#~ "Indstillinger for\n"
-#~ "automatisk løft af vinduer\n"
