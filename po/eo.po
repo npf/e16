@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16 0.99.99.003\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-02-16 00:08+0100\n"
+"POT-Creation-Date: 2013-03-08 20:55+0100\n"
 "PO-Revision-Date: 2013-01-06 22:20+0000\n"
 "Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -683,7 +683,7 @@ msgstr ""
 msgid "Apply"
 msgstr "Apliki"
 
-#: src/ecompmgr.c:2305
+#: src/ecompmgr.c:2309
 msgid ""
 "Cannot enable Composite Manager.\n"
 "Use xdpyinfo to check that\n"
