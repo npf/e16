@@ -122,14 +122,16 @@ e16_SOURCES = \
 	$(SRCS_DBUS)		\
 	$(SRCS_SNPRINTF)
 
-CPPFLAGS = \
+AM_CPPFLAGS = \
 	$(CWARNFLAGS) \
 	-D LOCALEDIR=\"$(datadir)/locale\" \
 	-D ENLIGHTENMENT_BIN=\"$(bindir)\" \
 	-D ENLIGHTENMENT_LIB=\"$(pkglibdir)\" \
 	-D ENLIGHTENMENT_ROOT=\"$(pkgdatadir)\"
 
-e16_CPPFLAGS = -I$(top_builddir) \
+e16_CPPFLAGS = \
+	$(AM_CPPFLAGS) \
+	-I$(top_builddir) \
 	$(MODULE_CFLAGS) \
 	$(IMLIB2_CFLAGS) \
 	$(DBUS_CFLAGS) \
@@ -169,7 +171,7 @@ libe16_LTLIBRARIES = $(LIBSND_ESD) $(LIBSND_PA) $(LIBFNT_IFT) $(LIBFNT_XFT) $(LI
 if USE_LIBESD
 LIBSND_ESD = libsound_esd.la
 libsound_esd_la_SOURCES   = sound_esd.c sound_load.c
-libsound_esd_la_CFLAGS    = $(ESD_CFLAGS) $(SNDLDR_CFLAGS) $(CWARNFLAGS)
+libsound_esd_la_CFLAGS    = $(ESD_CFLAGS) $(SNDLDR_CFLAGS)
 libsound_esd_la_LIBADD    = $(ESD_LIBS) $(SNDLDR_LIBS)
 libsound_esd_la_LDFLAGS   = -module -avoid-version
 endif
@@ -177,21 +179,21 @@ endif
 if USE_LIBPA
 LIBSND_PA = libsound_pa.la
 libsound_pa_la_SOURCES   = sound_pa.c sound_load.c
-libsound_pa_la_CFLAGS    = $(PA_CFLAGS) $(SNDLDR_CFLAGS) $(CWARNFLAGS)
+libsound_pa_la_CFLAGS    = $(PA_CFLAGS) $(SNDLDR_CFLAGS)
 libsound_pa_la_LIBADD    = $(PA_LIBS) $(SNDLDR_LIBS)
 libsound_pa_la_LDFLAGS   = -module -avoid-version
 endif
 
 LIBFNT_IFT = libfont_ift.la
 libfont_ift_la_SOURCES    = ttfont.c
-libfont_ift_la_CFLAGS     = $(IMLIB2_CFLAGS) $(CWARNFLAGS)
+libfont_ift_la_CFLAGS     = $(IMLIB2_CFLAGS)
 libfont_ift_la_LIBADD     = $(IMLIB2_LIBS)
 libfont_ift_la_LDFLAGS    = -module -avoid-version
 
 if USE_LIBXFT
 LIBFNT_XFT = libfont_xft.la
 libfont_xft_la_SOURCES    = text_xft.c
-libfont_xft_la_CFLAGS     = $(XFT_CFLAGS) $(CWARNFLAGS)
+libfont_xft_la_CFLAGS     = $(XFT_CFLAGS)
 libfont_xft_la_LIBADD     = $(XFT_LIBS)
 libfont_xft_la_LDFLAGS    = -module -avoid-version
 endif
@@ -199,7 +201,7 @@ endif
 if USE_LIBPANGO
 LIBFNT_PANGO = libfont_pango.la
 libfont_pango_la_SOURCES  = text_pango.c
-libfont_pango_la_CFLAGS   = $(PANGO_CFLAGS) $(CWARNFLAGS)
+libfont_pango_la_CFLAGS   = $(PANGO_CFLAGS)
 libfont_pango_la_LIBADD   = $(PANGO_LIBS) libfont_xft.la
 libfont_pango_la_LDFLAGS  = -module -avoid-version
 endif
