@@ -5699,3 +5699,16 @@ Fix intended centering on parent of unplaced dialogs.
 Fix some issues reported by clang.
 Build silently (use AM_SILENT_RULES).
 Fix using e16 with xcompmgr.
+
+-------------------------------------------------------------------------------
+
+Mon Mar 25 17:55:11 CET 2013
+
+--- 1.0.12 ---
+Minor simplification in initial window registration.
+Eliminate unnecessary XSync.
+Don't unmap/map override-redirect windows during startup.
+CM: Fix override-redirect window registration detail.
+CM: Fix startup after recent changes.
+Danish translation update.
+Convert da.po to utf-8.
