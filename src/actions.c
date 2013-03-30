@@ -202,7 +202,7 @@ Espawn(int argc __UNUSED__, char **argv)
    if (fork())
       return;
 
-   ExecSetupEnv(EXEC_SET_LANG);
+   ExecSetupEnv(EXEC_SET_LANG | EXEC_SET_STARTUP_ID);
 
    execvp(argv[0], argv);
 
