@@ -88,6 +88,7 @@ struct _ewin {
       char                shaped;
       char                shaded;
 
+      unsigned            snapstarted:1;	/* Started from snap cmd */
       unsigned            identified:1;
       unsigned            placed:1;
       unsigned            iconified:1;

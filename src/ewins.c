@@ -824,7 +824,7 @@ AddToFamily(EWin * ewin, Window xwin, int startup)
    y = EoGetY(ewin);
 
    doslide = manplace = 0;
-   if (Mode.place.enable_features > 0)
+   if (Mode.place.enable_features > 0 && !ewin->state.snapstarted)
      {
 	/* if set for borderless then dont slide it in */
 	if (Conf.place.slidein &&

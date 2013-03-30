@@ -219,6 +219,12 @@ _SnapEwinFind(EWin * ewin)
 
    /* If exec'ed by snap try matching command exactly */
    sn = (Snapshot *) ecore_list_find(ss_list, _SnapEwinFindMatchCmd, ewin);
+   if (sn && sn->startup_id > 0)
+     {
+	/* Assuming we were started by snap */
+	sn->startup_id = 0;	/* Only the first time */
+	ewin->state.snapstarted = 1;
+     }
 
    if (!sn)
       sn = (Snapshot *) ecore_list_find(ss_list, _SnapEwinFindMatch, ewin);
