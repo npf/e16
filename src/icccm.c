@@ -402,8 +402,9 @@ ICCCM_Focus(const EWin * ewin)
 				      Mode.events.time);
      }
 
-   XSetInputFocus(disp, EwinGetClientXwin(ewin), RevertToPointerRoot,
-		  Mode.events.time);
+   if (ewin->icccm.need_input)
+      XSetInputFocus(disp, EwinGetClientXwin(ewin),
+		     RevertToPointerRoot, Mode.events.time);
 
    HintsSetActiveWindow(EwinGetClientXwin(ewin));
 }
@@ -717,7 +718,7 @@ ICCCM_GetWmProtocols(EWin * ewin)
 	for (i = 0; i < num; i++)
 	  {
 	     if (prop[i] == ECORE_X_ATOM_WM_TAKE_FOCUS)
-		ewin->icccm.take_focus = ewin->icccm.need_input = 1;
+		ewin->icccm.take_focus = 1;
 	     else if (prop[i] == ECORE_X_ATOM_WM_DELETE_WINDOW)
 		ewin->icccm.delete_window = 1;
 #if USE_XSYNC

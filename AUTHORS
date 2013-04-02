@@ -280,5 +280,8 @@ Aron Xu <aronmalache@163.com>
 Daniel Manjarres <manjarrs@illinois.edu>
 	Improved strut handling options, other patches and suggestions.
 
+Tim Howe <vsync@quadium.net>
+	Fix focus handling to support "Globally Active" model (used by Java)
+
 And others whose names we probably forgot to add (email us and we'll put you
 in here)

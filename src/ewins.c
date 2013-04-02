@@ -703,7 +703,8 @@ EwinStateUpdate(EWin * ewin)
    fs_zo = ewin->state.fullscreen || ewin->state.zoomed;
 
    ewin->state.inhibit_actions = ewin->props.no_actions;
-   ewin->state.inhibit_focus = !ewin->icccm.need_input ||
+   ewin->state.inhibit_focus =
+      !(ewin->icccm.need_input || ewin->icccm.take_focus) ||
       EwinInhGetWM(ewin, focus) || ewin->state.iconified;
 
    ewin->state.inhibit_move = EwinInhGetUser(ewin, move) || fs_zo;
