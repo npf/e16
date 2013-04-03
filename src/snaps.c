@@ -1184,7 +1184,7 @@ SnapshotsSpawn(void)
 	  !sn->used && !(sn->match_flags & SNAP_MATCH_MULTIPLE))
 	{
 	   sn->startup_id = ++Mode.apps.startup_id;
-	   EspawnCmd(sn->cmd);
+	   Espawn(sn->cmd);
 	}
    }
 }

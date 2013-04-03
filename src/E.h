@@ -458,10 +458,9 @@ void                About(void);
 /* actions.c */
 #define EXEC_SET_LANG       0x01
 #define EXEC_SET_STARTUP_ID 0x02
-void                EexecCmd(const char *cmd);
+void                Eexec(const char *cmd);
 int                 EspawnApplication(const char *params, int flags);
-void                Espawn(int argc, char **argv);
-void                EspawnCmd(const char *cmd);
+void                Espawn(const char *cmd);
 int                 Esystem(const char *cmd);
 
 /* config.c */

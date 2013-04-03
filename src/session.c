@@ -521,7 +521,7 @@ doSMExit(int mode, const char *params)
 
 	if (EDebug(EDBUG_TYPE_SESSION))
 	   Eprintf("doSMExit: exec %s\n", params);
-	EexecCmd(params);
+	Eexec(params);
 	break;
 
      case EEXIT_THEME:
@@ -559,7 +559,7 @@ doSMExit(int mode, const char *params)
 	if (EDebug(EDBUG_TYPE_SESSION))
 	   Eprintf("doSMExit: exec %s\n", s);
 
-	EexecCmd(s);
+	Eexec(s);
 	break;
      }
 
