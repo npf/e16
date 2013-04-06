@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2007-2010 Kim Woelders
+ * Copyright (C) 2007-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -35,7 +35,6 @@ char              **
 E_ls(const char *dir, int *num)
 {
    int                 i, dirlen;
-   int                 done = 0;
    DIR                *dirp;
    char              **names;
    struct dirent      *dp;
@@ -80,23 +79,9 @@ E_ls(const char *dir, int *num)
    closedir(dirp);
    *num = dirlen;
 
-   /* do a simple bubble sort here to alphanumberic it */
-   while (!done)
-     {
-	done = 1;
-	for (i = 0; i < dirlen - 1; i++)
-	  {
-	     if (strcmp(names[i], names[i + 1]) > 0)
-	       {
-		  char               *tmp;
+   /* Sort names */
+   StrlistSort(names, dirlen);
 
-		  tmp = names[i];
-		  names[i] = names[i + 1];
-		  names[i + 1] = tmp;
-		  done = 0;
-	       }
-	  }
-     }
    return names;
 }
 

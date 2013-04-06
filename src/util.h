@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -104,6 +104,8 @@ char               *StrlistEncodeEscaped(char *buf, int len, char **lst,
 					 int num);
 char              **StrlistDecodeEscaped(const char *str, int *pnum);
 __EXPORT__ char   **StrlistFromString(const char *str, int delim, int *num);
+
+void                StrlistSort(char **lst, int num);
 
 void                Esetenv(const char *name, const char *value);
 

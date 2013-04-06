@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2005-2008 Kim Woelders
+ * Copyright (C) 2005-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -21,8 +21,10 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "E.h"
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include "util.h"
 
 char               *
 Estrtrim(char *s)
@@ -305,6 +307,18 @@ StrlistFromString(const char *str, int delim, int *num)
       lst[n] = NULL;
    *num = n;
    return lst;
+}
+
+static int
+_qsort_strcmp(const void *s1, const void *s2)
+{
+   return strcmp(*(const char **)s1, *(const char **)s2);
+}
+
+void
+StrlistSort(char **lst, int len)
+{
+   qsort(lst, (unsigned int)len, sizeof(char *), _qsort_strcmp);
 }
 
 void
