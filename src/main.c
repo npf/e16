@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -464,7 +464,7 @@ RunDocBrowser(void)
       return;
 
    Esnprintf(buf, sizeof(buf), "%s/edox %s/E-docs", EDirBin(), EDirRoot());
-   EspawnApplication(buf, 0);
+   Espawn(buf);
 }
 
 static void
@@ -473,7 +473,7 @@ RunMenuGen(void)
    char                buf[FILEPATH_LEN_MAX];
 
    Esnprintf(buf, sizeof(buf), "%s/scripts/e_gen_menu", EDirRoot());
-   EspawnApplication(buf, EXEC_SET_LANG);
+   Espawn(buf);
 }
 
 static void
