@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2008 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -23,9 +23,9 @@
  */
 #include "E.h"
 #include "desktops.h"
-#include "e16-ecore_hints.h"
 #include "ewins.h"
 #include "hints.h"
+#include "xprop.h"
 #include "xwin.h"
 
 /* WIN_WM_NAME STRING - contains a string identifier for the WM's name */
@@ -291,7 +291,7 @@ GNOME_GetHintIcons(EWin * ewin, Atom atom_change)
 {
    static Atom         atom_get = 0;
    int                 num, i;
-   Ecore_X_ID         *plst;
+   EX_ID              *plst;
    Pixmap              pmap;
    Pixmap              mask;
 
@@ -303,8 +303,8 @@ GNOME_GetHintIcons(EWin * ewin, Atom atom_change)
    if ((atom_change) && (atom_change != atom_get))
       return;
 
-   num = ecore_x_window_prop_xid_list_get(EwinGetClientXwin(ewin), atom_get,
-					  XA_PIXMAP, &plst);
+   num = ex_window_prop_xid_list_get(EwinGetClientXwin(ewin), atom_get,
+				     XA_PIXMAP, &plst);
    if (num < 2)
       return;
 
@@ -332,8 +332,8 @@ GNOME_GetHintLayer(EWin * ewin, Atom atom_change)
    if ((atom_change) && (atom_change != atom_get))
       return;
 
-   num = ecore_x_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get,
-					&layer, 1);
+   num = ex_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get,
+				   &layer, 1);
    if (num <= 0)
       return;
 
@@ -356,8 +356,8 @@ GNOME_GetHintState(EWin * ewin, Atom atom_change)
    if ((atom_change) && (atom_change != atom_get))
       return;
 
-   num = ecore_x_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get,
-					&flags, 1);
+   num = ex_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get,
+				   &flags, 1);
    if (num <= 0)
       return;
 
@@ -389,8 +389,8 @@ GNOME_GetHintAppState(EWin * ewin, Atom atom_change)
    if ((atom_change) && (atom_change != atom_get))
       return;
 
-   num = ecore_x_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get,
-					&flags, 1);
+   num = ex_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get,
+				   &flags, 1);
    if (num <= 0)
       return;
 }
@@ -411,8 +411,7 @@ GNOME_GetHintDesktop(EWin * ewin, Atom atom_change)
    if ((atom_change) && (atom_change != atom_get))
       return;
 
-   num = ecore_x_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get,
-					&desk, 1);
+   num = ex_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get, &desk, 1);
    if (num <= 0)
       return;
 
@@ -435,8 +434,8 @@ GNOME_GetHint(EWin * ewin, Atom atom_change)
    if ((atom_change) && (atom_change != atom_get))
       return;
 
-   num = ecore_x_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get,
-					&flags, 1);
+   num = ex_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get,
+				   &flags, 1);
    if (num <= 0)
       return;
 
@@ -469,7 +468,7 @@ GNOME_SetHint(const EWin * ewin)
       val |= WIN_STATE_SHADED;
    if (EwinInhGetUser(ewin, move))
       val |= WIN_STATE_FIXED_POSITION;
-   ecore_x_window_prop_card32_set(EwinGetClientXwin(ewin), atom_set, &val, 1);
+   ex_window_prop_card32_set(EwinGetClientXwin(ewin), atom_set, &val, 1);
 }
 
 void
@@ -484,7 +483,7 @@ GNOME_SetEwinArea(const EWin * ewin)
       atom_set = EInternAtom(XA_WIN_AREA);
    val[0] = ewin->area_x;
    val[1] = ewin->area_y;
-   ecore_x_window_prop_card32_set(EwinGetClientXwin(ewin), atom_set, val, 2);
+   ex_window_prop_card32_set(EwinGetClientXwin(ewin), atom_set, val, 2);
 }
 
 void
@@ -498,7 +497,7 @@ GNOME_SetEwinDesk(const EWin * ewin)
    if (!atom_set)
       atom_set = EInternAtom(XA_WIN_WORKSPACE);
    val = EoGetDeskNum(ewin);
-   ecore_x_window_prop_card32_set(EwinGetClientXwin(ewin), atom_set, &val, 1);
+   ex_window_prop_card32_set(EwinGetClientXwin(ewin), atom_set, &val, 1);
 }
 
 #if 0				/* Does nothing */
@@ -517,8 +516,7 @@ GNOME_GetExpandedSize(EWin * ewin, Atom atom_change)
    if ((atom_change) && (atom_change != atom_get))
       return;
 
-   num = ecore_x_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get,
-					exp, 4);
+   num = ex_window_prop_card32_get(EwinGetClientXwin(ewin), atom_get, exp, 4);
    if (num >= 4)
      {
 #if 0				/* Not actually used */
@@ -535,7 +533,7 @@ static void
 GNOME_SetUsedHints(void)
 {
    static Atom         atom_set = 0;
-   Ecore_X_Atom        list[10];
+   EX_Atom             list[10];
 
    if (!atom_set)
       atom_set = EInternAtom(XA_WIN_PROTOCOLS);
@@ -549,7 +547,7 @@ GNOME_SetUsedHints(void)
    list[7] = EInternAtom(XA_WIN_WORKSPACE_COUNT);
    list[8] = EInternAtom(XA_WIN_WORKSPACE_NAMES);
    list[9] = EInternAtom(XA_WIN_CLIENT_LIST);
-   ecore_x_window_prop_atom_set(WinGetXwin(VROOT), atom_set, list, 10);
+   ex_window_prop_atom_set(WinGetXwin(VROOT), atom_set, list, 10);
 }
 
 void
@@ -564,7 +562,7 @@ GNOME_SetCurrentArea(void)
    DeskCurrentGetArea(&ax, &ay);
    val[0] = ax;
    val[1] = ay;
-   ecore_x_window_prop_card32_set(WinGetXwin(VROOT), atom_set, val, 2);
+   ex_window_prop_card32_set(WinGetXwin(VROOT), atom_set, val, 2);
 }
 
 void
@@ -576,7 +574,7 @@ GNOME_SetCurrentDesk(void)
    if (!atom_set)
       atom_set = EInternAtom(XA_WIN_WORKSPACE);
    val = DesksGetCurrentNum();
-   ecore_x_window_prop_card32_set(WinGetXwin(VROOT), atom_set, &val, 1);
+   ex_window_prop_card32_set(WinGetXwin(VROOT), atom_set, &val, 1);
 }
 
 static void
@@ -588,8 +586,8 @@ GNOME_SetWMCheck(Window win_wm_check)
    if (!atom_set)
       atom_set = EInternAtom(XA_WIN_SUPPORTING_WM_CHECK);
    val = win_wm_check;
-   ecore_x_window_prop_card32_set(WinGetXwin(VROOT), atom_set, &val, 1);
-   ecore_x_window_prop_card32_set(win_wm_check, atom_set, &val, 1);
+   ex_window_prop_card32_set(WinGetXwin(VROOT), atom_set, &val, 1);
+   ex_window_prop_card32_set(win_wm_check, atom_set, &val, 1);
 }
 
 void
@@ -601,7 +599,7 @@ GNOME_SetDeskCount(void)
    if (!atom_set)
       atom_set = EInternAtom(XA_WIN_WORKSPACE_COUNT);
    val = DesksGetNumber();
-   ecore_x_window_prop_card32_set(WinGetXwin(VROOT), atom_set, &val, 1);
+   ex_window_prop_card32_set(WinGetXwin(VROOT), atom_set, &val, 1);
 }
 
 void
@@ -616,7 +614,7 @@ GNOME_SetAreaCount(void)
    DesksGetAreaSize(&ax, &ay);
    val[0] = ax;
    val[1] = ay;
-   ecore_x_window_prop_card32_set(WinGetXwin(VROOT), atom_set, val, 2);
+   ex_window_prop_card32_set(WinGetXwin(VROOT), atom_set, val, 2);
 }
 
 void
@@ -641,8 +639,7 @@ GNOME_SetDeskNames(void)
 	names[i] = Estrdup(s);
      }
 
-   ecore_x_window_prop_string_list_set(WinGetXwin(VROOT), atom_set, names,
-				       n_desks);
+   ex_window_prop_string_list_set(WinGetXwin(VROOT), atom_set, names, n_desks);
 
    for (i = 0; i < n_desks; i++)
       Efree(names[i]);
@@ -673,7 +670,7 @@ GNOME_SetClientList(void)
 		wl[j++] = EwinGetClientXwin(lst[i]);
 	  }
      }
-   ecore_x_window_prop_card32_set(WinGetXwin(VROOT), atom_set, wl, j);
+   ex_window_prop_card32_set(WinGetXwin(VROOT), atom_set, wl, j);
    Efree(wl);
 }
 
@@ -684,11 +681,11 @@ GNOME_SetWMNameVer(void)
 
    if (!atom_set)
       atom_set = EInternAtom(XA_WIN_WM_NAME);
-   ecore_x_window_prop_string_set(WinGetXwin(VROOT), atom_set, e_wm_name);
+   ex_window_prop_string_set(WinGetXwin(VROOT), atom_set, e_wm_name);
 
    if (!atom_set2)
       atom_set2 = EInternAtom(XA_WIN_WM_VERSION);
-   ecore_x_window_prop_string_set(WinGetXwin(VROOT), atom_set2, e_wm_version);
+   ex_window_prop_string_set(WinGetXwin(VROOT), atom_set2, e_wm_version);
 }
 
 void
@@ -745,8 +742,8 @@ GNOME_SetHints(Window win_wm_check)
 	 XCreateSimpleWindow(disp, WinGetXwin(VROOT), -80, -80, 24, 24, 0,
 			     0, 0);
       val = Mode.button_proxy_win;
-      ecore_x_window_prop_card32_set(WinGetXwin(VROOT), atom_set, &val, 1);
-      ecore_x_window_prop_card32_set(Mode.button_proxy_win, atom_set, &val, 1);
+      ex_window_prop_card32_set(WinGetXwin(VROOT), atom_set, &val, 1);
+      ex_window_prop_card32_set(Mode.button_proxy_win, atom_set, &val, 1);
    }
 }
 
@@ -766,7 +763,7 @@ GNOME_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * event)
 
 	val = event->data.l[0];
 	EoSetLayer(ewin, val);
-	ecore_x_window_prop_card32_set(EwinGetClientXwin(ewin), a4, &val, 1);
+	ex_window_prop_card32_set(EwinGetClientXwin(ewin), a4, &val, 1);
 	EwinRaise(ewin);
 	return 1;
      }

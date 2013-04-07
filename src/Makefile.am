@@ -43,7 +43,6 @@ e16_SOURCES = \
 	dialog.c	        dialog.h	        \
 	dock.c			\
 	draw.c			\
-	e16-ecore_hints.c	e16-ecore_hints.h	\
 	e16-ecore_list.c	e16-ecore_list.h	\
 	econfig.c		econfig.h		\
 	edebug.h		\
@@ -112,6 +111,7 @@ e16_SOURCES = \
 	util.h			\
 	warp.c			\
 	windowmatch.c   	windowmatch.h		\
+	xprop.c			xprop.h			\
 	x.c                     xwin.h			\
 	xtypes.h                \
 	$(MODULE_SRCS)		\

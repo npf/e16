@@ -25,10 +25,10 @@
  */
 #include "E.h"
 #include "desktops.h"
-#include "e16-ecore_hints.h"
 #include "events.h"
 #include "ewins.h"
 #include "hints.h"
+#include "xprop.h"
 
 /*
  * _NET_WM_MOVERESIZE client message actions
@@ -62,8 +62,7 @@
  * Set/clear Atom in list
  */
 static void
-atom_list_set(Ecore_X_Atom * atoms, int size, int *count, Ecore_X_Atom atom,
-	      int set)
+atom_list_set(EX_Atom * atoms, int size, int *count, EX_Atom atom, int set)
 {
    int                 i, n, in_list;
 
@@ -96,91 +95,90 @@ atom_list_set(Ecore_X_Atom * atoms, int size, int *count, Ecore_X_Atom atom,
 void
 EWMH_Init(Window win_wm_check)
 {
-   Ecore_X_Atom        atom_list[64];
+   EX_Atom             atom_list[64];
    int                 atom_count;
 
-   ecore_x_netwm_init();
+   ex_netwm_init();
 
    atom_count = 0;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_SUPPORTED;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_SUPPORTING_WM_CHECK;
+   atom_list[atom_count++] = EX_ATOM_NET_SUPPORTED;
+   atom_list[atom_count++] = EX_ATOM_NET_SUPPORTING_WM_CHECK;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_NUMBER_OF_DESKTOPS;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_DESKTOP_GEOMETRY;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_DESKTOP_NAMES;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_CURRENT_DESKTOP;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_DESKTOP_VIEWPORT;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WORKAREA;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_VIRTUAL_ROOTS;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_SHOWING_DESKTOP;
+   atom_list[atom_count++] = EX_ATOM_NET_NUMBER_OF_DESKTOPS;
+   atom_list[atom_count++] = EX_ATOM_NET_DESKTOP_GEOMETRY;
+   atom_list[atom_count++] = EX_ATOM_NET_DESKTOP_NAMES;
+   atom_list[atom_count++] = EX_ATOM_NET_CURRENT_DESKTOP;
+   atom_list[atom_count++] = EX_ATOM_NET_DESKTOP_VIEWPORT;
+   atom_list[atom_count++] = EX_ATOM_NET_WORKAREA;
+   atom_list[atom_count++] = EX_ATOM_NET_VIRTUAL_ROOTS;
+   atom_list[atom_count++] = EX_ATOM_NET_SHOWING_DESKTOP;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_ACTIVE_WINDOW;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_CLIENT_LIST;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_CLIENT_LIST_STACKING;
+   atom_list[atom_count++] = EX_ATOM_NET_ACTIVE_WINDOW;
+   atom_list[atom_count++] = EX_ATOM_NET_CLIENT_LIST;
+   atom_list[atom_count++] = EX_ATOM_NET_CLIENT_LIST_STACKING;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_CLOSE_WINDOW;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_MOVERESIZE_WINDOW;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_MOVERESIZE;
+   atom_list[atom_count++] = EX_ATOM_NET_CLOSE_WINDOW;
+   atom_list[atom_count++] = EX_ATOM_NET_MOVERESIZE_WINDOW;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_MOVERESIZE;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_NAME;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ICON_NAME;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_DESKTOP;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_NAME;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ICON_NAME;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_DESKTOP;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_WINDOW_TYPE;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_WINDOW_TYPE_DESKTOP;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_WINDOW_TYPE_DOCK;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_WINDOW_TYPE_TOOLBAR;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_WINDOW_TYPE_MENU;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_WINDOW_TYPE_UTILITY;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_WINDOW_TYPE_SPLASH;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_WINDOW_TYPE_DIALOG;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_WINDOW_TYPE_NORMAL;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_WINDOW_TYPE;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_WINDOW_TYPE_DESKTOP;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_WINDOW_TYPE_DOCK;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_WINDOW_TYPE_TOOLBAR;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_WINDOW_TYPE_MENU;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_WINDOW_TYPE_UTILITY;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_WINDOW_TYPE_SPLASH;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_WINDOW_TYPE_DIALOG;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_WINDOW_TYPE_NORMAL;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_MODAL;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_STICKY;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_MAXIMIZED_VERT;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_MAXIMIZED_HORZ;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_SHADED;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_SKIP_TASKBAR;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_SKIP_PAGER;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_HIDDEN;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_FULLSCREEN;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_ABOVE;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_BELOW;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STATE_DEMANDS_ATTENTION;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_MODAL;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_STICKY;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_MAXIMIZED_VERT;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_MAXIMIZED_HORZ;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_SHADED;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_SKIP_TASKBAR;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_SKIP_PAGER;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_HIDDEN;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_FULLSCREEN;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_ABOVE;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_BELOW;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STATE_DEMANDS_ATTENTION;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ALLOWED_ACTIONS;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_MOVE;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_RESIZE;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_MINIMIZE;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_SHADE;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_STICK;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_MAXIMIZE_HORZ;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_MAXIMIZE_VERT;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_FULLSCREEN;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_CHANGE_DESKTOP;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_CLOSE;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_ABOVE;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_ACTION_BELOW;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ALLOWED_ACTIONS;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_MOVE;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_RESIZE;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_MINIMIZE;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_SHADE;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_STICK;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_MAXIMIZE_HORZ;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_MAXIMIZE_VERT;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_FULLSCREEN;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_CHANGE_DESKTOP;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_CLOSE;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_ABOVE;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_ACTION_BELOW;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STRUT_PARTIAL;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_STRUT;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STRUT_PARTIAL;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_STRUT;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_FRAME_EXTENTS;
+   atom_list[atom_count++] = EX_ATOM_NET_FRAME_EXTENTS;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_USER_TIME;
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_USER_TIME_WINDOW;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_USER_TIME;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_USER_TIME_WINDOW;
 
-   atom_list[atom_count++] = ECORE_X_ATOM_NET_WM_WINDOW_OPACITY;
+   atom_list[atom_count++] = EX_ATOM_NET_WM_WINDOW_OPACITY;
 
-   ecore_x_window_prop_atom_set(WinGetXwin(VROOT),
-				ECORE_X_ATOM_NET_SUPPORTED, atom_list,
-				atom_count);
+   ex_window_prop_atom_set(WinGetXwin(VROOT),
+			   EX_ATOM_NET_SUPPORTED, atom_list, atom_count);
 
    /* Set WM info properties */
-   ecore_x_netwm_wm_identify(WinGetXwin(VROOT), win_wm_check, e_wm_name);
+   ex_netwm_wm_identify(WinGetXwin(VROOT), win_wm_check, e_wm_name);
 }
 
 /*
@@ -190,24 +188,24 @@ EWMH_Init(Window win_wm_check)
 void
 EWMH_SetDesktopCount(void)
 {
-   ecore_x_netwm_desk_count_set(WinGetXwin(VROOT), DesksGetNumber());
+   ex_netwm_desk_count_set(WinGetXwin(VROOT), DesksGetNumber());
 }
 
 void
 EWMH_SetDesktopRoots(void)
 {
    int                 i, n_desks;
-   Ecore_X_Window     *wl;
+   EX_Window          *wl;
 
    n_desks = DesksGetNumber();
-   wl = EMALLOC(Ecore_X_Window, n_desks);
+   wl = EMALLOC(EX_Window, n_desks);
    if (!wl)
       return;
 
    for (i = 0; i < n_desks; i++)
       wl[i] = EoGetXwin(DeskGet(i));
 
-   ecore_x_netwm_desk_roots_set(WinGetXwin(VROOT), wl, n_desks);
+   ex_netwm_desk_roots_set(WinGetXwin(VROOT), wl, n_desks);
 
    Efree(wl);
 }
@@ -216,7 +214,7 @@ void
 EWMH_SetDesktopNames(void)
 {
    /* Fall back to defaults */
-   ecore_x_netwm_desk_names_set(WinGetXwin(VROOT), NULL, DesksGetNumber());
+   ex_netwm_desk_names_set(WinGetXwin(VROOT), NULL, DesksGetNumber());
 }
 
 void
@@ -225,8 +223,8 @@ EWMH_SetDesktopSize(void)
    int                 ax, ay;
 
    DesksGetAreaSize(&ax, &ay);
-   ecore_x_netwm_desk_size_set(WinGetXwin(VROOT), ax * WinGetW(VROOT),
-			       ay * WinGetH(VROOT));
+   ex_netwm_desk_size_set(WinGetXwin(VROOT), ax * WinGetW(VROOT),
+			  ay * WinGetH(VROOT));
 }
 
 void
@@ -250,7 +248,7 @@ EWMH_SetWorkArea(void)
 	p_coord[4 * i + 3] = WinGetH(VROOT);
      }
 
-   ecore_x_netwm_desk_workareas_set(WinGetXwin(VROOT), p_coord, n_desks);
+   ex_netwm_desk_workareas_set(WinGetXwin(VROOT), p_coord, n_desks);
 
    Efree(p_coord);
 }
@@ -258,7 +256,7 @@ EWMH_SetWorkArea(void)
 void
 EWMH_SetCurrentDesktop(void)
 {
-   ecore_x_netwm_desk_current_set(WinGetXwin(VROOT), DesksGetCurrentNum());
+   ex_netwm_desk_current_set(WinGetXwin(VROOT), DesksGetCurrentNum());
 }
 
 void
@@ -281,7 +279,7 @@ EWMH_SetDesktopViewport(void)
 	p_coord[2 * i + 1] = ay * WinGetH(VROOT);
      }
 
-   ecore_x_netwm_desk_viewports_set(WinGetXwin(VROOT), p_coord, n_desks);
+   ex_netwm_desk_viewports_set(WinGetXwin(VROOT), p_coord, n_desks);
 
    Efree(p_coord);
 }
@@ -289,7 +287,7 @@ EWMH_SetDesktopViewport(void)
 void
 EWMH_SetShowingDesktop(int on)
 {
-   ecore_x_netwm_showing_desktop_set(WinGetXwin(VROOT), on);
+   ex_netwm_showing_desktop_set(WinGetXwin(VROOT), on);
 }
 
 /*
@@ -299,7 +297,7 @@ EWMH_SetShowingDesktop(int on)
 void
 EWMH_SetClientList(void)
 {
-   Ecore_X_Window     *wl;
+   EX_Window          *wl;
    int                 i, num;
    EWin               *const *lst;
 
@@ -307,22 +305,22 @@ EWMH_SetClientList(void)
    lst = EwinListOrderGet(&num);
    if (num > 0)
      {
-	wl = EMALLOC(Ecore_X_Window, num);
+	wl = EMALLOC(EX_Window, num);
 	for (i = 0; i < num; i++)
 	   wl[i] = EwinGetClientXwin(lst[i]);
-	ecore_x_netwm_client_list_set(WinGetXwin(VROOT), wl, num);
+	ex_netwm_client_list_set(WinGetXwin(VROOT), wl, num);
 	Efree(wl);
      }
    else
      {
-	ecore_x_netwm_client_list_set(WinGetXwin(VROOT), NULL, 0);
+	ex_netwm_client_list_set(WinGetXwin(VROOT), NULL, 0);
      }
 }
 
 void
 EWMH_SetClientStacking(void)
 {
-   Ecore_X_Window     *wl;
+   EX_Window          *wl;
    int                 i, num;
    EWin               *const *lst;
 
@@ -330,15 +328,15 @@ EWMH_SetClientStacking(void)
    lst = EwinListStackGet(&num);
    if (num > 0)
      {
-	wl = EMALLOC(Ecore_X_Window, num);
+	wl = EMALLOC(EX_Window, num);
 	for (i = 0; i < num; i++)
 	   wl[i] = EwinGetClientXwin(lst[num - i - 1]);
-	ecore_x_netwm_client_list_stacking_set(WinGetXwin(VROOT), wl, num);
+	ex_netwm_client_list_stacking_set(WinGetXwin(VROOT), wl, num);
 	Efree(wl);
      }
    else
      {
-	ecore_x_netwm_client_list_stacking_set(WinGetXwin(VROOT), NULL, 0);
+	ex_netwm_client_list_stacking_set(WinGetXwin(VROOT), NULL, 0);
      }
 }
 
@@ -350,7 +348,7 @@ EWMH_SetActiveWindow(Window win)
    if (win == win_last_set)
       return;
 
-   ecore_x_netwm_client_active_set(WinGetXwin(VROOT), win);
+   ex_netwm_client_active_set(WinGetXwin(VROOT), win);
    win_last_set = win;
 }
 
@@ -364,7 +362,7 @@ EWMH_SetWindowName(Window win, const char *name)
    const char         *str;
 
    str = EstrInt2Enc(name, 1);
-   ecore_x_netwm_name_set(win, str);
+   ex_netwm_name_set(win, str);
    EstrInt2EncFree(str, 1);
 }
 
@@ -377,50 +375,46 @@ EWMH_SetWindowDesktop(const EWin * ewin)
       val = 0xFFFFFFFF;
    else
       val = EoGetDeskNum(ewin);
-   ecore_x_netwm_desktop_set(EwinGetClientXwin(ewin), val);
+   ex_netwm_desktop_set(EwinGetClientXwin(ewin), val);
 }
 
 void
 EWMH_SetWindowState(const EWin * ewin)
 {
-   Ecore_X_Atom        atom_list[64];
-   int                 len = sizeof(atom_list) / sizeof(Ecore_X_Atom);
+   EX_Atom             atom_list[64];
+   int                 len = sizeof(atom_list) / sizeof(EX_Atom);
    int                 atom_count;
 
    atom_count = 0;
-   atom_list_set(atom_list, len, &atom_count, ECORE_X_ATOM_NET_WM_STATE_MODAL,
+   atom_list_set(atom_list, len, &atom_count, EX_ATOM_NET_WM_STATE_MODAL,
 		 ewin->state.modal);
-   atom_list_set(atom_list, len, &atom_count, ECORE_X_ATOM_NET_WM_STATE_STICKY,
+   atom_list_set(atom_list, len, &atom_count, EX_ATOM_NET_WM_STATE_STICKY,
 		 EoIsSticky(ewin));
-   atom_list_set(atom_list, len, &atom_count, ECORE_X_ATOM_NET_WM_STATE_SHADED,
+   atom_list_set(atom_list, len, &atom_count, EX_ATOM_NET_WM_STATE_SHADED,
 		 ewin->state.shaded);
    atom_list_set(atom_list, len, &atom_count,
-		 ECORE_X_ATOM_NET_WM_STATE_SKIP_TASKBAR,
-		 ewin->props.skip_ext_task);
-   atom_list_set(atom_list, len, &atom_count, ECORE_X_ATOM_NET_WM_STATE_HIDDEN,
+		 EX_ATOM_NET_WM_STATE_SKIP_TASKBAR, ewin->props.skip_ext_task);
+   atom_list_set(atom_list, len, &atom_count, EX_ATOM_NET_WM_STATE_HIDDEN,
 		 ewin->state.iconified || ewin->state.shaded);
    atom_list_set(atom_list, len, &atom_count,
-		 ECORE_X_ATOM_NET_WM_STATE_MAXIMIZED_VERT,
+		 EX_ATOM_NET_WM_STATE_MAXIMIZED_VERT,
 		 ewin->state.maximized_vert);
    atom_list_set(atom_list, len, &atom_count,
-		 ECORE_X_ATOM_NET_WM_STATE_MAXIMIZED_HORZ,
+		 EX_ATOM_NET_WM_STATE_MAXIMIZED_HORZ,
 		 ewin->state.maximized_horz);
    atom_list_set(atom_list, len, &atom_count,
-		 ECORE_X_ATOM_NET_WM_STATE_FULLSCREEN, ewin->state.fullscreen);
+		 EX_ATOM_NET_WM_STATE_FULLSCREEN, ewin->state.fullscreen);
    atom_list_set(atom_list, len, &atom_count,
-		 ECORE_X_ATOM_NET_WM_STATE_SKIP_PAGER,
-		 ewin->props.skip_ext_pager);
-   atom_list_set(atom_list, len, &atom_count, ECORE_X_ATOM_NET_WM_STATE_ABOVE,
+		 EX_ATOM_NET_WM_STATE_SKIP_PAGER, ewin->props.skip_ext_pager);
+   atom_list_set(atom_list, len, &atom_count, EX_ATOM_NET_WM_STATE_ABOVE,
 		 EoGetLayer(ewin) >= 6);
-   atom_list_set(atom_list, len, &atom_count, ECORE_X_ATOM_NET_WM_STATE_BELOW,
+   atom_list_set(atom_list, len, &atom_count, EX_ATOM_NET_WM_STATE_BELOW,
 		 EoGetLayer(ewin) <= 2);
    atom_list_set(atom_list, len, &atom_count,
-		 ECORE_X_ATOM_NET_WM_STATE_DEMANDS_ATTENTION,
-		 ewin->state.attention);
+		 EX_ATOM_NET_WM_STATE_DEMANDS_ATTENTION, ewin->state.attention);
 
-   ecore_x_window_prop_atom_set(EwinGetClientXwin(ewin),
-				ECORE_X_ATOM_NET_WM_STATE, atom_list,
-				atom_count);
+   ex_window_prop_atom_set(EwinGetClientXwin(ewin), EX_ATOM_NET_WM_STATE,
+			   atom_list, atom_count);
 }
 
 void
@@ -441,8 +435,8 @@ EWMH_SetWindowBorder(const EWin * ewin)
    else
       val[0] = val[1] = val[2] = val[3] = 0;
 
-   ecore_x_window_prop_card32_set(EwinGetClientXwin(ewin),
-				  ECORE_X_ATOM_NET_FRAME_EXTENTS, val, 4);
+   ex_window_prop_card32_set(EwinGetClientXwin(ewin),
+			     EX_ATOM_NET_FRAME_EXTENTS, val, 4);
 }
 
 void
@@ -459,20 +453,19 @@ EWMH_SetWindowOpacity(EWin * ewin)
 	if (opacity != ewin->ewmh.opacity)
 	  {
 	     ewin->ewmh.opacity = opacity;
-	     ecore_x_netwm_opacity_set(EwinGetClientXwin(ewin), opacity);
+	     ex_netwm_opacity_set(EwinGetClientXwin(ewin), opacity);
 	  }
-	ecore_x_netwm_opacity_set(EoGetXwin(ewin), opacity);
+	ex_netwm_opacity_set(EoGetXwin(ewin), opacity);
      }
    else
      {
 	if (opacity != ewin->ewmh.opacity)
 	  {
 	     ewin->ewmh.opacity = opacity;
-	     ecore_x_window_prop_del(EwinGetClientXwin(ewin),
-				     ECORE_X_ATOM_NET_WM_WINDOW_OPACITY);
+	     ex_window_prop_del(EwinGetClientXwin(ewin),
+				EX_ATOM_NET_WM_WINDOW_OPACITY);
 	  }
-	ecore_x_window_prop_del(EoGetXwin(ewin),
-				ECORE_X_ATOM_NET_WM_WINDOW_OPACITY);
+	ex_window_prop_del(EoGetXwin(ewin), EX_ATOM_NET_WM_WINDOW_OPACITY);
 	ewin->ewmh.opacity_update = 0;
      }
 }
@@ -488,7 +481,7 @@ EWMH_GetWindowName(EWin * ewin)
 
    _EFREE(ewin->ewmh.wm_name);
 
-   ecore_x_netwm_name_get(EwinGetClientXwin(ewin), &val);
+   ex_netwm_name_get(EwinGetClientXwin(ewin), &val);
    if (!val)
       return;
    ewin->ewmh.wm_name = EstrUtf82Int(val, 0);
@@ -504,7 +497,7 @@ EWMH_GetWindowIconName(EWin * ewin)
 
    _EFREE(ewin->ewmh.wm_icon_name);
 
-   ecore_x_netwm_icon_name_get(EwinGetClientXwin(ewin), &val);
+   ex_netwm_icon_name_get(EwinGetClientXwin(ewin), &val);
    if (!val)
       return;
    ewin->ewmh.wm_icon_name = EstrUtf82Int(val, 0);
@@ -519,7 +512,7 @@ EWMH_GetWindowDesktop(EWin * ewin)
    int                 num;
    unsigned int        desk;
 
-   num = ecore_x_netwm_desktop_get(EwinGetClientXwin(ewin), &desk);
+   num = ex_netwm_desktop_get(EwinGetClientXwin(ewin), &desk);
    if (num <= 0)
       return;
 
@@ -540,12 +533,11 @@ EWMH_GetWindowDesktop(EWin * ewin)
 static void
 EWMH_GetWindowState(EWin * ewin)
 {
-   Ecore_X_Atom       *p_atoms, atom;
+   EX_Atom            *p_atoms, atom;
    int                 i, n_atoms;
 
-   n_atoms = ecore_x_window_prop_atom_list_get(EwinGetClientXwin(ewin),
-					       ECORE_X_ATOM_NET_WM_STATE,
-					       &p_atoms);
+   n_atoms = ex_window_prop_atom_list_get(EwinGetClientXwin(ewin),
+					  EX_ATOM_NET_WM_STATE, &p_atoms);
    if (n_atoms <= 0)
       return;
 
@@ -561,29 +553,29 @@ EWMH_GetWindowState(EWin * ewin)
    for (i = 0; i < n_atoms; i++)
      {
 	atom = p_atoms[i];
-	if (atom == ECORE_X_ATOM_NET_WM_STATE_MODAL)
+	if (atom == EX_ATOM_NET_WM_STATE_MODAL)
 	   ewin->state.modal = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_STICKY)
+	else if (atom == EX_ATOM_NET_WM_STATE_STICKY)
 	   EoSetSticky(ewin, 1);
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_SHADED)
+	else if (atom == EX_ATOM_NET_WM_STATE_SHADED)
 	   ewin->state.shaded = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_SKIP_TASKBAR)
+	else if (atom == EX_ATOM_NET_WM_STATE_SKIP_TASKBAR)
 	   ewin->props.skip_ext_task = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_SKIP_PAGER)
+	else if (atom == EX_ATOM_NET_WM_STATE_SKIP_PAGER)
 	   ewin->props.skip_ext_pager = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_HIDDEN)
+	else if (atom == EX_ATOM_NET_WM_STATE_HIDDEN)
 	   ;			/* ewin->state.iconified = 1; No - WM_STATE does this */
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_MAXIMIZED_VERT)
+	else if (atom == EX_ATOM_NET_WM_STATE_MAXIMIZED_VERT)
 	   ewin->state.maximized_vert = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_MAXIMIZED_HORZ)
+	else if (atom == EX_ATOM_NET_WM_STATE_MAXIMIZED_HORZ)
 	   ewin->state.maximized_horz = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_FULLSCREEN)
+	else if (atom == EX_ATOM_NET_WM_STATE_FULLSCREEN)
 	   ewin->state.fullscreen = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_ABOVE)
+	else if (atom == EX_ATOM_NET_WM_STATE_ABOVE)
 	   EoSetLayer(ewin, 6);
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_BELOW)
+	else if (atom == EX_ATOM_NET_WM_STATE_BELOW)
 	   EoSetLayer(ewin, 2);
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_DEMANDS_ATTENTION)
+	else if (atom == EX_ATOM_NET_WM_STATE_DEMANDS_ATTENTION)
 	   ewin->state.attention = 1;
      }
    Efree(p_atoms);
@@ -592,14 +584,13 @@ EWMH_GetWindowState(EWin * ewin)
 static void
 EWMH_GetWindowType(EWin * ewin)
 {
-   Ecore_X_Atom       *p_atoms, atom;
+   EX_Atom            *p_atoms, atom;
    int                 n_atoms, i;
 
    ewin->ewmh.type.all = 0;
 
-   n_atoms = ecore_x_window_prop_atom_list_get(EwinGetClientXwin(ewin),
-					       ECORE_X_ATOM_NET_WM_WINDOW_TYPE,
-					       &p_atoms);
+   n_atoms = ex_window_prop_atom_list_get(EwinGetClientXwin(ewin),
+					  EX_ATOM_NET_WM_WINDOW_TYPE, &p_atoms);
    if (n_atoms <= 0)
      {
 	if (EwinIsTransient(ewin))
@@ -612,21 +603,21 @@ EWMH_GetWindowType(EWin * ewin)
    for (i = 0; i < n_atoms; i++)
      {
 	atom = p_atoms[i];
-	if (atom == ECORE_X_ATOM_NET_WM_WINDOW_TYPE_DESKTOP)
+	if (atom == EX_ATOM_NET_WM_WINDOW_TYPE_DESKTOP)
 	   ewin->ewmh.type.b.desktop = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_WINDOW_TYPE_DOCK)
+	else if (atom == EX_ATOM_NET_WM_WINDOW_TYPE_DOCK)
 	   ewin->ewmh.type.b.dock = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_WINDOW_TYPE_UTILITY)
+	else if (atom == EX_ATOM_NET_WM_WINDOW_TYPE_UTILITY)
 	   ewin->ewmh.type.b.utility = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_WINDOW_TYPE_TOOLBAR)
+	else if (atom == EX_ATOM_NET_WM_WINDOW_TYPE_TOOLBAR)
 	   ewin->ewmh.type.b.toolbar = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_WINDOW_TYPE_MENU)
+	else if (atom == EX_ATOM_NET_WM_WINDOW_TYPE_MENU)
 	   ewin->ewmh.type.b.menu = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_WINDOW_TYPE_SPLASH)
+	else if (atom == EX_ATOM_NET_WM_WINDOW_TYPE_SPLASH)
 	   ewin->ewmh.type.b.splash = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_WINDOW_TYPE_DIALOG)
+	else if (atom == EX_ATOM_NET_WM_WINDOW_TYPE_DIALOG)
 	   ewin->ewmh.type.b.dialog = 1;
-	else if (atom == ECORE_X_ATOM_NET_WM_WINDOW_TYPE_NORMAL)
+	else if (atom == EX_ATOM_NET_WM_WINDOW_TYPE_NORMAL)
 	   ewin->ewmh.type.b.normal = 1;
      }
 
@@ -642,8 +633,8 @@ EWMH_GetWindowIcons(EWin * ewin)
    Efree(ewin->ewmh.wm_icon);
    ewin->ewmh.wm_icon = NULL;
 
-   num = ecore_x_window_prop_card32_list_get(EwinGetClientXwin(ewin),
-					     ECORE_X_ATOM_NET_WM_ICON, &val);
+   num = ex_window_prop_card32_list_get(EwinGetClientXwin(ewin),
+					EX_ATOM_NET_WM_ICON, &val);
    ewin->ewmh.wm_icon_len = num;
    if (num <= 0)
       return;
@@ -669,7 +660,7 @@ EWMH_GetWindowUserTime(EWin * ewin __UNUSED__)
    int                 num;
    unsigned int        ts;
 
-   num = ecore_x_netwm_user_time_get(EwinGetClientXwin(ewin), &ts);
+   num = ex_netwm_user_time_get(EwinGetClientXwin(ewin), &ts);
    if (num <= 0)
       return;
 
@@ -686,9 +677,9 @@ EWMH_GetWindowStartupId(EWin * ewin)
    if (!Conf.testing.enable_startup_id)
       return;
 
-   ecore_x_netwm_startup_id_get(EwinGetClientXwin(ewin), &str);
+   ex_netwm_startup_id_get(EwinGetClientXwin(ewin), &str);
    if (!str && TryGroup(ewin))
-      ecore_x_netwm_startup_id_get(ewin->icccm.group, &str);
+      ex_netwm_startup_id_get(ewin->icccm.group, &str);
    if (str && EDebug(1))
       Eprintf("Startup id: %s: %s\n", EwinGetTitle(ewin), str);
 
@@ -699,11 +690,10 @@ static void
 EWMH_GetWindowMisc(EWin * ewin)
 {
    int                 num;
-   Ecore_X_Window      win;
+   EX_Window           win;
 
-   num = ecore_x_window_prop_window_get(EwinGetClientXwin(ewin),
-					ECORE_X_ATOM_NET_SUPPORTING_WM_CHECK,
-					&win, 1);
+   num = ex_window_prop_window_get(EwinGetClientXwin(ewin),
+				   EX_ATOM_NET_SUPPORTING_WM_CHECK, &win, 1);
    if (num <= 0)
       return;
 
@@ -717,7 +707,7 @@ EWMH_GetWindowOpacity(EWin * ewin)
    unsigned int        opacity;
 
    opacity = 0;			/* Value zero is treated as unset, i.e. default */
-   ecore_x_netwm_opacity_get(EwinGetClientXwin(ewin), &opacity);
+   ex_netwm_opacity_get(EwinGetClientXwin(ewin), &opacity);
    if (ewin->ewmh.opacity == opacity)
       return;
 
@@ -734,13 +724,12 @@ EWMH_GetWindowStrut(EWin * ewin)
    int                 num;
    unsigned int        val[12];
 
-   num = ecore_x_window_prop_card32_get(EwinGetClientXwin(ewin),
-					ECORE_X_ATOM_NET_WM_STRUT_PARTIAL, val,
-					12);
+   num = ex_window_prop_card32_get(EwinGetClientXwin(ewin),
+				   EX_ATOM_NET_WM_STRUT_PARTIAL, val, 12);
 
    if (num < 4)
-      num = ecore_x_window_prop_card32_get(EwinGetClientXwin(ewin),
-					   ECORE_X_ATOM_NET_WM_STRUT, val, 4);
+      num = ex_window_prop_card32_get(EwinGetClientXwin(ewin),
+				      EX_ATOM_NET_WM_STRUT, val, 4);
    if (num < 4)
       return;
 
@@ -765,37 +754,37 @@ EWMH_GetWindowStrut(EWin * ewin)
 void
 EWMH_SetWindowActions(const EWin * ewin)
 {
-   Ecore_X_Atom        aa[12];
+   EX_Atom             aa[12];
    int                 num;
 
    num = 0;
    if (!ewin->state.inhibit_move)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_MOVE;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_MOVE;
    if (!ewin->state.inhibit_resize)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_RESIZE;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_RESIZE;
    if (!ewin->state.inhibit_iconify)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_MINIMIZE;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_MINIMIZE;
    if (!ewin->state.inhibit_shade)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_SHADE;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_SHADE;
    if (!ewin->state.inhibit_stick)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_STICK;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_STICK;
    if (!ewin->state.inhibit_max_hor)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_MAXIMIZE_HORZ;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_MAXIMIZE_HORZ;
    if (!ewin->state.inhibit_max_ver)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_MAXIMIZE_VERT;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_MAXIMIZE_VERT;
    if (!ewin->state.inhibit_fullscreeen)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_FULLSCREEN;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_FULLSCREEN;
    if (!ewin->state.inhibit_change_desk)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_CHANGE_DESKTOP;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_CHANGE_DESKTOP;
    if (!ewin->state.inhibit_close)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_CLOSE;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_CLOSE;
    if (!ewin->state.inhibit_stacking)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_ABOVE;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_ABOVE;
    if (!ewin->state.inhibit_stacking)
-      aa[num++] = ECORE_X_ATOM_NET_WM_ACTION_BELOW;
+      aa[num++] = EX_ATOM_NET_WM_ACTION_BELOW;
 
-   ecore_x_window_prop_atom_set(EwinGetClientXwin(ewin),
-				ECORE_X_ATOM_NET_WM_ALLOWED_ACTIONS, aa, num);
+   ex_window_prop_atom_set(EwinGetClientXwin(ewin),
+			   EX_ATOM_NET_WM_ALLOWED_ACTIONS, aa, num);
 }
 
 void
@@ -820,9 +809,8 @@ EWMH_GetWindowHints(EWin * ewin)
 void
 EWMH_DelWindowHints(const EWin * ewin)
 {
-   ecore_x_window_prop_del(EwinGetClientXwin(ewin),
-			   ECORE_X_ATOM_NET_WM_DESKTOP);
-   ecore_x_window_prop_del(EwinGetClientXwin(ewin), ECORE_X_ATOM_NET_WM_STATE);
+   ex_window_prop_del(EwinGetClientXwin(ewin), EX_ATOM_NET_WM_DESKTOP);
+   ex_window_prop_del(EwinGetClientXwin(ewin), EX_ATOM_NET_WM_STATE);
 }
 
 /*
@@ -831,28 +819,28 @@ EWMH_DelWindowHints(const EWin * ewin)
 int
 EWMH_ProcessPropertyChange(EWin * ewin, Atom atom_change)
 {
-   if (atom_change == ECORE_X_ATOM_NET_WM_NAME)
+   if (atom_change == EX_ATOM_NET_WM_NAME)
      {
 	EWMH_GetWindowName(ewin);
 	return 1;
      }
-   if (atom_change == ECORE_X_ATOM_NET_WM_ICON_NAME)
+   if (atom_change == EX_ATOM_NET_WM_ICON_NAME)
      {
 	EWMH_GetWindowIconName(ewin);
 	return 1;
      }
-   if (atom_change == ECORE_X_ATOM_NET_WM_STRUT_PARTIAL ||
-       atom_change == ECORE_X_ATOM_NET_WM_STRUT)
+   if (atom_change == EX_ATOM_NET_WM_STRUT_PARTIAL ||
+       atom_change == EX_ATOM_NET_WM_STRUT)
      {
 	EWMH_GetWindowStrut(ewin);
 	return 1;
      }
-   if (atom_change == ECORE_X_ATOM_NET_WM_WINDOW_OPACITY)
+   if (atom_change == EX_ATOM_NET_WM_WINDOW_OPACITY)
      {
 	EWMH_GetWindowOpacity(ewin);
 	return 1;
      }
-   if (atom_change == ECORE_X_ATOM_NET_WM_USER_TIME)
+   if (atom_change == EX_ATOM_NET_WM_USER_TIME)
      {
 #if 0				/* Remove? */
 	EWMH_GetWindowUserTime(ewin);
@@ -888,7 +876,7 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 
 /* Time                ts; */
 
-   if (ev->message_type == ECORE_X_ATOM_NET_ACTIVE_WINDOW)
+   if (ev->message_type == EX_ATOM_NET_ACTIVE_WINDOW)
      {
 	source = OPSRC(ev->data.l[0]);
 /*	ts = ev->data.l[1]; */
@@ -896,14 +884,14 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 	EwinOpActivate(ewin, source, 1);
 	return 1;
      }
-   if (ev->message_type == ECORE_X_ATOM_NET_CLOSE_WINDOW)
+   if (ev->message_type == EX_ATOM_NET_CLOSE_WINDOW)
      {
 /*	ts = ev->data.l[0]; */
 	source = OPSRC(ev->data.l[1]);
 	EwinOpClose(ewin, source);
 	return 1;
      }
-   if (ev->message_type == ECORE_X_ATOM_NET_WM_DESKTOP)
+   if (ev->message_type == EX_ATOM_NET_WM_DESKTOP)
      {
 	source = OPSRC(ev->data.l[1]);
 	if ((unsigned)ev->data.l[0] == 0xFFFFFFFF)
@@ -920,7 +908,7 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 	  }
 	return 1;
      }
-   if (ev->message_type == ECORE_X_ATOM_NET_WM_STATE)
+   if (ev->message_type == EX_ATOM_NET_WM_STATE)
      {
 	/*
 	 * It is assumed(!) that only the MAXIMIZE H/V ones can be set
@@ -933,49 +921,49 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 	atom = ev->data.l[1];
 	atom2 = ev->data.l[2];
 	source = OPSRC(ev->data.l[3]);
-	if (atom == ECORE_X_ATOM_NET_WM_STATE_MODAL)
+	if (atom == EX_ATOM_NET_WM_STATE_MODAL)
 	  {
 	     action = do_set(ewin->state.modal, action);
 	     /* TBD */
 	     ewin->state.modal = action;
 	  }
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_STICKY)
+	else if (atom == EX_ATOM_NET_WM_STATE_STICKY)
 	  {
 	     action = do_set(EoIsSticky(ewin), action);
 	     EwinOpStick(ewin, source, action);
 	  }
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_SHADED)
+	else if (atom == EX_ATOM_NET_WM_STATE_SHADED)
 	  {
 	     action = do_set(ewin->state.shaded, action);
 	     EwinOpShade(ewin, source, action);
 	  }
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_SKIP_TASKBAR)
+	else if (atom == EX_ATOM_NET_WM_STATE_SKIP_TASKBAR)
 	  {
 	     action = do_set(ewin->props.skip_ext_task, action);
 	     ewin->props.skip_ext_task = action;
 	     EWMH_SetWindowState(ewin);
 	  }
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_SKIP_PAGER)
+	else if (atom == EX_ATOM_NET_WM_STATE_SKIP_PAGER)
 	  {
 	     action = do_set(ewin->props.skip_ext_pager, action);
 	     ewin->props.skip_ext_pager = action;
 	     EWMH_SetWindowState(ewin);
 	  }
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_MAXIMIZED_VERT ||
-		 atom == ECORE_X_ATOM_NET_WM_STATE_MAXIMIZED_HORZ)
+	else if (atom == EX_ATOM_NET_WM_STATE_MAXIMIZED_VERT ||
+		 atom == EX_ATOM_NET_WM_STATE_MAXIMIZED_HORZ)
 	  {
 	     int                 maxh, maxv;
 
 	     maxh = ewin->state.maximized_horz;
 	     maxv = ewin->state.maximized_vert;
-	     if (atom2 == ECORE_X_ATOM_NET_WM_STATE_MAXIMIZED_VERT ||
-		 atom2 == ECORE_X_ATOM_NET_WM_STATE_MAXIMIZED_HORZ)
+	     if (atom2 == EX_ATOM_NET_WM_STATE_MAXIMIZED_VERT ||
+		 atom2 == EX_ATOM_NET_WM_STATE_MAXIMIZED_HORZ)
 	       {
 		  /* (ok - ok) */
 		  maxh = do_set(maxh, action);
 		  maxv = do_set(maxv, action);
 	       }
-	     else if (atom == ECORE_X_ATOM_NET_WM_STATE_MAXIMIZED_VERT)
+	     else if (atom == EX_ATOM_NET_WM_STATE_MAXIMIZED_VERT)
 	       {
 		  maxv = do_set(maxv, action);
 	       }
@@ -991,13 +979,13 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 		  EWMH_SetWindowState(ewin);
 	       }
 	  }
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_FULLSCREEN)
+	else if (atom == EX_ATOM_NET_WM_STATE_FULLSCREEN)
 	  {
 	     action = do_set(ewin->state.fullscreen, action);
 	     if (ewin->state.fullscreen != action)
 		EwinOpFullscreen(ewin, source, action);
 	  }
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_ABOVE)
+	else if (atom == EX_ATOM_NET_WM_STATE_ABOVE)
 	  {
 	     action = do_set(EoGetLayer(ewin) >= 6, action);
 	     if (action)
@@ -1011,7 +999,7 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 		     EwinOpSetLayer(ewin, source, 4);
 	       }
 	  }
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_BELOW)
+	else if (atom == EX_ATOM_NET_WM_STATE_BELOW)
 	  {
 	     action = do_set(EoGetLayer(ewin) <= 2, action);
 	     if (action)
@@ -1025,7 +1013,7 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 		     EwinOpSetLayer(ewin, source, 4);
 	       }
 	  }
-	else if (atom == ECORE_X_ATOM_NET_WM_STATE_DEMANDS_ATTENTION)
+	else if (atom == EX_ATOM_NET_WM_STATE_DEMANDS_ATTENTION)
 	  {
 	     action = do_set(ewin->state.attention, action);
 	     ewin->state.attention = action;
@@ -1033,7 +1021,7 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 	  }
 	return 1;
      }
-   if (ev->message_type == ECORE_X_ATOM_NET_MOVERESIZE_WINDOW)
+   if (ev->message_type == EX_ATOM_NET_MOVERESIZE_WINDOW)
      {
 	int                 flags, grav, x, y, w, h;
 
@@ -1047,7 +1035,7 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 	EwinMoveResizeWithGravity(ewin, x, y, w, h, grav);
 	return 1;
      }
-   if (ev->message_type == ECORE_X_ATOM_NET_WM_MOVERESIZE)
+   if (ev->message_type == EX_ATOM_NET_WM_MOVERESIZE)
      {
 /*	source = OPSRC(ev->data.l[4]); */
 
@@ -1086,7 +1074,7 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 	  }
 	return 1;
      }
-   if (ev->message_type == ECORE_X_ATOM_NET_RESTACK_WINDOW)
+   if (ev->message_type == EX_ATOM_NET_RESTACK_WINDOW)
      {
 /*	source = OPSRC(ev->data.l[0]); */
 	/* FIXME - Implement */
@@ -1099,32 +1087,32 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 int
 EWMH_ProcessRootClientMessage(XClientMessageEvent * ev)
 {
-   if (ev->message_type == ECORE_X_ATOM_NET_CURRENT_DESKTOP)
+   if (ev->message_type == EX_ATOM_NET_CURRENT_DESKTOP)
      {
 	DeskGotoNum(ev->data.l[0]);
 	return 1;
      }
-   if (ev->message_type == ECORE_X_ATOM_NET_DESKTOP_VIEWPORT)
+   if (ev->message_type == EX_ATOM_NET_DESKTOP_VIEWPORT)
      {
 	DeskCurrentGotoArea(ev->data.l[0] / WinGetW(VROOT),
 			    ev->data.l[1] / WinGetH(VROOT));
 	return 1;
      }
-   if (ev->message_type == ECORE_X_ATOM_NET_SHOWING_DESKTOP)
+   if (ev->message_type == EX_ATOM_NET_SHOWING_DESKTOP)
      {
 	EwinsShowDesktop(ev->data.l[0]);
 	return 1;
      }
 #if 0				/* These messages are sent to dedicated window */
-   if (ev->message_type == ECORE_X_ATOM_NET_STARTUP_INFO_BEGIN)
+   if (ev->message_type == EX_ATOM_NET_STARTUP_INFO_BEGIN)
      {
-	Eprintf("ECORE_X_ATOM_NET_STARTUP_INFO_BEGIN: %lx: %s\n",
+	Eprintf("EX_ATOM_NET_STARTUP_INFO_BEGIN: %lx: %s\n",
 		ev->window, (char *)ev->data.l);
 	return 1;
      }
-   if (ev->message_type == ECORE_X_ATOM_NET_STARTUP_INFO)
+   if (ev->message_type == EX_ATOM_NET_STARTUP_INFO)
      {
-	Eprintf("ECORE_X_ATOM_NET_STARTUP_INFO      : %lx: %s\n",
+	Eprintf("EX_ATOM_NET_STARTUP_INFO      : %lx: %s\n",
 		ev->window, (char *)ev->data.l);
 	return 1;
      }

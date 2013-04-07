@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -25,8 +25,8 @@
 #include "comms.h"
 #include "hints.h"
 #include "ipc.h"
-#include "e16-ecore_hints.h"
 #include "e16-ecore_list.h"
+#include "xprop.h"
 #include "xwin.h"
 
 typedef struct {
@@ -299,8 +299,8 @@ CommsInit(void)
    EventCallbackRegister(VROOT, ClientHandleRootEvents, NULL);
 
    Esnprintf(s, sizeof(s), "WINID %8lx", WinGetXwin(comms_win));
-   ecore_x_window_prop_string_set(WinGetXwin(comms_win), E16_ATOM_COMMS_WIN, s);
-   ecore_x_window_prop_string_set(WinGetXwin(VROOT), E16_ATOM_COMMS_WIN, s);
+   ex_window_prop_string_set(WinGetXwin(comms_win), E16_ATOM_COMMS_WIN, s);
+   ex_window_prop_string_set(WinGetXwin(VROOT), E16_ATOM_COMMS_WIN, s);
 }
 
 static void

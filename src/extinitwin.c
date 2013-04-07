@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2009 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -22,8 +22,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "E.h"
-#include "e16-ecore_hints.h"
 #include "eimage.h"
+#include "xprop.h"
 #include "xwin.h"
 #include <X11/Xutil.h>
 #include <X11/extensions/shape.h>
@@ -151,7 +151,7 @@ static              Window
 ExtInitWinMain(void)
 {
    int                 i, loop, err;
-   Ecore_X_Window      win;
+   EX_Window           win;
    XGCValues           gcv;
    GC                  gc;
    Pixmap              pmap;
@@ -194,7 +194,7 @@ ExtInitWinMain(void)
    XFreeGC(disp, gc);
 
    a = EInternAtom("ENLIGHTENMENT_RESTART_SCREEN");
-   ecore_x_window_prop_window_set(WinGetXwin(VROOT), a, &win, 1);
+   ex_window_prop_window_set(WinGetXwin(VROOT), a, &win, 1);
 
    XSelectInput(disp, win, StructureNotifyMask);
 
@@ -258,7 +258,7 @@ ExtInitWinMain(void)
 Window
 ExtInitWinCreate(void)
 {
-   Ecore_X_Window      win_ex;	/* Hmmm.. */
+   EX_Window           win_ex;	/* Hmmm.. */
    Window              win;
    Atom                a;
 
@@ -281,7 +281,7 @@ ExtInitWinCreate(void)
 	     /* Hack to give the child some space. Not foolproof. */
 	     sleep(1);
 
-	     if (ecore_x_window_prop_window_get
+	     if (ex_window_prop_window_get
 		 (WinGetXwin(VROOT), a, &win_ex, 1) > 0)
 		break;
 	  }

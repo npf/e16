@@ -23,11 +23,11 @@
 #include "E.h"
 #include "animation.h"
 #include "desktops.h"
-#include "e16-ecore_hints.h"
 #include "ecompmgr.h"
 #include "eobj.h"
 #include "ewins.h"		/* FIXME - Should not be here */
 #include "hints.h"
+#include "xprop.h"
 #include "xwin.h"
 
 int
@@ -207,10 +207,10 @@ EobjInit(EObj * eo, int type, Win win, int x, int y, int w, int h,
 
    if (type == EOBJ_TYPE_EXT)
      {
-	eo->icccm.wm_name = ecore_x_icccm_title_get(WinGetXwin(win));
-	ecore_x_icccm_name_class_get(WinGetXwin(win),
-				     &eo->icccm.wm_res_name,
-				     &eo->icccm.wm_res_class);
+	eo->icccm.wm_name = ex_icccm_title_get(WinGetXwin(win));
+	ex_icccm_name_class_get(WinGetXwin(win),
+				&eo->icccm.wm_res_name,
+				&eo->icccm.wm_res_class);
      }
    else if (name)
       eo->icccm.wm_name = Estrdup(name);

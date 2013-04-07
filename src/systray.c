@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2009 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -22,10 +22,10 @@
  */
 #include "E.h"
 #include "container.h"
-#include "e16-ecore_hints.h"
 #include "events.h"
 #include "ewins.h"
 #include "hints.h"
+#include "xprop.h"
 #include "xwin.h"
 
 #define DEBUG_SYSTRAY 0
@@ -193,9 +193,9 @@ SystrayObjAdd(Container * ct, Window xwin)
       EMapWindow(win);
 
    /* TBD - Always set protocol version as reported by client */
-   ecore_x_client_message32_send(xwin, E_XA__XEMBED, NoEventMask,
-				 CurrentTime, XEMBED_EMBEDDED_NOTIFY, 0,
-				 xwin, xembed_info[0]);
+   ex_client_message32_send(xwin, E_XA__XEMBED, NoEventMask,
+			    CurrentTime, XEMBED_EMBEDDED_NOTIFY, 0,
+			    xwin, xembed_info[0]);
 
    EUngrabServer();
 
