@@ -40,12 +40,12 @@ typedef struct {
 #define StObjIsMapped(o) (((SWin*)(o))->mapped)
 
 /* XEmbed atoms */
-static Atom         E_XA__XEMBED = 0;
-static Atom         E_XA__XEMBED_INFO = 0;
+static EX_Atom      E_XA__XEMBED = 0;
+static EX_Atom      E_XA__XEMBED_INFO = 0;
 
 /* Systray atoms */
-static Atom         _NET_SYSTEM_TRAY_OPCODE = 0;
-static Atom         _NET_SYSTEM_TRAY_MESSAGE_DATA = 0;
+static EX_Atom      _NET_SYSTEM_TRAY_OPCODE = 0;
+static EX_Atom      _NET_SYSTEM_TRAY_MESSAGE_DATA = 0;
 
 /* Systray selection */
 static ESelection  *systray_sel = NULL;
@@ -420,10 +420,10 @@ SystrayInit(Container * ct)
 {
    Win                 win;
 
-   E_XA__XEMBED = EInternAtom("_XEMBED");
-   E_XA__XEMBED_INFO = EInternAtom("_XEMBED_INFO");
-   _NET_SYSTEM_TRAY_OPCODE = EInternAtom("_NET_SYSTEM_TRAY_OPCODE");
-   _NET_SYSTEM_TRAY_MESSAGE_DATA = EInternAtom("_NET_SYSTEM_TRAY_MESSAGE_DATA");
+   E_XA__XEMBED = ex_atom_get("_XEMBED");
+   E_XA__XEMBED_INFO = ex_atom_get("_XEMBED_INFO");
+   _NET_SYSTEM_TRAY_OPCODE = ex_atom_get("_NET_SYSTEM_TRAY_OPCODE");
+   _NET_SYSTEM_TRAY_MESSAGE_DATA = ex_atom_get("_NET_SYSTEM_TRAY_MESSAGE_DATA");
 
    /* Acquire selection */
    if (systray_sel)

@@ -38,7 +38,6 @@
 #if DEBUG_CHECK
 #include <assert.h>
 #endif
-#include "hints.h"
 #include "xprop.h"
 #include "xwin.h"
 
@@ -49,6 +48,33 @@
 /*
  * General stuff
  */
+
+EX_Atom
+ex_atom_get(const char *name)
+{
+   return XInternAtom(_ex_disp, name, False);
+}
+
+void
+ex_atoms_get(const char *const *names, unsigned int num, EX_Atom * atoms)
+{
+#if SIZEOF_INT == SIZEOF_LONG
+   XInternAtoms(_ex_disp, (char **)names, num, False, (Atom *) atoms);
+#else
+   unsigned int        i;
+   Atom               *_atoms;
+
+   _atoms = EMALLOC(Atom, num);
+   if (!_atoms)
+      return;
+
+   XInternAtoms(_ex_disp, (char **)names, num, False, _atoms);
+   for (i = 0; i < num; i++)
+      atoms[i] = _atoms[i];
+
+   Efree(_atoms);
+#endif
+}
 
 /*
  * Send client message (format 32)
@@ -563,7 +589,7 @@ static const char  *const atoms_icccm_names[] = {
 
 /* *INDENT-ON* */
 };
-unsigned int        atoms_icccm[CHECK_COUNT_ICCCM];
+EX_Atom             atoms_icccm[CHECK_COUNT_ICCCM];
 
 void
 ex_icccm_init(void)
@@ -571,7 +597,7 @@ ex_icccm_init(void)
 #if DEBUG_CHECK
    assert(CHECK_COUNT_ICCCM == N_ITEMS(atoms_icccm));
 #endif
-   AtomListIntern(atoms_icccm_names, N_ITEMS(atoms_icccm), atoms_icccm);
+   ex_atoms_get(atoms_icccm_names, N_ITEMS(atoms_icccm), atoms_icccm);
 }
 
 static void
@@ -785,7 +811,7 @@ static const char  *const atoms_netwm_names[] = {
 
 /* *INDENT-ON* */
 };
-unsigned int        atoms_netwm[CHECK_COUNT_NETWM];
+EX_Atom             atoms_netwm[CHECK_COUNT_NETWM];
 
 void
 ex_netwm_init(void)
@@ -793,7 +819,7 @@ ex_netwm_init(void)
 #if DEBUG_CHECK
    assert(CHECK_COUNT_NETWM == N_ITEMS(atoms_netwm));
 #endif
-   AtomListIntern(atoms_netwm_names, N_ITEMS(atoms_netwm), atoms_netwm);
+   ex_atoms_get(atoms_netwm_names, N_ITEMS(atoms_netwm), atoms_netwm);
 }
 
 /*

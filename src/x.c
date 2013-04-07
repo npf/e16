@@ -1237,12 +1237,6 @@ EKeynameToKeycode(const char *name)
    return XKeysymToKeycode(disp, XStringToKeysym(name));
 }
 
-Atom
-EInternAtom(const char *name)
-{
-   return XInternAtom(disp, name, False);
-}
-
 #define DEBUG_SHAPE_OPS 0
 #define DEBUG_SHAPE_PROPAGATE 0
 

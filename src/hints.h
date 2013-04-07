@@ -26,14 +26,12 @@
 
 #include <X11/Xlib.h>
 #include "etypes.h"
+#include "xprop.h"
 #include "xwin.h"
-
-void                AtomListIntern(const char *const *names, unsigned int num,
-				   unsigned int *atoms);
 
 /* Misc atoms */
 
-extern unsigned int atoms_misc[];
+extern EX_Atom      atoms_misc[];
 
 #define E_XA_MANAGER			atoms_misc[0]
 

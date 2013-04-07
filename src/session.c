@@ -31,7 +31,9 @@
 #include "settings.h"
 #include "snaps.h"
 #include "user.h"
+#if 0				/* Unused */
 #include "xprop.h"
+#endif
 #include "xwin.h"
 
 #ifdef USE_EXT_INIT_WIN
@@ -292,7 +294,7 @@ callback_shutdown_cancelled(SmcConn smc_conn, SmPointer client_data __UNUSED__)
 }
 
 #if 0				/* Unused */
-static Atom         atom_sm_client_id;
+static EX_Atom      atom_sm_client_id;
 #endif
 
 static IceConn      ice_conn;
@@ -410,7 +412,7 @@ SessionInit(void)
       return;
 
 #if 0				/* Unused */
-   atom_sm_client_id = EInternAtom("SM_CLIENT_ID");
+   atom_sm_client_id = ex_atom_get("SM_CLIENT_ID");
 #endif
 
 #if USE_SM

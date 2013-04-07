@@ -155,7 +155,7 @@ ExtInitWinMain(void)
    XGCValues           gcv;
    GC                  gc;
    Pixmap              pmap;
-   Atom                a;
+   EX_Atom             a;
    EiwData             eiwd;
    EiwLoopFunc        *eiwc_loop_func;
 
@@ -193,7 +193,7 @@ ExtInitWinMain(void)
    XFreePixmap(disp, pmap);
    XFreeGC(disp, gc);
 
-   a = EInternAtom("ENLIGHTENMENT_RESTART_SCREEN");
+   a = ex_atom_get("ENLIGHTENMENT_RESTART_SCREEN");
    ex_window_prop_window_set(WinGetXwin(VROOT), a, &win, 1);
 
    XSelectInput(disp, win, StructureNotifyMask);
@@ -260,12 +260,12 @@ ExtInitWinCreate(void)
 {
    EX_Window           win_ex;	/* Hmmm.. */
    Window              win;
-   Atom                a;
+   EX_Atom             a;
 
    if (EDebug(EDBUG_TYPE_SESSION))
       Eprintf("ExtInitWinCreate\n");
 
-   a = EInternAtom("ENLIGHTENMENT_RESTART_SCREEN");
+   a = ex_atom_get("ENLIGHTENMENT_RESTART_SCREEN");
    ESync(0);
 
    if (fork())

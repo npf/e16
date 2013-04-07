@@ -20,9 +20,10 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "E.h"
+#include "config.h"
 #include "ewins.h"
 #include "hints.h"
+#include "xprop.h"
 
 /* Motif window hints */
 #define MWM_HINTS_FUNCTIONS           (1L << 0)
@@ -56,7 +57,7 @@
 #define PROP_MWM_HINTS_ELEMENTS             5
 #define PROP_MWM_HINTS_ELEMENTS_MIN         4
 
-static Atom         _MOTIF_WM_HINTS = 0;
+static EX_Atom      _MOTIF_WM_HINTS = 0;
 
 /* Motif window hints */
 typedef struct {
@@ -80,7 +81,7 @@ MWM_GetHints(EWin * ewin, Atom atom_change)
       return;
 
    if (!_MOTIF_WM_HINTS)
-      _MOTIF_WM_HINTS = EInternAtom("_MOTIF_WM_HINTS");
+      _MOTIF_WM_HINTS = ex_atom_get("_MOTIF_WM_HINTS");
 
    if (atom_change && atom_change != _MOTIF_WM_HINTS)
       return;
@@ -176,13 +177,13 @@ MWM_GetHints(EWin * ewin, Atom atom_change)
 void
 MWM_SetInfo(void)
 {
-   Atom                a1;
+   EX_Atom             a1;
    struct {
       long                flags;
       Window              win;
    } mwminfo;
 
-   a1 = EInternAtom("_MOTIF_WM_INFO");
+   a1 = ex_atom_get("_MOTIF_WM_INFO");
    mwminfo.flags = 2;
    mwminfo.win = WinGetXwin(VROOT);
    XChangeProperty(disp, WinGetXwin(VROOT), a1, a1, 32, PropModeReplace,

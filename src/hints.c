@@ -58,37 +58,16 @@ static const char  *const atoms_misc_names[] = {
    "ENL_WIN_BORDER"
 };
 
-unsigned int        atoms_misc[10];
+EX_Atom             atoms_misc[10];
 
 static unsigned int desk_info = 0;
-
-void
-AtomListIntern(const char *const *names, unsigned int num, unsigned int *atoms)
-{
-#if SIZEOF_INT == SIZEOF_LONG
-   XInternAtoms(disp, (char **)names, num, False, (Atom *) atoms);
-#else
-   unsigned int        i;
-   Atom               *_atoms;
-
-   _atoms = EMALLOC(Atom, num);
-   if (!_atoms)
-      return;
-
-   XInternAtoms(disp, (char **)names, num, False, _atoms);
-   for (i = 0; i < num; i++)
-      atoms[i] = _atoms[i];
-
-   Efree(_atoms);
-#endif
-}
 
 void
 HintsInit(void)
 {
    Window              win;
 
-   AtomListIntern(atoms_misc_names, N_ITEMS(atoms_misc_names), atoms_misc);
+   ex_atoms_get(atoms_misc_names, N_ITEMS(atoms_misc_names), atoms_misc);
 
    win = XCreateSimpleWindow(disp, WinGetXwin(VROOT), -200, -200, 5, 5,
 			     0, 0, 0);
@@ -596,7 +575,7 @@ EHintsSetInfoOnAll(void)
  */
 
 struct _selection {
-   Atom                atom;
+   EX_Atom             atom;
    Time                time;
    Win                 win;
    EventCallbackFunc  *func;
@@ -615,7 +594,7 @@ SelectionAcquire(const char *name, EventCallbackFunc * func, void *data)
 
    Esnprintf(buf, sizeof(buf), "%s%d", name, Dpy.screen);
 
-   sel->atom = EInternAtom(buf);
+   sel->atom = ex_atom_get(buf);
    sel->time = EGetTimestamp();
    sel->win = ECreateEventWindow(VROOT, -100, -100, 1, 1);
 

@@ -249,7 +249,7 @@
  * 
  *     xev.type = ClientMessage;
  *     xev.window = client_window;
- *     xev.message_type = EInternAtom(XA_WIN_LAYER);
+ *     xev.message_type = ex_atom_get(XA_WIN_LAYER);
  *     xev.format = 32;
  *     xev.data.l[0] = new_layer;
  *     xev.data.l[1] = CurrentTime;
@@ -263,7 +263,7 @@
  * 
  *     xev.type = ClientMessage;
  *     xev.window = client_window;
- *     xev.message_type = EInternAtom(XA_WIN_STATE);
+ *     xev.message_type = ex_atom_get(XA_WIN_STATE);
  *     xev.format = 32;
  *     xev.data.l[0] = mask_of_members_to_change;
  *     xev.data.l[1] = new_members;
@@ -278,7 +278,7 @@
  * 
  *     xev.type = ClientMessage;
  *     xev.window = client_window;
- *     xev.message_type = EInternAtom(XA_WIN_WORKSPACE);
+ *     xev.message_type = ex_atom_get(XA_WIN_WORKSPACE);
  *     xev.format = 32;
  *     xev.data.l[0] = new_desktop_number;
  *     xev.data.l[2] = CurrentTimep;
@@ -289,7 +289,7 @@
 static void
 GNOME_GetHintIcons(EWin * ewin, Atom atom_change)
 {
-   static Atom         atom_get = 0;
+   static EX_Atom      atom_get = 0;
    int                 num, i;
    EX_ID              *plst;
    Pixmap              pmap;
@@ -299,7 +299,7 @@ GNOME_GetHintIcons(EWin * ewin, Atom atom_change)
       return;
 
    if (!atom_get)
-      atom_get = EInternAtom(XA_WIN_ICONS);
+      atom_get = ex_atom_get(XA_WIN_ICONS);
    if ((atom_change) && (atom_change != atom_get))
       return;
 
@@ -320,7 +320,7 @@ GNOME_GetHintIcons(EWin * ewin, Atom atom_change)
 static void
 GNOME_GetHintLayer(EWin * ewin, Atom atom_change)
 {
-   static Atom         atom_get = 0;
+   static EX_Atom      atom_get = 0;
    int                 num;
    unsigned int        layer;
 
@@ -328,7 +328,7 @@ GNOME_GetHintLayer(EWin * ewin, Atom atom_change)
       return;
 
    if (!atom_get)
-      atom_get = EInternAtom(XA_WIN_LAYER);
+      atom_get = ex_atom_get(XA_WIN_LAYER);
    if ((atom_change) && (atom_change != atom_get))
       return;
 
@@ -344,7 +344,7 @@ GNOME_GetHintLayer(EWin * ewin, Atom atom_change)
 static void
 GNOME_GetHintState(EWin * ewin, Atom atom_change)
 {
-   static Atom         atom_get = 0;
+   static EX_Atom      atom_get = 0;
    int                 num;
    unsigned int        flags;
 
@@ -352,7 +352,7 @@ GNOME_GetHintState(EWin * ewin, Atom atom_change)
       return;
 
    if (!atom_get)
-      atom_get = EInternAtom(XA_WIN_STATE);
+      atom_get = ex_atom_get(XA_WIN_STATE);
    if ((atom_change) && (atom_change != atom_get))
       return;
 
@@ -375,7 +375,7 @@ GNOME_GetHintState(EWin * ewin, Atom atom_change)
 static void
 GNOME_GetHintAppState(EWin * ewin, Atom atom_change)
 {
-   static Atom         atom_get = 0;
+   static EX_Atom      atom_get = 0;
    int                 num;
    unsigned int        flags;
 
@@ -385,7 +385,7 @@ GNOME_GetHintAppState(EWin * ewin, Atom atom_change)
       return;
 
    if (!atom_get)
-      atom_get = EInternAtom(XA_WIN_APP_STATE);
+      atom_get = ex_atom_get(XA_WIN_APP_STATE);
    if ((atom_change) && (atom_change != atom_get))
       return;
 
@@ -399,7 +399,7 @@ GNOME_GetHintAppState(EWin * ewin, Atom atom_change)
 static void
 GNOME_GetHintDesktop(EWin * ewin, Atom atom_change)
 {
-   static Atom         atom_get = 0;
+   static EX_Atom      atom_get = 0;
    int                 num;
    unsigned int        desk;
 
@@ -407,7 +407,7 @@ GNOME_GetHintDesktop(EWin * ewin, Atom atom_change)
       return;
 
    if (!atom_get)
-      atom_get = EInternAtom(XA_WIN_WORKSPACE);
+      atom_get = ex_atom_get(XA_WIN_WORKSPACE);
    if ((atom_change) && (atom_change != atom_get))
       return;
 
@@ -422,7 +422,7 @@ GNOME_GetHintDesktop(EWin * ewin, Atom atom_change)
 static void
 GNOME_GetHint(EWin * ewin, Atom atom_change)
 {
-   static Atom         atom_get = 0;
+   static EX_Atom      atom_get = 0;
    int                 num;
    unsigned int        flags;
 
@@ -430,7 +430,7 @@ GNOME_GetHint(EWin * ewin, Atom atom_change)
       return;
 
    if (!atom_get)
-      atom_get = EInternAtom(XA_WIN_HINTS);
+      atom_get = ex_atom_get(XA_WIN_HINTS);
    if ((atom_change) && (atom_change != atom_get))
       return;
 
@@ -454,13 +454,13 @@ GNOME_GetHint(EWin * ewin, Atom atom_change)
 void
 GNOME_SetHint(const EWin * ewin)
 {
-   static Atom         atom_set = 0;
+   static EX_Atom      atom_set = 0;
    unsigned int        val;
 
    if ((ewin->type == EWIN_TYPE_MENU) || (ewin->type == EWIN_TYPE_PAGER))
       return;
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_STATE);
+      atom_set = ex_atom_get(XA_WIN_STATE);
    val = 0;
    if (EoIsSticky(ewin))
       val |= WIN_STATE_STICKY;
@@ -474,13 +474,13 @@ GNOME_SetHint(const EWin * ewin)
 void
 GNOME_SetEwinArea(const EWin * ewin)
 {
-   static Atom         atom_set = 0;
+   static EX_Atom      atom_set = 0;
    unsigned int        val[2];
 
    if ((ewin->type == EWIN_TYPE_MENU) || (ewin->type == EWIN_TYPE_PAGER))
       return;
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_AREA);
+      atom_set = ex_atom_get(XA_WIN_AREA);
    val[0] = ewin->area_x;
    val[1] = ewin->area_y;
    ex_window_prop_card32_set(EwinGetClientXwin(ewin), atom_set, val, 2);
@@ -489,13 +489,13 @@ GNOME_SetEwinArea(const EWin * ewin)
 void
 GNOME_SetEwinDesk(const EWin * ewin)
 {
-   static Atom         atom_set = 0;
+   static EX_Atom      atom_set = 0;
    unsigned int        val;
 
    if ((ewin->type == EWIN_TYPE_MENU) || (ewin->type == EWIN_TYPE_PAGER))
       return;
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_WORKSPACE);
+      atom_set = ex_atom_get(XA_WIN_WORKSPACE);
    val = EoGetDeskNum(ewin);
    ex_window_prop_card32_set(EwinGetClientXwin(ewin), atom_set, &val, 1);
 }
@@ -504,7 +504,7 @@ GNOME_SetEwinDesk(const EWin * ewin)
 static void
 GNOME_GetExpandedSize(EWin * ewin, Atom atom_change)
 {
-   static Atom         atom_get = 0;
+   static EX_Atom      atom_get = 0;
    int                 num;
    unsigned int        exp[4];
 
@@ -512,7 +512,7 @@ GNOME_GetExpandedSize(EWin * ewin, Atom atom_change)
       return;
 
    if (!atom_get)
-      atom_get = EInternAtom(XA_WIN_EXPANDED_SIZE);
+      atom_get = ex_atom_get(XA_WIN_EXPANDED_SIZE);
    if ((atom_change) && (atom_change != atom_get))
       return;
 
@@ -532,33 +532,33 @@ GNOME_GetExpandedSize(EWin * ewin, Atom atom_change)
 static void
 GNOME_SetUsedHints(void)
 {
-   static Atom         atom_set = 0;
+   static EX_Atom      atom_set = 0;
    EX_Atom             list[10];
 
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_PROTOCOLS);
-   list[0] = EInternAtom(XA_WIN_LAYER);
-   list[1] = EInternAtom(XA_WIN_STATE);
-   list[2] = EInternAtom(XA_WIN_HINTS);
-   list[3] = EInternAtom(XA_WIN_APP_STATE);
-   list[4] = EInternAtom(XA_WIN_EXPANDED_SIZE);
-   list[5] = EInternAtom(XA_WIN_ICONS);
-   list[6] = EInternAtom(XA_WIN_WORKSPACE);
-   list[7] = EInternAtom(XA_WIN_WORKSPACE_COUNT);
-   list[8] = EInternAtom(XA_WIN_WORKSPACE_NAMES);
-   list[9] = EInternAtom(XA_WIN_CLIENT_LIST);
+      atom_set = ex_atom_get(XA_WIN_PROTOCOLS);
+   list[0] = ex_atom_get(XA_WIN_LAYER);
+   list[1] = ex_atom_get(XA_WIN_STATE);
+   list[2] = ex_atom_get(XA_WIN_HINTS);
+   list[3] = ex_atom_get(XA_WIN_APP_STATE);
+   list[4] = ex_atom_get(XA_WIN_EXPANDED_SIZE);
+   list[5] = ex_atom_get(XA_WIN_ICONS);
+   list[6] = ex_atom_get(XA_WIN_WORKSPACE);
+   list[7] = ex_atom_get(XA_WIN_WORKSPACE_COUNT);
+   list[8] = ex_atom_get(XA_WIN_WORKSPACE_NAMES);
+   list[9] = ex_atom_get(XA_WIN_CLIENT_LIST);
    ex_window_prop_atom_set(WinGetXwin(VROOT), atom_set, list, 10);
 }
 
 void
 GNOME_SetCurrentArea(void)
 {
-   static Atom         atom_set = 0;
+   static EX_Atom      atom_set = 0;
    unsigned int        val[2];
    int                 ax, ay;
 
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_AREA);
+      atom_set = ex_atom_get(XA_WIN_AREA);
    DeskCurrentGetArea(&ax, &ay);
    val[0] = ax;
    val[1] = ay;
@@ -568,11 +568,11 @@ GNOME_SetCurrentArea(void)
 void
 GNOME_SetCurrentDesk(void)
 {
-   static Atom         atom_set = 0;
+   static EX_Atom      atom_set = 0;
    unsigned int        val;
 
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_WORKSPACE);
+      atom_set = ex_atom_get(XA_WIN_WORKSPACE);
    val = DesksGetCurrentNum();
    ex_window_prop_card32_set(WinGetXwin(VROOT), atom_set, &val, 1);
 }
@@ -580,11 +580,11 @@ GNOME_SetCurrentDesk(void)
 static void
 GNOME_SetWMCheck(Window win_wm_check)
 {
-   static Atom         atom_set = 0;
+   static EX_Atom      atom_set = 0;
    unsigned int        val;
 
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_SUPPORTING_WM_CHECK);
+      atom_set = ex_atom_get(XA_WIN_SUPPORTING_WM_CHECK);
    val = win_wm_check;
    ex_window_prop_card32_set(WinGetXwin(VROOT), atom_set, &val, 1);
    ex_window_prop_card32_set(win_wm_check, atom_set, &val, 1);
@@ -593,11 +593,11 @@ GNOME_SetWMCheck(Window win_wm_check)
 void
 GNOME_SetDeskCount(void)
 {
-   static Atom         atom_set = 0;
+   static EX_Atom      atom_set = 0;
    unsigned int        val;
 
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_WORKSPACE_COUNT);
+      atom_set = ex_atom_get(XA_WIN_WORKSPACE_COUNT);
    val = DesksGetNumber();
    ex_window_prop_card32_set(WinGetXwin(VROOT), atom_set, &val, 1);
 }
@@ -605,12 +605,12 @@ GNOME_SetDeskCount(void)
 void
 GNOME_SetAreaCount(void)
 {
-   static Atom         atom_set = 0;
+   static EX_Atom      atom_set = 0;
    int                 ax, ay;
    unsigned int        val[2];
 
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_AREA_COUNT);
+      atom_set = ex_atom_get(XA_WIN_AREA_COUNT);
    DesksGetAreaSize(&ax, &ay);
    val[0] = ax;
    val[1] = ay;
@@ -620,12 +620,12 @@ GNOME_SetAreaCount(void)
 void
 GNOME_SetDeskNames(void)
 {
-   static Atom         atom_set = 0;
+   static EX_Atom      atom_set = 0;
    char                s[1024], **names;
    int                 i, n_desks;
 
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_WORKSPACE_NAMES);
+      atom_set = ex_atom_get(XA_WIN_WORKSPACE_NAMES);
 
    n_desks = DesksGetNumber();
    names = EMALLOC(char *, n_desks);
@@ -649,13 +649,13 @@ GNOME_SetDeskNames(void)
 void
 GNOME_SetClientList(void)
 {
-   static Atom         atom_set = 0;
+   static EX_Atom      atom_set = 0;
    unsigned int       *wl;
    int                 j, i, num;
    EWin               *const *lst;
 
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_CLIENT_LIST);
+      atom_set = ex_atom_get(XA_WIN_CLIENT_LIST);
 
    lst = EwinListOrderGet(&num);
    wl = NULL;
@@ -677,31 +677,31 @@ GNOME_SetClientList(void)
 static void
 GNOME_SetWMNameVer(void)
 {
-   static Atom         atom_set = 0, atom_set2 = 0;
+   static EX_Atom      atom_set = 0, atom_set2 = 0;
 
    if (!atom_set)
-      atom_set = EInternAtom(XA_WIN_WM_NAME);
+      atom_set = ex_atom_get(XA_WIN_WM_NAME);
    ex_window_prop_string_set(WinGetXwin(VROOT), atom_set, e_wm_name);
 
    if (!atom_set2)
-      atom_set2 = EInternAtom(XA_WIN_WM_VERSION);
+      atom_set2 = ex_atom_get(XA_WIN_WM_VERSION);
    ex_window_prop_string_set(WinGetXwin(VROOT), atom_set2, e_wm_version);
 }
 
 void
 GNOME_DelHints(const EWin * ewin)
 {
-   static Atom         atom_get[6] = { 0, 0, 0, 0, 0, 0 };
+   static EX_Atom      atom_get[6] = { 0, 0, 0, 0, 0, 0 };
    Window              win;
 
    if (!atom_get[0])
      {
-	atom_get[0] = EInternAtom(XA_WIN_WORKSPACE);
-	atom_get[1] = EInternAtom(XA_WIN_LAYER);
-	atom_get[2] = EInternAtom(XA_WIN_STATE);
-	atom_get[3] = EInternAtom(XA_WIN_HINTS);
-	atom_get[4] = EInternAtom(XA_WIN_APP_STATE);
-	atom_get[5] = EInternAtom(XA_WIN_AREA);
+	atom_get[0] = ex_atom_get(XA_WIN_WORKSPACE);
+	atom_get[1] = ex_atom_get(XA_WIN_LAYER);
+	atom_get[2] = ex_atom_get(XA_WIN_STATE);
+	atom_get[3] = ex_atom_get(XA_WIN_HINTS);
+	atom_get[4] = ex_atom_get(XA_WIN_APP_STATE);
+	atom_get[5] = ex_atom_get(XA_WIN_AREA);
      }
 
    win = EwinGetClientXwin(ewin);
@@ -734,10 +734,10 @@ GNOME_SetHints(Window win_wm_check)
    GNOME_SetUsedHints();
    GNOME_SetWMCheck(win_wm_check);
    {
-      Atom                atom_set;
+      EX_Atom             atom_set;
       unsigned int        val;
 
-      atom_set = EInternAtom("_WIN_DESKTOP_BUTTON_PROXY");
+      atom_set = ex_atom_get("_WIN_DESKTOP_BUTTON_PROXY");
       Mode.button_proxy_win =
 	 XCreateSimpleWindow(disp, WinGetXwin(VROOT), -80, -80, 24, 24, 0,
 			     0, 0);
@@ -750,12 +750,12 @@ GNOME_SetHints(Window win_wm_check)
 int
 GNOME_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * event)
 {
-   static Atom         a4 = 0, a5 = 0;
+   static EX_Atom      a4 = 0, a5 = 0;
 
    if (!a4)
-      a4 = EInternAtom("_WIN_LAYER");
+      a4 = ex_atom_get("_WIN_LAYER");
    if (!a5)
-      a5 = EInternAtom("_WIN_STATE");
+      a5 = ex_atom_get("_WIN_STATE");
 
    if (event->message_type == a4)
      {
@@ -804,12 +804,12 @@ GNOME_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * event)
 int
 GNOME_ProcessRootClientMessage(XClientMessageEvent * event)
 {
-   static Atom         a2 = 0, a3 = 0;
+   static EX_Atom      a2 = 0, a3 = 0;
 
    if (!a2)
-      a2 = EInternAtom("_WIN_AREA");
+      a2 = ex_atom_get("_WIN_AREA");
    if (!a3)
-      a3 = EInternAtom("_WIN_WORKSPACE");
+      a3 = ex_atom_get("_WIN_WORKSPACE");
 
    if (event->message_type == a2)
      {

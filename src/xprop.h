@@ -31,6 +31,10 @@
 #define EX_Time     EX_ID
 #define EX_GC       GC
 
+EX_Atom             ex_atom_get(const char *name);
+void                ex_atoms_get(const char *const *names,
+				 unsigned int num, EX_Atom * atoms);
+
 int                 ex_client_message32_send(EX_Window win,
 					     EX_Atom type,
 					     unsigned int mask,
@@ -97,7 +101,7 @@ char               *ex_window_prop_string_get(EX_Window win, EX_Atom atom);
 
 /* Misc. */
 #include "X11/Xatom.h"
-extern unsigned int atoms_icccm[];
+extern EX_Atom      atoms_icccm[];
 
 #define EX_ATOM_UTF8_STRING		atoms_icccm[8]
 
@@ -135,7 +139,7 @@ void                ex_icccm_name_class_get(EX_Window win,
 					    char **name, char **clss);
 
 /* NETWM (EWMH) */
-extern unsigned int atoms_netwm[];
+extern EX_Atom      atoms_netwm[];
 
 /* Window manager info */
 #define EX_ATOM_NET_SUPPORTED			atoms_netwm[0]

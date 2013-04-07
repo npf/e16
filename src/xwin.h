@@ -278,8 +278,6 @@ void                EXSendEvent(Window xwin,
 KeyCode             EKeysymToKeycode(KeySym keysym);
 KeyCode             EKeynameToKeycode(const char *name);
 
-Atom                EInternAtom(const char *name);
-
 typedef struct {
    char                type;
    char                depth;
