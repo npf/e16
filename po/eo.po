@@ -7,17 +7,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: e16 0.99.99.003\n"
-"Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-03-08 20:55+0100\n"
-"PO-Revision-Date: 2013-01-06 22:20+0000\n"
+"Report-Msgid-Bugs-To: $MSGID_BUGS_ADDRESS\n"
+"POT-Creation-Date: 2013-04-07 20:53+0200\n"
+"PO-Revision-Date: 2013-02-15 20:33+0000\n"
 "Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
-"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-01-07 04:50+0000\n"
-"X-Generator: Launchpad (build 16402)\n"
+"X-Launchpad-Export-Date: 2013-04-08 05:23+0000\n"
+"X-Generator: Launchpad (build 16550)\n"
+"Language: eo\n"
 
 #: src/about.c:35
 #, c-format
@@ -219,7 +219,7 @@ msgstr "Manteni aspekton dum skalado"
 
 #: src/backgrounds.c:2033
 msgid "Tile image across background"
-msgstr ""
+msgstr "Kaheligi bildon trans ekranfono"
 
 #: src/backgrounds.c:2042
 msgid "Move to Front"
@@ -269,7 +269,7 @@ msgstr "Bluo:"
 
 #: src/backgrounds.c:2184
 msgid "Pre-scan BG's"
-msgstr ""
+msgstr "Antaŭskani ekranfonojn"
 
 #: src/backgrounds.c:2192
 msgid "Sort by File"
@@ -544,7 +544,7 @@ msgstr ""
 #: src/coords.c:75
 #, c-format
 msgid "Focused/unfocused opacity: %d/%d %%"
-msgstr "(Mal)fokusita opako: %d/%d %%"
+msgstr "(Mal)fokusita opakeco: %d/%d %%"
 
 #: src/desktops.c:131
 msgid ""
@@ -589,15 +589,15 @@ msgstr "Nombro da virtualaj labortabloj:"
 
 #: src/desktops.c:2514
 msgid "Slide desktops around when changing"
-msgstr ""
+msgstr "Ŝovi labortablojn ĉirkaŭ dum ŝanĝoj"
 
 #: src/desktops.c:2520
 msgid "Desktop Slide speed:"
-msgstr ""
+msgstr "Rapido de labortabla ŝovo"
 
 #: src/desktops.c:2534
 msgid "Wrap desktops around"
-msgstr ""
+msgstr "Ĉirkaŭflui labortablojn"
 
 #: src/desktops.c:2542
 msgid "Display desktop dragbar"
@@ -749,7 +749,7 @@ msgstr "Nur novaj dialogoj fokusiĝas"
 
 #: src/focus.c:879
 msgid "Only new dialogs whose owner is focused get the focus"
-msgstr ""
+msgstr "Nur novaj dialogoj kies posedanto fokusiĝis fokusiĝas"
 
 #: src/focus.c:884
 msgid "Raise windows while switching focus"
@@ -808,7 +808,8 @@ msgid "Send mouse pointer to window after focus switch"
 msgstr ""
 
 #: src/focus.c:973
-msgid "Focuslist image display policy (if one operation fails, try the next):"
+msgid ""
+"Focuslist image display policy (if one operation fails, try the next):"
 msgstr ""
 
 #: src/focus.c:977
@@ -1707,15 +1708,15 @@ msgstr ""
 
 #: src/settings.c:693
 msgid "Default focused window opacity:"
-msgstr ""
+msgstr "Apriora fokusita fenestra opakeco:"
 
 #: src/settings.c:704
 msgid "Default unfocused window opacity:"
-msgstr ""
+msgstr "Apriora malfokusita fenestra opakeco:"
 
 #: src/settings.c:715
 msgid "Default pop-up window opacity:"
-msgstr ""
+msgstr "Apriora ŝprucfenestra opakeco:"
 
 #: src/settings.c:726
 msgid "Composite"
@@ -1800,87 +1801,87 @@ msgstr ""
 "la aŭtoroj de Enlightenment ne atingis al via servilo\n"
 "aŭ ili ne aŭdis onidiron pri ĝi.\n"
 
-#: src/snaps.c:722
+#: src/snaps.c:728
 msgid "Title:"
 msgstr "Titolo:"
 
-#: src/snaps.c:734
+#: src/snaps.c:740
 msgid "Name:"
 msgstr "Nomo:"
 
-#: src/snaps.c:747
+#: src/snaps.c:753
 msgid "Class:"
 msgstr "Klaso:"
 
-#: src/snaps.c:760
+#: src/snaps.c:766
 msgid "Role:"
 msgstr "Rolo:"
 
-#: src/snaps.c:773
+#: src/snaps.c:779
 msgid "Command:"
 msgstr "Komando:"
 
-#: src/snaps.c:812
+#: src/snaps.c:818
 msgid "Track Changes"
-msgstr ""
+msgstr "Sekvi ŝanĝojn"
 
-#: src/snaps.c:817
+#: src/snaps.c:823
 msgid "Location"
 msgstr "Situo"
 
-#: src/snaps.c:822
+#: src/snaps.c:828
 msgid "Border style"
 msgstr "Stilo de randoj"
 
-#: src/snaps.c:827 config/strings.c:175
+#: src/snaps.c:833 config/strings.c:175
 msgid "Size"
 msgstr "Grando"
 
-#: src/snaps.c:832 config/strings.c:90 config/strings.c:112
+#: src/snaps.c:838 config/strings.c:90 config/strings.c:112
 msgid "Desktop"
 msgstr "Labortablo"
 
-#: src/snaps.c:837
+#: src/snaps.c:843
 msgid "Shaded state"
 msgstr "Volva stato"
 
-#: src/snaps.c:842
+#: src/snaps.c:848
 msgid "Sticky state"
 msgstr ""
 
-#: src/snaps.c:847
+#: src/snaps.c:853
 msgid "Stacking layer"
 msgstr ""
 
-#: src/snaps.c:852
+#: src/snaps.c:858
 msgid "Window List Skip"
 msgstr ""
 
-#: src/snaps.c:858 config/strings.c:135 config/strings.c:163
+#: src/snaps.c:864 config/strings.c:135 config/strings.c:163
 msgid "Opacity"
 msgstr "Opakeco"
 
-#: src/snaps.c:863
+#: src/snaps.c:869
 msgid "Shadowing"
 msgstr "Ombrado"
 
-#: src/snaps.c:869
+#: src/snaps.c:875
 msgid "Flags"
 msgstr "Etikedoj"
 
-#: src/snaps.c:888
+#: src/snaps.c:894
 msgid "Restart application on login"
 msgstr "Restartigi aplikaĵon je ensaluto"
 
-#: src/snaps.c:907
+#: src/snaps.c:913
 msgid "Remember this window's group(s)"
 msgstr "Memorigi ĉi tiu(j)n grupo(j)n de fenestro"
 
-#: src/snaps.c:915
+#: src/snaps.c:921
 msgid "Remembered Application Attributes"
 msgstr "Ecoj de memorigitaj aplikaĵoj"
 
-#: src/snaps.c:918
+#: src/snaps.c:924
 msgid ""
 "Select the attributes of this\n"
 "window you wish to Remember\n"
@@ -1890,31 +1891,31 @@ msgstr ""
 "fenestro, kiun vi volas memorigi\n"
 "porĉiame\n"
 
-#: src/snaps.c:1008
+#: src/snaps.c:1014
 msgid "Delete"
 msgstr "Forigi"
 
-#: src/snaps.c:1036
+#: src/snaps.c:1042
 msgid "Remembered Settings..."
 msgstr "Memorigitaj agordoj..."
 
-#: src/snaps.c:1043
+#: src/snaps.c:1049
 msgid "Unused"
 msgstr "Neuzata"
 
-#: src/snaps.c:1056
+#: src/snaps.c:1062
 msgid "There are no active windows with remembered attributes."
 msgstr ""
 
-#: src/snaps.c:1062
+#: src/snaps.c:1068
 msgid "Remember"
 msgstr "Memorigi"
 
-#: src/snaps.c:1063
+#: src/snaps.c:1069
 msgid "Remembered Windows Settings"
 msgstr "Agordoj pri memorigitaj fenestroj"
 
-#: src/snaps.c:1066
+#: src/snaps.c:1072
 msgid ""
 "Enlightenment Remembered\n"
 "Windows Settings Dialog"
@@ -1922,7 +1923,7 @@ msgstr ""
 "Memorigo de Enlightenment\n"
 "Dialogo de agordoj pri fenestroj"
 
-#: src/snaps.c:1167
+#: src/snaps.c:1173
 msgid "Error saving snaps file"
 msgstr ""
 
@@ -2107,7 +2108,7 @@ msgstr "Movi ĉi tiun fenestron."
 
 #: config/strings.c:12 config/strings.c:14 config/strings.c:48
 msgid "Shade/Unshade this window."
-msgstr ""
+msgstr "Mal/Ombrigi tiun fenestron."
 
 #: config/strings.c:13 config/strings.c:50 config/strings.c:53
 msgid "Show the Window Options menu."
@@ -2235,7 +2236,7 @@ msgstr "Plialtigi"
 
 #: config/strings.c:57
 msgid "Raise this window to the top."
-msgstr ""
+msgstr "Levi tiun fenestron supren."
 
 #: config/strings.c:58 config/strings.c:127
 msgid "Lower"
@@ -2250,8 +2251,11 @@ msgid "Stick/Unstick"
 msgstr "Fiksi / Malfiksi"
 
 #: config/strings.c:61
-msgid "Toggle the Omnipresent (visible on all Desktops) state of this window."
+msgid ""
+"Toggle the Omnipresent (visible on all Desktops) state of this window."
 msgstr ""
+"Baskuligi la ĉieestantan (videblan sur ĉiuj labortabloj) staton de tiu "
+"fenestro."
 
 #: config/strings.c:63
 msgid ""
@@ -2519,11 +2523,11 @@ msgstr "100%"
 
 #: config/strings.c:170
 msgid "Focused opacity 100%"
-msgstr ""
+msgstr "Fokusita opakeco 100%"
 
 #: config/strings.c:171
 msgid "Focused opacity follows unfocused"
-msgstr ""
+msgstr "Fokusita opakeco sekvas malfokusigita"
 
 #: config/strings.c:172
 msgid "Toggle Fading"
