@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-03-08 20:55+0100\n"
+"POT-Creation-Date: 2013-04-07 20:20+0200\n"
 "PO-Revision-Date: 2010-01-25 00:46+0000\n"
 "Last-Translator: Sergiy Gavrylov <sergiovana@bigmir.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -1110,11 +1110,11 @@ msgstr ""
 "операційної системи. Така помилка зустрічається вкрай\n"
 "рідко на оперативному обладнані.\n"
 
-#: src/hints.c:634
+#: src/hints.c:607
 msgid "Selection Error!"
 msgstr "Помилка відбору!"
 
-#: src/hints.c:634
+#: src/hints.c:607
 #, c-format
 msgid "Could not acquire selection: %s"
 msgstr "Не вдалося зробити відбір: %s"
@@ -1485,7 +1485,7 @@ msgstr ""
 "Діалог налаштування\n"
 "пейджера Enlightenment"
 
-#: src/session.c:327
+#: src/session.c:329
 msgid ""
 "ERROR!\n"
 "\n"
@@ -1511,51 +1511,51 @@ msgstr ""
 "\n"
 "... маю надію.\n"
 
-#: src/session.c:630
+#: src/session.c:632
 msgid "Are you sure?"
 msgstr "Ви впевнені?"
 
-#: src/session.c:632
+#: src/session.c:634
 msgid "Are you sure you wish to log out ?"
 msgstr "Ви дійсно хочете вийти з системи ?"
 
-#: src/session.c:640
+#: src/session.c:642
 msgid "Yes, Shut Down"
 msgstr "Так, вимкнути"
 
-#: src/session.c:642
+#: src/session.c:644
 msgid "Yes, Reboot"
 msgstr "Так, перезавантажити"
 
-#: src/session.c:645
+#: src/session.c:647
 msgid "Yes, Log Out"
 msgstr "Так, завершити сеанс"
 
-#: src/session.c:647
+#: src/session.c:649
 msgid "No"
 msgstr "Ні"
 
-#: src/session.c:782
+#: src/session.c:784
 msgid "Enable Session Script"
 msgstr "Дозволити сценарій сеансу"
 
-#: src/session.c:787
+#: src/session.c:789
 msgid "Enable Logout Dialog"
 msgstr "Дозволити діалог завершення сеансу"
 
-#: src/session.c:792
+#: src/session.c:794
 msgid "Enable Reboot/Halt on Logout"
 msgstr "Дозволити перезавантаження/зупинку під час завершення сеансу"
 
-#: src/session.c:798
+#: src/session.c:800
 msgid "Session"
 msgstr "Сеанс"
 
-#: src/session.c:799
+#: src/session.c:801
 msgid "Session Settings"
 msgstr "Налаштування сеансу"
 
-#: src/session.c:802
+#: src/session.c:804
 msgid ""
 "Enlightenment Session\n"
 "Settings Dialog"
@@ -1908,87 +1908,87 @@ msgstr ""
 "працюватиме некоректно. Якщо ваш X-сервер новіший ніж X11\n"
 "то автор Enlightenment не чув і не бачив такого.\n"
 
-#: src/snaps.c:722
+#: src/snaps.c:728
 msgid "Title:"
 msgstr "Заголовок:"
 
-#: src/snaps.c:734
+#: src/snaps.c:740
 msgid "Name:"
 msgstr "Ім'я:"
 
-#: src/snaps.c:747
+#: src/snaps.c:753
 msgid "Class:"
 msgstr "Клас:"
 
-#: src/snaps.c:760
+#: src/snaps.c:766
 msgid "Role:"
 msgstr "Роль:"
 
-#: src/snaps.c:773
+#: src/snaps.c:779
 msgid "Command:"
 msgstr "Команда:"
 
-#: src/snaps.c:812
+#: src/snaps.c:818
 msgid "Track Changes"
 msgstr "Слідкувати за змінами"
 
-#: src/snaps.c:817
+#: src/snaps.c:823
 msgid "Location"
 msgstr "Адреса"
 
-#: src/snaps.c:822
+#: src/snaps.c:828
 msgid "Border style"
 msgstr "Стиль рамки"
 
-#: src/snaps.c:827 config/strings.c:175
+#: src/snaps.c:833 config/strings.c:175
 msgid "Size"
 msgstr "Розмір"
 
-#: src/snaps.c:832 config/strings.c:90 config/strings.c:112
+#: src/snaps.c:838 config/strings.c:90 config/strings.c:112
 msgid "Desktop"
 msgstr "Стільниця"
 
-#: src/snaps.c:837
+#: src/snaps.c:843
 msgid "Shaded state"
 msgstr "Затінений стан"
 
-#: src/snaps.c:842
+#: src/snaps.c:848
 msgid "Sticky state"
 msgstr "Прикріплений стан"
 
-#: src/snaps.c:847
+#: src/snaps.c:853
 msgid "Stacking layer"
 msgstr "Прошарки стека"
 
-#: src/snaps.c:852
+#: src/snaps.c:858
 msgid "Window List Skip"
 msgstr "Пропустити список вікон"
 
-#: src/snaps.c:858 config/strings.c:135 config/strings.c:163
+#: src/snaps.c:864 config/strings.c:135 config/strings.c:163
 msgid "Opacity"
 msgstr "Непрозорість"
 
-#: src/snaps.c:863
+#: src/snaps.c:869
 msgid "Shadowing"
 msgstr "Затінення"
 
-#: src/snaps.c:869
+#: src/snaps.c:875
 msgid "Flags"
 msgstr "Ознаки"
 
-#: src/snaps.c:888
+#: src/snaps.c:894
 msgid "Restart application on login"
 msgstr "Перезапустити програму під час входу в систему"
 
-#: src/snaps.c:907
+#: src/snaps.c:913
 msgid "Remember this window's group(s)"
 msgstr "Пам'ятати групу(и) цього вікна"
 
-#: src/snaps.c:915
+#: src/snaps.c:921
 msgid "Remembered Application Attributes"
 msgstr "Пам'ятати атрибути програми"
 
-#: src/snaps.c:918
+#: src/snaps.c:924
 msgid ""
 "Select the attributes of this\n"
 "window you wish to Remember\n"
@@ -1998,31 +1998,31 @@ msgstr ""
 "вікна, якщо віднині хочете\n"
 "пам'ятати їх\n"
 
-#: src/snaps.c:1008
+#: src/snaps.c:1014
 msgid "Delete"
 msgstr "Вилучити"
 
-#: src/snaps.c:1036
+#: src/snaps.c:1042
 msgid "Remembered Settings..."
 msgstr "Пам'ятати налаштування..."
 
-#: src/snaps.c:1043
+#: src/snaps.c:1049
 msgid "Unused"
 msgstr "Не використовується"
 
-#: src/snaps.c:1056
+#: src/snaps.c:1062
 msgid "There are no active windows with remembered attributes."
 msgstr "Немає активних вікон з атрибутами запам'ятовування."
 
-#: src/snaps.c:1062
+#: src/snaps.c:1068
 msgid "Remember"
 msgstr "Пам'ятати"
 
-#: src/snaps.c:1063
+#: src/snaps.c:1069
 msgid "Remembered Windows Settings"
 msgstr "Параметри запам'ятовування вікон"
 
-#: src/snaps.c:1066
+#: src/snaps.c:1072
 msgid ""
 "Enlightenment Remembered\n"
 "Windows Settings Dialog"
@@ -2030,7 +2030,7 @@ msgstr ""
 "Діалог налаштування запам'ятовування\n"
 "вікон Enlightenment"
 
-#: src/snaps.c:1167
+#: src/snaps.c:1173
 msgid "Error saving snaps file"
 msgstr "Помилка збереження snaps файла"
 

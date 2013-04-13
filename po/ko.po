@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-03-08 20:55+0100\n"
+"POT-Creation-Date: 2013-04-07 20:20+0200\n"
 "PO-Revision-Date: 2009-12-02 09:48+0000\n"
 "Last-Translator: Michael Kim <Unknown>\n"
 "Language-Team: Korean <translation-team-ko@lists.sourceforge.net>\n"
@@ -1066,11 +1066,11 @@ msgstr ""
 "동작중인 하드웨어에서 버스오류가 생기는 것은\n"
 "일반적인 일은 아닙니다.\n"
 
-#: src/hints.c:634
+#: src/hints.c:607
 msgid "Selection Error!"
 msgstr ""
 
-#: src/hints.c:634
+#: src/hints.c:607
 #, c-format
 msgid "Could not acquire selection: %s"
 msgstr ""
@@ -1434,7 +1434,7 @@ msgstr ""
 "인라이튼먼트 데스크탑과 영역\n"
 "페이저 설정 대화상자"
 
-#: src/session.c:327
+#: src/session.c:329
 msgid ""
 "ERROR!\n"
 "\n"
@@ -1460,51 +1460,51 @@ msgstr ""
 "\n"
 "... 그러길 바랍니다.\n"
 
-#: src/session.c:630
+#: src/session.c:632
 msgid "Are you sure?"
 msgstr "확실한가요?"
 
-#: src/session.c:632
+#: src/session.c:634
 msgid "Are you sure you wish to log out ?"
 msgstr "정말로 로그아웃하기를 바라십니까 ?"
 
-#: src/session.c:640
+#: src/session.c:642
 msgid "Yes, Shut Down"
 msgstr ""
 
-#: src/session.c:642
+#: src/session.c:644
 msgid "Yes, Reboot"
 msgstr ""
 
-#: src/session.c:645
+#: src/session.c:647
 msgid "Yes, Log Out"
 msgstr "예, 로그아웃"
 
-#: src/session.c:647
+#: src/session.c:649
 msgid "No"
 msgstr "아니오"
 
-#: src/session.c:782
+#: src/session.c:784
 msgid "Enable Session Script"
 msgstr ""
 
-#: src/session.c:787
+#: src/session.c:789
 msgid "Enable Logout Dialog"
 msgstr ""
 
-#: src/session.c:792
+#: src/session.c:794
 msgid "Enable Reboot/Halt on Logout"
 msgstr ""
 
-#: src/session.c:798
+#: src/session.c:800
 msgid "Session"
 msgstr ""
 
-#: src/session.c:799
+#: src/session.c:801
 msgid "Session Settings"
 msgstr ""
 
-#: src/session.c:802
+#: src/session.c:804
 msgid ""
 "Enlightenment Session\n"
 "Settings Dialog"
@@ -1850,87 +1850,87 @@ msgstr ""
 "인라이튼먼트의 저자가 들어보지도 못했거나 사용해 보지\n"
 "못한 것임에 분명합니다.\n"
 
-#: src/snaps.c:722
+#: src/snaps.c:728
 msgid "Title:"
 msgstr "제목:"
 
-#: src/snaps.c:734
+#: src/snaps.c:740
 msgid "Name:"
 msgstr "이름:"
 
-#: src/snaps.c:747
+#: src/snaps.c:753
 msgid "Class:"
 msgstr "클래스:"
 
-#: src/snaps.c:760
+#: src/snaps.c:766
 msgid "Role:"
 msgstr ""
 
-#: src/snaps.c:773
+#: src/snaps.c:779
 msgid "Command:"
 msgstr "명령:"
 
-#: src/snaps.c:812
+#: src/snaps.c:818
 msgid "Track Changes"
 msgstr ""
 
-#: src/snaps.c:817
+#: src/snaps.c:823
 msgid "Location"
 msgstr "위치"
 
-#: src/snaps.c:822
+#: src/snaps.c:828
 msgid "Border style"
 msgstr "테두리 스타일"
 
-#: src/snaps.c:827 config/strings.c:175
+#: src/snaps.c:833 config/strings.c:175
 msgid "Size"
 msgstr "크기"
 
-#: src/snaps.c:832 config/strings.c:90 config/strings.c:112
+#: src/snaps.c:838 config/strings.c:90 config/strings.c:112
 msgid "Desktop"
 msgstr "데스크탑"
 
-#: src/snaps.c:837
+#: src/snaps.c:843
 msgid "Shaded state"
 msgstr "쉐이드 상태"
 
-#: src/snaps.c:842
+#: src/snaps.c:848
 msgid "Sticky state"
 msgstr "스틱키 상태"
 
-#: src/snaps.c:847
+#: src/snaps.c:853
 msgid "Stacking layer"
 msgstr "계층 스택킹"
 
-#: src/snaps.c:852
+#: src/snaps.c:858
 msgid "Window List Skip"
 msgstr "창 목록 건너뜀"
 
-#: src/snaps.c:858 config/strings.c:135 config/strings.c:163
+#: src/snaps.c:864 config/strings.c:135 config/strings.c:163
 msgid "Opacity"
 msgstr ""
 
-#: src/snaps.c:863
+#: src/snaps.c:869
 msgid "Shadowing"
 msgstr ""
 
-#: src/snaps.c:869
+#: src/snaps.c:875
 msgid "Flags"
 msgstr ""
 
-#: src/snaps.c:888
+#: src/snaps.c:894
 msgid "Restart application on login"
 msgstr "로그인시 응용프로그램 시작"
 
-#: src/snaps.c:907
+#: src/snaps.c:913
 msgid "Remember this window's group(s)"
 msgstr "이 창의 그룹 기억"
 
-#: src/snaps.c:915
+#: src/snaps.c:921
 msgid "Remembered Application Attributes"
 msgstr "기억할 응용프로그램 속성"
 
-#: src/snaps.c:918
+#: src/snaps.c:924
 msgid ""
 "Select the attributes of this\n"
 "window you wish to Remember\n"
@@ -1940,31 +1940,31 @@ msgstr ""
 "이 창의 속성을 선택하시기\n"
 "바랍니다\n"
 
-#: src/snaps.c:1008
+#: src/snaps.c:1014
 msgid "Delete"
 msgstr ""
 
-#: src/snaps.c:1036
+#: src/snaps.c:1042
 msgid "Remembered Settings..."
 msgstr "기억할 설정..."
 
-#: src/snaps.c:1043
+#: src/snaps.c:1049
 msgid "Unused"
 msgstr ""
 
-#: src/snaps.c:1056
+#: src/snaps.c:1062
 msgid "There are no active windows with remembered attributes."
 msgstr "속성을 기억할 활성화된 창이 없습니다"
 
-#: src/snaps.c:1062
+#: src/snaps.c:1068
 msgid "Remember"
 msgstr ""
 
-#: src/snaps.c:1063
+#: src/snaps.c:1069
 msgid "Remembered Windows Settings"
 msgstr "기억할 창 설정"
 
-#: src/snaps.c:1066
+#: src/snaps.c:1072
 msgid ""
 "Enlightenment Remembered\n"
 "Windows Settings Dialog"
@@ -1972,7 +1972,7 @@ msgstr ""
 "인라이튼먼트 기억할\n"
 "창 설정 대화상자"
 
-#: src/snaps.c:1167
+#: src/snaps.c:1173
 msgid "Error saving snaps file"
 msgstr "스냅 파일 저장 오류"
 

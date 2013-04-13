@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-03-08 20:55+0100\n"
+"POT-Creation-Date: 2013-04-07 20:20+0200\n"
 "PO-Revision-Date: 2010-05-09 01:20+0000\n"
 "Last-Translator: luojie-dune <Unknown>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -1057,11 +1057,11 @@ msgid ""
 "hardware.\n"
 msgstr ""
 
-#: src/hints.c:634
+#: src/hints.c:607
 msgid "Selection Error!"
 msgstr "选择错误！"
 
-#: src/hints.c:634
+#: src/hints.c:607
 #, c-format
 msgid "Could not acquire selection: %s"
 msgstr "无法获取选择 %s"
@@ -1410,7 +1410,7 @@ msgstr ""
 "Enlightenment 桌面区域\n"
 "分页器设置对话框"
 
-#: src/session.c:327
+#: src/session.c:329
 msgid ""
 "ERROR!\n"
 "\n"
@@ -1435,51 +1435,51 @@ msgstr ""
 "\n"
 "...你不在意吧。\n"
 
-#: src/session.c:630
+#: src/session.c:632
 msgid "Are you sure?"
 msgstr "您确定吗？"
 
-#: src/session.c:632
+#: src/session.c:634
 msgid "Are you sure you wish to log out ?"
 msgstr "您确定要注销吗？"
 
-#: src/session.c:640
+#: src/session.c:642
 msgid "Yes, Shut Down"
 msgstr "是的，关机"
 
-#: src/session.c:642
+#: src/session.c:644
 msgid "Yes, Reboot"
 msgstr "是的，重启"
 
-#: src/session.c:645
+#: src/session.c:647
 msgid "Yes, Log Out"
 msgstr "是的，注销"
 
-#: src/session.c:647
+#: src/session.c:649
 msgid "No"
 msgstr "不是"
 
-#: src/session.c:782
+#: src/session.c:784
 msgid "Enable Session Script"
 msgstr "启用会话脚本"
 
-#: src/session.c:787
+#: src/session.c:789
 msgid "Enable Logout Dialog"
 msgstr "启用注销对话框"
 
-#: src/session.c:792
+#: src/session.c:794
 msgid "Enable Reboot/Halt on Logout"
 msgstr "在注销中启用重启和关机"
 
-#: src/session.c:798
+#: src/session.c:800
 msgid "Session"
 msgstr "会话"
 
-#: src/session.c:799
+#: src/session.c:801
 msgid "Session Settings"
 msgstr "会话设置"
 
-#: src/session.c:802
+#: src/session.c:804
 msgid ""
 "Enlightenment Session\n"
 "Settings Dialog"
@@ -1818,118 +1818,118 @@ msgid ""
 "access to, nor have heard of.\n"
 msgstr ""
 
-#: src/snaps.c:722
+#: src/snaps.c:728
 msgid "Title:"
 msgstr "标题："
 
-#: src/snaps.c:734
+#: src/snaps.c:740
 msgid "Name:"
 msgstr "名称："
 
-#: src/snaps.c:747
+#: src/snaps.c:753
 msgid "Class:"
 msgstr "种类："
 
-#: src/snaps.c:760
+#: src/snaps.c:766
 msgid "Role:"
 msgstr "作用："
 
-#: src/snaps.c:773
+#: src/snaps.c:779
 msgid "Command:"
 msgstr "命令："
 
-#: src/snaps.c:812
+#: src/snaps.c:818
 msgid "Track Changes"
 msgstr "跟踪更改"
 
-#: src/snaps.c:817
+#: src/snaps.c:823
 msgid "Location"
 msgstr "位置"
 
-#: src/snaps.c:822
+#: src/snaps.c:828
 msgid "Border style"
 msgstr "边框风格"
 
-#: src/snaps.c:827 config/strings.c:175
+#: src/snaps.c:833 config/strings.c:175
 msgid "Size"
 msgstr "尺寸"
 
-#: src/snaps.c:832 config/strings.c:90 config/strings.c:112
+#: src/snaps.c:838 config/strings.c:90 config/strings.c:112
 msgid "Desktop"
 msgstr "桌面"
 
-#: src/snaps.c:837
+#: src/snaps.c:843
 msgid "Shaded state"
 msgstr "卷起状态"
 
-#: src/snaps.c:842
+#: src/snaps.c:848
 msgid "Sticky state"
 msgstr "固定状态"
 
-#: src/snaps.c:847
+#: src/snaps.c:853
 msgid "Stacking layer"
 msgstr "叠放层次"
 
-#: src/snaps.c:852
+#: src/snaps.c:858
 msgid "Window List Skip"
 msgstr "窗口列表略过"
 
-#: src/snaps.c:858 config/strings.c:135 config/strings.c:163
+#: src/snaps.c:864 config/strings.c:135 config/strings.c:163
 msgid "Opacity"
 msgstr "不透明度"
 
-#: src/snaps.c:863
+#: src/snaps.c:869
 msgid "Shadowing"
 msgstr "阴影"
 
-#: src/snaps.c:869
+#: src/snaps.c:875
 msgid "Flags"
 msgstr "标识："
 
-#: src/snaps.c:888
+#: src/snaps.c:894
 msgid "Restart application on login"
 msgstr "登录时重启应用程序"
 
-#: src/snaps.c:907
+#: src/snaps.c:913
 msgid "Remember this window's group(s)"
 msgstr "记忆此窗口分组"
 
-#: src/snaps.c:915
+#: src/snaps.c:921
 msgid "Remembered Application Attributes"
 msgstr "记忆应用程序属性"
 
-#: src/snaps.c:918
+#: src/snaps.c:924
 msgid ""
 "Select the attributes of this\n"
 "window you wish to Remember\n"
 "from now on\n"
 msgstr "选择需要记忆的窗口特性\n"
 
-#: src/snaps.c:1008
+#: src/snaps.c:1014
 msgid "Delete"
 msgstr "删除"
 
-#: src/snaps.c:1036
+#: src/snaps.c:1042
 msgid "Remembered Settings..."
 msgstr "记忆设置..."
 
-#: src/snaps.c:1043
+#: src/snaps.c:1049
 msgid "Unused"
 msgstr "未使用"
 
-#: src/snaps.c:1056
+#: src/snaps.c:1062
 msgid "There are no active windows with remembered attributes."
 msgstr "没有活动窗口具备被记忆的特性。"
 
-#: src/snaps.c:1062
+#: src/snaps.c:1068
 msgid "Remember"
 msgstr "记忆"
 
-#: src/snaps.c:1063
+#: src/snaps.c:1069
 msgid "Remembered Windows Settings"
 msgstr "已记忆的窗口设置"
 
-#: src/snaps.c:1066
+#: src/snaps.c:1072
 msgid ""
 "Enlightenment Remembered\n"
 "Windows Settings Dialog"
@@ -1937,7 +1937,7 @@ msgstr ""
 "Enlightenment 记忆\n"
 "窗口设置对话框"
 
-#: src/snaps.c:1167
+#: src/snaps.c:1173
 msgid "Error saving snaps file"
 msgstr "保存快照文件出错"
 

@@ -7,17 +7,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: e16 0.99.99.003\n"
-"Report-Msgid-Bugs-To: $MSGID_BUGS_ADDRESS\n"
-"POT-Creation-Date: 2013-04-07 20:53+0200\n"
+"Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
+"POT-Creation-Date: 2013-04-07 20:20+0200\n"
 "PO-Revision-Date: 2013-02-15 20:33+0000\n"
 "Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
+"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2013-04-08 05:23+0000\n"
 "X-Generator: Launchpad (build 16550)\n"
-"Language: eo\n"
 
 #: src/about.c:35
 #, c-format
@@ -808,8 +808,7 @@ msgid "Send mouse pointer to window after focus switch"
 msgstr ""
 
 #: src/focus.c:973
-msgid ""
-"Focuslist image display policy (if one operation fails, try the next):"
+msgid "Focuslist image display policy (if one operation fails, try the next):"
 msgstr ""
 
 #: src/focus.c:977
@@ -1044,11 +1043,11 @@ msgid ""
 "hardware.\n"
 msgstr ""
 
-#: src/hints.c:634
+#: src/hints.c:607
 msgid "Selection Error!"
 msgstr "Eraro de elekto!"
 
-#: src/hints.c:634
+#: src/hints.c:607
 #, c-format
 msgid "Could not acquire selection: %s"
 msgstr "Elekto ne akireblas: %s"
@@ -1399,7 +1398,7 @@ msgstr ""
 "Labortablo kaj areo de Enlightenment\n"
 "Dialogo de agordoj de paĝiloj"
 
-#: src/session.c:327
+#: src/session.c:329
 msgid ""
 "ERROR!\n"
 "\n"
@@ -1414,51 +1413,51 @@ msgid ""
 "... I hope.\n"
 msgstr ""
 
-#: src/session.c:630
+#: src/session.c:632
 msgid "Are you sure?"
 msgstr "Ĉu vi certas?"
 
-#: src/session.c:632
+#: src/session.c:634
 msgid "Are you sure you wish to log out ?"
 msgstr "Ĉu vi certe volas elsaluti?"
 
-#: src/session.c:640
+#: src/session.c:642
 msgid "Yes, Shut Down"
 msgstr "Jes, elŝalti"
 
-#: src/session.c:642
+#: src/session.c:644
 msgid "Yes, Reboot"
 msgstr "Jes, restartigi"
 
-#: src/session.c:645
+#: src/session.c:647
 msgid "Yes, Log Out"
 msgstr "Jes, elsaluti"
 
-#: src/session.c:647
+#: src/session.c:649
 msgid "No"
 msgstr "Ne"
 
-#: src/session.c:782
+#: src/session.c:784
 msgid "Enable Session Script"
 msgstr "Enŝalti skriptojn de seanco"
 
-#: src/session.c:787
+#: src/session.c:789
 msgid "Enable Logout Dialog"
 msgstr "Enŝalti dialogon de elsaluto"
 
-#: src/session.c:792
+#: src/session.c:794
 msgid "Enable Reboot/Halt on Logout"
 msgstr "Enŝalti restartigon/halton je elsaluto"
 
-#: src/session.c:798
+#: src/session.c:800
 msgid "Session"
 msgstr "Seanco"
 
-#: src/session.c:799
+#: src/session.c:801
 msgid "Session Settings"
 msgstr "Agordoj pri seanco"
 
-#: src/session.c:802
+#: src/session.c:804
 msgid ""
 "Enlightenment Session\n"
 "Settings Dialog"
@@ -2251,8 +2250,7 @@ msgid "Stick/Unstick"
 msgstr "Fiksi / Malfiksi"
 
 #: config/strings.c:61
-msgid ""
-"Toggle the Omnipresent (visible on all Desktops) state of this window."
+msgid "Toggle the Omnipresent (visible on all Desktops) state of this window."
 msgstr ""
 "Baskuligi la ĉieestantan (videblan sur ĉiuj labortabloj) staton de tiu "
 "fenestro."
