@@ -5712,3 +5712,19 @@ CM: Fix override-redirect window registration detail.
 CM: Fix startup after recent changes.
 Danish translation update.
 Convert da.po to utf-8.
+
+-------------------------------------------------------------------------------
+
+Sat Apr 13 10:33:26 CEST 2013
+
+--- 1.0.13 ---
+Don't use CPPFLAGS in Makefile.am.
+Eliminate Quicksort(), use libc qsort() in stead.
+Set startup id on apps started by snaps too.
+Startup applications - Don't slide in or place manually during e16 startup.
+Fix Globally Active focus mode (Tim Howe).
+Use qsort in stead of open coded sorting.
+Move/rename atom/property related wrapper functions and types.
+Move/rename EInternAtom -> ex_atom_get, AtomListIntern -> ex_atoms_get.
+updating esperanto translation
+
