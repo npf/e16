@@ -6,15 +6,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: e16 svn-rev69488\n"
-"Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-04-07 20:20+0200\n"
-"PO-Revision-Date: 2012-03-17 16:02+0100\n"
-"Last-Translator: Trinine <trinine@free.fr>\n"
+"Report-Msgid-Bugs-To: $MSGID_BUGS_ADDRESS\n"
+"POT-Creation-Date: 2013-04-08 12:02+0200\n"
+"PO-Revision-Date: 2013-04-25 05:08+0000\n"
+"Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: French\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-04-26 05:40+0000\n"
+"X-Generator: Launchpad (build 16580)\n"
+"Language: fr\n"
 
 #: src/about.c:35
 #, c-format
@@ -815,7 +817,8 @@ msgstr "Inclure les fenêtres des autres bureaux dans la liste de fenêtres"
 
 #: src/focus.c:948
 msgid "Focus windows while switching"
-msgstr "Mettre le focus sur la fenêtre sélectionnée dans la liste de fenêtres"
+msgstr ""
+"Mettre le focus sur la fenêtre sélectionnée dans la liste de fenêtres"
 
 #: src/focus.c:953
 msgid "Outline windows while switching"
@@ -831,7 +834,8 @@ msgid "Send mouse pointer to window after focus switch"
 msgstr "Placer le pointeur de souris sur la fenêtre après obtention du focus"
 
 #: src/focus.c:973
-msgid "Focuslist image display policy (if one operation fails, try the next):"
+msgid ""
+"Focuslist image display policy (if one operation fails, try the next):"
 msgstr "Afficher les icônes dans la liste de fenêtres dans l'ordre suivant:"
 
 #: src/focus.c:977
@@ -1164,7 +1168,7 @@ msgstr "Tapez \"help <commande>\" pour une description individuelle\n"
 
 #: src/ipc.c:1844 src/ipc.c:1856
 msgid "         <command>     : <description>\n"
-msgstr "      <commande>   : <description>\n"
+msgstr "         <commande>   : <description>\n"
 
 #: src/main.c:530
 #, c-format
@@ -1577,7 +1581,8 @@ msgstr "Opaque+Tech."
 
 #: src/settings.c:145
 msgid "Avoid server grab"
-msgstr "Éviter de figer l'affichage pendant les changements de taille/position"
+msgstr ""
+"Éviter de figer l'affichage pendant les changements de taille/position"
 
 #: src/settings.c:155
 msgid "Move/Resize Geometry Info Postion:"
@@ -1721,7 +1726,7 @@ msgstr "Placer les fenêtres manuellement quand tout est plein"
 
 #: src/settings.c:491
 msgid "Placement"
-msgstr "Placement "
+msgstr "Placement"
 
 #: src/settings.c:492
 msgid "Window Placement Settings"
@@ -2353,7 +2358,8 @@ msgid "Stick/Unstick"
 msgstr "Coller/Décoller"
 
 #: config/strings.c:61
-msgid "Toggle the Omnipresent (visible on all Desktops) state of this window."
+msgid ""
+"Toggle the Omnipresent (visible on all Desktops) state of this window."
 msgstr ""
 "Basculer l'état d'omniprésence (visibilité sur tous les bureaux) de cette "
 "fenêtre."
@@ -2444,7 +2450,7 @@ msgstr "Aide"
 
 #: config/strings.c:94 config/strings.c:116
 msgid "About Enlightenment"
-msgstr "À propos d'Enlightenment"
+msgstr "À propos d’Enlightenment"
 
 #: config/strings.c:95 config/strings.c:117
 msgid "About this theme"
@@ -2697,104 +2703,3 @@ msgstr "Applications"
 #: config/strings.c:192
 msgid "Epplets"
 msgstr "Epplets"
-
-#~ msgid "Raindrops"
-#~ msgstr "Gouttes de pluie"
-
-#~ msgid "Shaded"
-#~ msgstr "Fenêtre ombrée"
-
-#~ msgid "Semi-Solid"
-#~ msgstr "Fenêtre semi-solide"
-
-#~ msgid "Translucent"
-#~ msgstr "Fenêtre translucide"
-
-#~ msgid "Other"
-#~ msgstr "Autres"
-
-#~ msgid "Ignore struts"
-#~ msgstr "Ignorer les enjambements"
-
-#~ msgid "Enable Effect: Raindrops"
-#~ msgstr "Activer l'effet: Gouttes de pluie"
-
-#~ msgid "Animate when iconifying to this Iconbox"
-#~ msgstr "Animer les icônifications vers cette Boîte à icônes"
-
-#, fuzzy
-#~ msgid "Icon size: %2i"
-#~ msgstr "Taille des icônes: %2d"
-
-#~ msgid "Autoraise"
-#~ msgstr "Auto-élévation"
-
-#~ msgid "Autoraise Settings"
-#~ msgstr "Paramètres d'Auto-élévation"
-
-#~ msgid ""
-#~ "Enlightenment Automatic Raising\n"
-#~ "of Windows Settings Dialog\n"
-#~ msgstr ""
-#~ "Dialogue de paramétrage de\n"
-#~ "l'Auto-élévation\n"
-
-#~ msgid "Enlightenment Settings ..."
-#~ msgstr "Paramètres d'Enlightenment..."
-
-#~ msgid "Focus Settings ..."
-#~ msgstr "Paramètres du Focus..."
-
-#~ msgid "Move & Resize Settings ..."
-#~ msgstr "Paramètres de Déplacement et de Taille..."
-
-#~ msgid "Window Placement Settings ..."
-#~ msgstr "Paramètres de Placement des Fenêtres..."
-
-#~ msgid "Multiple Desktop Settings ..."
-#~ msgstr "Paramètres des Bureaux multiples..."
-
-#~ msgid "Virtual Desktop Settings ..."
-#~ msgstr "Paramètres des Bureaux virtuels..."
-
-#~ msgid "Pager Settings ..."
-#~ msgstr "Paramètres du Pager..."
-
-#~ msgid "Menu Settings ..."
-#~ msgstr "Paramètres des Menus..."
-
-#~ msgid "Autoraise Settings ..."
-#~ msgstr "Paramètres d'Auto-élévation..."
-
-#~ msgid "Tooltip Settings ..."
-#~ msgstr "Paramètres des Bulles d'aide..."
-
-#~ msgid "Audio Settings ..."
-#~ msgstr "Paramètres Audio..."
-
-#~ msgid "Group Settings ..."
-#~ msgstr "Paramètres des Groupes..."
-
-#~ msgid "Remember Settings ..."
-#~ msgstr "Paramètres de Mémorisation..."
-
-#~ msgid "Special FX Settings ..."
-#~ msgstr "Paramètres des Effets spéciaux..."
-
-#~ msgid "Desktop Background Settings ..."
-#~ msgstr "Paramètres de Fond d'écran..."
-
-#~ msgid "Theme Transparency Settings ..."
-#~ msgstr "Paramètres de Transparence..."
-
-#~ msgid "Composite Settings ..."
-#~ msgstr "Paramètres de Transparence Composite..."
-
-#~ msgid "Session Settings ..."
-#~ msgstr "Paramètres de Session..."
-
-#~ msgid "Miscellaneous Settings ..."
-#~ msgstr "Paramètres Divers..."
-
-#~ msgid "Mirror Shade/Iconify/Stick"
-#~ msgstr "Répercuter Enroulement/Icônification/Collage"
