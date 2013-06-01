@@ -24,6 +24,9 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ##############################################################################
 
+#use strict;
+#use warnings;
+
 # Likely  prefixes
 $Prefixes = "/usr/local:/usr:/opt:/opt/kde:$ENV{'KDEDIR'}";
 $Prefixes = "$Prefixes:/opt/kde3:/opt/gnome";	# SUSE
@@ -62,6 +65,7 @@ $EdirBin  = "/usr/bin" unless $EdirBin;
 $EdirMenus = "$EdirUser/menus";
 
 $dbg      = "$ENV{'E_MENUGEN_DBG'}";
+$dbg      = 0 unless $dbg;
 
 # Put EBIN first in path
 $ENV{'PATH'} = "$EdirBin:$ENV{'PATH'}";
@@ -175,8 +179,7 @@ sub MakeMenu {
 # Process a .desktop file
 sub ProcessFile {
 	local $f = shift;
-	local $Name, $Exec, $Icon, $Cats, $Type, $Ndis, $File;
-	local $c;
+	local ($Name, $Exec, $Icon, $Cats, $Type, $Ndis, $File);
 
 	if (! -f "$f")  {
 		print "Not found: $f\n" if $dbg ge 1;
@@ -294,7 +297,7 @@ sub ProcessDir {
 sub ProcessOldStyle {
 	local $t = shift;
 	local $dl = shift;
-	local $d, $d2;
+	local ($d, $d2);
 	local @d2l;
 
 	foreach $d (split(':', $dl)) {
@@ -393,7 +396,7 @@ sub MakeEppsMenu {
 sub MakeAppsMenu {
 	local $type = shift;
 	local %menus;
-	local $c, $k, $dir;
+	local ($c, $k, $dir);
 
 	$dir = "$EdirMenus/menus_$type";
 	$mdir = "menus_$type";
@@ -465,7 +468,7 @@ foreach $d (split(':', $AppDirs)) {
 		print "- Not found\n" if $dbg ge 1;
 		next;
 	}
-	ProcessDir($d);
+	ProcessDir($d, "", "");
 }
 
 # Make menu dir and scaled icon dir
