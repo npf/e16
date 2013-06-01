@@ -197,7 +197,9 @@ sub ProcessFile {
 	open(FI,$f) or return;
 	while (<FI>) {
 		s/\s+$//;
-		if (/^Name=(.*)$/) {
+		if (/^\[Desktop\s+(\w+)/) {
+			last if ($1 ne "Entry");
+		} elsif (/^Name=(.*)$/) {
 			$Name = $1;
 		} elsif ($loc1 && /^Name\[$loc1\]=(.*)$/) {
 			$Nam1 = $1;
