@@ -357,8 +357,8 @@ int                 DrawEwinShapeNeedsGrab(int mode);
 Window              EwinGetClientXwin(const EWin * ewin);
 
 void                EwinShapeSet(EWin * ewin);
-void                EwinRaise(EWin * ewin);
-void                EwinLower(EWin * ewin);
+int                 EwinRaise(EWin * ewin);
+int                 EwinLower(EWin * ewin);
 void                EwinShow(EWin * ewin);
 void                EwinHide(EWin * ewin);
 void                EwinKill(EWin * ewin);

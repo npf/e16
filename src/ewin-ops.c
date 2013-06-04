@@ -1475,28 +1475,30 @@ void
 EwinOpRaise(EWin * ewin, int source __UNUSED__)
 {
    EWin              **gwins;
-   int                 i, num;
+   int                 i, num, changed;
 
-   SoundPlay(SOUND_RAISE);
    gwins = ListWinGroupMembersForEwin(ewin, GROUP_ACTION_STACKING,
 				      Mode.nogroup, &num);
-   for (i = 0; i < num; i++)
-      EwinRaise(gwins[i]);
+   for (i = changed = 0; i < num; i++)
+      changed += EwinRaise(gwins[i]);
    Efree(gwins);
+   if (changed)
+      SoundPlay(SOUND_RAISE);
 }
 
 void
 EwinOpLower(EWin * ewin, int source __UNUSED__)
 {
    EWin              **gwins;
-   int                 i, num;
+   int                 i, num, changed;
 
-   SoundPlay(SOUND_LOWER);
    gwins = ListWinGroupMembersForEwin(ewin, GROUP_ACTION_STACKING,
 				      Mode.nogroup, &num);
-   for (i = 0; i < num; i++)
-      EwinLower(gwins[i]);
+   for (i = changed = 0; i < num; i++)
+      changed += EwinLower(gwins[i]);
    Efree(gwins);
+   if (changed)
+      SoundPlay(SOUND_LOWER);
 }
 
 void

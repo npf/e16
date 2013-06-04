@@ -1435,15 +1435,15 @@ EwinReparent(EWin * ewin, Win parent)
    EwinWithdraw(ewin, parent);
 }
 
-void
+int
 EwinRaise(EWin * ewin)
 {
    static int          call_depth = 0;
    EWin              **lst;
-   int                 i, num;
+   int                 i, num, numt;
 
    if (call_depth > 256)
-      return;
+      return 0;
    call_depth++;
 
    num = EoRaise(ewin);
@@ -1455,8 +1455,8 @@ EwinRaise(EWin * ewin)
    if (num == 0)		/* Quit if stacking is unchanged */
       goto done;
 
-   lst = EwinListTransients(ewin, &num, 1);
-   for (i = 0; i < num; i++)
+   lst = EwinListTransients(ewin, &numt, 1);
+   for (i = 0; i < numt; i++)
       EwinRaise(lst[i]);
    Efree(lst);
 
@@ -1468,17 +1468,19 @@ EwinRaise(EWin * ewin)
 
  done:
    call_depth--;
+
+   return num;
 }
 
-void
+int
 EwinLower(EWin * ewin)
 {
    static int          call_depth = 0;
    EWin              **lst;
-   int                 i, num;
+   int                 i, num, numt;
 
    if (call_depth > 256)
-      return;
+      return 0;
    call_depth++;
 
    num = EoLower(ewin);
@@ -1490,8 +1492,8 @@ EwinLower(EWin * ewin)
    if (num == 0)		/* Quit if stacking is unchanged */
       goto done;
 
-   lst = EwinListTransientFor(ewin, &num);
-   for (i = 0; i < num; i++)
+   lst = EwinListTransientFor(ewin, &numt);
+   for (i = 0; i < numt; i++)
       EwinLower(lst[i]);
    Efree(lst);
 
@@ -1503,6 +1505,8 @@ EwinLower(EWin * ewin)
 
  done:
    call_depth--;
+
+   return num;
 }
 
 void
