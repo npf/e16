@@ -1514,14 +1514,13 @@ _MenusSlide(Menu * m, int xdist, int ydist)
 static int
 SubmenuShowTimeout(void *data)
 {
-   Menu               *m;
+   Menu               *m = (Menu *) data;
    MenuItem           *mi;
    EWin               *ewin, *ewin2;
    int                 xo, yo, mw, mh, xdist, ydist;
 
    menu_timer_submenu = NULL;
 
-   m = (Menu *) data;
    if (!ecore_list_goto(menu_list, m))
       goto done;
    ewin = m->ewin;

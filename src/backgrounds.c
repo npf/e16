@@ -1489,7 +1489,7 @@ CB_DesktopMiniDisplayRedraw(Dialog * d __UNUSED__, int val __UNUSED__,
    Background         *bg;
    Pixmap              pmap;
    int                 w, h;
-   DItem              *di;
+   DItem              *di = (DItem *) data;
    Win                 win;
    unsigned int        color;
    const char         *fbg, *ffg;
@@ -1497,7 +1497,6 @@ CB_DesktopMiniDisplayRedraw(Dialog * d __UNUSED__, int val __UNUSED__,
    if (!tmp_bg)
       return;
 
-   di = (DItem *) data;
    win = DialogItemAreaGetWindow(di);
    DialogItemAreaGetSize(di, &w, &h);
 
@@ -1804,10 +1803,9 @@ CB_BGAreaEvent(DItem * di, int val __UNUSED__, void *data)
 static void
 CB_DesktopTimeout(Dialog * d __UNUSED__, int val __UNUSED__, void *data)
 {
-   DItem              *di;
+   DItem              *di = (DItem *) data;
    char                s[256];
 
-   di = (DItem *) data;
    Esnprintf(s, sizeof(s), _("Unused backgrounds freed after %2i:%02i:%02i"),
 	     tmp_bg_timeout / 3600,
 	     (tmp_bg_timeout / 60) - (60 * (tmp_bg_timeout / 3600)),

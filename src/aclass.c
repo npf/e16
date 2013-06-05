@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -54,7 +54,7 @@ struct _action {
 struct _actionclass {
    char               *name;
    int                 num;
-   Action            **list;
+   Action            **actions;
    char               *tooltipstring;
    unsigned int        ref_count;
    char global;
@@ -167,8 +167,8 @@ ActionclassAddAction(ActionClass * ac, Action * aa)
    if (!ac || !aa)
       return;
    ac->num++;
-   ac->list = EREALLOC(Action *, ac->list, ac->num);
-   ac->list[ac->num - 1] = aa;
+   ac->actions = EREALLOC(Action *, ac->actions, ac->num);
+   ac->actions[ac->num - 1] = aa;
 }
 
 ActionClass        *
@@ -204,9 +204,9 @@ ActionclassEmpty(ActionClass * ac)
    int                 i;
 
    for (i = 0; i < ac->num; i++)
-      ActionDestroy(ac->list[i]);
+      ActionDestroy(ac->actions[i]);
    ac->num = 0;
-   _EFREE(ac->list);
+   _EFREE(ac->actions);
    _EFREE(ac->tooltipstring);
 }
 
@@ -833,7 +833,7 @@ AclassConfigWrite(const ActionClass * ac, void (*prf) (const char *fmt, ...))
      }
    for (i = 0; i < ac->num; i++)
      {
-	aa = ac->list[i];
+	aa = ac->actions[i];
 	len = ActionEncode(aa, s, sizeof(s));
 	if (len <= 0)
 	   continue;
@@ -934,7 +934,7 @@ ActionclassGetActionCount(ActionClass * ac)
 Action             *
 ActionclassGetAction(ActionClass * ac, int ix)
 {
-   return (ac && ix < ac->num) ? ac->list[ix] : NULL;
+   return (ac && ix < ac->num) ? ac->actions[ix] : NULL;
 }
 
 const char         *
@@ -1071,7 +1071,7 @@ ActionclassEvent(ActionClass * ac, XEvent * ev, EWin * ewin)
      {
 	if (!mode_action_destroy)
 	  {
-	     aa = ac->list[i];
+	     aa = ac->actions[i];
 	     ok = 0;
 	     if ((aa->event == type) && (aa->action))
 	       {
@@ -1283,7 +1283,7 @@ GrabButtonGrabs(Win win)
    ac->ref_count++;
    for (j = 0; j < ac->num; j++)
      {
-	aa = ac->list[j];
+	aa = ac->actions[j];
 	if ((!aa) || ((aa->event != EVENT_MOUSE_DOWN) &&
 		      (aa->event != EVENT_MOUSE_UP)))
 	   continue;
@@ -1311,7 +1311,7 @@ UnGrabButtonGrabs(Win win)
    ac->ref_count--;
    for (j = 0; j < ac->num; j++)
      {
-	aa = ac->list[j];
+	aa = ac->actions[j];
 	if ((!aa) || ((aa->event != EVENT_MOUSE_DOWN)
 		      && (aa->event != EVENT_MOUSE_UP)))
 	   continue;

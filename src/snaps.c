@@ -976,12 +976,11 @@ CB_ApplyRemember(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
 static void
 CB_RememberWindowSettings(Dialog * d __UNUSED__, int val __UNUSED__, void *data)
 {
-   RememberWinList    *rd;
+   RememberWinList    *rd = (RememberWinList *) data;
    Snapshot           *sn;
 
-   if (!data)
+   if (!rd)
       return;
-   rd = (RememberWinList *) data;
 
    /* Make sure its still there */
    sn = (Snapshot *) ecore_list_goto(ss_list, rd->snap);

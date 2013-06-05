@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2011 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -488,25 +488,21 @@ IconboxExit(Container * ct, int wm_exit)
 static void
 IconboxSighan(Container * ct __UNUSED__, int sig, void *prm)
 {
-   EWin               *ewin;
+   EWin               *ewin = (EWin *) prm;
 
    switch (sig)
      {
      case ESIGNAL_EWIN_ICONIFY:
-	ewin = (EWin *) prm;
 	IconboxesEwinIconify(ewin);
 	break;
      case ESIGNAL_EWIN_DEICONIFY:
-	ewin = (EWin *) prm;
 	IconboxesEwinDeIconify(ewin);
 	break;
      case ESIGNAL_EWIN_DESTROY:
-	ewin = (EWin *) prm;
 	if (ewin->state.iconified)
 	   RemoveMiniIcon(ewin);
 	break;
      case ESIGNAL_EWIN_CHANGE_ICON:
-	ewin = (EWin *) prm;
 	if (ewin->state.iconified)
 	   IconboxesUpdateEwinIcon(ewin, 1);
 	break;

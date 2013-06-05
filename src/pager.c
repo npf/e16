@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -183,13 +183,11 @@ PagerScanCancel(Pager * p)
 static int
 PagerScanTimeout(void *data)
 {
-   Pager              *p;
+   Pager              *p = (Pager *) data;
    EWin               *ewin;
    int                 y, y2, phase, cx, cy, ww, hh, xx, yy;
    static int          offsets[8] = { 0, 4, 2, 6, 1, 5, 3, 7 };
    int                 pager_mode = PagersGetMode();
-
-   p = (Pager *) data;
 
    if (pager_mode != PAGER_MODE_SNAP)
       goto nomore;

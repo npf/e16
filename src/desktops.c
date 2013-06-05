@@ -2377,7 +2377,7 @@ static void
 CB_DesktopDisplayRedraw(Dialog * d, int val, void *data)
 {
    DeskDlgData        *dd = DLG_DATA_GET(d, DeskDlgData);
-   DItem              *di;
+   DItem              *di = (DItem *) data;
    int                 i;
    int                 w, h;
    Win                 win;
@@ -2388,7 +2388,6 @@ CB_DesktopDisplayRedraw(Dialog * d, int val, void *data)
       return;
 
    dd->prev_desktops = dd->desktops;
-   di = (DItem *) data;
    win = DialogItemAreaGetWindow(di);
    DialogItemAreaGetSize(di, &w, &h);
 
@@ -2617,8 +2616,8 @@ static void
 CB_AreaDisplayRedraw(Dialog * d, int val, void *data)
 {
    AreaDlgData        *dd = DLG_DATA_GET(d, AreaDlgData);
+   DItem              *di = (DItem *) data;
    char                s[64];
-   DItem              *di;
    Win                 win;
    int                 w, h, ww, hh;
 
@@ -2628,7 +2627,6 @@ CB_AreaDisplayRedraw(Dialog * d, int val, void *data)
    dd->prev_ax = dd->area_x;
    dd->prev_ay = dd->area_y;
 
-   di = (DItem *) data;
    win = DialogItemAreaGetWindow(di);
    DialogItemAreaGetSize(di, &w, &h);
 
