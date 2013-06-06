@@ -26,7 +26,6 @@
 #include "borders.h"
 #include "desktops.h"
 #include "dialog.h"
-#include "e16-ecore_list.h"
 #include "eimage.h"
 #include "emodule.h"
 #include "eobj.h"
@@ -35,6 +34,7 @@
 #include "grabs.h"
 #include "hints.h"
 #include "iclass.h"
+#include "list.h"
 #include "menus.h"
 #include "screen.h"
 #include "settings.h"
@@ -60,6 +60,7 @@ static struct {
 } Mode_menus;
 
 struct _menustyle {
+   dlist_t             list;
    char               *name;
    TextClass          *tclass;
    ImageClass         *bg_iclass;
@@ -92,6 +93,7 @@ struct _menuitem {
 };
 
 struct _menu {
+   dlist_t             list;
    EWin               *ewin;
    Win                 win;
    PmapMask            pmm;
@@ -136,8 +138,8 @@ static void         MenuMaskerHandleEvents(Win win, XEvent * ev, void *prm);
 
 static void         MenusHide(void);
 
-static Ecore_List  *menu_list = NULL;
-static Ecore_List  *menu_style_list = NULL;
+static              LIST_HEAD(menu_list);
+static              LIST_HEAD(menu_style_list);
 static Timer       *menu_timer_submenu = NULL;
 
 static MenuItem    *
@@ -396,9 +398,7 @@ MenuStyleCreate(const char *name)
    if (!ms)
       return NULL;
 
-   if (!menu_style_list)
-      menu_style_list = ecore_list_new();
-   ecore_list_prepend(menu_style_list, ms);
+   LIST_PREPEND(MenuStyle, &menu_style_list, ms);
 
    ms->name = Estrdup(name);
    ms->iconpos = ICON_LEFT;
@@ -436,13 +436,11 @@ MenuStyleFind(const char *name)
 {
    MenuStyle          *ms;
 
-   ms = (MenuStyle *) ecore_list_find(menu_style_list, _MenuStyleMatchName,
-				      name);
+   ms = LIST_FIND(MenuStyle, &menu_style_list, _MenuStyleMatchName, name);
    if (ms)
       return ms;
 
-   ms = (MenuStyle *) ecore_list_find(menu_style_list, _MenuStyleMatchName,
-				      "__fb_ms");
+   ms = LIST_FIND(MenuStyle, &menu_style_list, _MenuStyleMatchName, "__fb_ms");
    if (ms)
       return ms;
 
@@ -569,9 +567,7 @@ MenuCreate(const char *name, const char *title, Menu * parent, MenuStyle * ms)
       MenuSetStyle(m, ms);
    m->icon_size = -1;		/* Use image size */
 
-   if (!menu_list)
-      menu_list = ecore_list_new();
-   ecore_list_append(menu_list, m);
+   LIST_APPEND(Menu, &menu_list, m);
 
    return m;
 }
@@ -582,7 +578,7 @@ MenuDestroy(Menu * m)
    if (!m)
       return;
 
-   if (!ecore_list_goto(menu_list, m))
+   if (!LIST_CHECK(Menu, &menu_list, m))
       return;
 
    MenuHide(m);
@@ -591,7 +587,7 @@ MenuDestroy(Menu * m)
    if (m->ref_count)
       return;
 
-   ecore_list_node_remove(menu_list, m);
+   LIST_REMOVE(Menu, &menu_list, m);
 
    if (m->win)
       EDestroyWindow(m->win);
@@ -1055,7 +1051,7 @@ MenusDestroyLoaded(void)
    for (;;)
      {
       restart:
-	ECORE_LIST_FOR_EACH(menu_list, m)
+	LIST_FOR_EACH(Menu, &menu_list, m)
 	{
 	   if (m->internal)
 	      continue;
@@ -1090,7 +1086,7 @@ MenuFind(const char *name, const char *param)
 {
    Menu               *m;
 
-   m = (Menu *) ecore_list_find(menu_list, _MenuMatchName, name);
+   m = LIST_FIND(Menu, &menu_list, _MenuMatchName, name);
    if (m)
       return (m);
 
@@ -1175,7 +1171,7 @@ MenusTouch(void)
 {
    Menu               *m;
 
-   ECORE_LIST_FOR_EACH(menu_list, m) m->redraw = 1;
+   LIST_FOR_EACH(Menu, &menu_list, m) m->redraw = 1;
 }
 
 /*
@@ -1519,7 +1515,7 @@ SubmenuShowTimeout(void *data)
 
    menu_timer_submenu = NULL;
 
-   if (!ecore_list_goto(menu_list, m))
+   if (!LIST_CHECK(Menu, &menu_list, m))
       goto done;
    ewin = m->ewin;
    if (!EwinFindByPtr(ewin))
@@ -1884,7 +1880,7 @@ MenusTimeout(void *data __UNUSED__)
    for (;;)
      {
       restart:
-	ECORE_LIST_FOR_EACH(menu_list, m)
+	LIST_FOR_EACH(Menu, &menu_list, m)
 	{
 	   if (m->shown || !m->filled ||
 	       ts - m->last_access < MENU_UNLOAD_CHECK_INTERVAL)
@@ -2058,7 +2054,7 @@ MenusIpc(const char *params)
      {
 #define SS(s) ((s) ? (s) : "-")
 #define ST(s) ((s) ? (s->name) : "-")
-	ECORE_LIST_FOR_EACH(menu_list, m)
+	LIST_FOR_EACH(Menu, &menu_list, m)
 	   IpcPrintf("%s(%s/%s): %s\n", m->name, SS(m->alias), ST(m->style),
 		     SS(m->title));
      }

@@ -41,7 +41,7 @@ e16_SOURCES = \
 	dialog.c	        dialog.h	        \
 	dock.c			\
 	draw.c			\
-	e16-ecore_list.c	e16-ecore_list.h	\
+	list.c			list.h			\
 	econfig.c		econfig.h		\
 	edebug.h		\
 	edge.c			\

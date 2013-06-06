@@ -25,11 +25,11 @@
 #include "aclass.h"
 #include "conf.h"
 #include "cursors.h"
-#include "e16-ecore_list.h"
 #include "emodule.h"
 #include "ewins.h"
 #include "file.h"
 #include "grabs.h"
+#include "list.h"
 #include "timers.h"
 #include <ctype.h>
 
@@ -52,6 +52,7 @@ struct _action {
 };
 
 struct _actionclass {
+   dlist_t             list;
    char               *name;
    int                 num;
    Action            **actions;
@@ -65,8 +66,8 @@ static void         GrabActionKey(Action * aa);
 
 static void         BindingsSave(void);
 
-static Ecore_List  *aclass_list = NULL;
-static Ecore_List  *aclass_list_global = NULL;
+static              LIST_HEAD(aclass_list);
+static              LIST_HEAD(aclass_list_global);
 
 static char         mode_action_destroy = 0;
 static char         mode_keybinds_changed = 0;
@@ -183,16 +184,12 @@ ActionclassCreate(const char *name, int global)
 
    if (global)
      {
-	if (!aclass_list_global)
-	   aclass_list_global = ecore_list_new();
-	ecore_list_prepend(aclass_list_global, ac);
+	LIST_PREPEND(ActionClass, &aclass_list_global, ac);
 	ac->global = 1;
      }
    else
      {
-	if (!aclass_list)
-	   aclass_list = ecore_list_new();
-	ecore_list_prepend(aclass_list, ac);
+	LIST_PREPEND(ActionClass, &aclass_list, ac);
      }
 
    return ac;
@@ -223,7 +220,7 @@ ActionclassDestroy(ActionClass * ac)
 	return;
      }
 
-   ecore_list_node_remove(aclass_list, ac);
+   LIST_REMOVE(ActionClass, &aclass_list, ac);
 
    ActionclassEmpty(ac);
    Efree(ac->name);
@@ -241,8 +238,8 @@ _ActionclassMatchName(const void *data, const void *match)
 static ActionClass *
 ActionclassFindGlobal(const char *name)
 {
-   return (ActionClass *) ecore_list_find(aclass_list_global,
-					  _ActionclassMatchName, name);
+   return LIST_FIND(ActionClass, &aclass_list_global,
+		    _ActionclassMatchName, name);
 }
 
 ActionClass        *
@@ -250,8 +247,7 @@ ActionclassFind(const char *name)
 {
    if (!name)
       return NULL;
-   return (ActionClass *) ecore_list_find(aclass_list, _ActionclassMatchName,
-					  name);
+   return LIST_FIND(ActionClass, &aclass_list, _ActionclassMatchName, name);
 }
 
 static ActionClass *
@@ -259,12 +255,11 @@ ActionclassFindAny(const char *name)
 {
    ActionClass        *ac;
 
-   ac = (ActionClass *) ecore_list_find(aclass_list_global,
-					_ActionclassMatchName, name);
+   ac = LIST_FIND(ActionClass, &aclass_list_global,
+		  _ActionclassMatchName, name);
    if (ac)
       return ac;
-   return (ActionClass *) ecore_list_find(aclass_list, _ActionclassMatchName,
-					  name);
+   return LIST_FIND(ActionClass, &aclass_list, _ActionclassMatchName, name);
 }
 
 int
@@ -339,8 +334,8 @@ AclassConfigLoad(FILE * fs)
 	  case ACLASS_TYPE:
 	     if (!ac || i2 == ACLASS_TYPE_ACLASS)
 		break;
-	     ecore_list_node_remove(aclass_list, ActionclassFind(ac->name));
-	     ecore_list_prepend(aclass_list_global, ac);
+	     LIST_REMOVE(ActionClass, &aclass_list, ActionclassFind(ac->name));
+	     LIST_PREPEND(ActionClass, &aclass_list_global, ac);
 	     global = 1;
 
 	     break;
@@ -1142,7 +1137,7 @@ ActionclassesGlobalEvent(XEvent * ev)
    int                 match;
 
    match = 0;
-   ECORE_LIST_FOR_EACH(aclass_list_global, ac)
+   LIST_FOR_EACH(ActionClass, &aclass_list_global, ac)
       match |= ActionclassEvent(ac, ev, GetFocusEwin());
 
    return match;
@@ -1212,19 +1207,20 @@ AclassIpc(const char *params)
 	if (prm[0] == '\0')
 	  {
 	     IpcPrintf("Normal:\n");
-	     ECORE_LIST_FOR_EACH(aclass_list, ac) IpcPrintf("%s\n", ac->name);
+	     LIST_FOR_EACH(ActionClass, &aclass_list, ac)
+		IpcPrintf("%s\n", ac->name);
 	     IpcPrintf("Global:\n");
-	     ECORE_LIST_FOR_EACH(aclass_list_global, ac) IpcPrintf("%s\n",
-								   ac->name);
+	     LIST_FOR_EACH(ActionClass, &aclass_list_global, ac)
+		IpcPrintf("%s\n", ac->name);
 	  }
 	else if (!strcmp(prm, "all"))
 	  {
-	     ECORE_LIST_FOR_EACH(aclass_list, ac)
+	     LIST_FOR_EACH(ActionClass, &aclass_list, ac)
 	     {
 		IpcPrintf("\n");
 		AclassConfigWrite(ac, IpcPrintf);
 	     }
-	     ECORE_LIST_FOR_EACH(aclass_list_global, ac)
+	     LIST_FOR_EACH(ActionClass, &aclass_list_global, ac)
 	     {
 		IpcPrintf("\n");
 		AclassConfigWrite(ac, IpcPrintf);

@@ -26,6 +26,7 @@
 
 #include <X11/Xlib.h>
 #include "eimage.h"
+#include "list.h"
 
 typedef struct _container Container;
 
@@ -51,6 +52,7 @@ typedef struct {
 } ContainerOps;
 
 struct _container {
+   dlist_t             list;
    const ContainerOps *ops;
    const char         *wm_name;
    const char         *menu_title;

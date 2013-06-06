@@ -24,8 +24,8 @@
 #include "E.h"
 #include "conf.h"
 #include "cursors.h"
-#include "e16-ecore_list.h"
 #include "emodule.h"
+#include "list.h"
 #include "xwin.h"
 #include <X11/cursorfont.h>
 #if USE_XRENDER
@@ -33,6 +33,7 @@
 #endif
 
 struct _ecursor {
+   dlist_t             list;
    char               *name;
    Cursor              cursor;
    unsigned int        ref_count;
@@ -42,7 +43,7 @@ struct _ecursor {
    int                 native_id;
 };
 
-static Ecore_List  *cursor_list = NULL;
+static              LIST_HEAD(cursor_list);
 
 #if USE_XRENDER
 /* Assuming we have XRenderCreateCursor (render >= 0.5) */
@@ -123,9 +124,7 @@ ECursorCreate(const char *name, const char *image, int native_id,
    ec->bg = bg;
    ec->native_id = native_id;
 
-   if (!cursor_list)
-      cursor_list = ecore_list_new();
-   ecore_list_prepend(cursor_list, ec);
+   LIST_PREPEND(ECursor, &cursor_list, ec);
 }
 
 static void
@@ -140,7 +139,7 @@ ECursorDestroy(ECursor * ec)
 	return;
      }
 
-   ecore_list_node_remove(cursor_list, ec);
+   LIST_REMOVE(ECursor, &cursor_list, ec);
 
    Efree(ec->name);
    Efree(ec->file);
@@ -220,7 +219,7 @@ ECursorFind(const char *name)
 {
    if (!name || !name[0])
       return NULL;
-   return (ECursor *) ecore_list_find(cursor_list, _ECursorMatchName, name);
+   return LIST_FIND(ECursor, &cursor_list, _ECursorMatchName, name);
 }
 
 ECursor            *
@@ -410,7 +409,7 @@ CursorsIpc(const char *params)
 
    if (!strncmp(cmd, "list", 2))
      {
-	ECORE_LIST_FOR_EACH(cursor_list, ec) IpcPrintf("%s\n", ec->name);
+	LIST_FOR_EACH(ECursor, &cursor_list, ec) IpcPrintf("%s\n", ec->name);
      }
 }
 

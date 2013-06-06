@@ -25,17 +25,17 @@
 #include "aclass.h"
 #include "conf.h"
 #include "dialog.h"
-#include "e16-ecore_list.h"
 #include "emodule.h"
 #include "eobj.h"
 #include "iclass.h"
+#include "list.h"
 #include "settings.h"
 #include "tclass.h"
 #include "timers.h"
 #include "tooltips.h"
 #include "xwin.h"
 
-static Ecore_List  *tt_list = NULL;
+static              LIST_HEAD(tt_list);
 static Timer       *tt_timer = NULL;
 
 static struct {
@@ -52,6 +52,7 @@ static struct {
 } Mode_tooltips;
 
 struct _tooltip {
+   dlist_t             list;
    const char         *name;
    ImageClass         *iclass[5];
    TextClass          *tclass;
@@ -114,9 +115,7 @@ TooltipCreate(const char *name, const char *ic0, const char *ic1,
 
    tt->dist = dist;
 
-   if (!tt_list)
-      tt_list = ecore_list_new();
-   ecore_list_prepend(tt_list, tt);
+   LIST_PREPEND(ToolTip, &tt_list, tt);
 
    return tt;
 }
@@ -672,7 +671,7 @@ _TooltipMatchName(const void *data, const void *match)
 ToolTip            *
 TooltipFind(const char *name)
 {
-   return (ToolTip *) ecore_list_find(tt_list, _TooltipMatchName, name);
+   return LIST_FIND(ToolTip, &tt_list, _TooltipMatchName, name);
 }
 
 /*
@@ -686,7 +685,7 @@ TooltipsHide(void)
 
    TooltipsSetPending(0, NULL, NULL);
 
-   ECORE_LIST_FOR_EACH(tt_list, tt) TooltipHide(tt);
+   LIST_FOR_EACH(ToolTip, &tt_list, tt) TooltipHide(tt);
 }
 
 void

@@ -26,12 +26,12 @@
 #include "buttons.h"
 #include "cursors.h"
 #include "desktops.h"
-#include "e16-ecore_list.h"
 #include "eimage.h"
 #include "emodule.h"
 #include "file.h"
 #include "grabs.h"
 #include "iclass.h"
+#include "list.h"
 #include "tclass.h"
 #include "tooltips.h"
 #include "xwin.h"
@@ -53,6 +53,7 @@ typedef struct {
 } BGeometry;
 
 struct _button {
+   dlist_t             list;
    EObj                o;
    BGeometry           geom;
    ImageClass         *iclass;
@@ -75,7 +76,7 @@ struct _button {
    unsigned int        ref_count;
 };
 
-static Ecore_List  *button_list = NULL;
+static              LIST_HEAD(button_list);
 
 static struct {
    Button             *button;
@@ -132,9 +133,7 @@ ButtonCreate(const char *name, int id, const char *iclass,
    if (!b)
       return b;
 
-   if (!button_list)
-      button_list = ecore_list_new();
-   ecore_list_append(button_list, b);
+   LIST_APPEND(Button, &button_list, b);
 
    b->id = id;
 
@@ -188,7 +187,7 @@ ButtonDestroy(Button * b)
 	return;
      }
 
-   ecore_list_node_remove(button_list, b);
+   LIST_REMOVE(Button, &button_list, b);
 
    EoFini(b);
 
@@ -209,7 +208,7 @@ _ButtonMatchName(const void *data, const void *match)
 Button             *
 ButtonFind(const char *name)
 {
-   return (Button *) ecore_list_find(button_list, _ButtonMatchName, name);
+   return LIST_FIND(Button, &button_list, _ButtonMatchName, name);
 }
 
 static void
@@ -449,7 +448,7 @@ ButtonsForeach(int id, Desk * dsk, void (*func) (Button * b))
 {
    Button             *b;
 
-   ECORE_LIST_FOR_EACH(button_list, b)
+   LIST_FOR_EACH(Button, &button_list, b)
    {
       if (id >= 0 && id != b->id)
 	 continue;
@@ -464,7 +463,7 @@ ButtonsMoveStickyToDesk(Desk * dsk)
 {
    Button             *b;
 
-   ECORE_LIST_FOR_EACH(button_list, b)
+   LIST_FOR_EACH(Button, &button_list, b)
    {
       if (!EoIsSticky(b) || ButtonIsInternal(b))
 	 continue;
@@ -617,7 +616,7 @@ ButtonGetAclass(void *data)
    Button             *b = (Button *) data;
 
    /* Validate button */
-   if (!ecore_list_goto(button_list, b))
+   if (!LIST_CHECK(Button, &button_list, b))
       return NULL;
 
    return b->aclass;
@@ -845,7 +844,7 @@ ButtonsConfigSave(void)
    Button             *b;
    int                 flags;
 
-   if (ecore_list_count(button_list) <= 0)
+   if (LIST_IS_EMPTY(&button_list))
       return;
 
    Etmp(st);
@@ -853,7 +852,7 @@ ButtonsConfigSave(void)
    if (!fs)
       return;
 
-   ECORE_LIST_FOR_EACH(button_list, b)
+   LIST_FOR_EACH(Button, &button_list, b)
    {
       if (b->id != 0 || b->internal)
 	 continue;
@@ -978,7 +977,7 @@ doHideShowButton(const char *params)
    if (!params)
      {
 	bmd.id = 0;
-	ecore_list_for_each(button_list, _ButtonHideShow, &bmd);
+	LIST_FOR_EACH(Button, &button_list, b) _ButtonHideShow(b, &bmd);
 	goto done;
      }
 
@@ -1000,7 +999,7 @@ doHideShowButton(const char *params)
 	   return;
 
 	bmd.regex = ss;
-	ecore_list_for_each(button_list, _ButtonHideShow, &bmd);
+	LIST_FOR_EACH(Button, &button_list, b) _ButtonHideShow(b, &bmd);
      }
    else if (!strcmp(s, "all_buttons_except"))
      {
@@ -1010,11 +1009,11 @@ doHideShowButton(const char *params)
 	bmd.id = 0;
 	bmd.match = 0;
 	bmd.regex = ss;
-	ecore_list_for_each(button_list, _ButtonHideShow, &bmd);
+	LIST_FOR_EACH(Button, &button_list, b) _ButtonHideShow(b, &bmd);
      }
    else if (!strcmp(s, "all"))
      {
-	ecore_list_for_each(button_list, _ButtonHideShow, &bmd);
+	LIST_FOR_EACH(Button, &button_list, b) _ButtonHideShow(b, &bmd);
      }
 
  done:
@@ -1044,7 +1043,7 @@ ButtonsIpc(const char *params)
    else if (!strncmp(cmd, "list", 2))
      {
 	IpcPrintf("Win       d  s  l     x     y     w     h name\n");
-	ECORE_LIST_FOR_EACH(button_list, b)
+	LIST_FOR_EACH(Button, &button_list, b)
 	   IpcPrintf("%#lx %2d %2d %2d %5d+%5d %5dx%5d %s\n",
 		     EoGetXwin(b), EoGetDeskNum(b), EoIsSticky(b),
 		     EoGetLayer(b), EoGetX(b), EoGetY(b), EoGetW(b), EoGetH(b),

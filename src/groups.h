@@ -23,6 +23,8 @@
  */
 #ifndef _GROUPS_H_
 #define _GROUPS_H_
+#include "ewins.h"
+#include "list.h"
 
 #define GROUP_SELECT_ALL             0
 #define GROUP_SELECT_EWIN_ONLY       1
@@ -49,6 +51,7 @@ typedef struct _groupconfig {
 } GroupConfig;
 
 struct _group {
+   dlist_t             list;
    int                 index;
    EWin              **members;
    int                 num_members;

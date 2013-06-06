@@ -24,10 +24,10 @@
 #include "E.h"
 #include "borders.h"
 #include "dialog.h"
-#include "e16-ecore_list.h"
 #include "emodule.h"
 #include "ewins.h"
 #include "groups.h"
+#include "list.h"
 #include "settings.h"
 #include "snaps.h"
 
@@ -44,7 +44,7 @@
 #define SET_ON     1
 #define SET_TOGGLE 2
 
-static Ecore_List  *group_list = NULL;
+static              LIST_HEAD(group_list);
 
 static struct {
    GroupConfig         dflt;
@@ -73,9 +73,7 @@ GroupCreate(int gid)
    if (!g)
       return NULL;
 
-   if (!group_list)
-      group_list = ecore_list_new();
-   ecore_list_append(group_list, g);
+   LIST_APPEND(Group, &group_list, g);
 
    if (gid == -1)
      {
@@ -107,7 +105,7 @@ GroupDestroy(Group * g)
       return;
 
    Dprintf("grp=%p gid=%d\n", g, g->index);
-   ecore_list_node_remove(group_list, g);
+   LIST_REMOVE(Group, &group_list, g);
 
    if (g == Mode_groups.current)
       Mode_groups.current = NULL;
@@ -125,7 +123,7 @@ GroupMatchId(const void *data, const void *match)
 static Group       *
 GroupFind(int gid)
 {
-   return (Group *) ecore_list_find(group_list, GroupMatchId, INT2PTR(gid));
+   return LIST_FIND(Group, &group_list, GroupMatchId, INT2PTR(gid));
 }
 
 void
@@ -208,7 +206,7 @@ BuildWindowGroup(EWin ** ewins, int num, int gid)
 Group             **
 GroupsGetList(int *pnum)
 {
-   return (Group **) ecore_list_items_get(group_list, pnum);
+   return LIST_GET_ITEMS(Group, &group_list, pnum);
 }
 
 Group              *const *
@@ -511,7 +509,7 @@ GroupsSave(void)
    FILE               *f;
    char                s[1024];
 
-   if (ecore_list_count(group_list) <= 0)
+   if (LIST_IS_EMPTY(&group_list))
       return;
 
    Esnprintf(s, sizeof(s), "%s.groups", EGetSavePrefix());
@@ -519,7 +517,7 @@ GroupsSave(void)
    if (!f)
       return;
 
-   ECORE_LIST_FOR_EACH(group_list, g)
+   LIST_FOR_EACH(Group, &group_list, g)
    {
       if (!g->save)
 	 continue;
@@ -1103,8 +1101,8 @@ IPC_GroupInfo(const char *params)
      }
    else
      {
-	IpcPrintf("Number of groups: %d\n", ecore_list_count(group_list));
-	ECORE_LIST_FOR_EACH(group_list, group) GroupShow(group);
+	IpcPrintf("Number of groups: %d\n", LIST_GET_COUNT(&group_list));
+	LIST_FOR_EACH(Group, &group_list, group) GroupShow(group);
      }
 }
 

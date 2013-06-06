@@ -24,13 +24,13 @@
 #include "E.h"
 #include "container.h"
 #include "dialog.h"
-#include "e16-ecore_list.h"
 #include "emodule.h"
 #include "eobj.h"
 #include "ewins.h"
 #include "hints.h"
 #include "iclass.h"
 #include "icons.h"
+#include "list.h"
 #include "menus.h"
 
 extern const ContainerOps IconboxOps;
@@ -59,7 +59,7 @@ static const unsigned char _ic_state[4] =
 
 ContainerCfg        Conf_containers;
 
-static Ecore_List  *container_list = NULL;
+static              LIST_HEAD(container_list);
 
 static int
 _ContainerMatchName(const void *data, const void *match)
@@ -70,8 +70,7 @@ _ContainerMatchName(const void *data, const void *match)
 static Container   *
 ContainerFind(const char *name)
 {
-   return (Container *) ecore_list_find(container_list, _ContainerMatchName,
-					name);
+   return LIST_FIND(Container, &container_list, _ContainerMatchName, name);
 }
 
 static Container   *
@@ -86,9 +85,7 @@ ContainerCreate(const char *name)
    if (!ct)
       return NULL;
 
-   if (!container_list)
-      container_list = ecore_list_new();
-   ecore_list_append(container_list, ct);
+   LIST_APPEND(Container, &container_list, ct);
 
    ct->name = Estrdup(name);
    ct->type = (name && !strcmp(name, "_ST_")) ?
@@ -176,7 +173,7 @@ ContainerCreate(const char *name)
 static void
 ContainerDestroy(Container * ct, int exiting)
 {
-   ecore_list_node_remove(container_list, ct);
+   LIST_REMOVE(Container, &container_list, ct);
 
    ct->ops->Exit(ct, exiting);
 
@@ -1204,9 +1201,9 @@ ContainersShow(void)
 {
    Container          *ct;
 
-   if (ecore_list_count(container_list) > 0)
+   if (!LIST_IS_EMPTY(&container_list))
      {
-	ECORE_LIST_FOR_EACH(container_list, ct) ContainerShow(ct);
+	LIST_FOR_EACH(Container, &container_list, ct) ContainerShow(ct);
      }
    else if (Conf.startup.firsttime)
      {
@@ -1219,9 +1216,10 @@ ContainersShow(void)
 static void
 ContainersDestroy(void)
 {
-   Container          *ct;
+   Container          *ct, *tmp;
 
-   ECORE_LIST_FOR_EACH(container_list, ct) ContainerDestroy(ct, 1);
+   LIST_FOR_EACH_SAFE(Container, &container_list, ct, tmp)
+      ContainerDestroy(ct, 1);
 }
 
 static void
@@ -1471,7 +1469,7 @@ CB_ConfigureContainer(Dialog * d, int val, void *data __UNUSED__)
    if (val >= 2)
       return;
 
-   ct = (Container *) ecore_list_goto(container_list, dd->ct);
+   ct = LIST_CHECK(Container, &container_list, dd->ct);
    if (!ct)
       return;
 
@@ -1862,7 +1860,7 @@ ContainersConfigSave(void)
       return;
 
    /* We should check for errors... */
-   ECORE_LIST_FOR_EACH(container_list, ct)
+   LIST_FOR_EACH(Container, &container_list, ct)
    {
       fprintf(fs, "19 999\n");
       fprintf(fs, "100 %s\n", ct->name);
@@ -1906,7 +1904,7 @@ ContainersSighan(int sig, void *prm)
      }
 
 #if 0				/* FIXME */
-   ECORE_LIST_FOR_EACH(container_list, ct)
+   LIST_FOR_EACH(Container, &container_list, ct)
    {
       if (ct->ops)
 	 ct->ops->Signal(ct, sig, prm);
@@ -1936,7 +1934,7 @@ ContainersIterate(ContainerIterator * cti, int type, void *data)
 {
    Container          *ct;
 
-   ECORE_LIST_FOR_EACH(container_list, ct)
+   LIST_FOR_EACH(Container, &container_list, ct)
    {
       if (ct->type != type)
 	 continue;
@@ -1950,7 +1948,7 @@ ContainersIterate(ContainerIterator * cti, int type, void *data)
 Container         **
 ContainersGetList(int *pnum)
 {
-   return (Container **) ecore_list_items_get(container_list, pnum);
+   return LIST_GET_ITEMS(Container, &container_list, pnum);
 }
 
 /*
@@ -1988,7 +1986,7 @@ ContainerIpc(const char *params)
 
 	if (!prm[0])
 	  {
-	     num = ecore_list_count(container_list);
+	     num = LIST_GET_COUNT(&container_list);
 	     Esnprintf(prm, sizeof(prm), "_IB_%i", num);
 	  }
 	ct = ContainerCreate(prm);

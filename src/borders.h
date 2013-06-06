@@ -27,6 +27,7 @@
 #include <X11/Xlib.h>
 #include "eimage.h"
 #include "etypes.h"
+#include "list.h"
 
 typedef struct {
    int                 min, max;
@@ -57,6 +58,7 @@ typedef struct {
 } WinPart;
 
 struct _border {
+   dlist_t             list;
    char               *name;
    char               *group_border_name;
    EImageBorder        border;

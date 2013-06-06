@@ -23,15 +23,15 @@
  */
 #include "E.h"
 #include "conf.h"
-#include "e16-ecore_list.h"
 #include "emodule.h"
 #include "iclass.h"
+#include "list.h"
 #include "tclass.h"
 #include "xwin.h"
 
 #define ENABLE_DESTROY 0	/* Broken */
 
-static Ecore_List  *tclass_list = NULL;
+static              LIST_HEAD(tclass_list);
 
 static TextClass   *TextclassGetFallback(void);
 
@@ -102,9 +102,7 @@ TextclassCreate(const char *name)
    if (!tc)
       return NULL;
 
-   if (!tclass_list)
-      tclass_list = ecore_list_new();
-   ecore_list_prepend(tclass_list, tc);
+   LIST_PREPEND(TextClass, &tclass_list, tc);
 
    tc->name = Estrdup(name);
    tc->justification = 512;
@@ -218,8 +216,7 @@ TextclassFind(const char *name, int fallback)
    TextClass          *tc = NULL;
 
    if (name)
-      tc = (TextClass *) ecore_list_find(tclass_list, _TextclassMatchName,
-					 name);
+      tc = LIST_FIND(TextClass, &tclass_list, _TextclassMatchName, name);
    if (tc || !fallback)
       return tc;
 
@@ -401,7 +398,7 @@ TextclassIpc(const char *params)
 
    if (!strncmp(param1, "list", 2))
      {
-	ECORE_LIST_FOR_EACH(tclass_list, tc) IpcPrintf("%s\n", tc->name);
+	LIST_FOR_EACH(TextClass, &tclass_list, tc) IpcPrintf("%s\n", tc->name);
 	return;
      }
 

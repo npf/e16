@@ -27,11 +27,11 @@
 #include "buttons.h"
 #include "cursors.h"
 #include "desktops.h"
-#include "e16-ecore_list.h"
 #include "emodule.h"
 #include "eobj.h"
 #include "ewins.h"
 #include "grabs.h"
+#include "list.h"
 #include "slide.h"
 #include "xwin.h"
 
@@ -41,6 +41,7 @@
    PointerMotionMask)
 
 typedef struct {
+   dlist_t             list;
    EObj                o;
    char               *name;
    char                direction;
@@ -52,7 +53,7 @@ typedef struct {
 
 static void         SlideoutCalcSize(Slideout * s);
 
-static Ecore_List  *slideout_list = NULL;
+static              LIST_HEAD(slideout_list);
 
 static struct {
    Slideout           *active;
@@ -411,9 +412,6 @@ SlideoutsConfigLoad(FILE * fs)
    char                s2[FILEPATH_LEN_MAX];
    char                name[FILEPATH_LEN_MAX];
 
-   if (!slideout_list)
-      slideout_list = ecore_list_new();
-
    name[0] = '\0';
 
    while (GetLine(s, sizeof(s), fs))
@@ -423,7 +421,7 @@ SlideoutsConfigLoad(FILE * fs)
 	  {
 	  case CONFIG_CLOSE:
 	     if (slideout)
-		ecore_list_prepend(slideout_list, slideout);
+		LIST_PREPEND(Slideout, &slideout_list, slideout);
 	     goto done;
 	  case CONFIG_CLASSNAME:
 	     strcpy(name, s2);
@@ -476,7 +474,7 @@ _SlideoutMatchName(const void *data, const void *match)
 static Slideout    *
 SlideoutFind(const char *name)
 {
-   return (Slideout *) ecore_list_find(slideout_list, _SlideoutMatchName, name);
+   return LIST_FIND(Slideout, &slideout_list, _SlideoutMatchName, name);
 }
 
 static void

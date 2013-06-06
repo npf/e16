@@ -25,15 +25,16 @@
 #include "borders.h"
 #include "conf.h"
 #include "desktops.h"
-#include "e16-ecore_list.h"
 #include "emodule.h"
 #include "ewins.h"
 #include "ewin-ops.h"
+#include "list.h"
 #include "windowmatch.h"
 
 typedef struct _windowmatch WindowMatch;
 
 struct _windowmatch {
+   dlist_t             list;
    char               *name;
    /* Match criteria */
    char                match;
@@ -68,7 +69,7 @@ struct _windowmatch {
 
 static int          WindowMatchEobjOpsParse(EObj * eo, const char *ops);
 
-static Ecore_List  *wm_list = NULL;
+static              LIST_HEAD(wm_list);
 
 static const char  *const MatchType[] = {
    NULL, "Title", "Name", "Class", "Size", "Width", "Height", "Prop", NULL
@@ -103,9 +104,7 @@ WindowMatchCreate(const char *name)
    if (!b)
       return NULL;
 
-   if (!wm_list)
-      wm_list = ecore_list_new();
-   ecore_list_prepend(wm_list, b);
+   LIST_PREPEND(WindowMatch, &wm_list, b);
 
    b->name = Estrdup(name);
    b->width_max = 99999;
@@ -120,7 +119,7 @@ WindowMatchDestroy(WindowMatch * wm)
    if (!wm)
       return;
 
-   ecore_list_node_remove(wm_list, wm);
+   LIST_REMOVE(WindowMatch, &wm_list, wm);
 
    Efree(wm->name);
    Efree(wm->value);
@@ -406,7 +405,8 @@ WindowMatchDecode(const char *line)
      }
    else
      {
-	ecore_list_append(wm_list, ecore_list_node_remove(wm_list, wm));
+	LIST_APPEND(WindowMatch, &wm_list,
+		    LIST_REMOVE(WindowMatch, &wm_list, wm));
      }
 }
 
@@ -593,7 +593,7 @@ WindowMatchType(const EWin * ewin, int type)
    wmtd.type = type;
    wmtd.ewin = ewin;
 
-   return (WindowMatch *) ecore_list_find(wm_list, WindowMatchTypeMatch, &wmtd);
+   return LIST_FIND(WindowMatch, &wm_list, WindowMatchTypeMatch, &wmtd);
 }
 
 Border             *
@@ -891,7 +891,9 @@ _WindowMatchEwinFunc(void *_wm, void *_ew)
 void
 WindowMatchEwinOps(EWin * ew)
 {
-   ecore_list_for_each(wm_list, _WindowMatchEwinFunc, ew);
+   WindowMatch        *wm;
+
+   LIST_FOR_EACH(WindowMatch, &wm_list, wm) _WindowMatchEwinFunc(wm, ew);
 }
 
 #if USE_COMPOSITE
@@ -911,7 +913,9 @@ _WindowMatchEobjFunc(void *_wm, void *_eo)
 void
 WindowMatchEobjOps(EObj * eo)
 {
-   ecore_list_for_each(wm_list, _WindowMatchEobjFunc, eo);
+   WindowMatch        *wm;
+
+   LIST_FOR_EACH(WindowMatch, &wm_list, wm) _WindowMatchEobjFunc(wm, eo);
 }
 #endif
 
@@ -963,7 +967,7 @@ WindowMatchIpc(const char *params)
      {
 	WindowMatch        *wm;
 
-	ECORE_LIST_FOR_EACH(wm_list, wm)
+	LIST_FOR_EACH(WindowMatch, &wm_list, wm)
 	   IpcPrintf("%s\n", WindowMatchEncode(wm, buf, sizeof(buf)));
      }
 }

@@ -26,11 +26,11 @@
 #include "backgrounds.h"
 #include "desktops.h"
 #include "dialog.h"
-#include "e16-ecore_list.h"
 #include "eimage.h"
 #include "emodule.h"
 #include "file.h"
 #include "iclass.h"
+#include "list.h"
 #include "settings.h"
 #include "tclass.h"
 #include "timers.h"
@@ -45,6 +45,7 @@ typedef struct {
 } BgPart;
 
 struct _background {
+   dlist_t             list;
    char               *name;
    Pixmap              pmap;
    time_t              last_viewed;
@@ -59,7 +60,8 @@ struct _background {
    unsigned int        seq_no;
 };
 
-static Ecore_List  *bg_list = NULL;
+static              LIST_HEAD(bg_list);
+
 static Timer       *bg_timer = NULL;
 static unsigned int bg_seq_no = 0;
 
@@ -255,7 +257,7 @@ BackgroundDestroy(Background * bg)
 	return -1;
      }
 
-   ecore_list_node_remove(bg_list, bg);
+   LIST_REMOVE(Background, &bg_list, bg);
 
    BackgroundFilesRemove(bg);
    BackgroundPixmapFree(bg);
@@ -333,9 +335,7 @@ BackgroundCreate(const char *name, unsigned int solid, const char *bgn,
 
    bg->seq_no = ++bg_seq_no;
 
-   if (!bg_list)
-      bg_list = ecore_list_new();
-   ecore_list_prepend(bg_list, bg);
+   LIST_PREPEND(Background, &bg_list, bg);
 
    return bg;
 }
@@ -388,13 +388,13 @@ _BackgroundMatchName(const void *data, const void *match)
 Background         *
 BackgroundFind(const char *name)
 {
-   return (Background *) ecore_list_find(bg_list, _BackgroundMatchName, name);
+   return LIST_FIND(Background, &bg_list, _BackgroundMatchName, name);
 }
 
 static Background  *
 BackgroundCheck(Background * bg)
 {
-   return (Background *) ecore_list_goto(bg_list, bg);
+   return LIST_CHECK(Background, &bg_list, bg);
 }
 
 void
@@ -1018,7 +1018,7 @@ BackgroundsInvalidate(int refresh)
 {
    Background         *bg;
 
-   ECORE_LIST_FOR_EACH(bg_list, bg) BackgroundInvalidate(bg, refresh);
+   LIST_FOR_EACH(Background, &bg_list, bg) BackgroundInvalidate(bg, refresh);
 }
 
 static Background  *
@@ -1028,11 +1028,11 @@ BackgroundGetRandom(void)
    int                 num;
    unsigned int        rnd;
 
-   num = ecore_list_count(bg_list);
+   num = LIST_GET_COUNT(&bg_list);
    for (;;)
      {
-	rnd = rand();
-	bg = (Background *) ecore_list_index_goto(bg_list, rnd % num);
+	rnd = rand() % num;
+	bg = LIST_GET_BY_INDEX(Background, &bg_list, rnd);
 	if (num <= 1 || !BackgroundIsNone(bg))
 	   break;
      }
@@ -1252,11 +1252,7 @@ BackgroundsConfigSave(void)
    FILE               *fs;
    Background         *bg;
    unsigned int        j;
-   int                 i, num, r, g, b;
-
-   num = ecore_list_count(bg_list);
-   if (num <= 0)
-      return;
+   int                 r, g, b;
 
    Etmp(st);
    fs = fopen(st, "w");
@@ -1264,55 +1260,50 @@ BackgroundsConfigSave(void)
       return;
 
    /* For obscure reasons, store backgrounds in reverse order. */
-   for (i = num - 1; i >= 0; i--)
-     {
-	bg = (Background *) ecore_list_index_goto(bg_list, i);
-	if (!bg)
+   LIST_FOR_EACH_REV(Background, &bg_list, bg)
+   {
+      /* Get full path to files */
+      _BackgroundGetBgFile(bg);
+      _BackgroundGetFgFile(bg);
+      /* Discard if bg file is given but cannot be found (ignore bad fg) */
+      if (bg->bg.file && !exists(bg->bg.file))
+	{
+	   Eprintf("Discard broken background %s (%s)\n",
+		   bg->name, bg->bg.file);
 	   continue;
+	}
 
-	/* Get full path to files */
-	_BackgroundGetBgFile(bg);
-	_BackgroundGetFgFile(bg);
-	/* Discard if bg file is given but cannot be found (ignore bad fg) */
-	if (bg->bg.file && !exists(bg->bg.file))
-	  {
-	     Eprintf("Discard broken background %s (%s)\n",
-		     bg->name, bg->bg.file);
-	     continue;
-	  }
+      fprintf(fs, "5 999\n");
 
-	fprintf(fs, "5 999\n");
+      fprintf(fs, "100 %s\n", bg->name);
+      COLOR32_TO_RGB(bg->bg_solid, r, g, b);
+      if (r != 0 || g != 0 || b != 0)
+	 fprintf(fs, "%d %d %d %d\n", BG_RGB, r, g, b);
 
-	fprintf(fs, "100 %s\n", bg->name);
-	COLOR32_TO_RGB(bg->bg_solid, r, g, b);
-	if (r != 0 || g != 0 || b != 0)
-	   fprintf(fs, "%d %d %d %d\n", BG_RGB, r, g, b);
+      if (bg->bg.file)
+	{
+	   fprintf(fs, "%d %s\n", BG_BG_FILE, bg->bg.file);
+	   fprintf(fs, "%d %d %d %d %d %d %d\n", BG_BG_PARAM,
+		   bg->bg_tile, bg->bg.keep_aspect,
+		   bg->bg.xjust, bg->bg.yjust, bg->bg.xperc, bg->bg.yperc);
+	}
 
-	if (bg->bg.file)
-	  {
-	     fprintf(fs, "%d %s\n", BG_BG_FILE, bg->bg.file);
-	     fprintf(fs, "%d %d %d %d %d %d %d\n", BG_BG_PARAM,
-		     bg->bg_tile, bg->bg.keep_aspect,
-		     bg->bg.xjust, bg->bg.yjust, bg->bg.xperc, bg->bg.yperc);
-	  }
+      if (bg->top.file)
+	{
+	   fprintf(fs, "%d %s\n", BG_TOP_FILE, bg->top.file);
+	   fprintf(fs, "%d %d %d %d %d %d\n", BG_TOP_PARAM,
+		   bg->top.keep_aspect,
+		   bg->top.xjust, bg->top.yjust, bg->top.xperc, bg->top.yperc);
+	}
 
-	if (bg->top.file)
-	  {
-	     fprintf(fs, "%d %s\n", BG_TOP_FILE, bg->top.file);
-	     fprintf(fs, "%d %d %d %d %d %d\n", BG_TOP_PARAM,
-		     bg->top.keep_aspect,
-		     bg->top.xjust, bg->top.yjust,
-		     bg->top.xperc, bg->top.yperc);
-	  }
+      for (j = 0; j < N_BG_ASSIGNED; j++)
+	{
+	   if (bg == bg_assigned[j])
+	      fprintf(fs, "%d %u\n", BG_DESKNUM, j);
+	}
 
-	for (j = 0; j < N_BG_ASSIGNED; j++)
-	  {
-	     if (bg == bg_assigned[j])
-		fprintf(fs, "%d %u\n", BG_DESKNUM, j);
-	  }
-
-	fprintf(fs, "1000\n");
-     }
+      fprintf(fs, "1000\n");
+   }
 
    fclose(fs);
 
@@ -1327,29 +1318,26 @@ BackgroundsConfigSave(void)
 static void
 BackgroundsCheckDups(void)
 {
-   int                 ix;
-   Background         *bg, *bgx;
+   Background         *bg, *bgx, *btmp;
 
-   for (ix = 0;; ix++)
-     {
-	ecore_list_index_goto(bg_list, ix);
-	bg = (Background *) ecore_list_next(bg_list);
-	if (!bg)
-	   break;
-	for (; (bgx = (Background *) ecore_list_next(bg_list));)
-	  {
-	     if (bgx->ref_count > 0 || bgx->referenced)
-		continue;
+   LIST_FOR_EACH(Background, &bg_list, bg)
+   {
+      bgx = LIST_NEXT(Background, &bg_list, bg);
+      for (; bgx; bgx = btmp)
+	{
+	   btmp = LIST_NEXT(Background, &bg_list, bgx);
 
-	     if (BackgroundCmp(bg, bgx))
-		continue;
+	   if (bgx->ref_count > 0 || bgx->referenced)
+	      continue;
+	   if (BackgroundCmp(bg, bgx))
+	      continue;
 #if 0
-	     Eprintf("Remove duplicate background %s (==%s)\n", bgx->name,
-		     bg->name);
+	   Eprintf("Remove duplicate background %s (==%s)\n", bgx->name,
+		   bg->name);
 #endif
-	     BackgroundDestroy(bgx);
-	  }
-     }
+	   BackgroundDestroy(bgx);
+	}
+   }
 }
 
 static void
@@ -1361,7 +1349,7 @@ BackgroundsAccounting(void)
    DesksBackgroundRefresh(NULL, DESK_BG_TIMEOUT);
 
    now = time(NULL);
-   ECORE_LIST_FOR_EACH(bg_list, bg)
+   LIST_FOR_EACH(Background, &bg_list, bg)
    {
       /* Skip if no pixmap or not timed out */
       if (bg->pmap == None ||
@@ -1602,21 +1590,17 @@ static void
 CB_ConfigureDelBG(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
 {
    Background         *bg;
-   int                 i, num;
    int                 lower, upper;
 
-   num = ecore_list_count(bg_list);
-   if (num <= 1)
-      return;
-
-   bg = (Background *) ecore_list_goto(bg_list, tmp_bg);
+   bg = LIST_CHECK(Background, &bg_list, tmp_bg);
    if (!bg)
       return;
+   if (BackgroundIsNone(bg))
+      return;
 
-   i = ecore_list_index(bg_list);
-   bg =
-      (Background *) ecore_list_index_goto(bg_list,
-					   (i < num - 1) ? i + 1 : i - 1);
+   bg = LIST_NEXT(Background, &bg_list, tmp_bg);
+   if (!bg)
+      bg = LIST_PREV(Background, &bg_list, tmp_bg);
 
    DeskBackgroundSet(DesksGetCurrent(), bg);
 
@@ -1647,8 +1631,8 @@ CB_ConfigureFrontBG(Dialog * d __UNUSED__, int val __UNUSED__,
    if (BackgroundIsNone(tmp_bg))
       return;			/* Don't move "None" background */
 
-   bg = ecore_list_node_remove(bg_list, tmp_bg);
-   ecore_list_prepend(bg_list, bg);
+   bg = LIST_REMOVE(Background, &bg_list, tmp_bg);
+   LIST_PREPEND(Background, &bg_list, bg);
    BGSettingsGoTo(bg);
    BG_RedrawView();
    autosave();
@@ -1666,7 +1650,7 @@ BG_RedrawView(void)
    int                 mini_w = Mode.backgrounds.mini_w;
    int                 mini_h = Mode.backgrounds.mini_h;
 
-   num = ecore_list_count(bg_list);
+   num = LIST_GET_COUNT(&bg_list);
    if (num <= 0)
       return;
 
@@ -1683,7 +1667,7 @@ BG_RedrawView(void)
 
    x = -(num * (mini_w + 8) - w) * tmp_bg_sel_sliderval / (4 * num);
 
-   ECORE_LIST_FOR_EACH(bg_list, bg)
+   LIST_FOR_EACH(Background, &bg_list, bg)
    {
       if (((x + mini_w + 8) >= 0) && (x < w))
 	{
@@ -1747,7 +1731,7 @@ CB_BGScan(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
    Mode.backgrounds.force_scan = 1;
    ScanBackgroundMenu();
 
-   num = ecore_list_count(bg_list);
+   num = LIST_GET_COUNT(&bg_list);
    DialogItemSliderSetBounds(bg_sel_slider, 0, num * 4);
    DialogItemCallCallback(d, bg_sel_slider);
 }
@@ -1768,11 +1752,11 @@ CB_BGAreaEvent(DItem * di, int val __UNUSED__, void *data)
 	switch (ev->xbutton.button)
 	  {
 	  case 1:
-	     num = ecore_list_count(bg_list);
+	     num = LIST_GET_COUNT(&bg_list);
 	     x = (num * (mini_w + 8) - w) * tmp_bg_sel_sliderval / (4 * num) +
 		ev->xbutton.x;
-	     bg =
-		(Background *) ecore_list_index_goto(bg_list, x / (mini_w + 8));
+	     x = x / (mini_w + 8);
+	     bg = LIST_GET_BY_INDEX(Background, &bg_list, x);
 	     if (!bg || bg == DeskBackgroundGet(DesksGetCurrent()))
 		break;
 	     BgDialogSetNewCurrent(bg);
@@ -1814,12 +1798,10 @@ BGSettingsGoTo(Background * bg)
    if (!bg_sel_slider)
       return;
 
-   bg = (Background *) ecore_list_goto(bg_list, bg);
-   if (!bg)
+   num = LIST_GET_COUNT(&bg_list);
+   i = LIST_GET_INDEX(Background, &bg_list, bg);
+   if (i < 0)
       return;
-
-   i = ecore_list_index(bg_list);
-   num = ecore_list_count(bg_list);
    i = ((4 * num + 20) * i) / num - 8;
    if (i < 0)
       i = 0;
@@ -1834,13 +1816,18 @@ CB_BGNext(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
 {
    Background         *bg;
 
-   bg = (Background *) ecore_list_goto(bg_list, tmp_bg);
-   if (!bg)
-      return;
+   bg = tmp_bg;
+   if (val >= 0)
+     {
+	while (bg && val--)
+	   bg = LIST_NEXT(Background, &bg_list, bg);
+     }
+   else
+     {
+	while (bg && val++)
+	   bg = LIST_PREV(Background, &bg_list, bg);
+     }
 
-   bg =
-      (Background *) ecore_list_index_goto(bg_list,
-					   ecore_list_index(bg_list) + val);
    if (!bg)
       return;
 
@@ -1876,16 +1863,16 @@ CB_BGSortFile(Dialog * d __UNUSED__, int val __UNUSED__, void *data __UNUSED__)
    Background        **bglist;
    int                 i, num;
 
-   bglist = (Background **) ecore_list_items_get(bg_list, &num);
+   bglist = LIST_GET_ITEMS(Background, &bg_list, &num);
    if (!bglist)
       return;
 
    /* remove them all from the list */
-   for (i = 0; i < num; i++)
-      ecore_list_node_remove(bg_list, bglist[i]);
+   LIST_INIT(Background, &bg_list);
    qsort(bglist, num - 1, sizeof(Background *), BG_SortFileCompare);
    for (i = 0; i < num; i++)
-      ecore_list_append(bg_list, bglist[i]);
+      LIST_APPEND(Background, &bg_list, bglist[i]);
+
    Efree(bglist);
 
    BGSettingsGoTo(tmp_bg);
@@ -1897,38 +1884,34 @@ static void
 CB_BGSortAttrib(Dialog * d __UNUSED__, int val __UNUSED__,
 		void *data __UNUSED__)
 {
-   Background        **bglist;
+   Background        **bglist, *bg;
    int                 i, num;
 
-   bglist = (Background **) ecore_list_items_get(bg_list, &num);
+   bglist = LIST_GET_ITEMS(Background, &bg_list, &num);
    if (!bglist)
       return;
 
    /* remove them all from the list */
-   for (i = 0; i < num; i++)
-      ecore_list_node_remove(bg_list, bglist[i]);
+   LIST_INIT(Background, &bg_list);
    for (i = 0; i < num; i++)
      {
-	Background         *bg;
-
 	bg = bglist[i];
 	if ((bg) && (bg->bg_tile) && (bg->bg.xperc == 0) && (bg->bg.yperc == 0))
 	  {
-	     ecore_list_prepend(bg_list, bg);
+	     LIST_APPEND(Background, &bg_list, bg);
 	     bglist[i] = NULL;
 	  }
      }
    for (i = 0; i < num; i++)
      {
-	Background         *bg;
-
 	bg = bglist[i];
 	if (bg)
 	  {
-	     ecore_list_prepend(bg_list, bg);
+	     LIST_APPEND(Background, &bg_list, bg);
 	     bglist[i] = NULL;
 	  }
      }
+
    Efree(bglist);
 
    BGSettingsGoTo(tmp_bg);
@@ -1944,15 +1927,15 @@ CB_BGSortContent(Dialog * d __UNUSED__, int val __UNUSED__,
    Background        **bglist;
    int                 i, num;
 
-   bglist = (Background **) ecore_list_items_get(bg_list, &num);
+   bglist = LIST_GET_ITEMS(Background, &bg_list, &num);
    if (!bglist)
       return;
 
    /* remove them all from the list */
+   LIST_INIT(Background, &bg_list);
    for (i = 0; i < num; i++)
-      ecore_list_node_remove(bg_list, bglist[i]);
-   for (i = 0; i < num; i++)
-      ecore_list_prepend(bg_list, bglist[i]);
+      LIST_PREPEND(Background, &bg_list, bglist[i]);
+
    Efree(bglist);
 
    autosave();
@@ -2209,7 +2192,7 @@ _DlgFillBackground(Dialog * d, DItem * table, void *data)
    DialogItemAreaSetEventFunc(di, CB_BGAreaEvent);
    DialogItemAreaSetInitFunc(di, CB_InitView);
 
-   num = ecore_list_count(bg_list);
+   num = LIST_GET_COUNT(&bg_list);
    di = bg_sel_slider = DialogAddItem(table, DITEM_SLIDER);
    DialogItemSliderSetBounds(di, 0, num * 4);
    DialogItemSliderSetUnits(di, 1);
@@ -2458,7 +2441,7 @@ BackgroundsIpc(const char *params)
      }
    else if (!strncmp(cmd, "list", 2))
      {
-	ECORE_LIST_FOR_EACH(bg_list, bg) IpcPrintf("%s\n", bg->name);
+	LIST_FOR_EACH(Background, &bg_list, bg) IpcPrintf("%s\n", bg->name);
      }
    else if (!strncmp(cmd, "load", 2))
      {

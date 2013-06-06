@@ -22,7 +22,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "E.h"
-#include "e16-ecore_list.h"
+#include "list.h"
 #include "timers.h"
 
 struct _timer {
@@ -218,11 +218,12 @@ TimerSetInterval(Timer * timer, int dt_ms)
 /*
  * Idlers
  */
-static Ecore_List  *idler_list = NULL;
+static              LIST_HEAD(idler_list);
 
 typedef void        (IdlerFunc) (void *data);
 
 struct _idler {
+   dlist_t             list;
    IdlerFunc          *func;
    void               *data;
 };
@@ -239,10 +240,7 @@ IdlerAdd(IdlerFunc * func, void *data)
    id->func = func;
    id->data = data;
 
-   if (!idler_list)
-      idler_list = ecore_list_new();
-
-   ecore_list_append(idler_list, id);
+   LIST_APPEND(Idler, &idler_list, id);
 
    return id;
 }
@@ -250,7 +248,7 @@ IdlerAdd(IdlerFunc * func, void *data)
 void
 IdlerDel(Idler * id)
 {
-   ecore_list_node_remove(idler_list, id);
+   LIST_REMOVE(Idler, &idler_list, id);
    Efree(id);
 }
 
@@ -267,9 +265,11 @@ _IdlerRun(void *_id, void *prm __UNUSED__)
 void
 IdlersRun(void)
 {
+   Idler              *id;
+
    if (EDebug(EDBUG_TYPE_IDLERS))
       Eprintf("%s B\n", __func__);
-   ecore_list_for_each(idler_list, _IdlerRun, NULL);
+   LIST_FOR_EACH(Idler, &idler_list, id) _IdlerRun(id, NULL);
    if (EDebug(EDBUG_TYPE_IDLERS))
       Eprintf("%s E\n", __func__);
 }

@@ -25,10 +25,10 @@
 #include "backgrounds.h"
 #include "conf.h"
 #include "desktops.h"
-#include "e16-ecore_list.h"
 #include "eimage.h"
 #include "emodule.h"
 #include "iclass.h"
+#include "list.h"
 #include "tclass.h"
 #include "xwin.h"
 
@@ -57,13 +57,14 @@ typedef struct {
 } ImageStateArray;
 
 struct _imageclass {
+   dlist_t             list;
    char               *name;
    ImageStateArray     norm, active, sticky, sticky_active;
    EImageBorder        padding;
    unsigned int        ref_count;
 };
 
-static Ecore_List  *iclass_list = NULL;
+static              LIST_HEAD(iclass_list);
 
 static ImageClass  *ImageclassGetFallback(void);
 
@@ -327,9 +328,7 @@ ImageclassCreate(const char *name)
    if (!ic)
       return NULL;
 
-   if (!iclass_list)
-      iclass_list = ecore_list_new();
-   ecore_list_prepend(iclass_list, ic);
+   LIST_PREPEND(ImageClass, &iclass_list, ic);
 
    ic->name = Estrdup(name);
 
@@ -358,7 +357,7 @@ ImageclassDestroy(ImageClass * ic)
 	return;
      }
 
-   ecore_list_node_remove(iclass_list, ic);
+   LIST_REMOVE(ImageClass, &iclass_list, ic);
 
    Efree(ic->name);
 
@@ -417,8 +416,7 @@ ImageclassFind(const char *name, int fallback)
    ImageClass         *ic = NULL;
 
    if (name)
-      ic = (ImageClass *) ecore_list_find(iclass_list, _ImageclassMatchName,
-					  name);
+      ic = LIST_FIND(ImageClass, &iclass_list, _ImageclassMatchName, name);
    if (ic || !fallback)
       return ic;
 
@@ -1414,7 +1412,7 @@ ImageclassIpc(const char *params)
 
    if (!strncmp(param1, "list", 2))
      {
-	ECORE_LIST_FOR_EACH(iclass_list, ic) IpcPrintf("%s\n", ic->name);
+	LIST_FOR_EACH(ImageClass, &iclass_list, ic) IpcPrintf("%s\n", ic->name);
 	return;
      }
 

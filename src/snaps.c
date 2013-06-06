@@ -25,17 +25,18 @@
 #include "borders.h"
 #include "desktops.h"
 #include "dialog.h"
-#include "e16-ecore_list.h"
 #include "ewins.h"
 #include "file.h"
 #include "groups.h"
 #include "ipc.h"
+#include "list.h"
 #include "settings.h"
 #include "snaps.h"
 #include "timers.h"
 #include "xwin.h"
 
 struct _snapshot {
+   dlist_t             list;
    char               *name;
    char               *win_title;
    char               *win_name;
@@ -70,7 +71,7 @@ struct _snapshot {
 #endif
 };
 
-static Ecore_List  *ss_list = NULL;
+static              LIST_HEAD(ss_list);
 static Timer       *ss_timer = NULL;
 
 static Snapshot    *
@@ -82,9 +83,7 @@ _SnapCreate(const char *name)
    if (!sn)
       return NULL;
 
-   if (!ss_list)
-      ss_list = ecore_list_new();
-   ecore_list_append(ss_list, sn);
+   LIST_APPEND(Snapshot, &ss_list, sn);
 
    sn->name = Estrdup(name);
 
@@ -94,10 +93,7 @@ _SnapCreate(const char *name)
 static void
 _SnapDestroy(Snapshot * sn)
 {
-   /* Just making sure */
-   sn = (Snapshot *) ecore_list_node_remove(ss_list, sn);
-   if (!sn)
-      return;
+   LIST_REMOVE(Snapshot, &ss_list, sn);
 
    if (sn->used)
       sn->used->snap = NULL;
@@ -214,11 +210,11 @@ _SnapEwinFind(EWin * ewin)
    if (ewin->snap)
       return ewin->snap;
 
-   if (ecore_list_count(ss_list) <= 0)
+   if (LIST_IS_EMPTY(&ss_list))
       return NULL;
 
    /* If exec'ed by snap try matching command exactly */
-   sn = (Snapshot *) ecore_list_find(ss_list, _SnapEwinFindMatchCmd, ewin);
+   sn = LIST_FIND(Snapshot, &ss_list, _SnapEwinFindMatchCmd, ewin);
    if (sn && sn->startup_id > 0)
      {
 	/* Assuming we were started by snap */
@@ -227,7 +223,7 @@ _SnapEwinFind(EWin * ewin)
      }
 
    if (!sn)
-      sn = (Snapshot *) ecore_list_find(ss_list, _SnapEwinFindMatch, ewin);
+      sn = LIST_FIND(Snapshot, &ss_list, _SnapEwinFindMatch, ewin);
 
    if (sn && !(sn->match_flags & SNAP_MATCH_MULTIPLE))
      {
@@ -983,7 +979,7 @@ CB_RememberWindowSettings(Dialog * d __UNUSED__, int val __UNUSED__, void *data)
       return;
 
    /* Make sure its still there */
-   sn = (Snapshot *) ecore_list_goto(ss_list, rd->snap);
+   sn = LIST_CHECK(Snapshot, &ss_list, rd->snap);
 
    if (!sn || !sn->used)
       return;
@@ -1001,7 +997,7 @@ _DlgFillRemember(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
 
    DialogItemTableSetOptions(table, 3, 0, 0, 0);
 
-   num = ecore_list_count(ss_list);
+   num = LIST_GET_COUNT(&ss_list);
    rd_ewin_list = EMALLOC(RememberWinList, num + 1);
 
    if (num > 0)
@@ -1014,7 +1010,7 @@ _DlgFillRemember(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
      }
 
    i = 0;
-   ECORE_LIST_FOR_EACH(ss_list, sn)
+   LIST_FOR_EACH(Snapshot, &ss_list, sn)
    {
       rd_ewin_list[i].snap = sn;
       rd_ewin_list[i].remove = 0;
@@ -1106,7 +1102,7 @@ SnapshotsSaveReal(void)
    if (!f)
       goto done;
 
-   ECORE_LIST_FOR_EACH(ss_list, sn)
+   LIST_FOR_EACH(Snapshot, &ss_list, sn)
    {
       fprintf(f, "NEW: %s\n", sn->name);
       if (sn->used)
@@ -1182,7 +1178,7 @@ SnapshotsSpawn(void)
 {
    Snapshot           *sn;
 
-   ECORE_LIST_FOR_EACH(ss_list, sn)
+   LIST_FOR_EACH(Snapshot, &ss_list, sn)
    {
       if ((sn->use_flags & SNAP_USE_COMMAND) && (sn->cmd) &&
 	  !sn->used && !(sn->match_flags & SNAP_MATCH_MULTIPLE))
@@ -1682,6 +1678,7 @@ SnapshotsIpcFunc(const char *params)
    const char         *p;
    char                cmd[128], prm[4096];
    int                 len;
+   Snapshot           *sn;
 
    cmd[0] = prm[0] = '\0';
    p = params;
@@ -1692,7 +1689,7 @@ SnapshotsIpcFunc(const char *params)
 	p += len;
      }
 
-   if (ecore_list_count(ss_list) <= 0)
+   if (LIST_IS_EMPTY(&ss_list))
      {
 	IpcPrintf("No remembered windows\n");
 	return;
@@ -1700,10 +1697,10 @@ SnapshotsIpcFunc(const char *params)
 
    if (!p || cmd[0] == '?')
      {
-	ecore_list_for_each(ss_list, _SnapShow, NULL);
+	LIST_FOR_EACH(Snapshot, &ss_list, sn) _SnapShow(sn, NULL);
      }
    else
      {
-	ecore_list_for_each(ss_list, _SnapShow, (void *)1L);
+	LIST_FOR_EACH(Snapshot, &ss_list, sn) _SnapShow(sn, (void *)1L);
      }
 }

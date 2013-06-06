@@ -25,13 +25,13 @@
 #include "aclass.h"
 #include "borders.h"
 #include "cursors.h"
-#include "e16-ecore_list.h"
 #include "ewins.h"
 #include "focus.h"
 #include "grabs.h"
 #include "hints.h"
 #include "iclass.h"
 #include "icons.h"
+#include "list.h"
 #include "snaps.h"
 #include "tclass.h"
 #include "timers.h"
@@ -45,7 +45,7 @@
 #define EWIN_BORDER_TITLE_EVENT_MASK \
   (EWIN_BORDER_PART_EVENT_MASK)
 
-static Ecore_List  *border_list = NULL;
+static              LIST_HEAD(border_list);
 
 static void         BorderDestroy(Border * b);
 static void         BorderWinpartHandleEvents(Win win, XEvent * ev, void *prm);
@@ -673,9 +673,7 @@ BorderCreate(const char *name)
    if (!b)
       return NULL;
 
-   if (!border_list)
-      border_list = ecore_list_new();
-   ecore_list_prepend(border_list, b);
+   LIST_PREPEND(Border, &border_list, b);
 
    b->name = Estrdup(name);
    b->group_border_name = NULL;
@@ -698,7 +696,7 @@ BorderDestroy(Border * b)
 	return;
      }
 
-   ecore_list_node_remove(border_list, (Border *) b);
+   LIST_REMOVE(Border, &border_list, b);
 
    for (i = 0; i < b->num_winparts; i++)
      {
@@ -726,7 +724,7 @@ BorderFind(const char *name)
 {
    if (!name)
       return NULL;
-   return (Border *) ecore_list_find(border_list, _BorderMatchName, name);
+   return LIST_FIND(Border, &border_list, _BorderMatchName, name);
 }
 
 static void
@@ -1362,7 +1360,7 @@ BordersGetList(int *pnum)
 {
    Border            **lst;
 
-   lst = (Border **) ecore_list_items_get(border_list, pnum);
+   lst = LIST_GET_ITEMS(Border, &border_list, pnum);
    qsort(lst, *pnum, sizeof(Border *), _BorderNameCompare);
 
    return lst;

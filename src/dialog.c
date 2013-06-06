@@ -24,11 +24,11 @@
 #include "E.h"
 #if ENABLE_DIALOGS
 #include "dialog.h"
-#include "e16-ecore_list.h"
 #include "eimage.h"
 #include "ewins.h"
 #include "hints.h"
 #include "iclass.h"
+#include "list.h"
 #include "tclass.h"
 #include "timers.h"
 #include "xwin.h"
@@ -151,6 +151,7 @@ typedef struct {
 } DKeyBind;
 
 struct _dialog {
+   dlist_t             list;
    EWin               *ewin;
    Win                 win;
    int                 w, h;
@@ -195,7 +196,7 @@ static void         DialogAddFooter(Dialog * d, DItem * parent,
 static void         DialogAddHeader(Dialog * d, DItem * parent,
 				    const char *img, const char *txt);
 
-static Ecore_List  *dialog_list = NULL;
+static              LIST_HEAD(dialog_list);
 
 static char         dialog_update_pending = 0;
 
@@ -228,9 +229,7 @@ DialogCreate(const char *name)
    if (!d)
       return NULL;
 
-   if (!dialog_list)
-      dialog_list = ecore_list_new();
-   ecore_list_append(dialog_list, d);
+   LIST_APPEND(Dialog, &dialog_list, d);
 
    d->name = Estrdup(name);
    d->win = ECreateClientWindow(VROOT, -20, -20, 2, 2);
@@ -248,7 +247,7 @@ DialogCreate(const char *name)
 static void
 DialogDestroy(Dialog * d)
 {
-   ecore_list_node_remove(dialog_list, d);
+   LIST_REMOVE(Dialog, &dialog_list, d);
 
    Efree(d->name);
    Efree(d->title);
@@ -273,7 +272,7 @@ _DialogMatchName(const void *data, const void *match)
 Dialog             *
 DialogFind(const char *name)
 {
-   return (Dialog *) ecore_list_find(dialog_list, _DialogMatchName, name);
+   return LIST_FIND(Dialog, &dialog_list, _DialogMatchName, name);
 }
 
 void
@@ -1557,7 +1556,7 @@ _DialogsCheckUpdate(void *data __UNUSED__)
       return;
    dialog_update_pending = 0;
 
-   ECORE_LIST_FOR_EACH(dialog_list, d)
+   LIST_FOR_EACH(Dialog, &dialog_list, d)
    {
       if (d->update)
 	 DialogUpdate(d);

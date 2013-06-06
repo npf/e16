@@ -26,6 +26,7 @@
 
 #include "eimage.h"
 #include "etypes.h"
+#include "list.h"
 #include "xwin.h"
 
 #define FONT_TO_RIGHT     0
@@ -74,6 +75,7 @@ struct _textstate {
 };
 
 struct _textclass {
+   dlist_t             list;
    char               *name;
    struct {
       TextState          *normal;

@@ -25,7 +25,6 @@
 #include "backgrounds.h"
 #include "desktops.h"
 #include "dialog.h"
-#include "e16-ecore_list.h"
 #include "ecompmgr.h"
 #include "emodule.h"
 #include "ewins.h"
@@ -34,6 +33,7 @@
 #include "hints.h"
 #include "hiwin.h"
 #include "iclass.h"
+#include "list.h"
 #include "menus.h"
 #include "settings.h"
 #include "timers.h"
@@ -83,6 +83,7 @@ static struct {
 } Mode_pagers;
 
 typedef struct {
+   dlist_t             list;
    EWin               *ewin;
    Win                 win;
    int                 w, h;
@@ -112,7 +113,7 @@ static void         PagerHiwinHide(void);
 static void         PagerEvent(Win win, XEvent * ev, void *prm);
 static void         PagerHiwinEvent(Win win, XEvent * ev, void *prm);
 
-static Ecore_List  *pager_list = NULL;
+static              LIST_HEAD(pager_list);
 
 static Hiwin       *hiwin = NULL;
 
@@ -139,9 +140,7 @@ PagerCreate(void)
    if (!p)
       return NULL;
 
-   if (!pager_list)
-      pager_list = ecore_list_new();
-   ecore_list_append(pager_list, p);
+   LIST_APPEND(Pager, &pager_list, p);
 
    p->name = NULL;
    p->win = ECreateClientWindow(VROOT, 0, 0, 1, 1);
@@ -154,7 +153,7 @@ PagerCreate(void)
 static void
 PagerDestroy(Pager * p)
 {
-   ecore_list_node_remove(pager_list, p);
+   LIST_REMOVE(Pager, &pager_list, p);
 
    PagerScanCancel(p);
    Efree(p->name);
@@ -788,7 +787,7 @@ PagersForeach(Desk * dsk, void (*func) (Pager * p, void *prm), void *prm)
    data.dsk = dsk;
    data.func = func;
    data.prm = prm;
-   ecore_list_for_each(pager_list, _PagersForeachFunc, &data);
+   LIST_FOR_EACH_FUNC(Pager, &pager_list, _PagersForeachFunc, &data);
 }
 
 typedef struct {
@@ -809,7 +808,7 @@ PagersUpdate(Desk * dsk, int why, int x1, int y1, int x2, int y2)
 {
    pager_update_data   pud;
 
-   if (ecore_list_count(pager_list) <= 0)
+   if (LIST_IS_EMPTY(&pager_list))
       return;
 
    pud.why = why;
@@ -1678,7 +1677,7 @@ PagersForDesktopCount(Desk * dsk)
    Pager              *p;
    int                 num = 0;
 
-   ECORE_LIST_FOR_EACH(pager_list, p)
+   LIST_FOR_EACH(Pager, &pager_list, p)
    {
       if (p->dsk == dsk)
 	 num++;

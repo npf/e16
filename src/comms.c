@@ -25,11 +25,12 @@
 #include "comms.h"
 #include "hints.h"
 #include "ipc.h"
-#include "e16-ecore_list.h"
+#include "list.h"
 #include "xprop.h"
 #include "xwin.h"
 
 typedef struct {
+   dlist_t             list;
    char               *name;
    Window              xwin;
    char               *msg;
@@ -41,7 +42,7 @@ typedef struct {
 
 static void         CommsSend(Client * c, const char *s);
 
-static Ecore_List  *client_list = NULL;
+static              LIST_HEAD(client_list);
 
 static Win          comms_win = NULL;
 
@@ -59,9 +60,7 @@ ClientCreate(Window xwin)
    c->name = Estrdup(st);
    c->xwin = xwin;
 
-   if (!client_list)
-      client_list = ecore_list_new();
-   ecore_list_prepend(client_list, c);
+   LIST_PREPEND(Client, &client_list, c);
 
    return c;
 }
@@ -72,7 +71,7 @@ ClientDestroy(Client * c)
    if (!c)
       return;
 
-   ecore_list_node_remove(client_list, c);
+   LIST_REMOVE(Client, &client_list, c);
 
    Efree(c->name);
    Efree(c->msg);
@@ -141,8 +140,7 @@ ClientMatchWindow(const void *data, const void *match)
 static Client      *
 ClientFind(Window xwin)
 {
-   return (Client *) ecore_list_find(client_list, ClientMatchWindow,
-				     (void *)xwin);
+   return LIST_FIND(Client, &client_list, ClientMatchWindow, (void *)xwin);
 }
 
 static char        *

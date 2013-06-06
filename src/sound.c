@@ -24,8 +24,8 @@
 #include "E.h"
 #if HAVE_SOUND
 #include "dialog.h"
-#include "e16-ecore_list.h"
 #include "emodule.h"
+#include "list.h"
 #include "settings.h"
 #include "sound.h"
 #include "sounds.h"
@@ -41,6 +41,7 @@
 #define N_SOUNDS (SOUND_NOT_USED - 1)
 
 typedef struct {
+   dlist_t             list;
    char               *name;
    char               *file;
    Sample             *sample;
@@ -61,7 +62,7 @@ static struct {
 
 #define SOUND_THEME_PATH ((Mode_sound.theme_path) ? Mode_sound.theme_path : Mode.theme.path)
 
-static Ecore_List  *sound_list = NULL;
+static              LIST_HEAD(sound_list);
 
 #if USE_MODULES
 static const SoundOps *ops = NULL;
@@ -161,9 +162,7 @@ SclassCreate(const char *name, const char *file)
    if (!sclass)
       return NULL;
 
-   if (!sound_list)
-      sound_list = ecore_list_new();
-   ecore_list_prepend(sound_list, sclass);
+   LIST_PREPEND(SoundClass, &sound_list, sclass);
 
    sclass->name = Estrdup(name);
    sclass->file = Estrdup(file);
@@ -178,7 +177,7 @@ SclassDestroy(SoundClass * sclass)
    if (!sclass)
       return;
 
-   ecore_list_node_remove(sound_list, sclass);
+   LIST_REMOVE(SoundClass, &sound_list, sclass);
    _SclassSampleDestroy(sclass, NULL);
    Efree(sclass->name);
    Efree(sclass->file);
@@ -233,7 +232,7 @@ _SclassMatchName(const void *data, const void *match)
 static SoundClass  *
 SclassFind(const char *name)
 {
-   return (SoundClass *) ecore_list_find(sound_list, _SclassMatchName, name);
+   return LIST_FIND(SoundClass, &sound_list, _SclassMatchName, name);
 }
 
 static void
@@ -319,7 +318,9 @@ SoundInit(void)
 static void
 SoundExit(void)
 {
-   ecore_list_for_each(sound_list, _SclassSampleDestroy, NULL);
+   SoundClass         *sc;
+
+   LIST_FOR_EACH(SoundClass, &sound_list, sc) _SclassSampleDestroy(sc, NULL);
 
    if (ops)
       ops->Exit();
@@ -383,7 +384,11 @@ _SoundConfigLoad(void)
 static void
 _SoundConfigUnload(void)
 {
-   ecore_list_for_each(sound_list, _SclassDestroy, NULL);
+   SoundClass         *sc, *tmp;
+
+   LIST_FOR_EACH_SAFE(SoundClass, &sound_list, sc, tmp)
+      _SclassDestroy(sc, NULL);
+
    Mode_sound.cfg_loaded = 0;
 }
 
@@ -499,7 +504,7 @@ SoundIpc(const char *params)
      }
    else if (!strncmp(cmd, "list", 2))
      {
-	ECORE_LIST_FOR_EACH(sound_list, sc) IpcPrintf("%s\n", sc->name);
+	LIST_FOR_EACH(SoundClass, &sound_list, sc) IpcPrintf("%s\n", sc->name);
      }
    else if (!strncmp(cmd, "new", 3))
      {
