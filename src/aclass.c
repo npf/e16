@@ -337,9 +337,9 @@ AclassConfigLoad(FILE * fs)
 	     break;
 	  case CONFIG_TYPE:
 	  case ACLASS_TYPE:
-	     if (i2 == ACLASS_TYPE_ACLASS)
+	     if (!ac || i2 == ACLASS_TYPE_ACLASS)
 		break;
-	     ecore_list_node_remove(aclass_list, ActionclassFind(s2));
+	     ecore_list_node_remove(aclass_list, ActionclassFind(ac->name));
 	     ecore_list_prepend(aclass_list_global, ac);
 	     global = 1;
 
