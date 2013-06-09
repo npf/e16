@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2008 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -44,7 +44,7 @@ void                ButtonShow(Button * b);
 void                ButtonHide(Button * b);
 void                ButtonMoveToCoord(Button * b, int x, int y);
 void                ButtonMoveRelative(Button * b, int dx, int dy);
-void                ButtonSwallowInto(Button * b, EObj * eo);
+EObj               *ButtonSwallowInto(Button * b, EObj * eo);
 void                ButtonSetCallback(Button * b, ButtonCbFunc * func,
 				      EObj * eo);
 int                 ButtonDoShowDefault(const Button * b);

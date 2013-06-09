@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -282,7 +282,7 @@ ButtonShow(Button * b)
    EoMap(b, 0);
 }
 
-void
+EObj               *
 ButtonSwallowInto(Button * b, EObj * eo)
 {
    b->internal = 1;
@@ -294,6 +294,7 @@ ButtonSwallowInto(Button * b, EObj * eo)
    ButtonCalc(b);
    ButtonDraw(b);
    EMapWindow(EoGetWin(b));
+   return EoObj(b);
 }
 
 void

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -335,17 +335,20 @@ SlideoutButtonCallback(EObj * seo, XEvent * ev, ActionClass * ac)
 }
 
 static void
-SlideoutAddButton(Slideout * s, Button * b)
+SlideoutAddButton(Slideout * s, const char *bname)
 {
-   EObj               *eob = (EObj *) b;
+   Button             *b;
 
-   if (!s || !b)
+   if (!s)
+      return;
+
+   b = ButtonFind(bname);
+   if (!b)
       return;
 
    s->num_objs++;
    s->objs = EREALLOC(EObj *, s->objs, s->num_objs);
-   s->objs[s->num_objs - 1] = eob;
-   ButtonSwallowInto(b, EoObj(s));
+   s->objs[s->num_objs - 1] = ButtonSwallowInto(b, EoObj(s));
    ButtonSetCallback(b, SlideoutButtonCallback, EoObj(s));
    SlideoutCalcSize(s);
 }
@@ -429,7 +432,7 @@ SlideoutsConfigLoad(FILE * fs)
 	     slideout = SlideoutCreate(name, (char)atoi(s2));
 	     break;
 	  case CONFIG_BUTTON:
-	     SlideoutAddButton(slideout, ButtonFind(s2));
+	     SlideoutAddButton(slideout, s2);
 	     break;
 	  default:
 	     ConfigParseError("Slideout", s);
