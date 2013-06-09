@@ -86,6 +86,7 @@ SoundSampleGetData(const char *file, SoundSampleData * ssd)
    SF_INFO             sf_info;
    int                 bytes_per_frame, frame_count, frames_read;
 
+   memset(&sf_info, 0, sizeof(sf_info));
    sf = sf_open(file, SFM_READ, &sf_info);
    if (!sf)
       return -1;
