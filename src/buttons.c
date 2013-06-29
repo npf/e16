@@ -68,8 +68,8 @@ struct _button {
    EObj               *owner;
    ButtonCbFunc       *func;
 
-   Window              inside_win;
 #if 0				/* Unused */
+   Window              inside_win;
    Window              event_win;
 #endif
    unsigned int        ref_count;
@@ -494,6 +494,7 @@ ButtonEventMouseDown(Button * b, XEvent * ev)
 
    GrabPointerSet(EoGetWin(b), ECSR_GRAB, 0);
 
+#if 0				/* Unused */
    if (b->inside_win)
      {
 	Window              win = ev->xbutton.window;
@@ -502,6 +503,7 @@ ButtonEventMouseDown(Button * b, XEvent * ev)
 	EXSendEvent(b->inside_win, ButtonPressMask, ev);
 	ev->xbutton.window = win;
      }
+#endif
 
    b->state = STATE_CLICKED;
    ButtonDraw(b);
@@ -522,6 +524,7 @@ ButtonEventMouseDown(Button * b, XEvent * ev)
 static void
 ButtonEventMouseUp(Button * b, XEvent * ev)
 {
+#if 0				/* Unused */
    if (b->inside_win && !Mode_buttons.action_inhibit)
      {
 	Window              win = ev->xbutton.window;
@@ -530,6 +533,7 @@ ButtonEventMouseUp(Button * b, XEvent * ev)
 	EXSendEvent(b->inside_win, ButtonReleaseMask, ev);
 	ev->xbutton.window = win;
      }
+#endif
 
    if ((b->state == STATE_CLICKED) && (!b->left))
       b->state = STATE_HILITED;
