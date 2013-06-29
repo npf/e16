@@ -322,9 +322,9 @@ SlideoutCalcSize(Slideout * s)
 }
 
 static void
-SlideoutButtonCallback(EObj * seo, XEvent * ev, ActionClass * ac)
+SlideoutButtonCallback(void *prm, XEvent * ev, ActionClass * ac)
 {
-   Slideout           *s = (Slideout *) seo;
+   Slideout           *s = (Slideout *) prm;
    EWin               *ewin = s->context_ewin;
 
    if (ev->type == ButtonRelease)
@@ -349,7 +349,7 @@ SlideoutAddButton(Slideout * s, const char *bname)
    s->num_objs++;
    s->objs = EREALLOC(EObj *, s->objs, s->num_objs);
    s->objs[s->num_objs - 1] = ButtonSwallowInto(b, EoObj(s));
-   ButtonSetCallback(b, SlideoutButtonCallback, EoObj(s));
+   ButtonSetCallback(b, SlideoutButtonCallback, s);
    SlideoutCalcSize(s);
 }
 

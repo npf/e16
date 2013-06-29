@@ -71,7 +71,7 @@ typedef struct {
 static void         DeskRaise(unsigned int num);
 static void         DeskLower(unsigned int num);
 static void         DeskHandleEvents(Win win, XEvent * ev, void *prm);
-static void         DeskButtonCallback(EObj * eo, XEvent * ev,
+static void         DeskButtonCallback(void *prm, XEvent * ev,
 				       ActionClass * ac);
 
 /* The desktops */
@@ -293,7 +293,7 @@ DeskControlsCreate(Desk * dsk)
 	b = ButtonCreate("_DESKTOP_DRAG_CONTROL", 1, ic1, ac1, NULL, NULL,
 			 -1, FLAG_FIXED, 1, 99999, 1, 99999, 0, 0, x[2], 0,
 			 y[2], 0, 0, w[2], 0, h[2], 0, dsk->num, 0);
-	ButtonSetCallback(b, DeskButtonCallback, EoObj(dsk));
+	ButtonSetCallback(b, DeskButtonCallback, dsk);
      }
 
 #if ENABLE_DESKRAY
@@ -1946,9 +1946,9 @@ DeskDragMotion(Desk * dsk)
 }
 
 static void
-DeskButtonCallback(EObj * eo, XEvent * ev, ActionClass * ac)
+DeskButtonCallback(void *prm, XEvent * ev, ActionClass * ac)
 {
-   Desk               *dsk;
+   Desk               *dsk = (Desk *) prm;
 
    if (Mode.mode != MODE_DESKDRAG)
      {
@@ -1957,7 +1957,6 @@ DeskButtonCallback(EObj * eo, XEvent * ev, ActionClass * ac)
 	return;
      }
 
-   dsk = (Desk *) eo;
    switch (ev->type)
      {
      case ButtonRelease:

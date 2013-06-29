@@ -65,8 +65,8 @@ struct _button {
    char                default_show;
    char                state;
    char                left;
-   EObj               *owner;
-   ButtonCbFunc       *func;
+   ButtonCbFunc       *cb_func;
+   void               *cb_prm;
 
 #if 0				/* Unused */
    Window              inside_win;
@@ -288,7 +288,6 @@ ButtonSwallowInto(Button * b, EObj * eo)
    b->internal = 1;
    b->default_show = 0;
    b->flags |= FLAG_FIXED;
-   b->owner = eo;
    b->ref_count++;
    EobjReparent(EoObj(b), eo, 0, 0);
    ButtonCalc(b);
@@ -298,10 +297,10 @@ ButtonSwallowInto(Button * b, EObj * eo)
 }
 
 void
-ButtonSetCallback(Button * b, ButtonCbFunc * func, EObj * eo)
+ButtonSetCallback(Button * b, ButtonCbFunc * func, void *prm)
 {
-   b->owner = eo;
-   b->func = func;
+   b->cb_prm = prm;
+   b->cb_func = func;
 }
 
 static void
@@ -481,8 +480,8 @@ ButtonsMoveStickyToDesk(Desk * dsk)
 static void
 ButtonDoAction(Button * b, XEvent * ev)
 {
-   if (b->owner && b->func)
-      b->func(b->owner, ev, b->aclass);
+   if (b->cb_func)
+      b->cb_func(b->cb_prm, ev, b->aclass);
    else
       ActionclassEvent(b->aclass, ev, NULL);
 }
@@ -650,8 +649,8 @@ ButtonHandleEvents(Win win __UNUSED__, XEvent * ev, void *prm)
 	break;
      }
 
-   if (b->func)
-      b->func(b->owner, ev, NULL);
+   if (b->cb_func)
+      b->cb_func(b->cb_prm, ev, NULL);
 }
 
 /*

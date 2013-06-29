@@ -28,7 +28,7 @@
 #include "eobj.h"
 #include "etypes.h"
 
-typedef void        (ButtonCbFunc) (EObj * eo, XEvent * ev, ActionClass * ac);
+typedef void        (ButtonCbFunc) (void *prm, XEvent * ev, ActionClass * ac);
 
 /* buttons.c */
 Button             *ButtonCreate(const char *name, int id, const char *iclass,
@@ -45,8 +45,8 @@ void                ButtonHide(Button * b);
 void                ButtonMoveToCoord(Button * b, int x, int y);
 void                ButtonMoveRelative(Button * b, int dx, int dy);
 EObj               *ButtonSwallowInto(Button * b, EObj * eo);
-void                ButtonSetCallback(Button * b, ButtonCbFunc * func,
-				      EObj * eo);
+void                ButtonSetCallback(Button * b,
+				      ButtonCbFunc * func, void *prm);
 int                 ButtonDoShowDefault(const Button * b);
 int                 ButtonEmbedWindow(Button * ButtonToUse,
 				      Window WindowToEmbed);
