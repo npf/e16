@@ -183,10 +183,10 @@ PagerScanCancel(Pager * p)
 static int
 PagerScanTimeout(void *data)
 {
+   static const char   offsets[8] = { 0, 4, 2, 6, 1, 5, 3, 7 };
    Pager              *p = (Pager *) data;
    EWin               *ewin;
    int                 y, y2, phase, cx, cy, ww, hh, xx, yy;
-   static int          offsets[8] = { 0, 4, 2, 6, 1, 5, 3, 7 };
    int                 pager_mode = PagersGetMode();
 
    if (pager_mode != PAGER_MODE_SNAP)

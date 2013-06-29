@@ -74,7 +74,7 @@ struct _ewinbit {
    Win                 win;
    int                 x, y, w, h;
    int                 cx, cy, cw, ch;
-   int                 state;
+   char                state;
    char                expose;
    char                left;
    ImageState         *is;

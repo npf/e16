@@ -63,15 +63,15 @@ struct _button {
    int                 flags;
    char                internal;
    char                default_show;
+   char                state;
+   char                left;
    EObj               *owner;
    ButtonCbFunc       *func;
 
-   int                 state;
    Window              inside_win;
 #if 0				/* Unused */
    Window              event_win;
 #endif
-   char                left;
    unsigned int        ref_count;
 };
 
