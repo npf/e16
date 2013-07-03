@@ -1048,14 +1048,13 @@ static void
 MenusDestroyLoaded(void)
 {
    Menu               *m;
-   int                 found_one;
 
    MenusHide();
 
    /* Free all menustyles first (gulp) */
-   do
+   for (;;)
      {
-	found_one = 0;
+      restart:
 	ECORE_LIST_FOR_EACH(menu_list, m)
 	{
 	   if (m->internal)
@@ -1068,11 +1067,10 @@ MenusDestroyLoaded(void)
 	    * destroyed too, so we have to re-find all menus
 	    * afterwards. Inefficient yes, but it works...
 	    */
-	   found_one = 1;
-	   break;
+	   goto restart;
 	}
+	break;
      }
-   while (found_one);
 }
 
 static int
@@ -1883,19 +1881,28 @@ MenusTimeout(void *data __UNUSED__)
 
    /* Unload contents if loadable and no access in > 5 min */
    ts = time(0);
-   ECORE_LIST_FOR_EACH(menu_list, m)
-   {
-      if (m->shown || !m->filled ||
-	  ts - m->last_access < MENU_UNLOAD_CHECK_INTERVAL)
-	 continue;
+   for (;;)
+     {
+      restart:
+	ECORE_LIST_FOR_EACH(menu_list, m)
+	{
+	   if (m->shown || !m->filled ||
+	       ts - m->last_access < MENU_UNLOAD_CHECK_INTERVAL)
+	      continue;
 
-      if (!m->loader)
-	 MenuFreePixmaps(m);
-      else if (m->ref_count)
-	 MenuEmpty(m, 0);
-      else
-	 MenuDestroy(m);
-   }
+	   if (!m->loader)
+	     {
+		MenuFreePixmaps(m);
+		continue;
+	     }
+	   if (m->ref_count)
+	      MenuEmpty(m, 0);
+	   else
+	      MenuDestroy(m);
+	   goto restart;
+	}
+	break;
+     }
 
    return 1;
 }
