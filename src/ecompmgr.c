@@ -418,44 +418,46 @@ ECompMgrDamageAll(void)
 
 #if ENABLE_SHADOWS
 
+#define M_2PI_F ((float)(2 * M_PI))
+
 static Picture      transBlackPicture;
 
 typedef struct {
    int                 size;
-   double             *data;
+   float              *data;
 } conv;
 
 static conv        *gaussianMap = NULL;
 
-static double
-gaussian(double r, double x, double y)
+static float
+gaussian(float r, float x, float y)
 {
-   return ((1 / (sqrt(2 * M_PI * r))) * exp((-(x * x + y * y)) / (2 * r * r)));
+   return ((1.f / (sqrtf(M_2PI_F * r))) *
+	   expf(-(x * x + y * y) / (2.f * r * r)));
 }
 
 static conv        *
-make_gaussian_map(double r)
+make_gaussian_map(float r)
 {
    conv               *c;
    int                 size = ((int)ceil((r * 3)) + 1) & ~1;
    int                 center = size / 2;
    int                 x, y;
-   double              t;
-   double              g;
+   float               t, g;
 
-   c = (conv *) EMALLOC(char, sizeof(conv) + size * size * sizeof(double));
+   c = (conv *) EMALLOC(char, sizeof(conv) + size * size * sizeof(float));
 
    c->size = size;
-   c->data = (double *)(c + 1);
-   t = 0.0;
+   c->data = (float *)(c + 1);
+   t = 0.f;
    for (y = 0; y < size; y++)
       for (x = 0; x < size; x++)
 	{
-	   g = gaussian(r, (double)(x - center), (double)(y - center));
+	   g = gaussian(r, (float)(x - center), (float)(y - center));
 	   t += g;
 	   c->data[y * size + x] = g;
 	}
-/*    printf ("gaussian total %f\n", t); */
+/* printf ("gaussian total %f\n", t); */
    for (y = 0; y < size; y++)
       for (x = 0; x < size; x++)
 	{
@@ -482,16 +484,16 @@ make_gaussian_map(double r)
  */
 
 static unsigned char
-sum_gaussian(conv * map, double opacity, int x, int y, int width, int height)
+sum_gaussian(conv * map, float opacity, int x, int y, int width, int height)
 {
    int                 fx, fy;
-   double             *g_data;
-   double             *g_line = map->data;
+   float              *g_data;
+   float              *g_line = map->data;
    int                 g_size = map->size;
    int                 center = g_size / 2;
    int                 fx_start, fx_end;
    int                 fy_start, fy_end;
-   double              v;
+   float               v;
 
    /*
     * Compute set of filter values which are "in range",
@@ -531,11 +533,11 @@ sum_gaussian(conv * map, double opacity, int x, int y, int width, int height)
    if (v > 1)
       v = 1;
 
-   return ((unsigned char)(v * opacity * 255.0));
+   return ((unsigned char)(v * opacity * 255.f));
 }
 
 static XImage      *
-make_shadow(double opacity, int width, int height)
+make_shadow(float opacity, int width, int height)
 {
    XImage             *ximage;
    unsigned char      *data;
@@ -630,7 +632,7 @@ make_shadow(double opacity, int width, int height)
 }
 
 static              Picture
-shadow_picture(double opacity, int width, int height, int *wp, int *hp)
+shadow_picture(float opacity, int width, int height, int *wp, int *hp)
 {
    XImage             *shadowImage;
    Pixmap              shadowPixmap;
@@ -733,7 +735,7 @@ ECompMgrWinSetExtents(EObj * eo)
 	if (!gaussianMap)
 	  {
 	     gaussianMap =
-		make_gaussian_map((double)Conf_compmgr.shadows.blur.radius);
+		make_gaussian_map((float)Conf_compmgr.shadows.blur.radius);
 	     if (!gaussianMap)
 		goto skip_shadow;
 	  }
