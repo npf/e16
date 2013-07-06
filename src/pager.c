@@ -522,21 +522,21 @@ static void
 PagerReconfigure(Pager * p, int apply)
 {
    int                 ax, ay, w, h, dx, dy;
-   double              aspect, f;
+   float               aspect, f;
 
    DesksGetAreaSize(&ax, &ay);
 
-   aspect = ((double)WinGetW(VROOT)) / ((double)WinGetH(VROOT));
+   aspect = ((float)WinGetW(VROOT)) / ((float)WinGetH(VROOT));
 
    dx = 2;
    for (;;)
      {
 	f = dx / aspect;
-	dy = (int)(f + .5);
-	f -= (double)dy;
+	dy = (int)(f + .5f);
+	f -= (float)dy;
 	if (f < 0)
 	   f = -f;
-	if (f < .1)
+	if (f < .1f)
 	   break;
 	if (dx >= 8)
 	   break;
@@ -548,13 +548,13 @@ PagerReconfigure(Pager * p, int apply)
 			    WinGetH(VROOT) / 64 * ay,
 			    WinGetW(VROOT) / 4 * ax,
 			    WinGetH(VROOT) / 4 * ay, 0, 0, dx * ax, dy * ay,
-			    aspect * ((double)ax / (double)ay),
-			    aspect * ((double)ax / (double)ay));
+			    aspect * ((float)ax / (float)ay),
+			    aspect * ((float)ax / (float)ay));
 
    if (apply)
      {
-	w = (int)((double)ax * (double)WinGetW(VROOT) / (double)p->scale + .5);
-	h = (int)((double)ay * (double)WinGetH(VROOT) / (double)p->scale + .5);
+	w = (int)((float)ax * (float)WinGetW(VROOT) / (float)p->scale + .5f);
+	h = (int)((float)ay * (float)WinGetH(VROOT) / (float)p->scale + .5f);
 	EwinResize(p->ewin, w + (dx * ax) / 2, h + (dy * ay) / 2, 0);
 	EwinReposition(p->ewin);
      }
@@ -682,7 +682,7 @@ _PagerEwinMoveResize(EWin * ewin, int resize __UNUSED__)
    p->dw = w / ax;
    p->dh = h / ay;
 
-   if (p->scale <= 0. || Mode.op_source == OPSRC_USER)
+   if (p->scale <= 0.f || Mode.op_source == OPSRC_USER)
       p->scale = ((float)WinGetW(VROOT) / p->dw +
 		  (float)WinGetH(VROOT) / p->dh) / 2;
 

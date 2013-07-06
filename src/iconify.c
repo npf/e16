@@ -34,6 +34,9 @@
 #include "xwin.h"
 #include <math.h>
 
+#define M_PI_F  ((float)(M_PI))
+#define M_2PI_F ((float)(2 * M_PI))
+
 static Container   *SelectIconboxForEwin(EWin * ewin);
 
 /* Silly hack to avoid name clash warning when using -Wshadow */
@@ -43,10 +46,10 @@ static Container   *SelectIconboxForEwin(EWin * ewin);
 #define IB_ANIM_STEP    Conf.animation.step
 
 static void
-IB_Animate_Sleep(unsigned int t0, double a)
+IB_Animate_Sleep(unsigned int t0, float a)
 {
    unsigned int        t;
-   double              dt;
+   float               dt;
 
    t = GetTimeMs() - t0;
    dt = 1e-3 * (t - a * IB_ANIM_TIME);
@@ -60,7 +63,7 @@ IB_Animate_A(char iconify, EWin * ewin, EWin * ibox)
 {
    EWin               *fr, *to;
    unsigned int        t0;
-   double              a, aa, spd;
+   float               a, aa, spd;
    int                 x, y, x1, y1, x2, y2, x3, y3, x4, y4, w, h;
    int                 fx, fy, fw, fh, tx, ty, tw, th;
    Window              root = WinGetXwin(VROOT);
@@ -109,12 +112,12 @@ IB_Animate_A(char iconify, EWin * ewin, EWin * ibox)
 		   GCFunction | GCForeground | GCSubwindowMode | GCLineWidth,
 		   &gcv);
 
-   spd = (1. * IB_ANIM_STEP) / IB_ANIM_TIME;
+   spd = (1.f * IB_ANIM_STEP) / IB_ANIM_TIME;
 
    t0 = GetTimeMs();
-   for (a = 0.0; a < 1.0; a += spd)
+   for (a = 0.f; a < 1.f; a += spd)
      {
-	aa = 1.0 - a;
+	aa = 1.f - a;
 
 	x = (int)((fx * aa) + (tx * a));
 	y = (int)((fy * aa) + (ty * a));
@@ -126,14 +129,14 @@ IB_Animate_A(char iconify, EWin * ewin, EWin * ibox)
 	w /= 2;			/* width/2 */
 	h /= 2;			/* height/2 */
 
-	x1 = (int)(x + w * (1 - .5 * sin(3.14159 + a * 6.2831853072)));
-	y1 = (int)(y + h * cos(a * 6.2831853072));
-	x2 = (int)(x + w * (1 - .5 * sin(a * 6.2831853072)));
-	y2 = (int)(y - h * cos(a * 6.2831853072));
-	x3 = (int)(x - w * (1 - .5 * sin(3.14159 + a * 6.2831853072)));
-	y3 = (int)(y - h * cos(a * 6.2831853072));
-	x4 = (int)(x - w * (1 - .5 * sin(a * 6.2831853072)));
-	y4 = (int)(y + h * cos(a * 6.2831853072));
+	x1 = (int)(x + w * (1.f - .5f * sinf(M_PI_F + a * M_2PI_F)));
+	y1 = (int)(y + h * cosf(a * M_2PI_F));
+	x2 = (int)(x + w * (1.f - .5f * sinf(a * M_2PI_F)));
+	y2 = (int)(y - h * cosf(a * M_2PI_F));
+	x3 = (int)(x - w * (1.f - .5f * sinf(M_PI_F + a * M_2PI_F)));
+	y3 = (int)(y - h * cosf(a * M_2PI_F));
+	x4 = (int)(x - w * (1.f - .5f * sinf(a * M_2PI_F)));
+	y4 = (int)(y + h * cosf(a * M_2PI_F));
 
 	XDrawLine(disp, root, gc, x1, y1, x2, y2);
 	XDrawLine(disp, root, gc, x2, y2, x3, y3);
@@ -157,7 +160,7 @@ IB_Animate_B(char iconify, EWin * ewin, EWin * ibox)
 {
    EWin               *fr, *to;
    unsigned int        t0;
-   double              a, spd;
+   float               a, spd;
    int                 x, y, w, h;
    int                 fx, fy, fw, fh, tx, ty, tw, th;
    Window              root = WinGetXwin(VROOT);
@@ -207,10 +210,10 @@ IB_Animate_B(char iconify, EWin * ewin, EWin * ibox)
    XDrawRectangle(disp, root, gc, tx, ty, tw, th);
    XDrawRectangle(disp, root, gc, fx, fy, fw, fh);
 
-   spd = (1. * IB_ANIM_STEP) / IB_ANIM_TIME;
+   spd = (1.f * IB_ANIM_STEP) / IB_ANIM_TIME;
 
    t0 = GetTimeMs();
-   for (a = 0.0; a < 1.0; a += spd)
+   for (a = 0.f; a < 1.f; a += spd)
      {
 	x = (int)(fx + a * (tx - fx));
 	w = (int)(fw + a * (tw - fw));

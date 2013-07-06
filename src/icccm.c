@@ -151,7 +151,7 @@ ICCCM_SizeMatch(const EWin * ewin, int wi, int hi, int *pwo, int *pho)
 {
    int                 w, h;
    int                 i, j;
-   double              aspect, dw, dh;
+   float               aspect, dw, dh;
 
    w = wi;
    h = hi;
@@ -175,38 +175,38 @@ ICCCM_SizeMatch(const EWin * ewin, int wi, int hi, int *pwo, int *pho)
 	/* Ignore aspect ratio constraints when fullscreening */
 	if (!ewin->state.fullscreen)
 	  {
-	     aspect = ((double)w) / ((double)h);
+	     aspect = ((float)w) / ((float)h);
 	     dw = ewin->icccm.w_inc / 4.;
 	     dh = ewin->icccm.h_inc / 4.;
 	     if (Mode.mode == MODE_RESIZE_H)
 	       {
 		  if (aspect < ewin->icccm.aspect_min)
-		     h = (int)((double)w / ewin->icccm.aspect_min + dh);
+		     h = (int)((float)w / ewin->icccm.aspect_min + dh);
 		  else if (aspect > ewin->icccm.aspect_max)
-		     h = (int)((double)w / ewin->icccm.aspect_max + dh);
+		     h = (int)((float)w / ewin->icccm.aspect_max + dh);
 	       }
 	     else if (Mode.mode == MODE_RESIZE_V)
 	       {
 		  if (aspect < ewin->icccm.aspect_min)
-		     w = (int)((double)h * ewin->icccm.aspect_min + dw);
+		     w = (int)((float)h * ewin->icccm.aspect_min + dw);
 		  else if (aspect > ewin->icccm.aspect_max)
-		     w = (int)((double)h * ewin->icccm.aspect_max + dw);
+		     w = (int)((float)h * ewin->icccm.aspect_max + dw);
 	       }
 	     else
 	       {
 		  if (aspect < ewin->icccm.aspect_min)
 		    {
 		       if (ewin->icccm.aspect_min >= 1.)
-			  h = (int)((double)w / ewin->icccm.aspect_min + dh);
+			  h = (int)((float)w / ewin->icccm.aspect_min + dh);
 		       else
-			  w = (int)((double)h * ewin->icccm.aspect_min + dw);
+			  w = (int)((float)h * ewin->icccm.aspect_min + dw);
 		    }
 		  else if (aspect > ewin->icccm.aspect_max)
 		    {
 		       if (ewin->icccm.aspect_max >= 1.)
-			  h = (int)((double)w / ewin->icccm.aspect_max + dh);
+			  h = (int)((float)w / ewin->icccm.aspect_max + dh);
 		       else
-			  w = (int)((double)h * ewin->icccm.aspect_max + dw);
+			  w = (int)((float)h * ewin->icccm.aspect_max + dw);
 		    }
 	       }
 	  }
@@ -244,7 +244,7 @@ ICCCM_SetSizeConstraints(EWin * ewin, unsigned int wmin, unsigned int hmin,
 			 unsigned int wmax, unsigned int hmax,
 			 unsigned int wbase, unsigned int hbase,
 			 unsigned int winc, unsigned int hinc,
-			 double amin, double amax)
+			 float amin, float amax)
 {
    ewin->icccm.width_min = wmin;
    ewin->icccm.height_min = hmin;
@@ -484,29 +484,29 @@ ICCCM_GetGeoms(EWin * ewin)
 
 	if (hint.flags & PAspect)
 	  {
-	     if ((hint.min_aspect.y > 0.0) && (hint.min_aspect.x > 0.0))
+	     if (hint.min_aspect.y > 0 && hint.min_aspect.x > 0)
 	       {
 		  ewin->icccm.aspect_min =
-		     ((double)hint.min_aspect.x) / ((double)hint.min_aspect.y);
+		     ((float)hint.min_aspect.x) / ((float)hint.min_aspect.y);
 	       }
 	     else
 	       {
-		  ewin->icccm.aspect_min = 0.0;
+		  ewin->icccm.aspect_min = 0.f;
 	       }
-	     if ((hint.max_aspect.y > 0.0) && (hint.max_aspect.x > 0.0))
+	     if (hint.max_aspect.y > 0 && hint.max_aspect.x > 0)
 	       {
 		  ewin->icccm.aspect_max =
-		     ((double)hint.max_aspect.x) / ((double)hint.max_aspect.y);
+		     ((float)hint.max_aspect.x) / ((float)hint.max_aspect.y);
 	       }
 	     else
 	       {
-		  ewin->icccm.aspect_max = 65535.0;
+		  ewin->icccm.aspect_max = 65535.f;
 	       }
 	  }
 	else
 	  {
-	     ewin->icccm.aspect_min = 0.0;
-	     ewin->icccm.aspect_max = 65535.0;
+	     ewin->icccm.aspect_min = 0.f;
+	     ewin->icccm.aspect_max = 65535.f;
 	  }
 
 	if (hint.flags & PBaseSize)

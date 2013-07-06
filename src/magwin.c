@@ -104,7 +104,7 @@ MagwinRedraw(MagWindow * mw, int paint)
 {
    int                 ww, wh;
    int                 sx, sy, sw, sh;
-   double              scale;
+   float               scale;
    int                 zoom_res;
    Drawable            draw;
    char                buf[128];
@@ -121,15 +121,15 @@ MagwinRedraw(MagWindow * mw, int paint)
       mw->scale = -6 * zoom_res;
    else if (mw->scale > 6 * zoom_res)
       mw->scale = 6 * zoom_res;
-   scale = pow(2., (double)(mw->scale) / zoom_res);
-   sw = (int)((ww + .999 * scale) / scale);
+   scale = powf(2.f, (float)(mw->scale) / zoom_res);
+   sw = (int)((ww + .999f * scale) / scale);
    if (sw > WinGetW(VROOT))
-      scale = (double)ww / (double)WinGetW(VROOT);
-   sh = (int)((wh + .999 * scale) / scale);
-   if (sh > WinGetH(VROOT) && scale < (double)wh / (double)WinGetH(VROOT))
-      scale = (double)wh / (double)WinGetH(VROOT);
-   sw = (int)((ww + .999 * scale) / scale);
-   sh = (int)((wh + .999 * scale) / scale);
+      scale = (float)ww / (float)WinGetW(VROOT);
+   sh = (int)((wh + .999f * scale) / scale);
+   if (sh > WinGetH(VROOT) && scale < (float)wh / (float)WinGetH(VROOT))
+      scale = (float)wh / (float)WinGetH(VROOT);
+   sw = (int)((ww + .999f * scale) / scale);
+   sh = (int)((wh + .999f * scale) / scale);
    sx = mw->cx - sw / 2;
    sy = mw->cy - sh / 2;
    if (sx < 0)
@@ -150,8 +150,8 @@ MagwinRedraw(MagWindow * mw, int paint)
      {
 	int                 dw, dh;
 
-	dw = (int)(sw * scale + .5);
-	dh = (int)(sh * scale + .5);
+	dw = (int)(sw * scale + .5f);
+	dh = (int)(sh * scale + .5f);
 	draw = ECompMgrGetRootBuffer();
 	ScaleRect(VROOT, draw, EwinGetClientWin(mw->ewin),
 		  EwinGetClientXwin(mw->ewin), sx, sy, sw, sh,
@@ -369,7 +369,7 @@ MagwinEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 	if (mw->btn_down)
 	  {
 	     int                 dx, dy;
-	     double              scale;
+	     float               scale;
 
 	     dx = Mode.events.mx - mw->stroke_mx;
 	     dy = Mode.events.my - mw->stroke_my;
@@ -379,7 +379,7 @@ MagwinEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 	     if (!mw->stroke)
 		break;
 
-	     scale = pow(2., (double)(mw->scale) / Conf.magwin.zoom_res);
+	     scale = powf(2.f, (float)(mw->scale) / Conf.magwin.zoom_res);
 	     mw->cx = mw->stroke_cx - (int)(dx / scale);
 	     mw->cy = mw->stroke_cy - (int)(dy / scale);
 	     mw->update = 1;

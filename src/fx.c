@@ -29,13 +29,11 @@
 #include "eimage.h"
 #include "emodule.h"
 #include "settings.h"
+#include "util.h"
 #include "xwin.h"
 #include <math.h>
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-#define M_TWOPI (2 * M_PI)
+#define M_2PI_F ((float)(2 * M_PI))
 
 #define FX_OP_ENABLE  1		/* Enable, start */
 #define FX_OP_DISABLE 2		/* Disable, stop */
@@ -66,11 +64,11 @@ typedef struct {
    Win                 win;
    Pixmap              above;
    int                 count;
-   double              incv, inch;
+   float               incv, inch;
    GC                  gc1;
 } fx_ripple_data_t;
 
-#define FX_RIPPLE_DATA_INIT { NULL, 0, 0, 0., 0., NULL }
+#define FX_RIPPLE_DATA_INIT { NULL, 0, 0, 0.f, 0.f, NULL }
 
 static Animator    *fx_ripple = NULL;
 
@@ -101,21 +99,21 @@ FX_ripple_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
    if (d->count > 32)
       d->count = 0;
 
-   d->incv += 0.40;
-   if (d->incv > M_TWOPI)
+   d->incv += 0.40f;
+   if (d->incv > M_2PI_F)
       d->incv = 0;
-   d->inch += 0.32;
-   if (d->inch > M_TWOPI)
+   d->inch += 0.32f;
+   if (d->inch > M_2PI_F)
       d->inch = 0;
 
    SET_GC_CLIP(bgeo, d->gc1);
 
    for (y = 0; y < FX_RIPPLE_WATERH; y++)
      {
-	double              aa, a, p;
+	float               aa, a, p;
 	int                 yoff, off, yy;
 
-	p = (((double)(FX_RIPPLE_WATERH - y)) / ((double)FX_RIPPLE_WATERH));
+	p = (((float)(FX_RIPPLE_WATERH - y)) / ((float)FX_RIPPLE_WATERH));
 	a = p * p * 48 + d->incv;
 	yoff = y + (int)(sin(a) * 7) + 1;
 	yy = (FX_RIPPLE_WATERH * 2) - yoff;
@@ -170,17 +168,17 @@ FX_Ripple_Ops(int op)
 #define FX_WAVE_WATERW 64
 #define FX_WAVE_DEPTH  10
 #define FX_WAVE_GRABH  (FX_WAVE_WATERH + FX_WAVE_DEPTH)
-#define FX_WAVE_CROSSPERIOD 0.42
+#define FX_WAVE_CROSSPERIOD 0.42f
 
 typedef struct {
    Win                 win;
    Pixmap              above;
    int                 count;
-   double              incv, inch, incx;
+   float               incv, inch, incx;
    GC                  gc1;
 } fx_waves_data_t;
 
-#define FX_WAVE_DATA_INIT { NULL, 0, 0, 0., 0., 0., NULL }
+#define FX_WAVE_DATA_INIT { NULL, 0, 0, 0.f, 0.f, 0.f, NULL }
 
 static Animator    *fx_waves = NULL;
 
@@ -188,7 +186,7 @@ static int
 FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 {
    fx_waves_data_t    *d = (fx_waves_data_t *) state;
-   double              incx2;
+   float               incx2;
    int                 y;
    EObj               *bgeo;
 
@@ -217,16 +215,16 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
       d->count = 0;
 
    /* Increment and roll some other variables */
-   d->incv += 0.40;
-   if (d->incv > M_TWOPI)
+   d->incv += 0.40f;
+   if (d->incv > M_2PI_F)
       d->incv = 0;
 
-   d->inch += 0.32;
-   if (d->inch > M_TWOPI)
+   d->inch += 0.32f;
+   if (d->inch > M_2PI_F)
       d->inch = 0;
 
-   d->incx += 0.32;
-   if (d->incx > M_TWOPI)
+   d->incx += 0.32f;
+   if (d->incx > M_2PI_F)
       d->incx = 0;
 
    SET_GC_CLIP(bgeo, d->gc1);
@@ -243,12 +241,12 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
    for (y = 0; y < FX_WAVE_WATERH; y++)
      {
 	/* Variables */
-	double              aa, a, p;
+	float               aa, a, p;
 	int                 yoff, off, yy;
 	int                 x;
 
 	/* Figure out the side-to-side movement */
-	p = (((double)(FX_WAVE_WATERH - y)) / ((double)FX_WAVE_WATERH));
+	p = (((float)(FX_WAVE_WATERH - y)) / ((float)FX_WAVE_WATERH));
 	a = p * p * 48 + d->incv;
 	yoff = y + (int)(sin(a) * 7) + 1;
 	yy = (FX_WAVE_WATERH * 2) - yoff;
@@ -267,7 +265,7 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 	     /* Add something to incx2 and roll it */
 	     incx2 += FX_WAVE_CROSSPERIOD;
 
-	     if (incx2 > M_TWOPI)
+	     if (incx2 > M_2PI_F)
 		incx2 = 0;
 
 	     /* Figure it out */

@@ -189,7 +189,7 @@ struct _ewin {
       int                 base_w, base_h;
       int                 w_inc, h_inc;
       int                 grav;
-      double              aspect_min, aspect_max;
+      float               aspect_min, aspect_max;
 
       char                is_group_leader;
    } icccm;

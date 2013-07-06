@@ -563,8 +563,8 @@ ScaleTile(Win wsrc, Drawable src, Win wdst, Pixmap dst,
 
    scale = (scale) ? 2 : 1;
 
-   tw = (int)((double)(stw * scale * dw) / sw + .5);
-   th = (int)((double)(sth * scale * dh) / sh + .5);
+   tw = (int)((float)(stw * scale * dw) / sw + .5f);
+   th = (int)((float)(sth * scale * dh) / sh + .5f);
 #if 0
    Eprintf("ScaleTile: Tile %#lx %dx%d -> %dx%d T %dx%d -> %dx%d\n", src,
 	   stw, sth, tw, th, scale * dw, scale * dh, dw, dh);
