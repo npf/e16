@@ -855,11 +855,10 @@ ArrangeEwinXY(EWin * ewin, int *px, int *py)
    int                 i, num;
    RectBox            *fixed, *ret, newrect;
 
+   *px = *py = 0;
+
    if (!ewin)
       return;
-
-   fixed = NULL;
-   *px = *py = 0;
 
    EwinListGetAll(&num);
    if (num <= 1)
@@ -868,6 +867,7 @@ ArrangeEwinXY(EWin * ewin, int *px, int *py)
 	return;
      }
 
+   fixed = NULL;
    ArrangeGetRectList(&fixed, &num, NULL, NULL, ewin);
 
    newrect.data = ewin;
