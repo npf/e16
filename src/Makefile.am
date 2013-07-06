@@ -1,7 +1,5 @@
 SUBDIRS =
 
-EXTRA_DIST = gnome.c zoom.c eglx.c eglx.h glwin.c ecompmgr.c ecompmgr.h magwin.c snprintf.c
-
 bin_PROGRAMS = e16
 
 if ENABLE_GNOME
