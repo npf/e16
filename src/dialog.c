@@ -408,7 +408,7 @@ DialogArrange(Dialog * d, int resize)
      }
 
    ICCCM_SetSizeConstraints(d->ewin, d->w, d->h, d->w, d->h, 0, 0, 1, 1,
-			    0.0, 65535.0);
+			    0.f, 65535.f);
 
    if (resize)
      {

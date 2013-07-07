@@ -107,8 +107,8 @@ EwinCreate(int type)
    ewin->icccm.base_h = 0;
    ewin->icccm.w_inc = 1;
    ewin->icccm.h_inc = 1;
-   ewin->icccm.aspect_min = 0.0;
-   ewin->icccm.aspect_max = 65535.0;
+   ewin->icccm.aspect_min = 0.f;
+   ewin->icccm.aspect_max = 65535.f;
    ewin->icccm.grav = NorthWestGravity;
 
    ewin->area_x = -1;

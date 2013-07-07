@@ -208,7 +208,7 @@ ContainerReconfigure(Container * ct)
      }
 
    ICCCM_SetSizeConstraints(ct->ewin, wmin, hmin, wmax, hmax, 0, 0, 1, 1,
-			    0.0, 65535.0);
+			    0.f, 65535.f);
 }
 
 static void

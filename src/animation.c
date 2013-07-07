@@ -228,8 +228,9 @@ AnimatorGetData(Animator * an)
 }
 
 /* Quarter period sinusoidal used in time limited animations */
+#define M_PI_F  ((float)(M_PI))
 #define REMAINING(elapsed, duration) \
-   (int)(1024 * (1. - cos(((M_PI / 2 * (elapsed)) / (duration)))))
+   (int)(1024 * (1.f - cosf(((M_PI_F / 2 * (elapsed)) / (duration)))))
 
 static unsigned int
 _AnimatorsRun(Animator ** head, unsigned int frame_num, unsigned int next_frame)

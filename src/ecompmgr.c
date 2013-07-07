@@ -440,7 +440,7 @@ static conv        *
 make_gaussian_map(float r)
 {
    conv               *c;
-   int                 size = ((int)ceil((r * 3)) + 1) & ~1;
+   int                 size = ((int)ceilf((r * 3)) + 1) & ~1;
    int                 center = size / 2;
    int                 x, y;
    float               t, g;

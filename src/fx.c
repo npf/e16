@@ -115,10 +115,10 @@ FX_ripple_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 
 	p = (((float)(FX_RIPPLE_WATERH - y)) / ((float)FX_RIPPLE_WATERH));
 	a = p * p * 48 + d->incv;
-	yoff = y + (int)(sin(a) * 7) + 1;
+	yoff = y + (int)(sinf(a) * 7) + 1;
 	yy = (FX_RIPPLE_WATERH * 2) - yoff;
 	aa = p * p * 64 + d->inch;
-	off = (int)(sin(aa) * 10 * (1 - p));
+	off = (int)(sinf(aa) * 10 * (1 - p));
 	XCopyArea(disp, d->above, WinGetXwin(d->win), d->gc1, 0, yy,
 		  WinGetW(VROOT), 1, off,
 		  WinGetH(VROOT) - FX_RIPPLE_WATERH + y);
@@ -248,10 +248,10 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 	/* Figure out the side-to-side movement */
 	p = (((float)(FX_WAVE_WATERH - y)) / ((float)FX_WAVE_WATERH));
 	a = p * p * 48 + d->incv;
-	yoff = y + (int)(sin(a) * 7) + 1;
+	yoff = y + (int)(sinf(a) * 7) + 1;
 	yy = (FX_WAVE_WATERH * 2) - yoff;
 	aa = p * p * FX_WAVE_WATERH + d->inch;
-	off = (int)(sin(aa) * 10 * (1 - p));
+	off = (int)(sinf(aa) * 10 * (1 - p));
 
 	/* Set up the next part */
 	incx2 = d->incx;
@@ -269,7 +269,7 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 		incx2 = 0;
 
 	     /* Figure it out */
-	     sx = (int)(sin(incx2) * FX_WAVE_DEPTH);
+	     sx = (int)(sinf(incx2) * FX_WAVE_DEPTH);
 
 	     /* Display this block */
 	     XCopyArea(disp, d->above, WinGetXwin(d->win), d->gc1, x, yy,	/* x, y */

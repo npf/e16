@@ -211,7 +211,7 @@ _MenuEwinInit(EWin * ewin)
    EwinInhSetWM(ewin, focus, 1);
 
    ICCCM_SetSizeConstraints(ewin, m->w, m->h, m->w, m->h, 0, 0, 1, 1,
-			    0.0, 65535.0);
+			    0.f, 65535.f);
    ewin->icccm.grav = StaticGravity;
 
    EoSetLayer(ewin, 12);

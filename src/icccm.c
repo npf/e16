@@ -176,8 +176,8 @@ ICCCM_SizeMatch(const EWin * ewin, int wi, int hi, int *pwo, int *pho)
 	if (!ewin->state.fullscreen)
 	  {
 	     aspect = ((float)w) / ((float)h);
-	     dw = ewin->icccm.w_inc / 4.;
-	     dh = ewin->icccm.h_inc / 4.;
+	     dw = ewin->icccm.w_inc / 4.f;
+	     dh = ewin->icccm.h_inc / 4.f;
 	     if (Mode.mode == MODE_RESIZE_H)
 	       {
 		  if (aspect < ewin->icccm.aspect_min)
@@ -196,14 +196,14 @@ ICCCM_SizeMatch(const EWin * ewin, int wi, int hi, int *pwo, int *pho)
 	       {
 		  if (aspect < ewin->icccm.aspect_min)
 		    {
-		       if (ewin->icccm.aspect_min >= 1.)
+		       if (ewin->icccm.aspect_min >= 1.f)
 			  h = (int)((float)w / ewin->icccm.aspect_min + dh);
 		       else
 			  w = (int)((float)h * ewin->icccm.aspect_min + dw);
 		    }
 		  else if (aspect > ewin->icccm.aspect_max)
 		    {
-		       if (ewin->icccm.aspect_max >= 1.)
+		       if (ewin->icccm.aspect_max >= 1.f)
 			  h = (int)((float)w / ewin->icccm.aspect_max + dh);
 		       else
 			  w = (int)((float)h * ewin->icccm.aspect_max + dw);
