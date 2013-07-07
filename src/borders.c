@@ -1348,16 +1348,24 @@ BorderCreateFiller(int w, int h, int sw, int sh)
    return b;
 }
 
-void
-BordersForeach(void (*func) (Border * b, void *data), void *data)
+static int
+_BorderNameCompare(const void *b1, const void *b2)
 {
-   ecore_list_for_each(border_list, (Ecore_For_Each) func, data);
+   if (b1 && b2)
+      return strcmp((*(const Border **)b1)->name, (*(const Border **)b2)->name);
+
+   return 0;
 }
 
 Border            **
 BordersGetList(int *pnum)
 {
-   return (Border **) ecore_list_items_get(border_list, pnum);
+   Border            **lst;
+
+   lst = (Border **) ecore_list_items_get(border_list, pnum);
+   qsort(lst, *pnum, sizeof(Border *), _BorderNameCompare);
+
+   return lst;
 }
 
 static ActionClass *

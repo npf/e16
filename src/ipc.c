@@ -168,12 +168,6 @@ IPC_Nop(const char *params __UNUSED__)
 
 /* Should be elsewhere */
 static void
-IPC_Border_CB_List(Border * b, void *data __UNUSED__)
-{
-   IpcPrintf("%s\n", BorderGetName(b));
-}
-
-static void
 IPC_Border(const char *params)
 {
    if (!params)
@@ -184,7 +178,13 @@ IPC_Border(const char *params)
 
    if (!strncmp(params, "list", 2))
      {
-	BordersForeach(IPC_Border_CB_List, NULL);
+	Border            **lst;
+	int                 i, num;
+
+	lst = BordersGetList(&num);
+	for (i = 0; i < num; i++)
+	   IpcPrintf("%s\n", BorderGetName(lst[i]));
+	Efree(lst);
      }
 }
 

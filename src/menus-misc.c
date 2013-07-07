@@ -459,16 +459,6 @@ MenuCreateFromThemes(const char *name, MenuStyle * ms)
    return m;
 }
 
-static int
-BorderNameCompare(const void *b1, const void *b2)
-{
-   if (b1 && b2)
-      return strcmp(BorderGetName(*(const Border **)b1),
-		    BorderGetName(*(const Border **)b2));
-
-   return 0;
-}
-
 static Menu        *
 MenuCreateFromBorders(const char *name, MenuStyle * ms)
 {
@@ -485,7 +475,6 @@ MenuCreateFromBorders(const char *name, MenuStyle * ms)
    if (!lst)
       return m;
 
-   qsort(lst, num, sizeof(Border *), BorderNameCompare);
    for (i = 0; i < num; i++)
      {
 	/* if its not internal (ie doesnt start with _ ) */
