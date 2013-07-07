@@ -2077,10 +2077,10 @@ ECompMgrShadowsInit(int mode, int cleanup)
 
    Conf_compmgr.shadows.blur.opacity =
       OpacityFix(Conf_compmgr.shadows.blur.opacity, 100);
-   Mode_compmgr.opac_blur = .01 * Conf_compmgr.shadows.blur.opacity;
+   Mode_compmgr.opac_blur = .01f * Conf_compmgr.shadows.blur.opacity;
    Conf_compmgr.shadows.sharp.opacity =
       OpacityFix(Conf_compmgr.shadows.sharp.opacity, 100);
-   Mode_compmgr.opac_sharp = .01 * Conf_compmgr.shadows.sharp.opacity;
+   Mode_compmgr.opac_sharp = .01f * Conf_compmgr.shadows.sharp.opacity;
 
    Efree(gaussianMap);
    gaussianMap = NULL;

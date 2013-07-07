@@ -1912,7 +1912,7 @@ _DlgPixToVal(const DItem * di, int dx, int sr)
    int                 vr, val;
 
    vr = di->item.slider.upper - di->item.slider.lower;
-   dx = (int)(((float)dx / (sr * di->item.slider.unit)) * abs(vr) + .5);
+   dx = (int)(((float)dx / (sr * di->item.slider.unit)) * abs(vr) + .5f);
    dx *= di->item.slider.unit;
    if (vr < 0)
       dx = -dx;
