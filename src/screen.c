@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2003-2011 Kim Woelders
+ * Copyright (C) 2003-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -37,11 +37,11 @@ typedef struct {
 static EScreen     *p_screens = NULL;
 static int          n_screens = 0;
 
-#ifdef USE_XINERAMA
+#if USE_XINERAMA
 #include <X11/extensions/Xinerama.h>
 
 static XineramaScreenInfo *
-EXineramaQueryScreens(int *number)
+_EXineramaQueryScreens(int *number)
 {
    int                 event_base, error_base;
 
@@ -54,12 +54,12 @@ EXineramaQueryScreens(int *number)
 }
 
 static void
-ScreenInitX(void)
+_ScreenInitXinerama(void)
 {
    XineramaScreenInfo *screens;
    int                 i, num_screens;
 
-   screens = EXineramaQueryScreens(&num_screens);
+   screens = _EXineramaQueryScreens(&num_screens);
 
    Mode.display.xinerama_active = (XineramaIsActive(disp)) ? 1 : 0;
    if (!Mode.display.xinerama_active && num_screens > 1)
@@ -77,13 +77,13 @@ ScreenInitX(void)
 }
 
 static void
-ScreenShowInfoX(void)
+_ScreenShowInfoXinerama(void)
 {
    static const char  *const mt[] = { "Off", "On", "TV", "???" };
    XineramaScreenInfo *scrns;
    int                 i, num, mode;
 
-   scrns = EXineramaQueryScreens(&num);
+   scrns = _EXineramaQueryScreens(&num);
 
    mode = (XineramaIsActive(disp)) ? 1 : 0;
    if (!mode && num > 1)
@@ -103,12 +103,7 @@ ScreenShowInfoX(void)
      }
 }
 
-#else
-
-#define ScreenInitX()
-#define ScreenShowInfoX()
-
-#endif
+#endif /* USE_XINERAMA */
 
 void
 ScreenAdd(int type, int head, int x, int y, unsigned int w, unsigned int h)
@@ -130,13 +125,14 @@ ScreenAdd(int type, int head, int x, int y, unsigned int w, unsigned int h)
 void
 ScreenInit(void)
 {
-
    n_screens = 0;		/* Causes reconfiguration */
 
    if (Mode.wm.window)
       return;
 
-   ScreenInitX();
+#if USE_XINERAMA
+   _ScreenInitXinerama();
+#endif
 }
 
 void
@@ -172,7 +168,9 @@ ScreenShowInfo(const char *prm __UNUSED__)
    IpcPrintf(" %2d     %2d       %5d     %5d     %5d     %5d\n",
 	     0, Dpy.screen, 0, 0, WinGetW(VROOT), WinGetH(VROOT));
 
-   ScreenShowInfoX();
+#if USE_XINERAMA
+   _ScreenShowInfoXinerama();
+#endif
 
    if (n_screens)
      {
@@ -253,7 +251,7 @@ ScreenGetGeometry(int xi, int yi, int *px, int *py, int *pw, int *ph)
 }
 
 static void
-VRootGetAvailableArea(int *px, int *py, int *pw, int *ph)
+_VRootGetAvailableArea(int *px, int *py, int *pw, int *ph)
 {
    EWin               *const *lst, *ewin;
    int                 i, num, l, r, t, b;
@@ -290,7 +288,7 @@ ScreenGetAvailableArea(int xi, int yi, int *px, int *py, int *pw, int *ph,
 
    if (!ignore_struts)
      {
-	VRootGetAvailableArea(&x2, &y2, &w2, &h2);
+	_VRootGetAvailableArea(&x2, &y2, &w2, &h2);
 	if (x1 < x2)
 	   x1 = x2;
 	if (y1 < y2)
