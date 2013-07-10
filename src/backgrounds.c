@@ -1274,7 +1274,7 @@ BackgroundsConfigSave(void)
 	_BackgroundGetBgFile(bg);
 	_BackgroundGetFgFile(bg);
 	/* Discard if bg file is given but cannot be found (ignore bad fg) */
-	if (bg->bg.file && !isabspath(bg->bg.file))
+	if (bg->bg.file && !exists(bg->bg.file))
 	  {
 	     Eprintf("Discard broken background %s (%s)\n",
 		     bg->name, bg->bg.file);
