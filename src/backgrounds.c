@@ -1263,6 +1263,7 @@ BackgroundsConfigSave(void)
    if (!fs)
       return;
 
+   /* For obscure reasons, store backgrounds in reverse order. */
    for (i = num - 1; i >= 0; i--)
      {
 	bg = (Background *) ecore_list_index_goto(bg_list, i);
@@ -1391,7 +1392,7 @@ BackgroundsSighan(int sig, void *prm __UNUSED__)
    switch (sig)
      {
      case ESIGNAL_INIT:
-	/* create a fallback background in case no background is found */
+	/* Create the "None" background */
 	BackgroundCreate(NULL, 0, NULL, 0, 0, 0, 0, 0, 0, NULL, 0, 0, 0, 0, 0);
 	break;
 
@@ -1655,8 +1656,14 @@ static void
 CB_ConfigureFrontBG(Dialog * d __UNUSED__, int val __UNUSED__,
 		    void *data __UNUSED__)
 {
-   ecore_list_prepend(bg_list, ecore_list_node_remove(bg_list, tmp_bg));
-   BGSettingsGoTo(tmp_bg);
+   Background         *bg;
+
+   if (BackgroundIsNone(tmp_bg))
+      return;			/* Don't move "None" background */
+
+   bg = ecore_list_node_remove(bg_list, tmp_bg);
+   ecore_list_prepend(bg_list, bg);
+   BGSettingsGoTo(bg);
    BG_RedrawView();
    autosave();
 }
