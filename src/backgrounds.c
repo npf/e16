@@ -1518,21 +1518,6 @@ CB_DesktopMiniDisplayRedraw(Dialog * d __UNUSED__, int val __UNUSED__,
    EClearWindow(win);
 }
 
-/* Update tmp vars according to the current tmp_bg */
-static void
-BG_GetValues(void)
-{
-   tmp_bg_image = (tmp_bg->bg.file) ? 1 : 0;
-
-   COLOR32_TO_RGB(tmp_bg->bg_solid, tmp_bg_r, tmp_bg_g, tmp_bg_b);
-   tmp_bg_tile = tmp_bg->bg_tile;
-   tmp_bg_keep_aspect = tmp_bg->bg.keep_aspect;
-   tmp_bg_xjust = tmp_bg->bg.xjust;
-   tmp_bg_yjust = tmp_bg->bg.yjust;
-   tmp_bg_xperc = tmp_bg->bg.xperc;
-   tmp_bg_yperc = tmp_bg->bg.yperc;
-}
-
 static void
 BG_DialogSetFileName(DItem * di)
 {
@@ -1549,27 +1534,28 @@ BG_DialogSetFileName(DItem * di)
 static void
 BgDialogSetNewCurrent(Background * bg)
 {
+   int                 r, g, b;
+
    if (tmp_bg && tmp_bg != bg)
       BackgroundImagesKeep(tmp_bg, 0);
    tmp_bg = bg;
    BackgroundImagesKeep(tmp_bg, 1);
 
-   /* Fetch new BG values */
-   BG_GetValues();
-
    /* Update dialog items */
    BG_DialogSetFileName(bg_filename);
 
-   DialogItemCheckButtonSetState(tmp_w[0], tmp_bg_image);
-   DialogItemCheckButtonSetState(tmp_w[1], tmp_bg_keep_aspect);
-   DialogItemCheckButtonSetState(tmp_w[2], tmp_bg_tile);
-   DialogItemSliderSetVal(tmp_w[3], tmp_bg_r);
-   DialogItemSliderSetVal(tmp_w[4], tmp_bg_g);
-   DialogItemSliderSetVal(tmp_w[5], tmp_bg_b);
-   DialogItemSliderSetVal(tmp_w[6], tmp_bg_xjust);
-   DialogItemSliderSetVal(tmp_w[7], tmp_bg_yjust);
-   DialogItemSliderSetVal(tmp_w[8], tmp_bg_yperc);
-   DialogItemSliderSetVal(tmp_w[9], tmp_bg_xperc);
+   COLOR32_TO_RGB(bg->bg_solid, r, g, b);
+
+   DialogItemCheckButtonSetState(tmp_w[0], bg->bg.file ? 1 : 0);
+   DialogItemCheckButtonSetState(tmp_w[1], bg->bg.keep_aspect);
+   DialogItemCheckButtonSetState(tmp_w[2], bg->bg_tile);
+   DialogItemSliderSetVal(tmp_w[3], r);
+   DialogItemSliderSetVal(tmp_w[4], g);
+   DialogItemSliderSetVal(tmp_w[5], b);
+   DialogItemSliderSetVal(tmp_w[6], bg->bg.xjust);
+   DialogItemSliderSetVal(tmp_w[7], bg->bg.yjust);
+   DialogItemSliderSetVal(tmp_w[8], bg->bg.yperc);
+   DialogItemSliderSetVal(tmp_w[9], bg->bg.xperc);
 
    /* Redraw mini BG display */
    CB_DesktopMiniDisplayRedraw(NULL, 0, bg_mini_disp);
@@ -2008,7 +1994,16 @@ _DlgFillBackground(Dialog * d, DItem * table, void *data)
       bg = BackgroundFind("NONE");
    tmp_bg = bg;
 
-   BG_GetValues();
+   /* Update tmp vars according to the current tmp_bg */
+   tmp_bg_image = (tmp_bg->bg.file) ? 1 : 0;
+
+   COLOR32_TO_RGB(tmp_bg->bg_solid, tmp_bg_r, tmp_bg_g, tmp_bg_b);
+   tmp_bg_tile = tmp_bg->bg_tile;
+   tmp_bg_keep_aspect = tmp_bg->bg.keep_aspect;
+   tmp_bg_xjust = tmp_bg->bg.xjust;
+   tmp_bg_yjust = tmp_bg->bg.yjust;
+   tmp_bg_xperc = tmp_bg->bg.xperc;
+   tmp_bg_yperc = tmp_bg->bg.yperc;
 
    tmp_hiq = Conf.backgrounds.hiquality;
    tmp_userbg = Conf.backgrounds.user;
