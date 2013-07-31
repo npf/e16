@@ -2,7 +2,23 @@
 Encoding=UTF-8
 Type=XSession
 Name=E16 GNOME3
+Name[Name]=E16 GNOME3
+Name[ab]=
+Name[ca]=
+Name[cs]=
+Name[de]=
+Name[el]=
 Name[eo]=E16 GNOME3
+Name[es]=
 Name[fr]=E16 GNOME3
+Name[gl]=
+Name[hu]=
+Name[it]=
+Name[ja]=
+Name[ko]=
+Name[pt]=
+Name[ru]=
+Name[sr]=
+Name[tr]=
 TryExec=/usr/bin/gnome-session
 Exec=gnome-session --session=e16-gnome
