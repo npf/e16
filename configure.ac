@@ -44,8 +44,8 @@ AC_CHECK_HEADERS(alloca.h locale.h stdarg.h wctype.h)
 AC_C_BIGENDIAN
 AC_C_CONST
 AC_C_INLINE
-AC_C___ATTRIBUTE__
-AC_C___FUNC__
+EC_C___ATTRIBUTE__
+EC_C___FUNC__
 AC_CHECK_SIZEOF(int, 4)
 AC_CHECK_SIZEOF(long, 4)
 AC_CHECK_SIZEOF(wchar_t, 4)
@@ -437,9 +437,9 @@ AC_ARG_ENABLE(gcc-cpp,
 if test "x$enable_gcc_cpp" = "xyes"; then
   CC="g++"
   CPPFLAGS="$CPPFLAGS -x c++"
-  AC_C_WARNFLAGS([cpp])
+  EC_C_WARNINGS([cpp])
 else
-  AC_C_WARNFLAGS()
+  EC_C_WARNINGS()
 fi
 
 AC_DEFINE(_GNU_SOURCE, 1, [Enable extensions])
