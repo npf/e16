@@ -121,7 +121,7 @@ e16_SOURCES = \
 	$(SRCS_SNPRINTF)
 
 AM_CPPFLAGS = \
-	$(CWARNFLAGS) \
+	$(CFLAGS_WARNINGS) \
 	-D LOCALEDIR=\"$(datadir)/locale\" \
 	-D ENLIGHTENMENT_BIN=\"$(bindir)\" \
 	-D ENLIGHTENMENT_LIB=\"$(pkglibdir)\" \

@@ -1,7 +1,7 @@
 dnl Copyright (C) 2008 Kim Woelders
 dnl This code is public domain and can be freely used or copied.
 
-dnl Macro to set compiler warning flags in CWARNFLAGS
+dnl Macro to set compiler warning flags in CFLAGS_WARNINGS
 
 dnl Provides configure argument --enable-werror to stop compilation on warnings
 
@@ -16,14 +16,14 @@ AC_DEFUN([EC_C_WARNINGS], [
     enable_werror=no)
 
   if test "x$GCC" = "xyes"; then
-    CWARNFLAGS="-W -Wall -Waggregate-return -Wcast-align -Wpointer-arith -Wshadow -Wwrite-strings"
+    CFLAGS_WARNINGS="-W -Wall -Waggregate-return -Wcast-align -Wpointer-arith -Wshadow -Wwrite-strings"
     ifelse(ec_c_compile_cpp, no, [
-      CWARNFLAGS="$CWARNFLAGS -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes"
+      CFLAGS_WARNINGS="$CFLAGS_WARNINGS -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes"
     ],)
 
     if test "x$enable_werror" = "xyes"; then
-      CWARNFLAGS="$CWARNFLAGS -Werror"
+      CFLAGS_WARNINGS="$CFLAGS_WARNINGS -Werror"
     fi
   fi
-  AC_SUBST(CWARNFLAGS)
+  AC_SUBST(CFLAGS_WARNINGS)
 ])
