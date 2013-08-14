@@ -5728,3 +5728,31 @@ Move/rename atom/property related wrapper functions and types.
 Move/rename EInternAtom -> ex_atom_get, AtomListIntern -> ex_atoms_get.
 updating esperanto translation
 
+-------------------------------------------------------------------------------
+
+Wed Aug 14 21:54:12 CEST 2013
+
+--- 1.0.13.001 ---
+Fix installation group ownership of theme files (ticket 2345).
+Fix various perl warnings.
+Fix menu generation issue.
+Play raise/lower sounds only if any windows are actually raised/lowered.
+Fix bug in ActionClass loading.
+Tweak button swallowing in slideouts.
+Clear SF_INFO struct before calling sf_open().
+Save some bytes in various structs.
+Button:inside_win is not used.
+Tweak button event callback parameter.
+updating desktop files translations
+updating esperanto and adding serbian translation
+Fixed sorting in desktop files
+Avoid potential crash in menu unloading.
+Fix potential use of uninitialised data.
+Remove unnecessary EXTRA_DIST.
+Eliminate BordersForeach().
+No need for double - change to float.
+Let "eesh screen" show some randr info.
+Disable moving "None" background to front.
+Discard broken backgrounds (bg file missing) on exit.
+Fix background dialog issues.
+Switch to new list implementation.
