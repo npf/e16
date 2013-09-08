@@ -446,9 +446,9 @@ ButtonDragEnd(Button * b)
 void
 ButtonsForeach(int id, Desk * dsk, void (*func) (Button * b))
 {
-   Button             *b;
+   Button             *b, *tmp;
 
-   LIST_FOR_EACH(Button, &button_list, b)
+   LIST_FOR_EACH_SAFE(Button, &button_list, b, tmp)
    {
       if (id >= 0 && id != b->id)
 	 continue;
