@@ -5756,3 +5756,11 @@ Disable moving "None" background to front.
 Discard broken backgrounds (bg file missing) on exit.
 Fix background dialog issues.
 Switch to new list implementation.
+
+-------------------------------------------------------------------------------
+
+Sun Sep 22 12:27:45 CEST 2013
+
+--- 1.0.13.002 ---
+Fixup after list changes.
+Autofoo macro cleanups.
