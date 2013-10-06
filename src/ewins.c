@@ -2457,15 +2457,17 @@ EwinHandleEventsContainer(Win win __UNUSED__, XEvent * ev, void *prm)
 {
    EWin               *ewin = (EWin *) prm;
 
+   if (ev->type == ButtonPress)
+     {
+	FocusHandleClick(ewin, EwinGetClientConWin(ewin));
+	return;
+     }
+
    if (!_EwinEventEwinCheck("cont", ev, ewin))
       return;
 
    switch (ev->type)
      {
-     case ButtonPress:
-	FocusHandleClick(ewin, EwinGetContainerWin(ewin));
-	break;
-
      default:
 	if (EwinHandleContainerEvents(ewin, ev))
 	   break;
@@ -2483,17 +2485,19 @@ EwinHandleEventsClient(Win win __UNUSED__, XEvent * ev, void *prm)
 {
    EWin               *ewin = (EWin *) prm;
 
+#if !USE_CONTAINER_WIN
+   if (ev->type == ButtonPress)
+     {
+	FocusHandleClick(ewin, EwinGetClientConWin(ewin));
+	return;
+     }
+#endif
+
    if (!_EwinEventEwinCheck("cli", ev, ewin))
       return;
 
    switch (ev->type)
      {
-#if !USE_CONTAINER_WIN
-     case ButtonPress:
-	FocusHandleClick(ewin, EwinGetClientConWin(ewin));
-	break;
-#endif
-
      case FocusIn:
      case FocusOut:
 	if (ev->xfocus.detail == NotifyInferior)
