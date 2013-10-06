@@ -2313,7 +2313,10 @@ ActionsCheck(const char *which, EWin * ewin, XEvent * ev)
 static EWin        *
 _EwinEventEwinCheck(const char *txt, XEvent * ev, EWin * ewin)
 {
-   if ((int)(ev->xany.serial - ewin->serial) < 0)
+   int                 ser_diff;
+
+   ser_diff = (int)(ev->xany.serial - ewin->serial);
+   if (ser_diff < 0 && ser_diff > -1000)
      {
 	Eprintf("%s: %#lx: Ignore obsolete event %d\n", txt,
 		ev->xany.window, ev->type);
