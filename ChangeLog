@@ -5764,3 +5764,15 @@ Sun Sep 22 12:27:45 CEST 2013
 --- 1.0.13.002 ---
 Fixup after list changes.
 Autofoo macro cleanups.
+
+-------------------------------------------------------------------------------
+
+Sun Oct 13 08:56:20 CEST 2013
+
+--- 1.0.13.003 ---
+
+Obsolete event handling tweak (click grabs).
+Obsolete event handling tweak (serial wrap).
+Remove useless Name[] entries from .desktop files.
+Fix menu generation some more.
+Update gettext version to 0.17.
