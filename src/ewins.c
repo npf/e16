@@ -120,13 +120,13 @@ EwinCreate(int type)
 }
 
 static int
-EwinGetAttributes(EWin * ewin, Win win, Window xwin)
+EwinGetAttributes(EWin * ewin, Win win, Window xwin, XWindowAttributes * pxwa)
 {
    XWindowAttributes   xwa;
 
    if (!win)
      {
-	win = ERegisterWindow(xwin, NULL);
+	win = ERegisterWindow(xwin, pxwa);
 	if (!win)
 	   return -1;
      }
@@ -733,8 +733,9 @@ EwinStateUpdate(EWin * ewin)
 }
 
 static void
-AddToFamily(EWin * ewin, Window xwin, int startup)
+AddToFamily(EWin * ewin, Window xwin, XWindowAttributes * pxwa, int startup)
 {
+   XWindowAttributes   attr;
    EWin               *ewin2;
    EWin              **lst;
    int                 i, k, num, fx, fy, x, y;
@@ -743,6 +744,12 @@ AddToFamily(EWin * ewin, Window xwin, int startup)
 
    EGrabServer();
 
+   if (!pxwa)
+     {
+	pxwa = &attr;
+	EXGetWindowAttributes(xwin, &attr);
+     }
+
    if (ewin)
       EwinCleanup(ewin);
    else
@@ -750,7 +757,7 @@ AddToFamily(EWin * ewin, Window xwin, int startup)
    if (!ewin)
       goto done;
 
-   if (EwinGetAttributes(ewin, NULL, xwin))
+   if (EwinGetAttributes(ewin, NULL, xwin, pxwa))
      {
 	if (EDebug(EDBUG_TYPE_EWINS))
 	   Eprintf("Window is gone %#lx\n", xwin);
@@ -1035,7 +1042,7 @@ AddInternalToFamily(Win win, const char *bname, int type,
       goto done;
 
    ewin->props.donthide = 1;
-   EwinGetAttributes(ewin, win, None);
+   EwinGetAttributes(ewin, win, None, NULL);
    WindowMatchEwinOps(ewin);	/* Window matches */
    EwinManage(ewin);
 
@@ -1131,7 +1138,7 @@ EwinEventMapRequest(EWin * ewin, XEvent * ev)
 	if (ewin->state.state == EWIN_STATE_ICONIC)
 	   EwinDeIconify(ewin);
 	else if (ewin->state.state == EWIN_STATE_WITHDRAWN)
-	   AddToFamily(ewin, xwin, 0);
+	   AddToFamily(ewin, xwin, NULL, 0);
 	else
 	  {
 	     if (EDebug(EDBUG_TYPE_EWINS))
@@ -1157,7 +1164,7 @@ EwinEventMapRequest(EWin * ewin, XEvent * ev)
 	     EwinShow(ewin);
 	  }
 	else
-	   AddToFamily(NULL, xwin, 0);
+	   AddToFamily(NULL, xwin, NULL, 0);
      }
 }
 
@@ -2249,7 +2256,7 @@ EwinsManage(void)
 	if (attr.override_redirect)
 	   EobjRegisterOR(xwin, 1);
 	else
-	   AddToFamily(NULL, xwin, 1);
+	   AddToFamily(NULL, xwin, &attr, 1);
      }
    XFree(xwins);
 }
