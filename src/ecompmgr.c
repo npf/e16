@@ -2416,7 +2416,7 @@ ECompMgrHandleRootEvent(Win win __UNUSED__, XEvent * ev, void *prm)
       case_CreateNotify:
 	if (Conf_compmgr.override_redirect.mode != ECM_OR_ON_CREATE)
 	   break;
-	EobjRegisterOR(xwin, 0);
+	EobjRegisterOR(xwin, NULL, 0);
 	break;
 
      case DestroyNotify:
@@ -2466,7 +2466,7 @@ ECompMgrHandleRootEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 	 * The client frame windows (on desk 0) and internal ones (with root
 	 * parent) will go here when mapped and will be ignored as they are
 	 * already registered. */
-	EobjRegisterOR(xwin, 1);
+	EobjRegisterOR(xwin, NULL, 1);
 	break;
 
      case UnmapNotify:

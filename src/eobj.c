@@ -306,7 +306,8 @@ EobjWindowDestroy(EObj * eo)
 }
 
 EObj               *
-EobjRegisterOR(Window xwin __UNUSED__, int mapped __UNUSED__)
+EobjRegisterOR(Window xwin __UNUSED__, XWindowAttributes * pxwa __UNUSED__,
+	       int mapped __UNUSED__)
 {
    EObj               *eo = NULL;
 
@@ -321,13 +322,16 @@ EobjRegisterOR(Window xwin __UNUSED__, int mapped __UNUSED__)
    if (eo)
       return eo;
 
-   if (!EXGetWindowAttributes(xwin, &attr))
+   if (!pxwa)
+     {
+	pxwa = &attr;
+	if (!EXGetWindowAttributes(xwin, &attr))
+	   return NULL;
+     }
+   if (!pxwa->override_redirect)
       return NULL;
 
-   if (!attr.override_redirect)
-      return NULL;
-
-   win = ERegisterWindow(xwin, &attr);
+   win = ERegisterWindow(xwin, pxwa);
    if (!win)
       return NULL;
 
@@ -346,7 +350,7 @@ EobjRegisterOR(Window xwin __UNUSED__, int mapped __UNUSED__)
    eo->fade = 1;
    eo->shadow = 1;
 
-   EobjInit(eo, EOBJ_TYPE_EXT, win, attr.x, attr.y, attr.width, attr.height,
+   EobjInit(eo, EOBJ_TYPE_EXT, win, pxwa->x, pxwa->y, pxwa->width, pxwa->height,
 	    0, NULL);
 
    eo->shaped = 0;		/* FIXME - Assume unshaped for now */

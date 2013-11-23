@@ -747,7 +747,8 @@ AddToFamily(EWin * ewin, Window xwin, XWindowAttributes * pxwa, int startup)
    if (!pxwa)
      {
 	pxwa = &attr;
-	EXGetWindowAttributes(xwin, &attr);
+	if (!EXGetWindowAttributes(xwin, &attr))
+	   goto done;
      }
 
    if (ewin)
@@ -2254,7 +2255,7 @@ EwinsManage(void)
 	   continue;
 
 	if (attr.override_redirect)
-	   EobjRegisterOR(xwin, 1);
+	   EobjRegisterOR(xwin, &attr, 1);
 	else
 	   AddToFamily(NULL, xwin, &attr, 1);
      }
