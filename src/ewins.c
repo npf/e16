@@ -2245,6 +2245,8 @@ EwinsManage(void)
    if (!xwins)
       return;
 
+   EGrabServer();
+
    for (i = 0; i < num; i++)
      {
 	xwin = xwins[i];
@@ -2264,6 +2266,9 @@ EwinsManage(void)
 	else
 	   AddToFamily(NULL, xwin, &attr, 1);
      }
+
+   EUngrabServer();
+
    XFree(xwins);
 }
 
