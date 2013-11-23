@@ -155,10 +155,8 @@ EObj               *EobjWindowCreate(int type, int x, int y, int w, int h,
 				     int su, const char *name);
 void                EobjWindowDestroy(EObj * eo);
 
-EObj               *EobjRegister(Window xwin, int type);
+EObj               *EobjRegisterOR(Window xwin, int mapped);
 void                EobjUnregister(EObj * eo);
-
-void                EobjRegisterOR(Window xwin);
 
 void                EobjMap(EObj * eo, int raise);
 void                EobjUnmap(EObj * eo);

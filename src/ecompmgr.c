@@ -2416,9 +2416,7 @@ ECompMgrHandleRootEvent(Win win __UNUSED__, XEvent * ev, void *prm)
       case_CreateNotify:
 	if (Conf_compmgr.override_redirect.mode != ECM_OR_ON_CREATE)
 	   break;
-	eo = EobjListStackFind(xwin);
-	if (!eo)
-	   EobjRegister(xwin, EOBJ_TYPE_EXT);
+	EobjRegisterOR(xwin, 0);
 	break;
 
      case DestroyNotify:
@@ -2457,19 +2455,18 @@ ECompMgrHandleRootEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 	break;
 
      case MapNotify:
+	xwin = ev->xmap.window;
 #if USE_COMPOSITE_OVERLAY_WINDOW
-	if (ev->xmap.window == Mode_compmgr.cow)
+	if (xwin == Mode_compmgr.cow)
 	   break;
 #endif
-	eo = EobjListStackFind(ev->xmap.window);
-	if (!eo)
-	   eo = EobjRegister(ev->xmap.window, EOBJ_TYPE_EXT);
-	if (eo && eo->type == EOBJ_TYPE_EXT && eo->cmhook)
-	  {
-	     eo->shown = 1;
-	     EobjListStackRaise(eo, 0);
-	     ECompMgrWinMap(eo);
-	  }
+	/* Register new override-redirect windows.
+	 * Normal client windows will never go here as they first will
+	 * generate a MapRequest (caught elsewhere) and then be reparented.
+	 * The client frame windows (on desk 0) and internal ones (with root
+	 * parent) will go here when mapped and will be ignored as they are
+	 * already registered. */
+	EobjRegisterOR(xwin, 1);
 	break;
 
      case UnmapNotify:

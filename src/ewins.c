@@ -2247,7 +2247,7 @@ EwinsManage(void)
 	   continue;
 
 	if (attr.override_redirect)
-	   EobjRegisterOR(xwin);
+	   EobjRegisterOR(xwin, 1);
 	else
 	   AddToFamily(NULL, xwin, 1);
      }

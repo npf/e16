@@ -306,11 +306,16 @@ EobjWindowDestroy(EObj * eo)
 }
 
 EObj               *
-EobjRegister(Window xwin, int type)
+EobjRegisterOR(Window xwin __UNUSED__, int mapped __UNUSED__)
 {
-   EObj               *eo;
+   EObj               *eo = NULL;
+
+#if USE_COMPOSITE
    XWindowAttributes   attr;
    Win                 win;
+
+   if (!ECompMgrIsActive())
+      return NULL;
 
    eo = EobjListStackFind(xwin);
    if (eo)
@@ -319,7 +324,7 @@ EobjRegister(Window xwin, int type)
    if (!EXGetWindowAttributes(xwin, &attr))
       return NULL;
 
-   if (type == EOBJ_TYPE_EXT && !attr.override_redirect)
+   if (!attr.override_redirect)
       return NULL;
 
    win = ERegisterWindow(xwin, &attr);
@@ -341,24 +346,28 @@ EobjRegister(Window xwin, int type)
    eo->fade = 1;
    eo->shadow = 1;
 
-   EobjInit(eo, type, win, attr.x, attr.y, attr.width, attr.height, 0, NULL);
+   EobjInit(eo, EOBJ_TYPE_EXT, win, attr.x, attr.y, attr.width, attr.height,
+	    0, NULL);
 
-#if 1				/* FIXME - TBD */
-   if (type == EOBJ_TYPE_EXT)
+   eo->shaped = 0;		/* FIXME - Assume unshaped for now */
+   if (win->argb)
+      eo->shadow = 0;
+   EobjSetFloating(eo, 1);
+   EobjSetLayer(eo, 4);
+
+   if (mapped)
      {
-	eo->shaped = 0;		/* FIXME - Assume unshaped for now */
-	if (win->argb)
-	   eo->shadow = 0;
-	EobjSetFloating(eo, 1);
-	EobjSetLayer(eo, 4);
+	eo->shown = 1;
+	EobjListStackRaise(eo, 0);
+	ECompMgrWinMap(eo);
      }
-#endif
+
 #if 0
-   Eprintf("%s: %#lx type=%d or=%d: depth=%d argb=%d %s\n", __func__,
-	   xwin, type, attr.override_redirect, win->depth, win->argb,
-	   EobjGetName(eo));
+   Eprintf("%s: %#lx depth=%d argb=%d %s\n", __func__,
+	   EobjGetXwin(eo), win->depth, win->argb, EobjGetName(eo));
 #endif
 
+#endif
    return eo;
 }
 
@@ -370,22 +379,6 @@ EobjUnregister(EObj * eo)
 	   EobjGetName(eo));
 #endif
    EobjDestroy(eo);
-}
-
-void
-EobjRegisterOR(Window xwin __UNUSED__)
-{
-#if USE_COMPOSITE
-   EObj               *eo;
-
-   if (!ECompMgrIsActive())
-      return;
-
-   eo = EobjRegister(xwin, EOBJ_TYPE_EXT);
-   eo->shown = 1;
-   EobjListStackRaise(eo, 0);
-   ECompMgrWinMap(eo);
-#endif
 }
 
 void
