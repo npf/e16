@@ -2240,7 +2240,7 @@ EwinsManage(void)
 	if (EobjListStackFind(xwin))
 	   continue;
 
-	if (!XGetWindowAttributes(disp, xwin, &attr))
+	if (!EXGetWindowAttributes(xwin, &attr))
 	   continue;
 
 	if (attr.map_state == IsUnmapped)

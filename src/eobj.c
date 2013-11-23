@@ -316,7 +316,7 @@ EobjRegister(Window xwin, int type)
    if (eo)
       return eo;
 
-   if (!XGetWindowAttributes(disp, xwin, &attr))
+   if (!EXGetWindowAttributes(xwin, &attr))
       return NULL;
 
    if (type == EOBJ_TYPE_EXT && !attr.override_redirect)

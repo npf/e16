@@ -353,7 +353,7 @@ ICCCM_Cmap(EWin * ewin)
      {
 	for (i = 0; i < num; i++)
 	  {
-	     if (XGetWindowAttributes(disp, wlist[i], &xwa))
+	     if (EXGetWindowAttributes(wlist[i], &xwa))
 	       {
 		  if (xwa.colormap != dcmap)
 		    {

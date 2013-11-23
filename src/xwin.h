@@ -248,6 +248,7 @@ unsigned int        EAllocColor(Colormap cmap, unsigned int argb);
   do { a = _A16(c); r = _R16(c); g = _G16(c); b = _B16(c); } while (0)
 
 Window              EXWindowGetParent(Window xwin);
+int                 EXGetWindowAttributes(Window w, XWindowAttributes * pxwa);
 int                 EXGetGeometry(Window xwin, Window * root_return,
 				  int *x, int *y, int *w, int *h, int *bw,
 				  int *depth);

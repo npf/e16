@@ -709,7 +709,7 @@ ERegisterWindow(Window xwin, XWindowAttributes * pxwa)
    if (!pxwa)
      {
 	pxwa = &xwa;
-	if (!XGetWindowAttributes(disp, xwin, pxwa))
+	if (!EXGetWindowAttributes(xwin, pxwa))
 	   goto done;
      }
 
@@ -833,6 +833,12 @@ EMapRaised(Win win)
      }
 
    XMapRaised(disp, win->xwin);
+}
+
+int
+EXGetWindowAttributes(Window xwin, XWindowAttributes * pxwa)
+{
+   return XGetWindowAttributes(disp, xwin, pxwa);
 }
 
 int
@@ -1097,7 +1103,7 @@ ESelectInputChange(Win win, unsigned int set, unsigned int clear)
 #else
    XWindowAttributes   xwa;
 
-   XGetWindowAttributes(disp, win->xwin, &xwa);
+   EXGetWindowAttributes(win->xwin, &xwa);
    xwa.your_event_mask |= set;
    xwa.your_event_mask &= ~clear;
    XSelectInput(disp, win->xwin, xwa.your_event_mask);
@@ -1949,7 +1955,7 @@ EWindowGetPixmap(const Win win)
 {
    XWindowAttributes   xwa;
 
-   if (XGetWindowAttributes(disp, win->xwin, &xwa) == 0 ||
+   if (EXGetWindowAttributes(win->xwin, &xwa) == 0 ||
        xwa.map_state == IsUnmapped)
       return None;
 
