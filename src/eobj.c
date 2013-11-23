@@ -235,14 +235,14 @@ EobjInit(EObj * eo, int type, Win win, int x, int y, int w, int h,
       EobjListStackAdd(eo, 1);
 
    if (EDebug(EDBUG_TYPE_EWINS))
-      Eprintf("EobjInit: %#lx %s\n", EobjGetXwin(eo), EobjGetName(eo));
+      Eprintf("%s: %#lx %s\n", __func__, EobjGetXwin(eo), EobjGetName(eo));
 }
 
 void
 EobjFini(EObj * eo)
 {
    if (EDebug(EDBUG_TYPE_EWINS))
-      Eprintf("EobjFini: %#lx %s\n", EobjGetXwin(eo), EobjGetName(eo));
+      Eprintf("%s: %#lx %s\n", __func__, EobjGetXwin(eo), EobjGetName(eo));
 
    EobjListStackDel(eo);
 
@@ -269,7 +269,7 @@ void
 EobjDestroy(EObj * eo)
 {
    if (EDebug(EDBUG_TYPE_EWINS))
-      Eprintf("EobjDestroy: %#lx %s\n", EobjGetXwin(eo), EobjGetName(eo));
+      Eprintf("%s: %#lx %s\n", __func__, EobjGetXwin(eo), EobjGetName(eo));
 
    EobjFini(eo);
 
@@ -354,7 +354,7 @@ EobjRegister(Window xwin, int type)
      }
 #endif
 #if 0
-   Eprintf("EobjRegister: %#lx type=%d or=%d: depth=%d argb=%d %s\n",
+   Eprintf("%s: %#lx type=%d or=%d: depth=%d argb=%d %s\n", __func__,
 	   xwin, type, attr.override_redirect, win->depth, win->argb,
 	   EobjGetName(eo));
 #endif
@@ -366,7 +366,7 @@ void
 EobjUnregister(EObj * eo)
 {
 #if 0
-   Eprintf("EobjUnregister: %#lx type=%d: %s\n", eo->win, eo->type,
+   Eprintf("%s: %#lx type=%d: %s\n", __func__, EobjGetXwin(eo), eo->type,
 	   EobjGetName(eo));
 #endif
    EobjDestroy(eo);
