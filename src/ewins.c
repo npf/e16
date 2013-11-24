@@ -750,6 +750,11 @@ AddToFamily(EWin * ewin, Window xwin, XWindowAttributes * pxwa, int startup)
 	if (!EXGetWindowAttributes(xwin, &attr))
 	   goto done;
      }
+#ifndef __cplusplus
+#define c_class class
+#endif
+   if (pxwa->c_class != InputOutput)
+      goto done;
 
    if (ewin)
       EwinCleanup(ewin);

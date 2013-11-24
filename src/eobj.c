@@ -330,6 +330,11 @@ EobjRegisterOR(Window xwin __UNUSED__, XWindowAttributes * pxwa __UNUSED__,
      }
    if (!pxwa->override_redirect)
       return NULL;
+#ifndef __cplusplus
+#define c_class class
+#endif
+   if (pxwa->c_class != InputOutput)
+      return NULL;
 
    win = ERegisterWindow(xwin, pxwa);
    if (!win)
@@ -338,13 +343,6 @@ EobjRegisterOR(Window xwin __UNUSED__, XWindowAttributes * pxwa __UNUSED__,
    eo = ECALLOC(EObj, 1);
    if (!eo)
       return eo;
-
-#if __cplusplus
-   if (attr.c_class == InputOnly)
-#else
-   if (attr.class == InputOnly)
-#endif
-      eo->inputonly = 1;
 
    eo->external = 1;
    eo->fade = 1;
