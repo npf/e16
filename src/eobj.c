@@ -320,7 +320,7 @@ EobjRegisterOR(Window xwin __UNUSED__, XWindowAttributes * pxwa __UNUSED__,
 
    eo = EobjListStackFind(xwin);
    if (eo)
-      return eo;
+      goto done;
 
    if (!pxwa)
      {
@@ -357,6 +357,7 @@ EobjRegisterOR(Window xwin __UNUSED__, XWindowAttributes * pxwa __UNUSED__,
    EobjSetFloating(eo, 1);
    EobjSetLayer(eo, 4);
 
+ done:
    if (mapped)
      {
 	eo->shown = 1;
@@ -369,7 +370,8 @@ EobjRegisterOR(Window xwin __UNUSED__, XWindowAttributes * pxwa __UNUSED__,
 	   EobjGetXwin(eo), win->depth, win->argb, EobjGetName(eo));
 #endif
 
-#endif
+#endif /* USE_COMPOSITE */
+
    return eo;
 }
 
