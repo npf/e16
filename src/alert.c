@@ -31,7 +31,6 @@
 #include "alert.h"
 #include "lang.h"
 #include "session.h"
-#include "sounds.h"
 #include "util.h"
 #if USE_COMPOSITE
 #include <X11/extensions/Xcomposite.h>
@@ -189,7 +188,10 @@ ShowAlert(const char *title,
    XFontStruct       **font_struct_list_return;
    char              **font_name_list_return;
 
+#if 0
+   /* Don't play sound here (maybe if not forked/in signal handler - later) */
    SoundPlay(SOUND_ALERT);
+#endif
 
    if (!fmt)
       return;
