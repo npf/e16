@@ -7,17 +7,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: e16 0.99.99.003\n"
-"Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-07-13 19:22+0200\n"
-"PO-Revision-Date: 2013-07-03 13:45+0000\n"
-"Last-Translator: Eliovir <Unknown>\n"
+"Report-Msgid-Bugs-To: $MSGID_BUGS_ADDRESS\n"
+"POT-Creation-Date: 2013-08-24 11:50+0200\n"
+"PO-Revision-Date: 2013-11-05 19:00+0000\n"
+"Last-Translator: Olivier <Unknown>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
-"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-07-17 06:21+0000\n"
-"X-Generator: Launchpad (build 16696)\n"
+"X-Launchpad-Export-Date: 2013-11-06 05:27+0000\n"
+"X-Generator: Launchpad (build 16820)\n"
+"Language: eo\n"
 
 #: src/about.c:35
 #, c-format
@@ -808,7 +808,8 @@ msgid "Send mouse pointer to window after focus switch"
 msgstr ""
 
 #: src/focus.c:973
-msgid "Focuslist image display policy (if one operation fails, try the next):"
+msgid ""
+"Focuslist image display policy (if one operation fails, try the next):"
 msgstr ""
 
 #: src/focus.c:977
@@ -2250,7 +2251,8 @@ msgid "Stick/Unstick"
 msgstr "Fiksi / Malfiksi"
 
 #: config/strings.c:61
-msgid "Toggle the Omnipresent (visible on all Desktops) state of this window."
+msgid ""
+"Toggle the Omnipresent (visible on all Desktops) state of this window."
 msgstr ""
 "Baskuligi la ĉieestantan (videblan sur ĉiuj labortabloj) staton de tiu "
 "fenestro."
@@ -2477,11 +2479,11 @@ msgstr "Inversigi \"Neniam fokusigi\""
 
 #: config/strings.c:157
 msgid "Toggle Click to Focus"
-msgstr ""
+msgstr "Inversigi \"Klaki por fokusigi\""
 
 #: config/strings.c:158
 msgid "Toggle Never Use Area"
-msgstr ""
+msgstr "Inversigi \"Zono neniam uzita\""
 
 #: config/strings.c:159
 msgid "Toggle Ignore Arrange"
