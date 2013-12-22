@@ -320,7 +320,12 @@ EobjRegisterOR(Window xwin __UNUSED__, XWindowAttributes * pxwa __UNUSED__,
 
    eo = EobjListStackFind(xwin);
    if (eo)
-      goto done;
+     {
+	if (eo->external)
+	   goto done;
+	else
+	   return eo;
+     }
 
    if (!pxwa)
      {
