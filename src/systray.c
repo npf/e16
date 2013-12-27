@@ -63,7 +63,7 @@ static void         SystrayItemEvent(Win win, XEvent * ev, void *prm);
 #define XEMBED_MAPPED               (1 << 0)
 
 static int
-SystrayGetXembedInfo(Window win, int *info)
+SystrayGetXembedInfo(Window xwin, unsigned int *info)
 {
    unsigned char      *prop_ret;
    Atom                type_ret;
@@ -71,7 +71,7 @@ SystrayGetXembedInfo(Window win, int *info)
    int                 format_ret;
 
    prop_ret = NULL;
-   if (XGetWindowProperty(disp, win, E_XA__XEMBED_INFO, 0, 0x7fffffff,
+   if (XGetWindowProperty(disp, xwin, E_XA__XEMBED_INFO, 0, 0x7fffffff,
 			  False, E_XA__XEMBED_INFO, &type_ret, &format_ret,
 			  &num_ret, &bytes_after, &prop_ret) != Success)
       return -1;
@@ -86,7 +86,7 @@ SystrayGetXembedInfo(Window win, int *info)
      {
 	/* Property invalid or not there. I doubt we ever get here */
 	info[0] = 0;		/* Set protocol version 0 */
-	info[1] = 1;		/* Set mapped */
+	info[1] = XEMBED_MAPPED;	/* Set mapped */
 	num_ret = 0;
      }
    if (prop_ret)
@@ -99,12 +99,12 @@ SystrayGetXembedInfo(Window win, int *info)
  * Return index, -1 if not found.
  */
 static int
-SystrayObjFind(Container * ct, Window win)
+SystrayObjFind(Container * ct, Window xwin)
 {
    int                 i;
 
    for (i = 0; i < ct->num_objs; i++)
-      if (win == WinGetXwin(StObjGetWin(ct->objs[i].obj)))
+      if (xwin == WinGetXwin(StObjGetWin(ct->objs[i].obj)))
 	 return i;
 
    return -1;
@@ -116,7 +116,7 @@ SystrayObjManage(Container * ct, Window xwin)
    Win                 win;
 
 #if DEBUG_SYSTRAY
-   Eprintf("SystrayObjManage %#lx\n", xwin);
+   Eprintf("%s: %#lx\n", __func__, xwin);
 #endif
    win = ERegisterWindow(xwin, NULL);
    if (!win)
@@ -134,7 +134,7 @@ static void
 SystrayObjUnmanage(Container * ct __UNUSED__, Win win, int gone)
 {
 #if DEBUG_SYSTRAY
-   Eprintf("SystrayObjUnmanage %#lx gone=%d\n", WinGetXwin(win), gone);
+   Eprintf("%s: %#lx gone=%d\n", __func__, WinGetXwin(win), gone);
 #endif
 
    if (!gone)
@@ -153,7 +153,7 @@ SystrayObjAdd(Container * ct, Window xwin)
 {
    SWin               *swin = NULL;
    Win                 win;
-   int                 xembed_info[2];
+   unsigned int        xembed_info[2];
 
    /* Not if already there */
    if (SystrayObjFind(ct, xwin) >= 0)
@@ -164,14 +164,14 @@ SystrayObjAdd(Container * ct, Window xwin)
    switch (SystrayGetXembedInfo(xwin, xembed_info))
      {
      case -1:			/* Error - assume invalid window */
-	Eprintf("SystrayObjAdd: Hmm.. Invalid window? Ignoring %#lx\n", xwin);
+	Eprintf("%s: %#lx: Hmm.. Invalid window? Ignoring.\n", __func__, xwin);
 	goto bail_out;
      case 0:			/* Assume broken - proceed anyway */
-	Eprintf("SystrayObjAdd: Hmm.. No _XEMBED_INFO?\n");
+	Eprintf("%s: %#lx: Hmm.. No _XEMBED_INFO?\n", __func__, xwin);
 	break;
      default:
 	if (EDebug(EDBUG_TYPE_ICONBOX))
-	   Eprintf("SystrayObjAdd: _XEMBED_INFO: %#lx: %d %d\n", xwin,
+	   Eprintf("%s: %#lx: _XEMBED_INFO: %u %u\n", __func__, xwin,
 		   xembed_info[0], xembed_info[1]);
 	break;
      }
@@ -220,7 +220,7 @@ SystrayObjDel(Container * ct, Win win, int gone)
       return;
 
    if (EDebug(EDBUG_TYPE_ICONBOX))
-      Eprintf("SystrayObjDel %#lx\n", WinGetXwin(win));
+      Eprintf("%s: %#lx\n", __func__, WinGetXwin(win));
 
    swin = (SWin *) ct->objs[i].obj;
 
@@ -233,22 +233,22 @@ SystrayObjDel(Container * ct, Win win, int gone)
 }
 
 static void
-SystrayObjMapUnmap(Container * ct, Window win)
+SystrayObjMapUnmap(Container * ct, Window xwin)
 {
    int                 i, map;
    SWin               *swin;
-   int                 xembed_info[2];
+   unsigned int        xembed_info[2];
 
-   i = SystrayObjFind(ct, win);
+   i = SystrayObjFind(ct, xwin);
    if (i < 0)
       return;
 
    swin = (SWin *) ct->objs[i].obj;
 
-   if (SystrayGetXembedInfo(win, xembed_info) >= 0)
+   if (SystrayGetXembedInfo(xwin, xembed_info) >= 0)
      {
 	if (EDebug(EDBUG_TYPE_ICONBOX))
-	   Eprintf("SystrayObjMapUnmap: _XEMBED_INFO: %#lx: %d %d\n", win,
+	   Eprintf("%s: %#lx: _XEMBED_INFO: %u %u\n", __func__, xwin,
 		   xembed_info[0], xembed_info[1]);
 
 	map = (xembed_info[1] & XEMBED_MAPPED) != 0;
@@ -263,7 +263,7 @@ SystrayObjMapUnmap(Container * ct, Window win)
    else
      {
 	if (EDebug(EDBUG_TYPE_ICONBOX))
-	   Eprintf("SystrayObjMapUnmap: _XEMBED_INFO: %#lx: gone?\n", win);
+	   Eprintf("%s: %#lx: _XEMBED_INFO: gone?\n", __func__, xwin);
 
 	map = 0;
 	if (map == swin->mapped)
@@ -277,26 +277,25 @@ SystrayObjMapUnmap(Container * ct, Window win)
 static void
 SystrayEventClientMessage(Container * ct, XClientMessageEvent * ev)
 {
-   Window              win;
+   Window              xwin;
 
    if (EDebug(EDBUG_TYPE_ICONBOX))
-      Eprintf
-	 ("SystrayEventClientMessage: ev->type=%ld ev->data.l: %#lx %#lx %#lx %#lx\n",
-	  ev->message_type, ev->data.l[0], ev->data.l[1], ev->data.l[2],
-	  ev->data.l[3]);
+      Eprintf("%s: ev->type=%ld ev->data.l: %#lx %#lx %#lx %#lx\n", __func__,
+	      ev->message_type,
+	      ev->data.l[0], ev->data.l[1], ev->data.l[2], ev->data.l[3]);
 
    if (ev->message_type == _NET_SYSTEM_TRAY_OPCODE)
      {
-	win = ev->data.l[2];
-	if (win == None)
+	xwin = ev->data.l[2];
+	if (xwin == None)
 	   goto done;
 
-	SystrayObjAdd(ct, win);
+	SystrayObjAdd(ct, xwin);
      }
    else if (ev->message_type == _NET_SYSTEM_TRAY_MESSAGE_DATA)
      {
 	if (EDebug(EDBUG_TYPE_ICONBOX))
-	   Eprintf("SystrayEventClientMessage: Got data message\n");
+	   Eprintf("%s: Got data message\n", __func__);
      }
  done:
    ;
@@ -306,7 +305,7 @@ static void
 SystrayEventClientProperty(Container * ct, XPropertyEvent * ev)
 {
    if (EDebug(EDBUG_TYPE_ICONBOX))
-      Eprintf("SystrayEventClientProperty %#lx %ld\n", ev->window, ev->atom);
+      Eprintf("%s: %#lx %ld\n", __func__, ev->window, ev->atom);
 
    if (ev->atom == E_XA__XEMBED_INFO)
      {
@@ -318,13 +317,12 @@ static void
 SystraySelectionEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 {
    if (EDebug(EDBUG_TYPE_ICONBOX))
-      Eprintf("SystraySelectionEvent %2d %#lx\n", ev->type, ev->xany.window);
+      Eprintf("%s: %2d %#lx\n", __func__, ev->type, ev->xany.window);
 
    switch (ev->type)
      {
      default:
-	Eprintf(" ??? SystraySelectionEvent %2d %#lx\n", ev->type,
-		ev->xany.window);
+	Eprintf("%s: ??? %2d %#lx\n", __func__, ev->type, ev->xany.window);
 	break;
 
      case SelectionClear:
@@ -344,10 +342,10 @@ static void
 SystrayEvent(Win _win __UNUSED__, XEvent * ev, void *prm __UNUSED__)
 {
    if (EDebug(EDBUG_TYPE_ICONBOX))
-      Eprintf("SystrayEvent %2d %#lx\n", ev->type, ev->xany.window);
+      Eprintf("%s: %2d %#lx\n", __func__, ev->type, ev->xany.window);
 
 #if 0				/* FIXME - Need this one at all? ConfigureRequest? */
-   Window              win;
+   Window              xwin;
 
    switch (ev->type)
      {
@@ -357,7 +355,7 @@ SystrayEvent(Win _win __UNUSED__, XEvent * ev, void *prm __UNUSED__)
 	break;
 
      case DestroyNotify:
-	win = ev->xdestroywindow.window;
+	xwin = ev->xdestroywindow.window;
 	goto do_terminate;
 
      case ReparentNotify:
@@ -365,11 +363,11 @@ SystrayEvent(Win _win __UNUSED__, XEvent * ev, void *prm __UNUSED__)
 	/* Terminate if reparenting away from systray */
 	if (ev->xreparent.parent == ev->xreparent.event)
 	   break;
-	win = ev->xreparent.window;
+	xwin = ev->xreparent.window;
 	goto do_terminate;
 
       do_terminate:
-	SystrayObjDel(prm, win);
+	SystrayObjDel(prm, xwin);
 	break;
      }
 #endif
@@ -381,7 +379,7 @@ SystrayItemEvent(Win win, XEvent * ev, void *prm)
    Container          *ct = (Container *) prm;
 
    if (EDebug(EDBUG_TYPE_ICONBOX))
-      Eprintf("SystrayItemEvent %2d %#lx\n", ev->type, ev->xany.window);
+      Eprintf("%s: %2d %#lx\n", __func__, ev->type, ev->xany.window);
 
    switch (ev->type)
      {
