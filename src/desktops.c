@@ -2066,7 +2066,7 @@ DeskPropertyChange(Desk * dsk, XEvent * ev)
 	if (pmap == Mode.root.ext_pmap)
 	   return;
 	Mode.root.ext_pmap = pmap;
-	Mode.root.ext_pmap_valid = EDrawableCheck(pmap, 0);
+	Mode.root.ext_pmap_valid = EXDrawableOk(pmap);
 	DesksBackgroundRefresh(NULL, DESK_BG_REFRESH);
      }
    else if (ev->xproperty.atom == E_XROOTCOLOR_PIXEL)

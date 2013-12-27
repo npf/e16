@@ -1213,22 +1213,12 @@ EQueryPointer(Win win, int *px, int *py, Window * pchild, unsigned int *pmask)
 }
 
 int
-EDrawableCheck(Drawable draw, int grab)
+EXDrawableOk(Drawable draw)
 {
-   int                 ok;
-
    if (draw == None)
       return 0;
 
-   if (grab)
-      EGrabServer();
-
-   ok = EXGetGeometry(draw, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-
-   if (grab && !ok)
-      EUngrabServer();
-
-   return ok;
+   return EXGetGeometry(draw, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 }
 
 KeyCode

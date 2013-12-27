@@ -88,7 +88,7 @@ HintsInit(void)
      }
 
    Mode.root.ext_pmap = HintsGetRootPixmap(VROOT);
-   Mode.root.ext_pmap_valid = EDrawableCheck(Mode.root.ext_pmap, 0);
+   Mode.root.ext_pmap_valid = EXDrawableOk(Mode.root.ext_pmap);
 }
 
 /*
