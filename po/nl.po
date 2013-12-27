@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-07-13 19:22+0200\n"
+"POT-Creation-Date: 2013-12-28 00:31+0100\n"
 "PO-Revision-Date: 2009-11-09 14:39+0000\n"
 "Last-Translator: Yentl <y.v.t@scarlet.be>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -150,31 +150,31 @@ msgstr ""
 "Er was een fout bij het uitvoeren van het programma:\n"
 "%s"
 
-#: src/alert.c:214
+#: src/alert.c:216
 msgid "Enlightenment Error"
 msgstr "Enlightenment fout"
 
-#: src/alert.c:567
+#: src/alert.c:569
 msgid "Enlightenment Message Dialog"
 msgstr "Enlightenment Bericht Dialoog"
 
-#: src/alert.c:567
+#: src/alert.c:569
 msgid "Ignore this"
 msgstr "Negeer dit"
 
-#: src/alert.c:568
+#: src/alert.c:570
 msgid "Restart Enlightenment"
 msgstr "Herstart Enlightenment"
 
-#: src/alert.c:568 src/setup.c:180
+#: src/alert.c:570 src/setup.c:180
 msgid "Quit Enlightenment"
 msgstr "Stop Enlightenment"
 
-#: src/alert.c:578
+#: src/alert.c:580
 msgid "Attention !!!"
 msgstr "Attentie !!!!"
 
-#: src/alert.c:578 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
+#: src/alert.c:580 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:309
 msgid "OK"
 msgstr "OK"
@@ -2091,27 +2091,27 @@ msgstr ""
 "Enlightenment Audio\n"
 "Instellingendialoog"
 
-#: src/systray.c:331 src/systray.c:431 src/systray.c:439
+#: src/systray.c:327 src/systray.c:427 src/systray.c:435
 msgid "Systray Error!"
 msgstr "Systray Fout!"
 
-#: src/systray.c:331
+#: src/systray.c:327
 msgid "Systray went elsewhere?!?"
 msgstr "Systray verplaatst?!?"
 
-#: src/systray.c:431
+#: src/systray.c:427
 msgid "Only one systray is allowed"
 msgstr "Enkel één systray is toegestaan"
 
-#: src/systray.c:439
+#: src/systray.c:435
 msgid "Could not activate systray"
 msgstr "Kon systray niet activeren"
 
-#: src/systray.c:449
+#: src/systray.c:445
 msgid "Systray Options"
 msgstr "Systray Opties"
 
-#: src/systray.c:450
+#: src/systray.c:446
 msgid "Systray Settings"
 msgstr "Systray Instellingen"
 

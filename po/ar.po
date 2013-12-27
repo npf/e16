@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-07-13 19:22+0200\n"
+"POT-Creation-Date: 2013-12-28 00:31+0100\n"
 "PO-Revision-Date: 2009-09-28 17:09+0000\n"
 "Last-Translator: Aron Xu <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
@@ -131,31 +131,31 @@ msgstr ""
 "كان هناك خلل في تشغيل هذا البرنامج:\n"
 "%s"
 
-#: src/alert.c:214
+#: src/alert.c:216
 msgid "Enlightenment Error"
 msgstr "خلل في إنجلتمنت(Enlightenment)"
 
-#: src/alert.c:567
+#: src/alert.c:569
 msgid "Enlightenment Message Dialog"
 msgstr "رسالة حوار أنجلتمنت"
 
-#: src/alert.c:567
+#: src/alert.c:569
 msgid "Ignore this"
 msgstr "تجاهل هذا"
 
-#: src/alert.c:568
+#: src/alert.c:570
 msgid "Restart Enlightenment"
 msgstr "أعد تشغيل إنجلتمنت"
 
-#: src/alert.c:568 src/setup.c:180
+#: src/alert.c:570 src/setup.c:180
 msgid "Quit Enlightenment"
 msgstr "أخرج من إنجلتمنت"
 
-#: src/alert.c:578
+#: src/alert.c:580
 msgid "Attention !!!"
 msgstr "إهتمام !!!"
 
-#: src/alert.c:578 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
+#: src/alert.c:580 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:309
 msgid "OK"
 msgstr "حسنا"
@@ -1861,27 +1861,27 @@ msgid ""
 "Settings Dialog"
 msgstr ""
 
-#: src/systray.c:331 src/systray.c:431 src/systray.c:439
+#: src/systray.c:327 src/systray.c:427 src/systray.c:435
 msgid "Systray Error!"
 msgstr ""
 
-#: src/systray.c:331
+#: src/systray.c:327
 msgid "Systray went elsewhere?!?"
 msgstr ""
 
-#: src/systray.c:431
+#: src/systray.c:427
 msgid "Only one systray is allowed"
 msgstr ""
 
-#: src/systray.c:439
+#: src/systray.c:435
 msgid "Could not activate systray"
 msgstr ""
 
-#: src/systray.c:449
+#: src/systray.c:445
 msgid "Systray Options"
 msgstr ""
 
-#: src/systray.c:450
+#: src/systray.c:446
 msgid "Systray Settings"
 msgstr ""
 

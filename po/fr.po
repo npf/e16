@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16 svn-rev69488\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-07-13 19:22+0200\n"
+"POT-Creation-Date: 2013-12-28 00:31+0100\n"
 "PO-Revision-Date: 2013-04-25 05:08+0000\n"
 "Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: French\n"
@@ -151,31 +151,31 @@ msgstr ""
 "Il y a eu une erreur durant l'exécution du programme:\n"
 "%s"
 
-#: src/alert.c:214
+#: src/alert.c:216
 msgid "Enlightenment Error"
 msgstr "Erreur d'Enlightenment"
 
-#: src/alert.c:567
+#: src/alert.c:569
 msgid "Enlightenment Message Dialog"
 msgstr "Dialogue Enlightenment"
 
-#: src/alert.c:567
+#: src/alert.c:569
 msgid "Ignore this"
 msgstr "Ignorer"
 
-#: src/alert.c:568
+#: src/alert.c:570
 msgid "Restart Enlightenment"
 msgstr "Redémarrer Enlightenment"
 
-#: src/alert.c:568 src/setup.c:180
+#: src/alert.c:570 src/setup.c:180
 msgid "Quit Enlightenment"
 msgstr "Quitter Enlightenment"
 
-#: src/alert.c:578
+#: src/alert.c:580
 msgid "Attention !!!"
 msgstr "Attention !!!"
 
-#: src/alert.c:578 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
+#: src/alert.c:580 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:309
 msgid "OK"
 msgstr "OK"
@@ -2085,27 +2085,27 @@ msgstr ""
 "Dialogue de paramétrage du\n"
 "Son"
 
-#: src/systray.c:331 src/systray.c:431 src/systray.c:439
+#: src/systray.c:327 src/systray.c:427 src/systray.c:435
 msgid "Systray Error!"
 msgstr "Erreur de la Zone de notification !"
 
-#: src/systray.c:331
+#: src/systray.c:327
 msgid "Systray went elsewhere?!?"
 msgstr "La Zone de notification est partie ailleurs ?!?"
 
-#: src/systray.c:431
+#: src/systray.c:427
 msgid "Only one systray is allowed"
 msgstr "Vous ne pouvez utiliser qu'une seule Zone de notification"
 
-#: src/systray.c:439
+#: src/systray.c:435
 msgid "Could not activate systray"
 msgstr "Impossible d'activer la Zone de notification"
 
-#: src/systray.c:449
+#: src/systray.c:445
 msgid "Systray Options"
 msgstr "Options de la Zone de notification"
 
-#: src/systray.c:450
+#: src/systray.c:446
 msgid "Systray Settings"
 msgstr "Paramètres de la Zone de notification"
 

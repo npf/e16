@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-07-13 19:22+0200\n"
+"POT-Creation-Date: 2013-12-28 00:31+0100\n"
 "PO-Revision-Date: 2012-12-07 19:51+0100\n"
 "Last-Translator: Massimo Maiurana <Unknown>\n"
 "Language-Team: none\n"
@@ -152,31 +152,31 @@ msgstr ""
 "Si é verificato un'errore nell'esecuzione del programma:\n"
 "%s"
 
-#: src/alert.c:214
+#: src/alert.c:216
 msgid "Enlightenment Error"
 msgstr "Errore di Enlightenment"
 
-#: src/alert.c:567
+#: src/alert.c:569
 msgid "Enlightenment Message Dialog"
 msgstr "Finestra di dialogo di Enlightenment"
 
-#: src/alert.c:567
+#: src/alert.c:569
 msgid "Ignore this"
 msgstr "Ignora questo"
 
-#: src/alert.c:568
+#: src/alert.c:570
 msgid "Restart Enlightenment"
 msgstr "Riavvia Enlightenment"
 
-#: src/alert.c:568 src/setup.c:180
+#: src/alert.c:570 src/setup.c:180
 msgid "Quit Enlightenment"
 msgstr "Arresta Enlightenment"
 
-#: src/alert.c:578
+#: src/alert.c:580
 msgid "Attention !!!"
 msgstr "Attenzione !!!"
 
-#: src/alert.c:578 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
+#: src/alert.c:580 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:309
 msgid "OK"
 msgstr "OK"
@@ -2089,27 +2089,27 @@ msgstr ""
 "Finestra configurazione\n"
 "audio di Enlightenment"
 
-#: src/systray.c:331 src/systray.c:431 src/systray.c:439
+#: src/systray.c:327 src/systray.c:427 src/systray.c:435
 msgid "Systray Error!"
 msgstr "Errore vassoio di sistema!"
 
-#: src/systray.c:331
+#: src/systray.c:327
 msgid "Systray went elsewhere?!?"
 msgstr "Il vassoio di sistema é andato altrove?!?"
 
-#: src/systray.c:431
+#: src/systray.c:427
 msgid "Only one systray is allowed"
 msgstr "E' consentito un solo vassoio di sistema"
 
-#: src/systray.c:439
+#: src/systray.c:435
 msgid "Could not activate systray"
 msgstr "Impossibile attivare vassoio di sistema"
 
-#: src/systray.c:449
+#: src/systray.c:445
 msgid "Systray Options"
 msgstr "Opzioni vassoio di sistema"
 
-#: src/systray.c:450
+#: src/systray.c:446
 msgid "Systray Settings"
 msgstr "Impostazioni vassoio di sistema"
 

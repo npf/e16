@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-07-13 19:22+0200\n"
+"POT-Creation-Date: 2013-12-28 00:31+0100\n"
 "PO-Revision-Date: 2010-05-09 01:21+0000\n"
 "Last-Translator: Peter Wehrfritz <Unknown>\n"
 "Language-Team: Enlightenment l10n <enlightenment-intl@lists.sourceforge."
@@ -167,36 +167,36 @@ msgstr ""
 "%s"
 
 # src/alert.c:178
-#: src/alert.c:214
+#: src/alert.c:216
 msgid "Enlightenment Error"
 msgstr "Enlightenment-Fehler"
 
 # src/main.c:89
-#: src/alert.c:567
+#: src/alert.c:569
 msgid "Enlightenment Message Dialog"
 msgstr "Enlightenment-Meldungsfenster"
 
 # src/main.c:90 src/memory.c:196 src/memory.c:277 src/memory.c:297
 # src/memory.c:378
-#: src/alert.c:567
+#: src/alert.c:569
 msgid "Ignore this"
 msgstr "Dies ignorieren"
 
 # src/main.c:91 src/memory.c:197 src/memory.c:277 src/memory.c:298
 # src/memory.c:378 src/memory.c:396
-#: src/alert.c:568
+#: src/alert.c:570
 msgid "Restart Enlightenment"
 msgstr "Enlightenment neu starten"
 
 # src/main.c:92 src/memory.c:197 src/memory.c:278 src/memory.c:298
 # src/memory.c:379 src/memory.c:396 src/setup.c:295 src/setup.c:329
 # src/setup.c:341 src/setup.c:403
-#: src/alert.c:568 src/setup.c:180
+#: src/alert.c:570 src/setup.c:180
 msgid "Quit Enlightenment"
 msgstr "Enlightenment verlassen"
 
 # src/dialog.c:304
-#: src/alert.c:578
+#: src/alert.c:580
 msgid "Attention !!!"
 msgstr "Achtung!"
 
@@ -206,7 +206,7 @@ msgstr "Achtung!"
 # src/settings.c:1460 src/settings.c:1522 src/settings.c:1610
 # src/settings.c:2012 src/settings.c:3405 src/settings.c:3750
 # src/settings.c:4048 src/settings.c:4186 src/snaps.c:547 src/sound.c:262
-#: src/alert.c:578 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
+#: src/alert.c:580 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:309
 msgid "OK"
 msgstr "OK"
@@ -2423,29 +2423,29 @@ msgstr ""
 "Einstellungsdialog"
 
 # src/comms.c:2214
-#: src/systray.c:331 src/systray.c:431 src/systray.c:439
+#: src/systray.c:327 src/systray.c:427 src/systray.c:435
 msgid "Systray Error!"
 msgstr "Systray-Fehler!"
 
-#: src/systray.c:331
+#: src/systray.c:327
 msgid "Systray went elsewhere?!?"
 msgstr "Systray verloren?!?"
 
-#: src/systray.c:431
+#: src/systray.c:427
 msgid "Only one systray is allowed"
 msgstr "Nur eine Systray ist erlaubt"
 
-#: src/systray.c:439
+#: src/systray.c:435
 msgid "Could not activate systray"
 msgstr "Systray konnte nicht aktiviert werden"
 
 # src/pager.c:1295
-#: src/systray.c:449
+#: src/systray.c:445
 msgid "Systray Options"
 msgstr "Systrayoptionen"
 
 # src/settings.c:1304
-#: src/systray.c:450
+#: src/systray.c:446
 msgid "Systray Settings"
 msgstr "Systrayeinstellungen"
 
