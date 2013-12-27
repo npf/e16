@@ -105,7 +105,7 @@ ex_client_message32_send(EX_Window win, EX_Atom type,
  */
 static void
 _ex_window_prop32_set(EX_Window win, EX_Atom atom,
-		      EX_Atom type, unsigned int *val, int num)
+		      EX_Atom type, const unsigned int *val, int num)
 {
 #if SIZEOF_INT == SIZEOF_LONG
    XChangeProperty(_ex_disp, win, atom, type, 32, PropModeReplace,
@@ -194,7 +194,7 @@ ex_window_prop_del(EX_Window win, EX_Atom atom)
  */
 void
 ex_window_prop_card32_set(EX_Window win, EX_Atom atom,
-			  unsigned int *val, unsigned int num)
+			  const unsigned int *val, unsigned int num)
 {
    _ex_window_prop32_set(win, atom, XA_CARDINAL, val, (int)num);
 }
@@ -389,7 +389,7 @@ _ex_window_prop_string_utf8_get(EX_Window win, EX_Atom atom)
  */
 void
 ex_window_prop_xid_set(EX_Window win, EX_Atom atom, EX_Atom type,
-		       EX_ID * lst, unsigned int num)
+		       const EX_ID * lst, unsigned int num)
 {
    _ex_window_prop32_set(win, atom, type, lst, (int)num);
 }
@@ -481,7 +481,7 @@ ex_window_prop_xid_list_change(EX_Window win, EX_Atom atom,
  */
 void
 ex_window_prop_atom_set(EX_Window win, EX_Atom atom,
-			EX_Atom * lst, unsigned int num)
+			const EX_Atom * lst, unsigned int num)
 {
    ex_window_prop_xid_set(win, atom, XA_ATOM, lst, num);
 }
@@ -530,7 +530,7 @@ ex_window_prop_atom_list_change(EX_Window win, EX_Atom atom,
  */
 void
 ex_window_prop_window_set(EX_Window win, EX_Atom atom,
-			  EX_Window * lst, unsigned int num)
+			  const EX_Window * lst, unsigned int num)
 {
    ex_window_prop_xid_set(win, atom, XA_WINDOW, lst, num);
 }
@@ -846,7 +846,7 @@ ex_netwm_desk_count_set(EX_Window root, unsigned int n_desks)
 }
 
 void
-ex_netwm_desk_roots_set(EX_Window root, EX_Window * vroots,
+ex_netwm_desk_roots_set(EX_Window root, const EX_Window * vroots,
 			unsigned int n_desks)
 {
    ex_window_prop_window_set(root, EX_ATOM_NET_VIRTUAL_ROOTS, vroots, n_desks);
@@ -902,7 +902,7 @@ ex_netwm_desk_size_set(EX_Window root, unsigned int width, unsigned int height)
 }
 
 void
-ex_netwm_desk_workareas_set(EX_Window root, unsigned int *areas,
+ex_netwm_desk_workareas_set(EX_Window root, const unsigned int *areas,
 			    unsigned int n_desks)
 {
    ex_window_prop_card32_set(root, EX_ATOM_NET_WORKAREA, areas, 4 * n_desks);
@@ -915,7 +915,7 @@ ex_netwm_desk_current_set(EX_Window root, unsigned int desk)
 }
 
 void
-ex_netwm_desk_viewports_set(EX_Window root, unsigned int *origins,
+ex_netwm_desk_viewports_set(EX_Window root, const unsigned int *origins,
 			    unsigned int n_desks)
 {
    ex_window_prop_card32_set(root, EX_ATOM_NET_DESKTOP_VIEWPORT,
@@ -937,7 +937,7 @@ ex_netwm_showing_desktop_set(EX_Window root, int on)
 
 /* Mapping order */
 void
-ex_netwm_client_list_set(EX_Window root, EX_Window * p_clients,
+ex_netwm_client_list_set(EX_Window root, const EX_Window * p_clients,
 			 unsigned int n_clients)
 {
    ex_window_prop_window_set(root, EX_ATOM_NET_CLIENT_LIST,
@@ -947,7 +947,8 @@ ex_netwm_client_list_set(EX_Window root, EX_Window * p_clients,
 /* Stacking order */
 void
 ex_netwm_client_list_stacking_set(EX_Window root,
-				  EX_Window * p_clients, unsigned int n_clients)
+				  const EX_Window * p_clients,
+				  unsigned int n_clients)
 {
    ex_window_prop_window_set(root, EX_ATOM_NET_CLIENT_LIST_STACKING,
 			     p_clients, n_clients);
