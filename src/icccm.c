@@ -46,10 +46,11 @@ ICCCM_Init(void)
 
    if (Mode.wm.window)
      {
-	Atom                wm_props[1];
+	EX_Atom             wm_props[1];
 
 	wm_props[0] = EX_ATOM_WM_DELETE_WINDOW;
-	XSetWMProtocols(disp, WinGetXwin(VROOT), wm_props, 1);
+	ex_window_prop_atom_set(WinGetXwin(VROOT), EX_ATOM_WM_PROTOCOLS,
+				wm_props, 1);
      }
 }
 
@@ -71,7 +72,7 @@ ICCCM_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * event)
 int
 ICCCM_ProcessRootClientMessage(XClientMessageEvent * event)
 {
-   Atom                a;
+   EX_Atom             a;
 
    if (event->message_type == EX_ATOM_WM_PROTOCOLS)
      {
@@ -702,47 +703,54 @@ ICCCM_GetWmHints(EWin * ewin)
 static void
 ICCCM_GetWmProtocols(EWin * ewin)
 {
-   Atom               *prop;
+   EX_Atom             prop[64];	/* More is unlikely */
    int                 i, num;
 
-   if (XGetWMProtocols(disp, EwinGetClientXwin(ewin), &prop, &num))
-     {
-	ewin->icccm.take_focus = 0;
-	ewin->icccm.delete_window = 0;
-	for (i = 0; i < num; i++)
-	  {
-	     if (prop[i] == EX_ATOM_WM_TAKE_FOCUS)
-		ewin->icccm.take_focus = 1;
-	     else if (prop[i] == EX_ATOM_WM_DELETE_WINDOW)
-		ewin->icccm.delete_window = 1;
-#if USE_XSYNC
-	     else if (prop[i] == EX_ATOM_NET_WM_SYNC_REQUEST)
-	       {
-		  unsigned int        c;
+   num = ex_window_prop_atom_get(EwinGetClientXwin(ewin), EX_ATOM_WM_PROTOCOLS,
+				 prop, 64);
+   if (num < 0)
+      return;
 
-		  ewin->ewmh.sync_request_enable = 1;
-		  ex_window_prop_card32_get(EwinGetClientXwin(ewin),
-					    EX_ATOM_NET_WM_SYNC_REQUEST_COUNTER,
-					    &c, 1);
-		  ewin->ewmh.sync_request_counter = c;
-	       }
-#endif
+   ewin->icccm.take_focus = 0;
+   ewin->icccm.delete_window = 0;
+   for (i = 0; i < num; i++)
+     {
+	if (prop[i] == EX_ATOM_WM_TAKE_FOCUS)
+	   ewin->icccm.take_focus = 1;
+	else if (prop[i] == EX_ATOM_WM_DELETE_WINDOW)
+	   ewin->icccm.delete_window = 1;
+#if USE_XSYNC
+	else if (prop[i] == EX_ATOM_NET_WM_SYNC_REQUEST)
+	  {
+	     unsigned int        c;
+
+	     ewin->ewmh.sync_request_enable = 1;
+	     ex_window_prop_card32_get(EwinGetClientXwin(ewin),
+				       EX_ATOM_NET_WM_SYNC_REQUEST_COUNTER,
+				       &c, 1);
+	     ewin->ewmh.sync_request_counter = c;
 	  }
-	XFree(prop);
+#endif
      }
 }
 
 static void
 ICCCM_GetWmTransientFor(EWin * ewin)
 {
-   Window              win;
+   int                 num;
+   EX_Window           win;
 
-   ewin->icccm.transient = 0;
-   ewin->icccm.transient_for = None;
-   if (XGetTransientForHint(disp, EwinGetClientXwin(ewin), &win))
+   num = ex_window_prop_window_get(EwinGetClientXwin(ewin),
+				   EX_ATOM_WM_TRANSIENT_FOR, &win, 1);
+   if (num > 0)
      {
 	ewin->icccm.transient = 1;
 	ewin->icccm.transient_for = win;
+     }
+   else
+     {
+	ewin->icccm.transient = 0;
+	ewin->icccm.transient_for = None;
      }
 }
 
