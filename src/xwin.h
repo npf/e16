@@ -189,6 +189,7 @@ int                 ETranslateCoordinates(Win src_w, Win dst_w,
 					  int *dest_y_return,
 					  Window * child_return);
 int                 EXDrawableOk(Drawable draw);
+int                 EXWindowOk(Window xwin);
 
 void                ESelectInput(Win win, unsigned int event_mask);
 void                ESelectInputChange(Win win, unsigned int set,

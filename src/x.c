@@ -1221,6 +1221,17 @@ EXDrawableOk(Drawable draw)
    return EXGetGeometry(draw, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 }
 
+int
+EXWindowOk(Window xwin)
+{
+   XWindowAttributes   xwa;
+
+   if (xwin == None)
+      return 0;
+
+   return EXGetWindowAttributes(xwin, &xwa);
+}
+
 KeyCode
 EKeysymToKeycode(KeySym keysym)
 {
