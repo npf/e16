@@ -65,34 +65,32 @@ static void         SystrayItemEvent(Win win, XEvent * ev, void *prm);
 static int
 SystrayGetXembedInfo(Window xwin, unsigned int *info)
 {
-   unsigned char      *prop_ret;
-   Atom                type_ret;
-   unsigned long       bytes_after, num_ret;
-   int                 format_ret;
+   int                 num;
 
-   prop_ret = NULL;
-   if (XGetWindowProperty(disp, xwin, E_XA__XEMBED_INFO, 0, 0x7fffffff,
-			  False, E_XA__XEMBED_INFO, &type_ret, &format_ret,
-			  &num_ret, &bytes_after, &prop_ret) != Success)
-      return -1;
+   EGrabServer();
 
-   if (prop_ret && type_ret == E_XA__XEMBED_INFO && format_ret == 32
-       && num_ret >= 2)
+   if (!EXWindowOk(xwin))
      {
-	info[0] = ((unsigned long *)prop_ret)[0];
-	info[1] = ((unsigned long *)prop_ret)[1];
+	/* Invalid window */
+	num = -1;
+	goto done;
      }
-   else
+
+   num = ex_window_prop_xid_get(xwin, E_XA__XEMBED_INFO,
+				E_XA__XEMBED_INFO, info, 2);
+
+   if (num < 2)
      {
-	/* Property invalid or not there. I doubt we ever get here */
+	/* Property invalid or not there. */
 	info[0] = 0;		/* Set protocol version 0 */
 	info[1] = XEMBED_MAPPED;	/* Set mapped */
-	num_ret = 0;
+	num = 0;
      }
-   if (prop_ret)
-      XFree(prop_ret);
 
-   return num_ret;
+ done:
+   EUngrabServer();
+
+   return num;
 }
 
 /*
