@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
+ * Copyright (C) 2003-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -61,21 +62,18 @@ static EX_Atom      _MOTIF_WM_HINTS = 0;
 
 /* Motif window hints */
 typedef struct {
-   long                flags;
-   long                functions;
-   long                decorations;
-   long                inputMode;
-   long                status;
+   unsigned int        flags;
+   unsigned int        functions;
+   unsigned int        decorations;
+   unsigned int        inputMode;
+   unsigned int        status;
 } MWMHints;
 
 void
 MWM_GetHints(EWin * ewin, Atom atom_change)
 {
-   int                 fmt;
-   Atom                a2;
-   unsigned long       num, end;
-   MWMHints           *mwmhints;
-   unsigned char      *puc;
+   int                 num;
+   MWMHints            mhs, *mwmhints = &mhs;
 
    if (EwinIsInternal(ewin))
       return;
@@ -99,15 +97,10 @@ MWM_GetHints(EWin * ewin, Atom atom_change)
    ewin->mwm.func_maximize = 1;
    ewin->mwm.func_close = 1;
 
-   puc = NULL;
-   XGetWindowProperty(disp, EwinGetClientXwin(ewin), _MOTIF_WM_HINTS, 0, 20,
-		      False, _MOTIF_WM_HINTS, &a2, &fmt, &num, &end, &puc);
-   mwmhints = (MWMHints *) puc;
-   if (!mwmhints)
-      return;
-
+   num = ex_window_prop_xid_get(EwinGetClientXwin(ewin), _MOTIF_WM_HINTS,
+				_MOTIF_WM_HINTS, &mhs.flags, 5);
    if (num < PROP_MWM_HINTS_ELEMENTS_MIN)
-      goto done;
+      return;
 
    if (mwmhints->flags & MWM_HINTS_DECORATIONS)
      {
@@ -169,23 +162,18 @@ MWM_GetHints(EWin * ewin, Atom atom_change)
 
    if (!ewin->mwm.decor_title && !ewin->mwm.decor_border)
       ewin->props.no_border = 1;
-
- done:
-   XFree(mwmhints);
 }
 
 void
 MWM_SetInfo(void)
 {
-   EX_Atom             a1;
-   struct {
-      long                flags;
-      Window              win;
-   } mwminfo;
+   EX_Atom             atom;
+   EX_Window           xwin;
+   EX_ID               mwminfo[2];
 
-   a1 = ex_atom_get("_MOTIF_WM_INFO");
-   mwminfo.flags = 2;
-   mwminfo.win = WinGetXwin(VROOT);
-   XChangeProperty(disp, WinGetXwin(VROOT), a1, a1, 32, PropModeReplace,
-		   (unsigned char *)&mwminfo, 2);
+   atom = ex_atom_get("_MOTIF_WM_INFO");
+   xwin = WinGetXwin(VROOT);
+   mwminfo[0] = 2;
+   mwminfo[1] = xwin;
+   ex_window_prop_xid_set(xwin, atom, atom, mwminfo, 2);
 }
