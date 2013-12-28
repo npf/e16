@@ -24,9 +24,10 @@
 #ifndef _CONTAINER_H_
 #define _CONTAINER_H_
 
-#include <X11/Xlib.h>
 #include "eimage.h"
+#include "etypes.h"
 #include "list.h"
+#include "xtypes.h"
 
 typedef struct _container Container;
 

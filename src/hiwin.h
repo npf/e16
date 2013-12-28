@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2008 Kim Woelders
+ * Copyright (C) 2005-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -23,7 +23,8 @@
 #ifndef _HIWIN_H_
 #define _HIWIN_H_
 
-#include <X11/Xlib.h>
+#include "etypes.h"
+#include "xtypes.h"
 
 typedef struct _hiwin Hiwin;
 

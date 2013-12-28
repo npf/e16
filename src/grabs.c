@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -26,7 +26,7 @@
 #include "grabs.h"
 #include "xwin.h"
 #if USE_XI2
-#include "X11/extensions/XInput2.h"
+#include <X11/extensions/XInput2.h>
 #define DEV_PTR Mode.events.xi2_ptr
 #define DEV_KBD Mode.events.xi2_kbd
 #endif

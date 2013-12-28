@@ -85,7 +85,7 @@ void                ex_window_prop_string_set(EX_Window win, EX_Atom atom,
 char               *ex_window_prop_string_get(EX_Window win, EX_Atom atom);
 
 /* Misc. */
-#include "X11/Xatom.h"
+#include <X11/Xatom.h>
 extern EX_Atom      atoms_icccm[];
 
 #define EX_ATOM_UTF8_STRING		atoms_icccm[8]

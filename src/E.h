@@ -31,9 +31,6 @@
 #include "lang.h"
 #include "sounds.h"
 #include "util.h"
-
-#include <X11/X.h>
-
 #include "xtypes.h"
 
 #include <stdio.h>

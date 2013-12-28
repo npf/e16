@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Kim Woelders
+ * Copyright (C) 2008-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -22,6 +22,8 @@
  */
 #ifndef _XTYPES_H_
 #define _XTYPES_H_
+
+#include <X11/Xlib.h>
 
 typedef struct _xwin *Win;
 

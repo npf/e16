@@ -24,9 +24,9 @@
 #ifndef _BUTTONS_H_
 #define _BUTTONS_H_
 
-#include <X11/Xlib.h>
 #include "eobj.h"
 #include "etypes.h"
+#include "xtypes.h"
 
 typedef void        (ButtonCbFunc) (void *prm, XEvent * ev, ActionClass * ac);
 

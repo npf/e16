@@ -206,7 +206,7 @@ EInputQueryVersion(Display * dpy,
    return XIQueryVersion(dpy, major_version_return, minor_version_return);
 }
 
-#include "X11/extensions/XInput.h"
+#include <X11/extensions/XInput.h>
 
 static void
 ExtInitInput(int available)

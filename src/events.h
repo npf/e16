@@ -23,7 +23,7 @@
 #ifndef _EVENTS_H_
 #define _EVENTS_H_
 
-#include <X11/Xlib.h>
+#include "xtypes.h"
 
 /* Re-mapped X-events */
 #define EX_EVENT_CREATE_GONE             64

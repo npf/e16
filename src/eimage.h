@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2009 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -23,7 +23,6 @@
 #ifndef _EIMAGE_H_
 #define _EIMAGE_H_
 
-#include <X11/X.h>
 #include "xtypes.h"
 
 typedef void        EImage;

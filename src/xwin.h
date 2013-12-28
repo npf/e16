@@ -24,7 +24,6 @@
 #ifndef _XWIN_H_
 #define _XWIN_H_
 
-#include <X11/Xlib.h>
 #include "util.h"
 #include "xtypes.h"
 
@@ -343,7 +342,7 @@ Pixmap              EWindowGetPixmap(const Win win);
 #endif /* USE_COMPOSITE */
 
 #if USE_XI2
-#include "X11/extensions/XInput2.h"
+#include <X11/extensions/XInput2.h>
 
 typedef struct {
    XIEventMask         em;

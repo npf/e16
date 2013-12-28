@@ -38,7 +38,7 @@
 #include "eglx.h"
 #endif
 #if USE_XI2
-#include "X11/extensions/XInput2.h"
+#include <X11/extensions/XInput2.h>
 #endif
 
 #define DEBUG_XWIN   0
