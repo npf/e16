@@ -182,7 +182,7 @@ BackgroundGetUniqueString(Background * bg)
 void
 BackgroundPixmapSet(Background * bg, Pixmap pmap)
 {
-   if (bg->pmap != None && bg->pmap != pmap)
+   if (bg->pmap != NoXID && bg->pmap != pmap)
       Eprintf("*** BackgroundPixmapSet %s: pmap was set %#lx/%#lx\n",
 	      bg->name, bg->pmap, pmap);
    bg->pmap = pmap;
@@ -193,8 +193,8 @@ BackgroundPixmapFree(Background * bg)
 {
    if (bg->pmap)
      {
-	EImagePixmapsFree(bg->pmap, None);
-	bg->pmap = None;
+	EImagePixmapsFree(bg->pmap, NoXID);
+	bg->pmap = NoXID;
      }
 }
 
@@ -543,7 +543,7 @@ BackgroundCreatePixmap(Win win, unsigned int w, unsigned int h)
      {
 	EFreePixmap(pmap);
 	pmap = ECreatePixmap(win, w, h, 0);
-	Mode.root.ext_pmap = None;
+	Mode.root.ext_pmap = NoXID;
 	Mode.root.ext_pmap_valid = 0;
      }
    return pmap;
@@ -599,7 +599,7 @@ BackgroundRealize(Background * bg, Win win, Drawable draw, unsigned int rw,
 	     EXFreeGC(gc);
 	  }
 	if (ppmap)
-	   *ppmap = None;
+	   *ppmap = NoXID;
 	if (ppixel)
 	   *ppixel = pixel;
 	return;
@@ -720,11 +720,11 @@ BackgroundApplyWin(Background * bg, Win win)
    if (!EGetGeometry(win, NULL, NULL, NULL, &w, &h, NULL, NULL))
       return;
 
-   BackgroundRealize(bg, win, None, w, h, 1, &pmap, &pixel);
-   if (pmap != None)
+   BackgroundRealize(bg, win, NoXID, w, h, 1, &pmap, &pixel);
+   if (pmap != NoXID)
      {
 	ESetWindowBackgroundPixmap(win, pmap);
-	EImagePixmapsFree(pmap, None);
+	EImagePixmapsFree(pmap, NoXID);
      }
    else
      {
@@ -740,16 +740,16 @@ BackgroundApplyWin(Background * bg, Win win)
 void
 BackgroundSet(Background * bg, Win win, unsigned int w, unsigned int h)
 {
-   Pixmap              pmap = None;
+   Pixmap              pmap = NoXID;
    unsigned int        pixel = 0;
 
    if (bg->pmap)
       pmap = bg->pmap;
    else
-      BackgroundRealize(bg, win, None, w, h, 1, &pmap, &pixel);
+      BackgroundRealize(bg, win, NoXID, w, h, 1, &pmap, &pixel);
 
    bg->pmap = pmap;
-   if (pmap != None)
+   if (pmap != NoXID)
       ESetWindowBackgroundPixmap(win, pmap);
    else
       ESetWindowBackground(win, pixel);
@@ -920,7 +920,7 @@ BackgroundGetFgFile(const Background * bg)
 Pixmap
 BackgroundGetPixmap(const Background * bg)
 {
-   return (bg) ? bg->pmap : None;
+   return (bg) ? bg->pmap : NoXID;
 }
 
 unsigned int
@@ -960,7 +960,7 @@ BackgroundCacheMini(Background * bg, int keep, int nuke)
    /* Create new cached bg mini image */
    pmap = ECreatePixmap(VROOT, mini_w, mini_h, 0);
    BackgroundApplyPmap(bg, VROOT, pmap, mini_w, mini_h);
-   im = EImageGrabDrawable(pmap, None, 0, 0, mini_w, mini_h, 0);
+   im = EImageGrabDrawable(pmap, NoXID, 0, 0, mini_w, mini_h, 0);
    EImageSave(im, s);
    EFreePixmap(pmap);
 
@@ -1352,7 +1352,7 @@ BackgroundsAccounting(void)
    LIST_FOR_EACH(Background, &bg_list, bg)
    {
       /* Skip if no pixmap or not timed out */
-      if (bg->pmap == None ||
+      if (bg->pmap == NoXID ||
 	  ((now - bg->last_viewed) <= Conf.backgrounds.timeout))
 	 continue;
 
@@ -2426,7 +2426,7 @@ BackgroundsIpc(const char *params)
 	if (!bg)
 	   return;
 
-	xwin = None;
+	xwin = NoXID;
 	sscanf(p, "%lx", &xwin);
 
 	win = ECreateWinFromXwin(xwin);

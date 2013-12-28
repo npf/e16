@@ -343,7 +343,7 @@ EWMH_SetClientStacking(void)
 void
 EWMH_SetActiveWindow(Window win)
 {
-   static Window       win_last_set = None;
+   static Window       win_last_set = NoXID;
 
    if (win == win_last_set)
       return;
@@ -671,7 +671,7 @@ EWMH_GetWindowUserTime(EWin * ewin __UNUSED__)
 static void
 EWMH_GetWindowStartupId(EWin * ewin)
 {
-#define TryGroup(e) (((e)->icccm.group != None) && ((e)->icccm.group != EwinGetClientXwin(e)))
+#define TryGroup(e) (((e)->icccm.group != NoXID) && ((e)->icccm.group != EwinGetClientXwin(e)))
    char               *str;
 
    if (!Conf.testing.enable_startup_id)

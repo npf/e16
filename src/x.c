@@ -49,7 +49,7 @@ Display            *disp;
 
 #if USE_COMPOSITE
 static Visual      *argb_visual = NULL;
-static Colormap     argb_cmap = None;
+static Colormap     argb_cmap = NoXID;
 #endif
 
 static XContext     xid_context = 0;
@@ -287,7 +287,7 @@ ECreateWindow(Win parent, int x, int y, int w, int h, int saveunder)
    attr.colormap = parent->cmap;
    attr.border_pixel = 0;
 /*   attr.background_pixel = 0; */
-   attr.background_pixmap = None;
+   attr.background_pixmap = NoXID;
    if ((saveunder == 1) && (Conf.save_under))
       attr.save_under = True;
    else if (saveunder == 2)
@@ -314,7 +314,7 @@ _ECreateWindowVDC(Win parent, int x, int y, int w, int h,
    Window              xwin;
    XSetWindowAttributes attr;
 
-   attr.background_pixmap = None;
+   attr.background_pixmap = NoXID;
    attr.border_pixel = 0;
    attr.backing_store = NotUseful;
    attr.save_under = False;
@@ -445,7 +445,7 @@ ECreateEventWindow(Win parent, int x, int y, int w, int h)
 
    xwin = XCreateWindow(disp, parent->xwin, x, y, w, h, 0, 0, InputOnly,
 			CopyFromParent, CWOverrideRedirect, &attr);
-   win = _EXidSet(xwin, parent, x, y, w, h, 0, NULL, None);
+   win = _EXidSet(xwin, parent, x, y, w, h, 0, NULL, NoXID);
 
    return win;
 }
@@ -576,7 +576,7 @@ EDestroyWindow(Win win)
 #if DEBUG_XWIN
    Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
 #endif
-   if (win->parent != None)
+   if (win->parent != NoXID)
      {
 	EFreeWindowBackgroundPixmap(win);
 	XDestroyWindow(disp, win->xwin);
@@ -651,9 +651,9 @@ EXWindowGetParent(Window xwin)
    Window             *pch = NULL;
    unsigned int        nch = 0;
 
-   parent = None;
+   parent = NoXID;
    if (!XQueryTree(disp, xwin, &rt, &parent, &pch, &nch))
-      parent = None;
+      parent = NoXID;
    else if (pch)
       XFree(pch);
 
@@ -716,7 +716,7 @@ ERegisterWindow(Window xwin, XWindowAttributes * pxwa)
 #if 0
    Eprintf("%s %#lx %d+%d %dx%d\n", __func__, win, x, y, w, h);
 #endif
-   win = _EXidSet(xwin, None, pxwa->x, pxwa->y, pxwa->width, pxwa->height,
+   win = _EXidSet(xwin, NoXID, pxwa->x, pxwa->y, pxwa->width, pxwa->height,
 		  pxwa->depth, pxwa->visual, pxwa->colormap);
    win->mapped = pxwa->map_state != IsUnmapped;
    win->attached = 1;
@@ -793,7 +793,7 @@ EReparentWindow(Win win, Win parent, int x, int y)
 #if 0
    Eprintf
       ("%s: %p %#lx: %d %#lx->%#lx %d,%d %dx%d -> %d,%d\n", __func__,
-       win, win->xwin, win->mapped, (win->parent) ? win->parent->xwin : None,
+       win, win->xwin, win->mapped, (win->parent) ? win->parent->xwin : NoXID,
        parent->xwin, win->x, win->y, win->w, win->h, x, y);
 #endif
    if (parent == win->parent)
@@ -976,7 +976,7 @@ EGetWindowBackgroundPixmap(Win win)
    Pixmap              pmap;
 
    if (!win)
-      return None;
+      return NoXID;
 
    if (win->bg_owned < 0)	/* Free if invalidated */
       EFreeWindowBackgroundPixmap(win);
@@ -1175,13 +1175,13 @@ ETranslateCoordinates(Win src_w, Win dst_w, int src_x, int src_y,
 void
 EXWarpPointer(Window xwin, int x, int y)
 {
-   XWarpPointer(disp, None, xwin, 0, 0, 0, 0, x, y);
+   XWarpPointer(disp, NoXID, xwin, 0, 0, 0, 0, x, y);
 }
 
 void
 EWarpPointer(Win win, int x, int y)
 {
-   EXWarpPointer(win ? win->xwin : None, x, y);
+   EXWarpPointer(win ? win->xwin : NoXID, x, y);
 }
 
 int
@@ -1192,7 +1192,7 @@ EXQueryPointer(Window xwin, int *px, int *py, Window * pchild,
    int                 root_x, root_y;
    unsigned int        mask;
 
-   if (xwin == None)
+   if (xwin == NoXID)
       xwin = WinGetXwin(VROOT);
 
    if (!px)
@@ -1221,7 +1221,7 @@ EQueryPointer(Win win, int *px, int *py, Window * pchild, unsigned int *pmask)
 int
 EXDrawableOk(Drawable draw)
 {
-   if (draw == None)
+   if (draw == NoXID)
       return 0;
 
    return EXGetGeometry(draw, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -1232,7 +1232,7 @@ EXWindowOk(Window xwin)
 {
    XWindowAttributes   xwa;
 
-   if (xwin == None)
+   if (xwin == NoXID)
       return 0;
 
    return EXGetWindowAttributes(xwin, &xwa);
@@ -1290,14 +1290,14 @@ EShapeUpdate(Win win)
 		  XFree(win->rects);
 		  win->rects = NULL;
 		  XShapeCombineMask(disp, win->xwin, ShapeBounding, 0, 0,
-				    None, ShapeSet);
+				    NoXID, ShapeSet);
 	       }
 	  }
 	else if (win->num_rect > 4096)
 	  {
 	     Eprintf("*** %s: nrect=%d - Not likely, ignoring.\n", __func__,
 		     win->num_rect);
-	     XShapeCombineMask(disp, win->xwin, ShapeBounding, 0, 0, None,
+	     XShapeCombineMask(disp, win->xwin, ShapeBounding, 0, 0, NoXID,
 			       ShapeSet);
 	     win->num_rect = 0;
 	     XFree(win->rects);
@@ -1382,7 +1382,7 @@ _EShapeCombineRectangles(Win win, int dest, int x, int y,
 	     win->num_rect = 0;
 	     XFree(win->rects);
 	     win->rects = NULL;
-	     XShapeCombineMask(disp, win->xwin, dest, x, y, None, op);
+	     XShapeCombineMask(disp, win->xwin, dest, x, y, NoXID, op);
 	     return;
 	  }
      }
@@ -1515,7 +1515,7 @@ EShapePropagate(Win win)
 
  bail_out:
    Efree(rects);
-   _EShapeCombineMask(win, ShapeBounding, 0, 0, None, ShapeSet);
+   _EShapeCombineMask(win, ShapeBounding, 0, 0, NoXID, ShapeSet);
    return 0;
 }
 
@@ -1577,7 +1577,7 @@ _EWindowGetShapePixmap(Win win, unsigned int fg, unsigned int bg)
    const XRectangle   *rect;
 
    if (win->num_rect == 0)	/* Not shaped */
-      return None;
+      return NoXID;
 
    mask = ECreatePixmap(win, win->w, win->h, 1);
    gc = EXCreateGC(mask, 0, NULL);
@@ -1933,11 +1933,11 @@ EVisualIsARGB(Visual * vis)
 Time
 EGetTimestamp(void)
 {
-   static Window       win_ts = None;
+   static Window       win_ts = NoXID;
    XSetWindowAttributes attr;
    XEvent              ev;
 
-   if (win_ts == None)
+   if (win_ts == NoXID)
      {
 	attr.override_redirect = False;
 	win_ts = XCreateWindow(disp, WinGetXwin(VROOT), -100, -100, 1, 1, 0,
@@ -1964,7 +1964,7 @@ EWindowGetPixmap(const Win win)
 
    if (EXGetWindowAttributes(win->xwin, &xwa) == 0 ||
        xwa.map_state == IsUnmapped)
-      return None;
+      return NoXID;
 
    return XCompositeNameWindowPixmap(disp, WinGetXwin(win));
 }
@@ -2280,7 +2280,7 @@ ERegionShow(const char *txt, XserverRegion rgn,
 
    prf = (prf) ? prf : Eprintf;
 
-   if (rgn == None)
+   if (rgn == NoXID)
      {
 	prf(" - region: %s %#lx is None\n", txt, rgn);
 	return;

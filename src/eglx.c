@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2010 Kim Woelders
+ * Copyright (C) 2007-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -155,7 +155,7 @@ EGlInit(void)
    int                 i, ix, num;
    int                 value;
    char               *s;
-   XID                 vid = None;
+   XID                 vid = NoXID;
    XRenderPictFormat  *pictFormat;
 
    Dprintf("EGlInit\n");
@@ -322,7 +322,7 @@ EGlWindowConnect(Window xwin)
 void
 EGlWindowDisconnect(void)
 {
-   if (!glXMakeContextCurrent(disp, None, None, NULL))
+   if (!glXMakeContextCurrent(disp, NoXID, NoXID, NULL))
      {
 	Eprintf("Failed to release GL context.\n");
      }
@@ -387,7 +387,7 @@ GetGlPixmap(Window xwin, Drawable draw)
    Pixmap              pixmap;
    GLXPixmap           glxpixmap;
 
-   if (xwin == None && draw == None)
+   if (xwin == NoXID && draw == NoXID)
       return 0;
 
    pixmap = (draw) ? draw : XCompositeNameWindowPixmap(disp, xwin);
@@ -401,12 +401,12 @@ GetGlPixmap(Window xwin, Drawable draw)
 static void
 _EGlTextureFromDrawable(ETexture * et, Drawable draw, int mode)
 {
-   if (!et || draw == None)
+   if (!et || draw == NoXID)
       return;
 
    glBindTexture(et->target, et->texture);
-   et->glxpmap = GetGlPixmap(draw, (mode & 0x100) ? None : draw);
-   if (et->glxpmap == None)
+   et->glxpmap = GetGlPixmap(draw, (mode & 0x100) ? NoXID : draw);
+   if (et->glxpmap == NoXID)
       return;
 
    _glXBindTexImageEXT(disp, et->glxpmap, GLX_FRONT_LEFT_EXT, NULL);
@@ -420,7 +420,7 @@ EGlTextureFromDrawable(Drawable draw, int mode)
 {
    ETexture           *et;
 
-   if (draw == None)
+   if (draw == NoXID)
       return NULL;
 
    et = Ecalloc(1, sizeof(ETexture));
@@ -469,7 +469,7 @@ EGlTextureInvalidate(ETexture * et)
 	   break;
 	_glXReleaseTexImageEXT(disp, et->glxpmap, GLX_FRONT_LEFT_EXT);
 	glXDestroyPixmap(disp, et->glxpmap);
-	et->glxpmap = None;
+	et->glxpmap = NoXID;
 	break;
      }
 }
@@ -492,7 +492,7 @@ EobjGetTexture(EObj * eo)
 {
    if (eo->glhook)
      {
-	if (eo->glhook->glxpmap == None)
+	if (eo->glhook->glxpmap == NoXID)
 	   _EGlTextureFromDrawable(eo->glhook, EobjGetPixmap(eo), 0);
      }
    else
@@ -509,7 +509,7 @@ EobjTextureCreate(EObj * eo)
    Pixmap              pmap;
 
    pmap = EobjGetPixmap(eo);
-   if (pmap == None)
+   if (pmap == NoXID)
       return;
 
    eo->glhook = EGlTextureFromDrawable(pmap, 0);

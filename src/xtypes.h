@@ -27,4 +27,6 @@
 
 typedef struct _xwin *Win;
 
+#define NoXID   None
+
 #endif /* _XTYPES_H_ */

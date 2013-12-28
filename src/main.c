@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -327,7 +327,7 @@ EExit(int exitcode)
 	GrabPointerRelease();
 	XAllowEvents(disp, AsyncBoth, CurrentTime);
 
-	/* XSetInputFocus(disp, None, RevertToParent, CurrentTime); */
+	/* XSetInputFocus(disp, NoXID, RevertToParent, CurrentTime); */
 	/* I think this is a better way to release the grabs: (felix) */
 	XSetInputFocus(disp, PointerRoot, RevertToPointerRoot, CurrentTime);
 	ESelectInput(VROOT, 0);

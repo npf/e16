@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2006-2012 Kim Woelders
+ * Copyright (C) 2006-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -155,7 +155,7 @@ ProgressbarSet(Progressbar * p, int progress)
 
    pad = ImageclassGetPadding(p->ic);
    EClearWindow(EobjGetWin(p->n_win));
-   TextDraw(p->tnc, EobjGetWin(p->n_win), None, 0, 0, STATE_CLICKED, s,
+   TextDraw(p->tnc, EobjGetWin(p->n_win), NoXID, 0, 0, STATE_CLICKED, s,
 	    pad->left, pad->top, p->h * 5 - (pad->left + pad->right),
 	    p->h - (pad->top + pad->bottom), p->h - (pad->top + pad->bottom),
 	    TextclassGetJustification(p->tnc));
@@ -178,7 +178,7 @@ ProgressbarShow(Progressbar * p)
    EobjMap(p->p_win, 0);
 
    pad = ImageclassGetPadding(p->ic);
-   TextDraw(p->tc, EobjGetWin(p->win), None, 0, 0, STATE_NORMAL,
+   TextDraw(p->tc, EobjGetWin(p->win), NoXID, 0, 0, STATE_NORMAL,
 	    EobjGetName(p->win), pad->left, pad->top,
 	    p->w - (p->h * 5) - (pad->left + pad->right),
 	    p->h - (pad->top + pad->bottom), p->h - (pad->top + pad->bottom),

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011 Kim Woelders
+ * Copyright (C) 2007-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -59,7 +59,7 @@ ShapewinDestroy(ShapeWin * sw)
    EoUnmap(sw);
    EoFini(sw);
    EXFreeGC(sw->gc);
-   if (sw->mask != None)
+   if (sw->mask != NoXID)
       EFreePixmap(sw->mask);
    Efree(sw);
 }
@@ -73,7 +73,7 @@ ShapewinCreate(int md)
    if (!sw)
       return NULL;
 
-   EoInit(sw, EOBJ_TYPE_MISC, None,
+   EoInit(sw, EOBJ_TYPE_MISC, NoXID,
 	  0, 0, WinGetW(VROOT), WinGetH(VROOT), 2, "Wires");
    if (!EoGetWin(sw))
       goto bail_out;
@@ -91,7 +91,7 @@ ShapewinCreate(int md)
 	sw->mask =
 	   ECreatePixmap(EoGetWin(sw), WinGetW(VROOT), WinGetH(VROOT), 1);
 	sw->gc = EXCreateGC(sw->mask, 0, NULL);
-	if (sw->mask == None || !sw->gc)
+	if (sw->mask == NoXID || !sw->gc)
 	   goto bail_out;
      }
 

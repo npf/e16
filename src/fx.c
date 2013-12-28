@@ -146,7 +146,7 @@ FX_Ripple_Ops(int op)
       return;
 
    EFreePixmap(d->above);
-   d->above = None;
+   d->above = NoXID;
    d->count = 0;
 
    if (op != FX_OP_DISABLE)
@@ -301,7 +301,7 @@ FX_Waves_Ops(int op)
       return;
 
    EFreePixmap(d->above);
-   d->above = None;
+   d->above = NoXID;
    d->count = 0;
 
    if (op != FX_OP_DISABLE)

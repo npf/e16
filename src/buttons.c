@@ -165,7 +165,7 @@ ButtonCreate(const char *name, int id, const char *iclass,
 
    EoSetSticky(b, sticky);
    EoSetDesk(b, DeskGet(desk));
-   EoInit(b, EOBJ_TYPE_BUTTON, None, -100, -100, 50, 50, 0, name);
+   EoInit(b, EOBJ_TYPE_BUTTON, NoXID, -100, -100, 50, 50, 0, name);
    EoSetLayer(b, ontop);
    EoSetFade(b, 1);
 

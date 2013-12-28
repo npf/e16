@@ -1399,7 +1399,7 @@ IPC_InsertKeys(const char *params, Client * c __UNUSED__)
 
    s = params;
    XGetInputFocus(disp, &win, &rev);
-   if (win == None)
+   if (win == NoXID)
       return;
 
    SoundPlay(SOUND_INSERT_KEYS);

@@ -585,7 +585,7 @@ EobjGetPixmap(const EObj * eo)
 Pixmap
 EobjGetPixmap(const EObj * eo __UNUSED__)
 {
-   return None;
+   return NoXID;
 }
 #endif
 

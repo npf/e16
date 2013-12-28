@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2008 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -28,7 +28,7 @@
 #define ENABLE_DEBUG_STACKING 1
 
 #define EobjGetCwin(p) \
-    ((p->type == EOBJ_TYPE_EWIN) ? EwinGetClientXwin(((EWin*)(p))) : None)
+    ((p->type == EOBJ_TYPE_EWIN) ? EwinGetClientXwin(((EWin*)(p))) : NoXID)
 
 typedef struct _eobjlist EobjList;
 

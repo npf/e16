@@ -34,7 +34,7 @@
 #define Dprintf(fmt...)  if(EDebug(EDBUG_TYPE_ANIM))Eprintf(fmt)
 #define D2printf(fmt...) if(EDebug(EDBUG_TYPE_ANIM)>1)Eprintf(fmt)
 #define D3printf(fmt...)
-#define EOW(eo) (eo ? EobjGetXwin(eo) : None)
+#define EOW(eo) (eo ? EobjGetXwin(eo) : NoXID)
 #else
 #define Dprintf(fmt...)
 #define D2printf(fmt...)

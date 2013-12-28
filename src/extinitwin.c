@@ -58,7 +58,7 @@ _eiw_render_init(Window win __UNUSED__, EiwData * d)
       return NULL;
 
    imlib_context_set_visual(vis);
-   d->curs = None;
+   d->curs = NoXID;
 
    return _eiw_render_loop;
 }
@@ -81,7 +81,7 @@ _eiw_render_loop(Window win, EImage * im, EiwData * d)
    pict = XRenderCreatePicture(disp, pmap, pictfmt, 0, 0);
    XFreePixmap(disp, pmap);
 
-   if (d->curs != None)
+   if (d->curs != NoXID)
       XFreeCursor(disp, d->curs);
    d->curs = XRenderCreateCursor(disp, pict, w / 2, h / 2);
    XRenderFreePicture(disp, pict);
@@ -164,7 +164,7 @@ ExtInitWinMain(void)
 
    err = EDisplayOpen(NULL, -1);
    if (err)
-      return None;
+      return NoXID;
 
    EGrabServer();
 
@@ -211,7 +211,7 @@ ExtInitWinMain(void)
    eiwc_loop_func = _eiw_window_init(win, &eiwd);
 #endif
    if (!eiwc_loop_func)
-      return None;
+      return NoXID;
 
    {
       XWindowAttributes   xwa;
@@ -308,10 +308,10 @@ ExtInitWinCreate(void)
    ExtInitWinMain();
 
    /* We will never get here */
-   return None;
+   return NoXID;
 }
 
-static Window       init_win_ext = None;
+static Window       init_win_ext = NoXID;
 
 void
 ExtInitWinSet(Window win)
@@ -328,11 +328,11 @@ ExtInitWinGet(void)
 void
 ExtInitWinKill(void)
 {
-   if (!disp || init_win_ext == None)
+   if (!disp || init_win_ext == NoXID)
       return;
 
    if (EDebug(EDBUG_TYPE_SESSION))
       Eprintf("Kill init window %#lx\n", init_win_ext);
    XUnmapWindow(disp, init_win_ext);
-   init_win_ext = None;
+   init_win_ext = NoXID;
 }

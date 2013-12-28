@@ -380,7 +380,7 @@ EImageGrabDrawable(Drawable draw, Pixmap mask, int x, int y, int w, int h,
    Colormap            cm;
 
    cm = imlib_context_get_colormap();
-   imlib_context_set_colormap(None);	/* Fix for grabbing bitmaps */
+   imlib_context_set_colormap(NoXID);	/* Fix for grabbing bitmaps */
    imlib_context_set_drawable(draw);
    im = imlib_create_image_from_drawable(mask, x, y, w, h, grab);
    imlib_context_set_colormap(cm);
@@ -417,7 +417,7 @@ EImageRenderOnDrawable(EImage * im, Win win, Drawable draw, int flags,
    Visual             *vis;
 
    imlib_context_set_image(im);
-   imlib_context_set_drawable((draw != None) ? draw : WinGetXwin(win));
+   imlib_context_set_drawable((draw != NoXID) ? draw : WinGetXwin(win));
    vis = (win) ? WinGetVisual(win) : NULL;
    if (vis)
       imlib_context_set_visual(vis);
@@ -445,11 +445,11 @@ EImageRenderPixmaps(EImage * im, Win win, int flags,
    if (vis)
       imlib_context_set_visual(vis);
 
-   *pmap = None;
+   *pmap = NoXID;
    if (!mask)			/* Imlib2 <= 1.3.0 needs a mask pointer */
       mask = &m;		/* ... to avoid bogus error messages    */
    if (mask)
-      *mask = None;
+      *mask = NoXID;
 
    if (flags)
       _EImageFlagsSet(flags);
@@ -477,7 +477,7 @@ EImageApplyToWin(EImage * im, Win win, int flags, int w, int h)
 
    EImageRenderPixmaps(im, win, flags, &pmap, &mask, w, h);
    ESetWindowBackgroundPixmap(win, pmap);
-   if ((mask != None) || (mask == None && WinIsShaped(win)))
+   if ((mask != NoXID) || (mask == NoXID && WinIsShaped(win)))
       EShapeSetMask(win, 0, 0, mask);
    EImagePixmapsFree(pmap, mask);
    EClearWindow(win);
@@ -513,7 +513,7 @@ ScaleRect(Win wsrc, Drawable src, Win wdst, Pixmap dst,
 	XRenderSetPictureFilter(disp, psrc, (flags & EIMAGE_ANTI_ALIAS) ?
 				FilterBest : FilterNearest, NULL, 0);
 	XRenderSetPictureTransform(disp, psrc, &tr);
-	XRenderComposite(disp, PictOpSrc, psrc, None, pdst,
+	XRenderComposite(disp, PictOpSrc, psrc, NoXID, pdst,
 			 (int)(sx / scale_x + .5), (int)(sy / scale_y + .5),
 			 0, 0, dx, dy, dw, dh);
 	XRenderFreePicture(disp, psrc);
@@ -528,13 +528,13 @@ ScaleRect(Win wsrc, Drawable src, Win wdst, Pixmap dst,
 	if (flags & (EIMAGE_ISCALE))
 	  {
 	     scale = (flags & EIMAGE_ISCALE) >> 8;
-	     im = EImageGrabDrawableScaled(wsrc, src, None, sx, sy, sw, sh,
+	     im = EImageGrabDrawableScaled(wsrc, src, NoXID, sx, sy, sw, sh,
 					   scale * dw, scale * dh, 0, 0);
 	     flags |= EIMAGE_ANTI_ALIAS;
 	  }
 	else
 	  {
-	     im = EImageGrabDrawableScaled(wsrc, src, None, sx, sy, sw, sh,
+	     im = EImageGrabDrawableScaled(wsrc, src, NoXID, sx, sy, sw, sh,
 					   sw, sh, 0, 0);
 	  }
 
@@ -570,7 +570,7 @@ ScaleTile(Win wsrc, Drawable src, Win wdst, Pixmap dst,
 	   stw, sth, tw, th, scale * dw, scale * dh, dw, dh);
 #endif
    tim =
-      EImageGrabDrawableScaled(wsrc, src, None, 0, 0, stw, sth, tw, th, 0, 0);
+      EImageGrabDrawableScaled(wsrc, src, NoXID, 0, 0, stw, sth, tw, th, 0, 0);
    im = EImageCreate(scale * dw, scale * dh);
    EImageTile(im, tim, 0, tw, th, 0, 0, scale * dw, scale * dh, 0, 0);
    EImageFree(tim);
@@ -593,7 +593,8 @@ EDrawableDumpImage(Drawable draw, const char *txt)
    if (w <= 0 || h <= 0)
       return;
    imlib_context_set_drawable(draw);
-   im = imlib_create_image_from_drawable(None, 0, 0, w, h, !EServerIsGrabbed());
+   im =
+      imlib_create_image_from_drawable(NoXID, 0, 0, w, h, !EServerIsGrabbed());
    imlib_context_set_image(im);
    imlib_image_set_format("png");
    sprintf(buf, "%s-%#lx-%d.png", txt, draw, seqn++);
@@ -616,7 +617,7 @@ PmapMaskInit(PmapMask * pmm, Win win, int w, int h)
    pmm->type = 0;
    pmm->depth = WinGetDepth(win);
    pmm->pmap = ECreatePixmap(win, w, h, 0);
-   pmm->mask = None;
+   pmm->mask = NoXID;
    pmm->w = w;
    pmm->h = h;
 }

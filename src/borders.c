@@ -82,7 +82,7 @@ BorderWinpartITclassApply(EWin * ewin, int i, int force)
    const char         *txt;
    int                 flags;
 
-   if (ewb->win == None)
+   if (ewb->win == NoXID)
       return;
 
 #if 0				/* Debug */

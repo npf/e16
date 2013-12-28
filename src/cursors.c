@@ -180,7 +180,7 @@ ECursorRealize(ECursor * ec)
 		ECreatePixmapCursor(pmap, mask, w, h, xh, yh, ec->fg, ec->bg);
 	  }
 
-	if (ec->cursor == None)
+	if (ec->cursor == NoXID)
 	  {
 	     Eprintf("*** Failed to create cursor \"%s\" from %s,%s\n",
 		     ec->name, img, msk);
@@ -199,7 +199,7 @@ ECursorRealize(ECursor * ec)
      }
 
  done:
-   if (ec->cursor == None)
+   if (ec->cursor == NoXID)
      {
 	ECursorDestroy(ec);
 	ec = NULL;
@@ -234,7 +234,7 @@ ECursorAlloc(const char *name)
    if (!ec)
       return NULL;
 
-   if (ec->cursor == None)
+   if (ec->cursor == NoXID)
       ec = ECursorRealize(ec);
    if (!ec)
       return NULL;
@@ -377,7 +377,7 @@ Cursor
 ECsrGet(int which)
 {
    if (which < 0 || which >= ECSR_COUNT)
-      return None;
+      return NoXID;
    if (ECsrs[which] == 1)
       ECsrs[which] = ECursorGetByName(ECData[which].pri, ECData[which].sec,
 				      ECData[which].fallback);

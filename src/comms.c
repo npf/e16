@@ -162,9 +162,9 @@ ClientCommsGet(Client ** c, XClientMessageEvent * ev)
       s2[i] = ev->data.b[i];
    for (i = 0; i < 12; i++)
       s[i] = ev->data.b[i + 8];
-   xwin = None;
+   xwin = NoXID;
    sscanf(s2, "%lx", &xwin);
-   if (xwin == None)
+   if (xwin == NoXID)
       return NULL;
    cl = ClientFind(xwin);
    if (!cl)

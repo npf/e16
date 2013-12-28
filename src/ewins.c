@@ -71,7 +71,7 @@ EwinGetClientXwin(const EWin * ewin)
 {
    Win                 win = EwinGetClientWin(ewin);
 
-   return (win) ? WinGetXwin(win) : None;
+   return (win) ? WinGetXwin(win) : NoXID;
 }
 
 static EWin        *
@@ -789,7 +789,7 @@ AddToFamily(EWin * ewin, Window xwin, XWindowAttributes * pxwa, int startup)
    ewin2 = NULL;
    if (ewin->icccm.transient)
      {
-	if (ewin->icccm.transient_for == None ||
+	if (ewin->icccm.transient_for == NoXID ||
 	    ewin->icccm.transient_for == WinGetXwin(VROOT))
 	  {
 	     /* Group transient */
@@ -956,7 +956,7 @@ AddToFamily(EWin * ewin, Window xwin, XWindowAttributes * pxwa, int startup)
 	     Win                 parent;
 
 	     ewin2 = NULL;
-	     if (EwinGetTransientFor(ewin) != None)
+	     if (EwinGetTransientFor(ewin) != NoXID)
 		ewin2 = EwinFindByClient(EwinGetTransientFor(ewin));
 	     parent = (ewin2) ? EoGetWin(ewin2) : VROOT;
 	     x = (WinGetW(parent) - EoGetW(ewin)) / 2;
@@ -1048,7 +1048,7 @@ AddInternalToFamily(Win win, const char *bname, int type,
       goto done;
 
    ewin->props.donthide = 1;
-   EwinGetAttributes(ewin, win, None, NULL);
+   EwinGetAttributes(ewin, win, NoXID, NULL);
    WindowMatchEwinOps(ewin);	/* Window matches */
    EwinManage(ewin);
 
@@ -1191,7 +1191,7 @@ EwinEventReparent(EWin * ewin, XEvent * ev)
 
    EGrabServer();
 
-   parent = EoIsGone(ewin) ? None : ev->xreparent.parent;
+   parent = EoIsGone(ewin) ? NoXID : ev->xreparent.parent;
 
    if (EDebug(EDBUG_TYPE_EWINS))
       Eprintf("%s %#lx st=%d parent=%#lx: %s\n", __func__,

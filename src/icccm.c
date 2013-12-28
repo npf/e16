@@ -392,7 +392,7 @@ ICCCM_Focus(const EWin * ewin)
      {
 	XSetInputFocus(disp, WinGetXwin(VROOT), RevertToPointerRoot,
 		       Mode.events.time);
-	HintsSetActiveWindow(None);
+	HintsSetActiveWindow(NoXID);
 	return;
      }
 
@@ -546,7 +546,7 @@ ICCCM_GetGeoms(EWin * ewin)
 	      ewin->client.w, ewin->client.h, EwinGetTitle(ewin));
 }
 
-#define TryGroup(e) (((e)->icccm.group != None) && ((e)->icccm.group != EwinGetClientXwin(e)))
+#define TryGroup(e) (((e)->icccm.group != NoXID) && ((e)->icccm.group != EwinGetClientXwin(e)))
 
 static void
 ICCCM_GetWmClass(EWin * ewin)
@@ -664,17 +664,17 @@ ICCCM_GetWmHints(EWin * ewin)
      }
    else
      {
-	ewin->icccm.icon_pmap = None;
+	ewin->icccm.icon_pmap = NoXID;
      }
 
    ewin->icccm.icon_mask =
-      (hint->flags & IconMaskHint) ? hint->icon_mask : None;
+      (hint->flags & IconMaskHint) ? hint->icon_mask : NoXID;
 
    ewin->icccm.icon_win =
-      (hint->flags & IconWindowHint) ? hint->icon_window : None;
+      (hint->flags & IconWindowHint) ? hint->icon_window : NoXID;
 
    ewin->icccm.group =
-      (hint->flags & WindowGroupHint) ? hint->window_group : None;
+      (hint->flags & WindowGroupHint) ? hint->window_group : NoXID;
 
    if (hint->flags & XUrgencyHint)
      {
@@ -750,7 +750,7 @@ ICCCM_GetWmTransientFor(EWin * ewin)
    else
      {
 	ewin->icccm.transient = 0;
-	ewin->icccm.transient_for = None;
+	ewin->icccm.transient_for = NoXID;
      }
 }
 

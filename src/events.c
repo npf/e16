@@ -124,7 +124,7 @@ ExtInitSync(int available)
      }
    XSyncFreeSystemCounterList(xssc);
 
-   if (Mode.display.server_time == None)
+   if (Mode.display.server_time == NoXID)
       Conf.movres.enable_sync_request = 0;
 }
 #endif
@@ -507,7 +507,7 @@ HandleEvent(XEvent * ev)
 	if (ev->xcrossing.mode == NotifyGrab &&
 	    ev->xcrossing.detail == NotifyInferior)
 	  {
-	     Mode.grabs.pointer_grab_window = None;
+	     Mode.grabs.pointer_grab_window = NoXID;
 	     Mode.grabs.pointer_grab_active = 0;
 	  }
 	ModeGetXY(ev->xcrossing.x_root, ev->xcrossing.y_root);

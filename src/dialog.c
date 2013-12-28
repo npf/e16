@@ -339,7 +339,7 @@ DialogRedraw(Dialog * d)
    PmapMaskFree(&d->pmm_bg);
    ImageclassApplyCopy(d->iclass, d->win, d->w, d->h, 0, 0, STATE_NORMAL,
 		       &(d->pmm_bg), IC_FLAG_FULL_SIZE, ST_DIALOG);
-   if (d->pmm_bg.pmap == None)
+   if (d->pmm_bg.pmap == NoXID)
       return;
 
    EGetWindowBackgroundPixmap(d->win);

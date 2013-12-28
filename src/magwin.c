@@ -78,7 +78,7 @@ MagwinDrawText(MagWindow * mw, int x, int y, const char *txt)
       return;
 
    TextSize(tc, 0, 0, 0, txt, &cw, &ch, 17);
-   TextDraw(tc, EwinGetClientWin(mw->ewin), None, 0, 0, 0,
+   TextDraw(tc, EwinGetClientWin(mw->ewin), NoXID, 0, 0, 0,
 	    txt, x, y, cw, ch, 17, 0);
 }
 
@@ -88,7 +88,7 @@ MagwinGetPixel(Drawable draw, unsigned int x, unsigned int y)
    EImage             *im;
    unsigned int       *pd, pixel = 0;
 
-   im = EImageGrabDrawable(draw, None, x, y, 1, 1, 0);
+   im = EImageGrabDrawable(draw, NoXID, x, y, 1, 1, 0);
    if (im)
      {
 	pd = (unsigned int *)EImageGetData(im);

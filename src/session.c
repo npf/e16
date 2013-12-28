@@ -37,7 +37,7 @@
 #include "xwin.h"
 
 #ifdef USE_EXT_INIT_WIN
-static Window       new_init_win_ext = None;
+static Window       new_init_win_ext = NoXID;
 #endif
 
 /* True if we are saving state for a doExit("restart") */
@@ -432,10 +432,10 @@ SessionGetInfo(EWin * ewin __UNUSED__)
 {
 #if 0				/* Unused */
 #if USE_SM
-   if (atom_sm_client_id == None)
+   if (atom_sm_client_id == NoXID)
       return;
    _EFREE(ewin->session_id);
-   if (ewin->icccm.client_leader != None)
+   if (ewin->icccm.client_leader != NoXID)
       ewin->session_id =
 	 ex_window_prop_string_get(ewin->icccm.client_leader,
 				   atom_sm_client_id);
@@ -550,7 +550,7 @@ doSMExit(int mode, const char *params)
 	   l += Esnprintf(s + l, sizeof(s) - l, " -S %s", sm_client_id);
 #endif
 #ifdef USE_EXT_INIT_WIN
-	if (new_init_win_ext != None)
+	if (new_init_win_ext != NoXID)
 	   l += Esnprintf(s + l, sizeof(s) - l, " -X %#lx", new_init_win_ext);
 #endif
 	if (ss)

@@ -784,7 +784,7 @@ pt_get_bg_image(Win win, int w, int h, int use_root)
    int                 xx, yy;
 
    bg = DeskGetBackgroundPixmap(DesksGetCurrent());
-   if (use_root || bg == None)
+   if (use_root || bg == NoXID)
      {
 	cr = VROOT;
 	bg = WinGetXwin(VROOT);
@@ -800,7 +800,7 @@ pt_get_bg_image(Win win, int w, int h, int use_root)
    if (xx < WinGetW(VROOT) && yy < WinGetH(VROOT) && xx + w >= 0 && yy + h >= 0)
      {
 	/* Create the background base image */
-	ii = EImageGrabDrawable(bg, None, xx, yy, w, h, !EServerIsGrabbed());
+	ii = EImageGrabDrawable(bg, NoXID, xx, yy, w, h, !EServerIsGrabbed());
      }
 
    return ii;
@@ -917,7 +917,7 @@ ImagestateMakePmapMask(ImageState * is, Win win, PmapMask * pmm,
 
 	pmm->type = 0;
 	pmm->pmap = pmap = ECreatePixmap(win, w, h, 0);
-	pmm->mask = None;
+	pmm->mask = NoXID;
 	pmm->w = w;
 	pmm->h = h;
 	EImageRenderOnDrawable(ii, win, pmap, 0, 0, 0, w, h);
@@ -943,7 +943,7 @@ ImagestateMakePmapMask(ImageState * is, Win win, PmapMask * pmm,
    if (is->pixmapfillstyle == FILL_STRETCH)
      {
 	pmm->type = 1;
-	pmm->pmap = pmm->mask = None;
+	pmm->pmap = pmm->mask = NoXID;
 	pmm->w = w;
 	pmm->h = h;
 	EImageRenderPixmaps(is->im, win, EIMAGE_ANTI_ALIAS, &pmm->pmap,
@@ -980,7 +980,7 @@ ImagestateMakePmapMask(ImageState * is, Win win, PmapMask * pmm,
 	     ph = h / ch;
 	  }
 	pmm->type = 1;
-	pmm->pmap = pmm->mask = None;
+	pmm->pmap = pmm->mask = NoXID;
 	pmm->w = pw;
 	pmm->h = ph;
 	EImageRenderPixmaps(is->im, win, EIMAGE_ANTI_ALIAS, &pmm->pmap,
@@ -1153,7 +1153,7 @@ ITApply(Win win, ImageClass * ic, ImageState * is,
 		  if (pmm.type != 0)
 		    {
 		       pmap = EGetWindowBackgroundPixmap(win);
-		       EXCopyAreaTiled(pmm.pmap, None, pmap, 0, 0, w, h, 0, 0);
+		       EXCopyAreaTiled(pmm.pmap, NoXID, pmap, 0, 0, w, h, 0, 0);
 		    }
 
 		  if (is->bevelstyle != BEVEL_NONE)
@@ -1231,15 +1231,15 @@ PmapMaskTile(PmapMask * pmm, Win win, unsigned int w, unsigned int h)
    Pixmap              pmap, mask;
 
    pmap = ECreatePixmap(win, w, h, 0);
-   if (pmap == None)
+   if (pmap == NoXID)
       return;
-   EXCopyAreaTiled(pmm->pmap, None, pmap, 0, 0, w, h, 0, 0);
+   EXCopyAreaTiled(pmm->pmap, NoXID, pmap, 0, 0, w, h, 0, 0);
 
-   mask = None;
-   if (pmm->mask != None)
+   mask = NoXID;
+   if (pmm->mask != NoXID)
       mask = ECreatePixmap(win, w, h, 1);
-   if (mask != None)
-      EXCopyAreaTiled(pmm->mask, None, mask, 0, 0, w, h, 0, 0);
+   if (mask != NoXID)
+      EXCopyAreaTiled(pmm->mask, NoXID, mask, 0, 0, w, h, 0, 0);
 
    PmapMaskFree(pmm);
    pmm->type = 0;
@@ -1427,7 +1427,7 @@ ImageclassIpc(const char *params)
 	Pixmap              pmap;
 
 	pmap = (Pixmap) strtol(p, NULL, 0);
-	EImagePixmapsFree(pmap, None);
+	EImagePixmapsFree(pmap, NoXID);
 	return;
      }
 
@@ -1464,7 +1464,7 @@ ImageclassIpc(const char *params)
 	int                 st, w, h;
 
 	/* 3:xwin 4:state 5:w 6:h */
-	xwin = None;
+	xwin = NoXID;
 	state[0] = '\0';
 	w = h = -1;
 	sscanf(p, "%lx %16s %d %d", &xwin, state, &w, &h);
@@ -1496,7 +1496,7 @@ ImageclassIpc(const char *params)
 	PmapMask            pmm;
 
 	/* 3:xwin 4:state 5:w 6:h */
-	xwin = None;
+	xwin = NoXID;
 	state[0] = '\0';
 	w = h = -1;
 	sscanf(p, "%lx %16s %d %d", &xwin, state, &w, &h);

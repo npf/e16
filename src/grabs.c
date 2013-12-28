@@ -40,7 +40,7 @@ _GrabKeyboard(Win win, int sync_kbd)
    EXIEventMask        em;
 
    EXIMaskSetup(&em, DEV_KBD, KeyPressMask | KeyReleaseMask);
-   rc = XIGrabDevice(disp, DEV_KBD, WinGetXwin(win), CurrentTime, None,
+   rc = XIGrabDevice(disp, DEV_KBD, WinGetXwin(win), CurrentTime, NoXID,
 		     GrabModeAsync, sync_kbd ? GrabModeSync : GrabModeAsync,
 		     False, &em.em);
 #else
@@ -98,7 +98,7 @@ GrabPointerSet(Win win, unsigned int csr, int confine __UNUSED__)
    rc = XIGrabDevice(disp, DEV_PTR, WinGetXwin(win), CurrentTime, ECsrGet(csr),
 		     GrabModeAsync, GrabModeAsync, False, &em.em);
 #else
-   Window              confine_to = (confine) ? WinGetXwin(VROOT) : None;
+   Window              confine_to = (confine) ? WinGetXwin(VROOT) : NoXID;
 
    rc = XGrabPointer(disp, WinGetXwin(win), False,
 		     ButtonPressMask | ButtonReleaseMask | PointerMotionMask |
@@ -130,7 +130,7 @@ GrabPointerRelease(void)
       Eprintf("%s: %#lx\n", __func__, Mode.grabs.pointer_grab_window);
 
    Mode.grabs.pointer_grab_active = 0;
-   Mode.grabs.pointer_grab_window = None;
+   Mode.grabs.pointer_grab_window = NoXID;
 }
 
 void
@@ -182,7 +182,7 @@ GrabButtonSet(unsigned int button, unsigned int modifiers, Win win,
 		pointer_mode, keyboard_mode, owner_events,
 		&em.em, num_modifiers, modifiers_inouts);
 #else
-   Window              confine_to = (confine) ? WinGetXwin(win) : None;
+   Window              confine_to = (confine) ? WinGetXwin(win) : NoXID;
 
    if (modifiers == AnyModifier)
      {

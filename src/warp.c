@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -103,7 +103,7 @@ WarpFocusWinCreate(void)
    if (!fw)
       return fw;
 
-   EoInit(fw, EOBJ_TYPE_MISC, None, 0, 0, 1, 1, 1, "Warp");
+   EoInit(fw, EOBJ_TYPE_MISC, NoXID, 0, 0, 1, 1, 1, "Warp");
    EoSetFloating(fw, 1);
    EoSetLayer(fw, 20);
    EoSetFade(fw, 1);
@@ -192,7 +192,7 @@ WarpFocusWinShow(WarpFocusWin * fw)
    fw->mh = h;
 
    /* Reset shape */
-   EShapeSetMask(EoGetWin(fw), 0, 0, None);
+   EShapeSetMask(EoGetWin(fw), 0, 0, NoXID);
 
    ScreenGetAvailableAreaByPointer(&x, &y, &ww, &hh, Conf.place.ignore_struts);
    x += (ww - w) / 2;
@@ -209,7 +209,7 @@ WarpFocusWinShow(WarpFocusWin * fw)
     * WarpFocusHide unmaps warpFocusWindow.
     */
    GrabKeyboardSet(EoGetWin(fw));
-   GrabPointerSet(EoGetWin(fw), None, 0);
+   GrabPointerSet(EoGetWin(fw), NoXID, 0);
 
    TooltipsEnable(0);
 }
@@ -265,7 +265,7 @@ WarpFocusWinPaint(WarpFocusWin * fw)
 				   Conf.warplist.icon_mode);
 	     if (im)
 	       {
-		  EImageRenderOnDrawable(im, wi->win, None,
+		  EImageRenderOnDrawable(im, wi->win, NoXID,
 					 EIMAGE_BLEND | EIMAGE_ANTI_ALIAS,
 					 pad->left + ICON_PAD, ICON_PAD,
 					 icon_size, icon_size);
@@ -274,7 +274,7 @@ WarpFocusWinPaint(WarpFocusWin * fw)
 	     iw = fw->mh;
 	  }
 
-	TextDraw(fw->tc, wi->win, None, 0, 0, state, wi->txt,
+	TextDraw(fw->tc, wi->win, NoXID, 0, 0, state, wi->txt,
 		 pad->left + iw, pad->top, fw->tw, fw->th, 0, 0);
      }
 

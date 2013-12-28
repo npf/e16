@@ -92,10 +92,10 @@ HiwinRenderImageInit(Hiwin * phi)
 			      ewin->mini_pmm.w, ewin->mini_pmm.h, 0);
      }
 
-   ESetWindowBackgroundPixmap(EoGetWin(phi), None);
+   ESetWindowBackgroundPixmap(EoGetWin(phi), NoXID);
 
    /* Reset shape */
-   EShapeSetMask(EoGetWin(phi), 0, 0, None);
+   EShapeSetMask(EoGetWin(phi), 0, 0, NoXID);
    EoShapeUpdate(phi, 0);
 }
 
@@ -130,7 +130,7 @@ HiwinRenderImageUpdate(Hiwin * phi)
    EWin               *ewin = phi->ewin;
 
    pmap = EoGetPixmap(ewin);
-   if (pmap == None)
+   if (pmap == NoXID)
       return;
 
    phi->im = EobjGetImage(EoObj(ewin), pmap);
@@ -245,7 +245,7 @@ HiwinCreate(void)
    if (!phi)
       return NULL;
 
-   EoInit(phi, EOBJ_TYPE_MISC, None, 0, 0, 3, 3, 1, "HiWin");
+   EoInit(phi, EOBJ_TYPE_MISC, NoXID, 0, 0, 3, 3, 1, "HiWin");
    EoSetFade(phi, 1);
    EoSetFloating(phi, 1);
    EoSetLayer(phi, 19);

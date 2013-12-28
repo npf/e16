@@ -423,7 +423,7 @@ TextclassIpc(const char *params)
 	int                 x, y, st;
 
 	/* 3:xwin 4:x 5:y 6:state 7-:txt */
-	xwin = None;
+	xwin = NoXID;
 	x = y = 0;
 	state[0] = '\0';
 	l = 0;
@@ -448,7 +448,7 @@ TextclassIpc(const char *params)
 	if (!win)
 	   return;
 
-	TextDraw(tc, win, None, 0, 0, st, p, x, y, 99999, 99999, 17, 0);
+	TextDraw(tc, win, NoXID, 0, 0, st, p, x, y, 99999, 99999, 17, 0);
 	EDestroyWin(win);
      }
    else if (!strcmp(param2, "query_size"))

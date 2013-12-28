@@ -65,13 +65,13 @@ TextDrawRotTo(Win win, Drawable src, Drawable dst, int x, int y,
 	break;
      case FONT_TO_DOWN:
 	EXGetGeometry(src, NULL, NULL, NULL, &win_w, NULL, NULL, NULL);
-	im = EImageGrabDrawable(src, None, win_w - y - h, x, h, w, 0);
+	im = EImageGrabDrawable(src, NoXID, win_w - y - h, x, h, w, 0);
 	EImageOrientate(im, 3);
 	EImageRenderOnDrawable(im, win, dst, 0, 0, 0, w, h);
 	EImageFree(im);
 	break;
      case FONT_TO_LEFT:	/* Holy carumba! That's for yoga addicts, maybe .... */
-	im = EImageGrabDrawable(src, None, x, y, w, h, 0);
+	im = EImageGrabDrawable(src, NoXID, x, y, w, h, 0);
 	EImageOrientate(im, 2);
 	EImageRenderOnDrawable(im, win, dst, 0, 0, 0, w, h);
 	EImageFree(im);
@@ -91,20 +91,20 @@ TextDrawRotBack(Win win, Drawable dst, Drawable src, int x, int y,
    switch (ts->style.orientation)
      {
      case FONT_TO_UP:
-	im = EImageGrabDrawable(src, None, 0, 0, w, h, 0);
+	im = EImageGrabDrawable(src, NoXID, 0, 0, w, h, 0);
 	EImageOrientate(im, 3);
 	EImageRenderOnDrawable(im, win, dst, 0, y, x, h, w);
 	EImageFree(im);
 	break;
      case FONT_TO_DOWN:
 	EXGetGeometry(dst, NULL, NULL, NULL, &win_w, NULL, NULL, NULL);
-	im = EImageGrabDrawable(src, None, 0, 0, w, h, 0);
+	im = EImageGrabDrawable(src, NoXID, 0, 0, w, h, 0);
 	EImageOrientate(im, 1);
 	EImageRenderOnDrawable(im, win, dst, 0, win_w - y - h, x, h, w);
 	EImageFree(im);
 	break;
      case FONT_TO_LEFT:	/* Holy carumba! That's for yoga addicts, maybe .... */
-	im = EImageGrabDrawable(src, None, 0, 0, w, h, 0);
+	im = EImageGrabDrawable(src, NoXID, 0, 0, w, h, 0);
 	EImageOrientate(im, 2);
 	EImageRenderOnDrawable(im, win, dst, 0, x, y, w, h);
 	EImageFree(im);
@@ -126,10 +126,10 @@ TextImageGet(Win win __UNUSED__, Drawable src, int x, int y, int w, int h,
      {
      default:
      case FONT_TO_RIGHT:
-	im = EImageGrabDrawable(src, None, x, y, w, h, 0);
+	im = EImageGrabDrawable(src, NoXID, x, y, w, h, 0);
 	break;
      case FONT_TO_LEFT:
-	im = EImageGrabDrawable(src, None, x, y, w, h, 0);
+	im = EImageGrabDrawable(src, NoXID, x, y, w, h, 0);
 	EImageOrientate(im, 2);
 	break;
      case FONT_TO_UP:
@@ -138,7 +138,7 @@ TextImageGet(Win win __UNUSED__, Drawable src, int x, int y, int w, int h,
 	break;
      case FONT_TO_DOWN:
 	EXGetGeometry(src, NULL, NULL, NULL, &win_w, NULL, NULL, NULL);
-	im = EImageGrabDrawable(src, None, win_w - y - h, x, h, w, 0);
+	im = EImageGrabDrawable(src, NoXID, win_w - y - h, x, h, w, 0);
 	EImageOrientate(im, 3);
 	break;
      }
@@ -854,7 +854,7 @@ TextstateTextDraw(TextState * ts, Win win, Drawable draw, const char *text,
    if (!lines)
       return;
 
-   if (draw == None)
+   if (draw == NoXID)
       draw = WinGetXwin(win);
 
    if (ts->style.orientation == FONT_TO_RIGHT ||

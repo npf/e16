@@ -285,7 +285,7 @@ SystrayEventClientMessage(Container * ct, XClientMessageEvent * ev)
    if (ev->message_type == _NET_SYSTEM_TRAY_OPCODE)
      {
 	xwin = ev->data.l[2];
-	if (xwin == None)
+	if (xwin == NoXID)
 	   goto done;
 
 	SystrayObjAdd(ct, xwin);
@@ -326,7 +326,7 @@ SystraySelectionEvent(Win win __UNUSED__, XEvent * ev, void *prm)
      case SelectionClear:
 	DialogOK(_("Systray Error!"), _("Systray went elsewhere?!?"));
 	SelectionRelease(systray_sel);
-	systray_sel = None;
+	systray_sel = NoXID;
 	EwinHide(((Container *) prm)->ewin);
 	break;
 
@@ -451,7 +451,7 @@ static void
 SystrayExit(Container * ct, int wm_exit __UNUSED__)
 {
    SelectionRelease(systray_sel);
-   systray_sel = None;
+   systray_sel = NoXID;
 
    EventCallbackUnregister(ct->win, SystrayEvent, ct);
 

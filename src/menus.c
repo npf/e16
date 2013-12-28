@@ -917,7 +917,7 @@ MenuRedraw(Menu * m)
 			    0, STATE_NORMAL, &m->pmm, IC_FLAG_MAKE_MASK,
 			    ST_MENU);
 	EGetWindowBackgroundPixmap(m->win);
-	EXCopyAreaTiled(m->pmm.pmap, None, WinGetPmap(m->win),
+	EXCopyAreaTiled(m->pmm.pmap, NoXID, WinGetPmap(m->win),
 			0, 0, m->w, m->h, 0, 0);
 	EShapeSetMask(m->win, 0, 0, m->pmm.mask);
 	EClearWindow(m->win);
@@ -955,7 +955,7 @@ MenuDrawItem(Menu * m, MenuItem * mi, char shape, int state)
 
 	mi_pmm->type = 0;
 	mi_pmm->pmap = ECreatePixmap(mi->win, w, h, 0);
-	mi_pmm->mask = None;
+	mi_pmm->mask = NoXID;
 
 	ic = (mi->child) ? m->style->sub_iclass : m->style->item_iclass;
 	item_type = (mi->state != STATE_NORMAL) ? ST_MENU_ITEM : ST_MENU;

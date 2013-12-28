@@ -421,7 +421,7 @@ DeskCreate(int desk, int configure)
 	EoSetFloating(dsk, 1);
 	EoSetLayer(dsk, 0);
 	/* Set the _XROOT... atoms so apps will find them even before the bg is set */
-	HintsSetRootInfo(EoGetWin(dsk), None, 0);
+	HintsSetRootInfo(EoGetWin(dsk), NoXID, 0);
      }
 
 #if USE_BG_WIN_ON_ALL_DESKS	/* TBD - Use per virtual root bg window? */
@@ -491,7 +491,7 @@ Pixmap
 DeskGetBackgroundPixmap(const Desk * dsk)
 {
    if (!dsk)
-      return None;
+      return NoXID;
    return dsk->bg.pmap;
 }
 
@@ -539,12 +539,12 @@ DeskBackgroundConfigure(Desk * dsk)
 	if (ECompMgrIsActive())
 	  {
 	     ECompMgrDeskConfigure(dsk);
-	     ESetWindowBackgroundPixmap(win, None);
+	     ESetWindowBackgroundPixmap(win, NoXID);
 	  }
 	else
 #endif
 	  {
-	     if (pmap != None)
+	     if (pmap != NoXID)
 	       {
 		  ESetWindowBackgroundPixmap(win, pmap);
 		  if (dsk->num == 0 && win != VROOT)
@@ -564,11 +564,11 @@ DeskBackgroundConfigure(Desk * dsk)
    else if (dsk->bg.bg)
      {
 	if (!Conf.hints.set_xroot_info_on_root_window)
-	   HintsSetRootInfo(EoGetWin(dsk), None, 0);
+	   HintsSetRootInfo(EoGetWin(dsk), NoXID, 0);
 
-	ESetWindowBackgroundPixmap(win, None);
+	ESetWindowBackgroundPixmap(win, NoXID);
 	if (dsk->num == 0 && win != VROOT)
-	   ESetWindowBackgroundPixmap(VROOT, None);
+	   ESetWindowBackgroundPixmap(VROOT, NoXID);
      }
 }
 
@@ -617,10 +617,10 @@ DeskBackgroundRefresh(Desk * dsk, int why)
 	     pmap = BackgroundGetPixmap(bg);
 	     pixel = 0;
 
-	     if (pmap == None)
-		BackgroundRealize(bg, EoGetWin(dsk), None,
+	     if (pmap == NoXID)
+		BackgroundRealize(bg, EoGetWin(dsk), NoXID,
 				  EoGetW(dsk), EoGetH(dsk), 1, &pmap, &pixel);
-	     if (pmap != None)
+	     if (pmap != NoXID)
 		BackgroundPixmapSet(bg, pmap);
 
 	     dsk->bg.seq_no = BackgroundGetSeqNo(bg);
@@ -628,17 +628,17 @@ DeskBackgroundRefresh(Desk * dsk, int why)
 	  }
 	else
 	  {
-	     if (dsk->bg.pmap == None)
+	     if (dsk->bg.pmap == NoXID)
 		return;
 
-	     pmap = None;
+	     pmap = NoXID;
 	     pixel = 0;
 	     dsk->bg.seq_no = 0;
 	  }
      }
    else
      {
-	pmap = (Mode.root.ext_pmap_valid) ? Mode.root.ext_pmap : None;
+	pmap = (Mode.root.ext_pmap_valid) ? Mode.root.ext_pmap : NoXID;
 	pixel = 0;
 	changed = pmap != dsk->bg.pmap_set;
      }

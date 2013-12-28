@@ -158,7 +158,7 @@ PagerDestroy(Pager * p)
    PagerScanCancel(p);
    Efree(p->name);
    PagerHiwinHide();
-   if (p->bgpmap != None)
+   if (p->bgpmap != NoXID)
       EFreePixmap(p->bgpmap);
 
    Efree(p);
@@ -260,7 +260,7 @@ PagerHiwinUpdate(Hiwin * phi, Pager * p __UNUSED__, EWin * ewin)
    if (!EoIsShown(phi) || !ewin->mini_pmm.pmap)
       return;
 
-   im = EImageGrabDrawable(ewin->mini_pmm.pmap, None, 0, 0,
+   im = EImageGrabDrawable(ewin->mini_pmm.pmap, NoXID, 0, 0,
 			   ewin->mini_pmm.w, ewin->mini_pmm.h, 0);
    EImageRenderOnDrawable(im, EoGetWin(phi), 0, 0, 0, EoGetW(phi), EoGetH(phi));
    EImageDecache(im);
@@ -307,14 +307,14 @@ PagerEwinUpdateMini(Pager * p, EWin * ewin)
 
    PmapMaskInit(&ewin->mini_pmm, EoGetWin(ewin), w, h);
 
-   draw = None;
+   draw = NoXID;
    if (pager_mode != PAGER_MODE_SIMPLE)
      {
 	draw = EoGetPixmap(ewin);
-	if (draw == None && EwinIsOnScreen(ewin))
+	if (draw == NoXID && EwinIsOnScreen(ewin))
 	   draw = EoGetXwin(ewin);
      }
-   use_iclass = draw == None;
+   use_iclass = draw == NoXID;
 
    if (use_iclass)
      {
@@ -400,7 +400,7 @@ doPagerUpdate(Pager * p)
    p->do_update = 0;
 
    gc = EXCreateGC(pmap, 0, NULL);
-   if (gc == None)
+   if (gc == NoXID)
       return;
 
    Dprintf("doPagerUpdate %d: Repaint\n", p->dsk->num);
@@ -460,7 +460,7 @@ doPagerUpdate(Pager * p)
 		       ww, wh, wx, wy);
 #if 0				/* Mask is currently not set anywhere */
 	     if (ewin->mini_pmm.mask)
-		XSetClipMask(disp, gc, None);
+		XSetClipMask(disp, gc, NoXID);
 #endif
 #endif
 	  }
@@ -572,7 +572,7 @@ PagerUpdateBg(Pager * p)
    p->x2 = p->y2 = 99999;
 
    pmap = p->bgpmap;
-   if (pmap != None)
+   if (pmap != NoXID)
       EFreePixmap(pmap);
    pmap = p->bgpmap = ECreatePixmap(p->win, p->dw, p->dh, 0);
 
@@ -600,7 +600,7 @@ PagerUpdateBg(Pager * p)
 #endif
 	     BackgroundApplyPmap(bg, p->win, pmap, p->dw, p->dh);
 #if USE_PAGER_BACKGROUND_CACHE
-	     im = EImageGrabDrawable(pmap, None, 0, 0, p->dw, p->dh, 0);
+	     im = EImageGrabDrawable(pmap, NoXID, 0, 0, p->dw, p->dh, 0);
 	     EImageSave(im, s);
 	     EImageDecache(im);
 	  }
@@ -624,7 +624,7 @@ PagerUpdateBg(Pager * p)
      }
 
    gc = EXCreateGC(pmap, 0, NULL);
-   if (gc == None)
+   if (gc == NoXID)
       return;
 
    XSetForeground(disp, gc, Dpy.pixel_black);

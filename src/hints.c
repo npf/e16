@@ -317,7 +317,7 @@ HintsGetRootPixmap(Win win)
 {
    EX_Pixmap           pm;
 
-   pm = None;
+   pm = NoXID;
    ex_window_prop_xid_get(WinGetXwin(win), E_XROOTPMAP_ID, XA_PIXMAP, &pm, 1);
 
    return pm;
@@ -638,7 +638,7 @@ SelectionRelease(ESelection * sel)
       Eprintf("Window %#lx is no longer %s owner\n",
 	      WinGetXwin(sel->win), XGetAtomName(disp, sel->atom));
 
-   XSetSelectionOwner(disp, sel->atom, None, sel->time);
+   XSetSelectionOwner(disp, sel->atom, NoXID, sel->time);
    if (sel->func)
      {
 	EventCallbackUnregister(sel->win, sel->func, sel->data);
