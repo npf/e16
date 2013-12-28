@@ -463,10 +463,8 @@ doPagerUpdate(Pager * p)
 	  }
 	else
 	  {
-	     XSetForeground(disp, gc, Dpy.pixel_black);
-	     XDrawRectangle(disp, pmap, gc, wx - 1, wy - 1, ww + 1, wh + 1);
-	     XSetForeground(disp, gc, Dpy.pixel_white);
-	     XFillRectangle(disp, pmap, gc, wx, wy, ww, wh);
+	     EXPaintRectangle(pmap, wx, wy, ww, wh,
+			      Dpy.pixel_black, Dpy.pixel_white);
 	  }
      }
 #if USE_COMPOSITE
@@ -560,7 +558,6 @@ static void
 PagerUpdateBg(Pager * p)
 {
    Pixmap              pmap;
-   GC                  gc;
    Background         *bg;
    ImageClass         *ic;
    int                 pager_mode = PagersGetMode();
@@ -620,16 +617,7 @@ PagerUpdateBg(Pager * p)
 	return;
      }
 
-   gc = EXCreateGC(pmap, 0, NULL);
-   if (!gc)
-      return;
-
-   XSetForeground(disp, gc, Dpy.pixel_black);
-   XDrawRectangle(disp, pmap, gc, 0, 0, p->dw, p->dh);
-   XSetForeground(disp, gc, Dpy.pixel_white);
-   XFillRectangle(disp, pmap, gc, 1, 1, p->dw - 2, p->dh - 2);
-
-   EXFreeGC(gc);
+   EXPaintRectangle(pmap, 0, 0, p->dw, p->dh, Dpy.pixel_black, Dpy.pixel_white);
 }
 
 static void

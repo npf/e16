@@ -1702,6 +1702,38 @@ EXFillAreaSolid(Drawable dst, int x, int y, unsigned int w, unsigned int h,
    EXFreeGC(gc);
 }
 
+static void
+_EXDrawRectangle(Drawable dst, GC gc, int x, int y,
+		 unsigned int w, unsigned int h, unsigned int pixel)
+{
+   XSetForeground(disp, gc, pixel);
+   XDrawRectangle(disp, dst, gc, x, y, w, h);
+}
+
+static void
+_EXFillRectangle(Drawable dst, GC gc, int x, int y,
+		 unsigned int w, unsigned int h, unsigned int pixel)
+{
+   XSetForeground(disp, gc, pixel);
+   XFillRectangle(disp, dst, gc, x, y, w, h);
+}
+
+void
+EXPaintRectangle(Drawable dst, int x, int y,
+		 unsigned int w, unsigned int h,
+		 unsigned int fg, unsigned int bg)
+{
+   GC                  gc;
+
+   if (w == 0 || h == 0)
+      return;
+   gc = EXCreateGC(dst, 0, NULL);
+   _EXDrawRectangle(dst, gc, x, y, w - 1, h - 1, fg);
+   if (w > 2 && h > 2)
+      _EXFillRectangle(dst, gc, x + 1, y + 1, w - 2, h - 2, bg);
+   EXFreeGC(gc);
+}
+
 GC
 EXCreateGC(Drawable draw, unsigned int mask, XGCValues * val)
 {

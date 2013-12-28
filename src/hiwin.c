@@ -41,7 +41,6 @@ struct _hiwin {
    void                (*evcb) (Win win, XEvent * ev, void *data);
    void               *data;
    char                animate;
-   GC                  gc;
    EImage             *im;
 };
 
@@ -167,18 +166,15 @@ static const HiwinRender HiwinRenderIclass = {
 };
 
 static void
-HiwinRenderPixmapInit(Hiwin * phi)
+HiwinRenderPixmapInit(Hiwin * phi __UNUSED__)
 {
-   phi->gc = EXCreateGC(EoGetXwin(phi), 0, NULL);
 }
 
 static void
 HiwinRenderPixmapDrawX(Hiwin * phi, Drawable draw)
 {
-   XSetForeground(disp, phi->gc, Dpy.pixel_black);
-   XFillRectangle(disp, draw, phi->gc, 0, 0, EoGetW(phi), EoGetH(phi));
-   XSetForeground(disp, phi->gc, Dpy.pixel_white);
-   XFillRectangle(disp, draw, phi->gc, 1, 1, EoGetW(phi) - 2, EoGetH(phi) - 2);
+   EXPaintRectangle(draw, 0, 0, EoGetW(phi), EoGetH(phi),
+		    Dpy.pixel_black, Dpy.pixel_white);
 }
 
 static void
@@ -199,9 +195,6 @@ HiwinRenderPixmapFini(Hiwin * phi, int shown)
 	HiwinRenderPixmapDrawX(phi, pmap);
 	EClearWindow(EoGetWin(phi));
      }
-
-   EXFreeGC(phi->gc);
-   phi->gc = NULL;
 }
 
 static const HiwinRender HiwinRenderPixmap = {
