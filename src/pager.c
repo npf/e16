@@ -342,7 +342,7 @@ static void
 doPagerUpdate(Pager * p)
 {
    int                 x, y, ax, ay, cx, cy, vx, vy;
-   GC                  gc = None;
+   GC                  gc = NULL;
    EWin               *const *lst;
    int                 i, num, update_screen_included, update_screen_only;
    int                 pager_mode = PagersGetMode();
@@ -885,7 +885,7 @@ static void
 PagerEwinUpdateFromPager(Pager * p, EWin * ewin)
 {
    int                 x, y, w, h;
-   static GC           gc = 0;
+   static GC           gc = NULL;
 
    if (!EoIsShown(ewin) || !EwinIsOnScreen(ewin))
       return;

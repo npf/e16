@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2010 Kim Woelders
+ * Copyright (C) 2004-2013 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -29,7 +29,7 @@
 static              GC
 _get_gc(Win win)
 {
-   static GC           gc = None;
+   static GC           gc = NULL;
    static Visual      *last_vis = NULL;
    Visual             *vis;
 
@@ -38,7 +38,7 @@ _get_gc(Win win)
      {
 	if (gc)
 	   EXFreeGC(gc);
-	gc = None;
+	gc = NULL;
 	last_vis = vis;
      }
 
