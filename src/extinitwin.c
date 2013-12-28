@@ -99,7 +99,6 @@ static EiwLoopFunc *
 _eiw_window_init(Window win, EiwData * d)
 {
    Pixmap              pmap, mask;
-   GC                  gc;
    XColor              cl;
 
    d->cwin = XCreateWindow(disp, win, 0, 0, 32, 32, 0, CopyFromParent,
@@ -108,16 +107,10 @@ _eiw_window_init(Window win, EiwData * d)
 			   CWBackPixel | CWBorderPixel, &d->attr);
 
    pmap = XCreatePixmap(disp, d->cwin, 16, 16, 1);
-   gc = XCreateGC(disp, pmap, 0, NULL);
-   XSetForeground(disp, gc, 0);
-   XFillRectangle(disp, pmap, gc, 0, 0, 16, 16);
-   XFreeGC(disp, gc);
+   EXFillAreaSolid(pmap, 0, 0, 16, 16, 0);
 
    mask = XCreatePixmap(disp, d->cwin, 16, 16, 1);
-   gc = XCreateGC(disp, mask, 0, NULL);
-   XSetForeground(disp, gc, 0);
-   XFillRectangle(disp, mask, gc, 0, 0, 16, 16);
-   XFreeGC(disp, gc);
+   EXFillAreaSolid(mask, 0, 0, 16, 16, 0);
 
    d->curs = XCreatePixmapCursor(disp, pmap, mask, &cl, &cl, 0, 0);
    XDefineCursor(disp, win, d->curs);

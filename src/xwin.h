@@ -265,6 +265,9 @@ void                EXCopyAreaTiled(Drawable src, Pixmap mask, Drawable dst,
 				    int sx, int sy,
 				    unsigned int w, unsigned int h,
 				    int dx, int dy);
+void                EXFillAreaSolid(Drawable dst, int x, int y,
+				    unsigned int w, unsigned int h,
+				    unsigned int pixel);
 
 void                EXWarpPointer(Window xwin, int x, int y);
 int                 EXQueryPointer(Window xwin, int *px, int *py,

@@ -1098,7 +1098,6 @@ ImagestateDrawNoImg(ImageState * is, Drawable draw, int x, int y, int w, int h)
    ImagestateColorsAlloc(is);
 
    gc = EXCreateGC(draw, 0, NULL);
-   XSetFillStyle(disp, gc, FillSolid);
    XSetForeground(disp, gc, is->bg_pixel);
    XFillRectangle(disp, draw, gc, x, y, w, h);
    if (is->bevelstyle != BEVEL_NONE)

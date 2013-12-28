@@ -275,15 +275,8 @@ ECompMgrDeskConfigure(Desk * dsk)
 
    if (dsk->bg.pmap == NoXID)
      {
-	GC                  gc;
-
 	pmap = XCreatePixmap(disp, Mode_compmgr.root, 1, 1, WinGetDepth(VROOT));
-	gc = EXCreateGC(pmap, 0, NULL);
-	XSetClipMask(disp, gc, 0);
-	XSetFillStyle(disp, gc, FillSolid);
-	XSetForeground(disp, gc, dsk->bg.pixel);
-	XFillRectangle(disp, pmap, gc, 0, 0, 1, 1);
-	EXFreeGC(gc);
+	EXFillAreaSolid(pmap, 0, 0, 1, 1, dsk->bg.pixel);
      }
    else
      {

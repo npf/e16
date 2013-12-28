@@ -1653,15 +1653,15 @@ EXCreatePixmapCopy(Pixmap src, unsigned int w, unsigned int h,
 }
 
 void
-EXCopyAreaGC(Drawable src, Drawable dst, GC gc, int sx, int sy, unsigned int w,
-	     unsigned int h, int dx, int dy)
+EXCopyAreaGC(Drawable src, Drawable dst, GC gc, int sx, int sy,
+	     unsigned int w, unsigned int h, int dx, int dy)
 {
    XCopyArea(disp, src, dst, gc, sx, sy, w, h, dx, dy);
 }
 
 void
-EXCopyArea(Drawable src, Drawable dst, int sx, int sy, unsigned int w,
-	   unsigned int h, int dx, int dy)
+EXCopyArea(Drawable src, Drawable dst, int sx, int sy,
+	   unsigned int w, unsigned int h, int dx, int dy)
 {
    GC                  gc;
 
@@ -1686,6 +1686,18 @@ EXCopyAreaTiled(Drawable src, Pixmap mask, Drawable dst, int sx, int sy,
 		   GCTile | GCTileStipXOrigin | GCTileStipYOrigin | GCClipMask,
 		   &gcv);
    XFillRectangle(disp, dst, gc, dx, dy, w, h);
+   EXFreeGC(gc);
+}
+
+void
+EXFillAreaSolid(Drawable dst, int x, int y, unsigned int w, unsigned int h,
+		unsigned int pixel)
+{
+   GC                  gc;
+
+   gc = EXCreateGC(dst, 0, NULL);
+   XSetForeground(disp, gc, pixel);
+   XFillRectangle(disp, dst, gc, x, y, w, h);
    EXFreeGC(gc);
 }
 

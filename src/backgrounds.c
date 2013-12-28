@@ -588,16 +588,8 @@ BackgroundRealize(Background * bg, Win win, Drawable draw, unsigned int rw,
 	pixel = EAllocColor(WinGetCmap(VROOT), bg->bg_solid);
 
 	if (!is_win)
-	  {
-	     GC                  gc;
+	   EXFillAreaSolid(draw, 0, 0, rw, rh, pixel);
 
-	     gc = EXCreateGC(draw, 0, NULL);
-	     XSetClipMask(disp, gc, 0);
-	     XSetFillStyle(disp, gc, FillSolid);
-	     XSetForeground(disp, gc, pixel);
-	     XFillRectangle(disp, draw, gc, 0, 0, rw, rh);
-	     EXFreeGC(gc);
-	  }
 	if (ppmap)
 	   *ppmap = NoXID;
 	if (ppixel)
