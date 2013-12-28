@@ -1794,7 +1794,7 @@ static int
 _HandleXError(Display * dpy __UNUSED__, XErrorEvent * ev)
 {
    if (EDebug(1) && EXErrorFunc)
-      EXErrorFunc(ev);
+      EXErrorFunc((XEvent *) ev);
 
    Dpy.last_error_code = ev->error_code;
 

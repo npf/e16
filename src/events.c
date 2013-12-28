@@ -380,9 +380,9 @@ EventsGetExtensionName(int req)
 }
 
 void
-EventShowError(const XErrorEvent * ev)
+EventShowError(const XEvent * evp)
 {
-   Display            *dpy = disp;
+   const XErrorEvent  *ev = &evp->xerror;
    char                buf[64], buf1[64];
 
    if (ev->request_code < 128)
@@ -390,8 +390,8 @@ EventShowError(const XErrorEvent * ev)
    else
       Esnprintf(buf, sizeof(buf), "%s.%d",
 		EventsGetExtensionName(ev->request_code), ev->minor_code);
-   XGetErrorDatabaseText(dpy, "XRequest", buf, "", buf1, sizeof(buf1));
-   XGetErrorText(dpy, ev->error_code, buf, sizeof(buf));
+   XGetErrorDatabaseText(disp, "XRequest", buf, "", buf1, sizeof(buf1));
+   XGetErrorText(disp, ev->error_code, buf, sizeof(buf));
    Eprintf("*** ERROR: xid=%#lx req=%i/%i err=%i: %s: %s\n",
 	   ev->resourceid, ev->request_code, ev->minor_code,
 	   ev->error_code, buf1, buf);

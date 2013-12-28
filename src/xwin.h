@@ -54,7 +54,7 @@ int                 EDisplayOpen(const char *dstr, int scr);
 void                EDisplayClose(void);
 void                EDisplayDisconnect(void);
 
-typedef void        (EXErrorHandler) (const XErrorEvent *);
+typedef void        (EXErrorHandler) (const XEvent *);
 typedef void        (EXIOErrorHandler) (void);
 void                EDisplaySetErrorHandlers(EXErrorHandler * error,
 					     EXIOErrorHandler * fatal);
