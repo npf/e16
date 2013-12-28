@@ -1715,7 +1715,7 @@ _DeskCurrentGotoAreaStart(int pax, int pay, int ax, int ay)
 
 typedef struct {
    EWin               *const *ewins_desk;
-   EWin               *const *ewins_slide;
+   EWin              **ewins_slide;
    int                 n_ewins_desk, n_ewins_slide;
    int                 slide_dx, slide_dy;
 } slide_area_data_t;
@@ -1750,6 +1750,8 @@ _DeskCurrentGotoAreaEnd(slide_area_data_t * sad)
 	   EwinMove(ewin, EoGetX(ewin) - dx, EoGetY(ewin) - dy,
 		    MRF_NOCHECK_ONSCREEN);
      }
+
+   Efree(sad->ewins_slide);
 
    if (!Conf.desks.slidein)
       EobjsRepaint();
@@ -1824,6 +1826,8 @@ DeskCurrentGotoArea(int ax, int ay)
    lst = EwinListGetAll(&num);
    sad->ewins_desk = lst;
    sad->n_ewins_desk = num;
+   sad->ewins_slide = NULL;
+   sad->n_ewins_slide = 0;
    sad->slide_dx = dx;
    sad->slide_dy = dy;
 
