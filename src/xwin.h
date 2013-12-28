@@ -199,6 +199,7 @@ void                ESetWindowBorderWidth(Win win, unsigned int bw);
 void                ERaiseWindow(Win win);
 void                ELowerWindow(Win win);
 void                EClearWindow(Win win);
+void                EClearWindowExpose(Win win);
 void                EClearArea(Win win, int x, int y,
 			       unsigned int w, unsigned int h);
 

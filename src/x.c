@@ -1147,6 +1147,12 @@ EClearWindow(Win win)
 }
 
 void
+EClearWindowExpose(Win win)
+{
+   XClearArea(disp, win->xwin, 0, 0, 0, 0, True);
+}
+
+void
 EClearArea(Win win, int x, int y, unsigned int w, unsigned int h)
 {
    XClearArea(disp, win->xwin, x, y, w, h, False);
