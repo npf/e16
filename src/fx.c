@@ -119,9 +119,9 @@ FX_ripple_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 	yy = (FX_RIPPLE_WATERH * 2) - yoff;
 	aa = p * p * 64 + d->inch;
 	off = (int)(sinf(aa) * 10 * (1 - p));
-	XCopyArea(disp, d->above, WinGetXwin(d->win), d->gc1, 0, yy,
-		  WinGetW(VROOT), 1, off,
-		  WinGetH(VROOT) - FX_RIPPLE_WATERH + y);
+	EXCopyAreaGC(d->above, WinGetXwin(d->win), d->gc1, 0, yy,
+		     WinGetW(VROOT), 1, off,
+		     WinGetH(VROOT) - FX_RIPPLE_WATERH + y);
      }
 
    return 4;
@@ -232,9 +232,9 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
    /* Copy the area to correct bugs */
    if (d->count == 0)
      {
-	XCopyArea(disp, d->above, WinGetXwin(d->win), d->gc1, 0,
-		  WinGetH(VROOT) - FX_WAVE_GRABH, WinGetW(VROOT),
-		  FX_WAVE_DEPTH * 2, 0, WinGetH(VROOT) - FX_WAVE_GRABH);
+	EXCopyAreaGC(d->above, WinGetXwin(d->win), d->gc1, 0,
+		     WinGetH(VROOT) - FX_WAVE_GRABH, WinGetW(VROOT),
+		     FX_WAVE_DEPTH * 2, 0, WinGetH(VROOT) - FX_WAVE_GRABH);
      }
 
    /* Go through the bottom couple (FX_WAVE_WATERH) lines of the window */
@@ -272,9 +272,9 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 	     sx = (int)(sinf(incx2) * FX_WAVE_DEPTH);
 
 	     /* Display this block */
-	     XCopyArea(disp, d->above, WinGetXwin(d->win), d->gc1, x, yy,	/* x, y */
-		       FX_WAVE_WATERW, 1,	/* w, h */
-		       off + x, WinGetH(VROOT) - FX_WAVE_WATERH + y + sx	/* dx, dy */
+	     EXCopyAreaGC(d->above, WinGetXwin(d->win), d->gc1, x, yy,	/* x, y */
+			  FX_WAVE_WATERW, 1,	/* w, h */
+			  off + x, WinGetH(VROOT) - FX_WAVE_WATERH + y + sx	/* dx, dy */
 		);
 	  }
      }

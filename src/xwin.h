@@ -256,6 +256,9 @@ int                 EXGetGeometry(Window xwin, Window * root_return,
 
 void                EXRestackWindows(Window * windows, int nwindows);
 
+void                EXCopyAreaGC(Drawable src, Drawable dst, GC gc,
+				 int sx, int sy, unsigned int w, unsigned int h,
+				 int dx, int dy);
 void                EXCopyArea(Drawable src, Drawable dst, int sx, int sy,
 			       unsigned int w, unsigned int h, int dx, int dy);
 void                EXCopyAreaTiled(Drawable src, Pixmap mask, Drawable dst,

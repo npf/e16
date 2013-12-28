@@ -412,8 +412,8 @@ doPagerUpdate(Pager * p)
 	     if (update_screen_included && x == cx && y == cy)
 		continue;
 #endif
-	     XCopyArea(disp, p->bgpmap, pmap, gc, 0, 0, p->dw, p->dh,
-		       x * p->dw, y * p->dh);
+	     EXCopyAreaGC(p->bgpmap, pmap, gc, 0, 0, p->dw, p->dh,
+			  x * p->dw, y * p->dh);
 	  }
      }
 
@@ -456,8 +456,7 @@ doPagerUpdate(Pager * p)
 		  XSetClipOrigin(disp, gc, wx, wy);
 	       }
 #endif
-	     XCopyArea(disp, ewin->mini_pmm.pmap, pmap, gc, 0, 0,
-		       ww, wh, wx, wy);
+	     EXCopyAreaGC(ewin->mini_pmm.pmap, pmap, gc, 0, 0, ww, wh, wx, wy);
 #if 0				/* Mask is currently not set anywhere */
 	     if (ewin->mini_pmm.mask)
 		XSetClipMask(disp, gc, NoXID);
@@ -912,8 +911,7 @@ PagerEwinUpdateFromPager(Pager * p, EWin * ewin)
    if (!ewin->mini_pmm.pmap)
       return;
 
-   XCopyArea(disp, WinGetPmap(p->win), ewin->mini_pmm.pmap, gc, x, y, w, h, 0,
-	     0);
+   EXCopyAreaGC(WinGetPmap(p->win), ewin->mini_pmm.pmap, gc, x, y, w, h, 0, 0);
 
 #if 0				/* FIXME - Remove? */
    if (hiwin && ewin == hiwin->ewin)

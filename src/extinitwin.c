@@ -186,8 +186,8 @@ ExtInitWinMain(void)
 			WinGetW(VROOT), WinGetH(VROOT), WinGetDepth(VROOT));
    gcv.subwindow_mode = IncludeInferiors;
    gc = XCreateGC(disp, win, GCSubwindowMode, &gcv);
-   XCopyArea(disp, WinGetXwin(VROOT), pmap, gc,
-	     0, 0, WinGetW(VROOT), WinGetH(VROOT), 0, 0);
+   EXCopyAreaGC(WinGetXwin(VROOT), pmap, gc,
+		0, 0, WinGetW(VROOT), WinGetH(VROOT), 0, 0);
    XSetWindowBackgroundPixmap(disp, win, pmap);
    XMapRaised(disp, win);
    XFreePixmap(disp, pmap);
