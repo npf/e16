@@ -1178,7 +1178,7 @@ EWarpPointer(Win win, int x, int y)
    EXWarpPointer(win ? win->xwin : None, x, y);
 }
 
-Bool
+int
 EXQueryPointer(Window xwin, int *px, int *py, Window * pchild,
 	       unsigned int *pmask)
 {
@@ -1202,7 +1202,7 @@ EXQueryPointer(Window xwin, int *px, int *py, Window * pchild,
 			pmask);
 }
 
-Bool
+int
 EQueryPointer(Win win, int *px, int *py, Window * pchild, unsigned int *pmask)
 {
    Window              xwin;

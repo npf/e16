@@ -41,7 +41,7 @@ static Window       new_init_win_ext = None;
 #endif
 
 /* True if we are saving state for a doExit("restart") */
-static int          restarting = False;
+static char         restarting = 0;
 
 #if USE_SM
 
@@ -491,7 +491,7 @@ doSMExit(int mode, const char *params)
    if (EDebug(EDBUG_TYPE_SESSION))
       Eprintf("doSMExit: mode=%d prm=%p\n", mode, params);
 
-   restarting = True;
+   restarting = 1;
 
    SessionSave(1);
 
@@ -563,7 +563,7 @@ doSMExit(int mode, const char *params)
 	break;
      }
 
-   restarting = False;
+   restarting = 0;
    SoundPlay(SOUND_EXIT);
    EExit(0);
 }

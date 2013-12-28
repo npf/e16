@@ -223,7 +223,7 @@ Pixmap              EWindowGetShapePixmap(Win win);
 Pixmap              EWindowGetShapePixmapInverted(Win win);
 
 void                EWarpPointer(Win win, int x, int y);
-Bool                EQueryPointer(Win win, int *px, int *py,
+int                 EQueryPointer(Win win, int *px, int *py,
 				  Window * pchild, unsigned int *pmask);
 
 unsigned int        EAllocColor(Colormap cmap, unsigned int argb);
@@ -264,7 +264,7 @@ void                EXCopyAreaTiled(Drawable src, Pixmap mask, Drawable dst,
 				    int dx, int dy);
 
 void                EXWarpPointer(Window xwin, int x, int y);
-Bool                EXQueryPointer(Window xwin, int *px, int *py,
+int                 EXQueryPointer(Window xwin, int *px, int *py,
 				   Window * pchild, unsigned int *pmask);
 
 Pixmap              EXCreatePixmapCopy(Pixmap src, unsigned int w,
