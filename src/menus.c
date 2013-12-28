@@ -948,7 +948,6 @@ MenuDrawItem(Menu * m, MenuItem * mi, char shape, int state)
 	int                 x, y, w, h;
 	int                 item_type;
 	ImageClass         *ic;
-	GC                  gc;
 	PmapMask            pmm;
 
 	EGetGeometry(mi->win, NULL, &x, &y, &w, &h, NULL, NULL);
@@ -962,9 +961,7 @@ MenuDrawItem(Menu * m, MenuItem * mi, char shape, int state)
 
 	if (!m->style->use_item_bg)
 	  {
-	     gc = EXCreateGC(m->pmm.pmap, 0, NULL);
-	     XCopyArea(disp, WinGetPmap(m->win), mi_pmm->pmap, gc, x, y, w, h,
-		       0, 0);
+	     EXCopyArea(WinGetPmap(m->win), mi_pmm->pmap, x, y, w, h, 0, 0);
 	     if ((mi->state != STATE_NORMAL) || (mi->child))
 	       {
 		  ImageclassApplyCopy(ic, mi->win, w, h, 0, 0, mi->state, &pmm,
@@ -973,7 +970,6 @@ MenuDrawItem(Menu * m, MenuItem * mi, char shape, int state)
 				  0, 0, w, h, 0, 0);
 		  PmapMaskFree(&pmm);
 	       }
-	     EXFreeGC(gc);
 	  }
 	else
 	  {
