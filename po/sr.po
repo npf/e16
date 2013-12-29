@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: trunk\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-12-28 00:31+0100\n"
+"POT-Creation-Date: 2013-12-29 09:52+0100\n"
 "PO-Revision-Date: 2013-06-20 12:49+0000\n"
 "Last-Translator: Саша Петровић <salepetronije@gmail.com>\n"
 "Language-Team: српски <српски <xfce-i18n@xfce.org>>\n"
@@ -179,7 +179,7 @@ msgstr "Пажња !!!"
 msgid "OK"
 msgstr "У реду"
 
-#: src/backgrounds.c:1517
+#: src/backgrounds.c:1509
 #, c-format
 msgid ""
 "Background definition information:\n"
@@ -190,11 +190,11 @@ msgstr ""
 "Назив: %s\n"
 "Датотека:%s"
 
-#: src/backgrounds.c:1518
+#: src/backgrounds.c:1510
 msgid "-NONE-"
 msgstr "-НИШТА-"
 
-#: src/backgrounds.c:1690 src/backgrounds.c:1692
+#: src/backgrounds.c:1682 src/backgrounds.c:1684
 msgid ""
 "No\n"
 "Background"
@@ -202,40 +202,40 @@ msgstr ""
 "Без\n"
 "позадине"
 
-#: src/backgrounds.c:1786 src/backgrounds.c:2222
+#: src/backgrounds.c:1778 src/backgrounds.c:2214
 #, c-format
 msgid "Unused backgrounds freed after %2i:%02i:%02i"
 msgstr "Неупотребљене позадине ослобођене након %2i:%02i:%02i"
 
-#: src/backgrounds.c:2008
+#: src/backgrounds.c:2000
 msgid "Use background image"
 msgstr "Користи позадинску слику"
 
-#: src/backgrounds.c:2012
+#: src/backgrounds.c:2004
 msgid "Keep aspect on scale"
 msgstr "Чувај размеру"
 
-#: src/backgrounds.c:2016
+#: src/backgrounds.c:2008
 msgid "Tile image across background"
 msgstr "Поплочај сликом позадину"
 
-#: src/backgrounds.c:2025
+#: src/backgrounds.c:2017
 msgid "Move to Front"
 msgstr "Помакни испред"
 
-#: src/backgrounds.c:2030
+#: src/backgrounds.c:2022
 msgid "Duplicate"
 msgstr "Удвостручи"
 
-#: src/backgrounds.c:2034
+#: src/backgrounds.c:2026
 msgid "Unlist"
 msgstr "Уклони са списка"
 
-#: src/backgrounds.c:2039
+#: src/backgrounds.c:2031
 msgid "Delete File"
 msgstr "Обриши датотеку"
 
-#: src/backgrounds.c:2050
+#: src/backgrounds.c:2042
 msgid ""
 "Background\n"
 "Image\n"
@@ -249,59 +249,59 @@ msgstr ""
 "и\n"
 "поравнање\n"
 
-#: src/backgrounds.c:2107
+#: src/backgrounds.c:2099
 msgid "BG Colour"
 msgstr "Боја позадине"
 
-#: src/backgrounds.c:2112
+#: src/backgrounds.c:2104
 msgid "Red:"
 msgstr "Црвена:"
 
-#: src/backgrounds.c:2123
+#: src/backgrounds.c:2115
 msgid "Green:"
 msgstr "Зелена:"
 
-#: src/backgrounds.c:2134
+#: src/backgrounds.c:2126
 msgid "Blue:"
 msgstr "Плава:"
 
-#: src/backgrounds.c:2167
+#: src/backgrounds.c:2159
 msgid "Pre-scan BG's"
 msgstr "Поново учитај позадинске боје"
 
-#: src/backgrounds.c:2175
+#: src/backgrounds.c:2167
 msgid "Sort by File"
 msgstr "Разврстај по датотеци"
 
-#: src/backgrounds.c:2180
+#: src/backgrounds.c:2172
 msgid "Sort by Attr."
 msgstr "Разврстај по особинама"
 
-#: src/backgrounds.c:2186
+#: src/backgrounds.c:2178
 msgid "Sort by Image"
 msgstr "Разврстај по слици"
 
-#: src/backgrounds.c:2206
+#: src/backgrounds.c:2198
 msgid "Use dithering in Hi-Colour"
 msgstr "Користи прелазе у бојама високог квалитета"
 
-#: src/backgrounds.c:2210
+#: src/backgrounds.c:2202
 msgid "Background overrides theme"
 msgstr "Боја позадине надјачава тему"
 
-#: src/backgrounds.c:2215
+#: src/backgrounds.c:2207
 msgid "Enable background transparency compatibility mode"
 msgstr "Омогући начин рада сагласности са прозирношћу позадине"
 
-#: src/backgrounds.c:2239 src/mod-trans.c:200
+#: src/backgrounds.c:2231 src/mod-trans.c:200
 msgid "Background"
 msgstr "Позадина"
 
-#: src/backgrounds.c:2240
+#: src/backgrounds.c:2232
 msgid "Desktop Background Settings"
 msgstr "Напредне поставке позадине површи"
 
-#: src/backgrounds.c:2243
+#: src/backgrounds.c:2235
 msgid ""
 "Enlightenment Desktop\n"
 "Background Settings Dialog"
@@ -418,7 +418,7 @@ msgstr "Покрећем Просвећење..."
 msgid "Settings..."
 msgstr "Поставке..."
 
-#: src/container.c:1187 src/dialog.c:702 src/pager.c:1021 config/strings.c:30
+#: src/container.c:1187 src/dialog.c:702 src/pager.c:1019 config/strings.c:30
 #: config/strings.c:122
 msgid "Close"
 msgstr "Затвори"
@@ -427,7 +427,7 @@ msgstr "Затвори"
 msgid "Create New Iconbox"
 msgstr "Направи нову кућицу за иконицу"
 
-#: src/container.c:1504 src/container.c:1580 src/menus.c:1972
+#: src/container.c:1504 src/container.c:1580 src/menus.c:1968
 #, c-format
 msgid "Icon size: %2d"
 msgstr "Величина иконице: %2d"
@@ -508,7 +508,7 @@ msgstr "Приказуј имена иконица"
 msgid "Animation mode:"
 msgstr "Начин утисака:"
 
-#: src/container.c:1676 src/desktops.c:2727
+#: src/container.c:1676 src/desktops.c:2731
 msgid "Off"
 msgstr "Искључено"
 
@@ -605,55 +605,55 @@ msgstr ""
 "Кликните овде да спустите ову\n"
 "радну површ испод осталих."
 
-#: src/desktops.c:2486
+#: src/desktops.c:2490
 msgid "Number of virtual desktops:"
 msgstr "Број нестварних радних површи"
 
-#: src/desktops.c:2512
+#: src/desktops.c:2516
 msgid "Slide desktops around when changing"
 msgstr "Клизни радном површи около при њиховој промени"
 
-#: src/desktops.c:2518
+#: src/desktops.c:2522
 msgid "Desktop Slide speed:"
 msgstr "Брзина клизања радне површи:"
 
-#: src/desktops.c:2532
+#: src/desktops.c:2536
 msgid "Wrap desktops around"
 msgstr "Изобличи радне површи"
 
-#: src/desktops.c:2540
+#: src/desktops.c:2544
 msgid "Display desktop dragbar"
 msgstr "Прикажи траку за превлачење радних површи"
 
-#: src/desktops.c:2546
+#: src/desktops.c:2550
 msgid "Drag bar position:"
 msgstr "Положај траке превлачења:"
 
-#: src/desktops.c:2550
+#: src/desktops.c:2554
 msgid "Top"
 msgstr "на врху"
 
-#: src/desktops.c:2556
+#: src/desktops.c:2560
 msgid "Bottom"
 msgstr "на дну"
 
-#: src/desktops.c:2562 src/pager.c:1923 src/pager.c:1948 src/pager.c:1973
+#: src/desktops.c:2566 src/pager.c:1921 src/pager.c:1946 src/pager.c:1971
 msgid "Left"
 msgstr "Лево"
 
-#: src/desktops.c:2568 src/pager.c:1935 src/pager.c:1960 src/pager.c:1985
+#: src/desktops.c:2572 src/pager.c:1933 src/pager.c:1958 src/pager.c:1983
 msgid "Right"
 msgstr "Десно"
 
-#: src/desktops.c:2576 src/menus-misc.c:575
+#: src/desktops.c:2580 src/menus-misc.c:575
 msgid "Desks"
 msgstr "Радне површи"
 
-#: src/desktops.c:2577
+#: src/desktops.c:2581
 msgid "Multiple Desktop Settings"
 msgstr "Поставке вишеструких радних површи"
 
-#: src/desktops.c:2580
+#: src/desktops.c:2584
 msgid ""
 "Enlightenment Multiple Desktop\n"
 "Settings Dialog"
@@ -661,39 +661,39 @@ msgstr ""
 "Прозор поставки вишеструких\n"
 "радних површи Просвећења"
 
-#: src/desktops.c:2681
+#: src/desktops.c:2685
 msgid "Virtual Desktop size:"
 msgstr "Величина нестварне радне површи:"
 
-#: src/desktops.c:2717
+#: src/desktops.c:2721
 msgid "Wrap virtual desktops around"
 msgstr "Преломи радне површи около"
 
-#: src/desktops.c:2724
+#: src/desktops.c:2728
 msgid "Edge Flip Mode:"
 msgstr "Начин пребацивања преко ивица"
 
-#: src/desktops.c:2732
+#: src/desktops.c:2736
 msgid "On"
 msgstr "Укључено"
 
-#: src/desktops.c:2737
+#: src/desktops.c:2741
 msgid "Only when moving window"
 msgstr "Само при померању прозора"
 
-#: src/desktops.c:2743
+#: src/desktops.c:2747
 msgid "Resistance at edge of screen:"
 msgstr "Отпор ивици екрана:"
 
-#: src/desktops.c:2755
+#: src/desktops.c:2759
 msgid "Areas"
 msgstr "Области"
 
-#: src/desktops.c:2756
+#: src/desktops.c:2760
 msgid "Virtual Desktop Settings"
 msgstr "Поставке нестварне радне површи"
 
-#: src/desktops.c:2759
+#: src/desktops.c:2763
 msgid ""
 "Enlightenment Virtual Desktop\n"
 "Settings Dialog"
@@ -705,7 +705,7 @@ msgstr ""
 msgid "Apply"
 msgstr "Примени"
 
-#: src/ecompmgr.c:2311
+#: src/ecompmgr.c:2304
 msgid ""
 "Cannot enable Composite Manager.\n"
 "Use xdpyinfo to check that\n"
@@ -1221,27 +1221,27 @@ msgstr "Умањи овај скуп"
 msgid "Group %i"
 msgstr "Скуп %i"
 
-#: src/menus.c:1995
+#: src/menus.c:1991
 msgid "Animated display of menus"
 msgstr "Оживљени приказ изборника"
 
-#: src/menus.c:2000
+#: src/menus.c:1996
 msgid "Always pop up menus on screen"
 msgstr "Увек искочи изборницима на екран"
 
-#: src/menus.c:2005
+#: src/menus.c:2001
 msgid "Warp pointer after moving menus"
 msgstr "Преломи показивач после премештања изборника"
 
-#: src/menus.c:2022
+#: src/menus.c:2018
 msgid "Menus"
 msgstr "Изборници"
 
-#: src/menus.c:2023
+#: src/menus.c:2019
 msgid "Menu Settings"
 msgstr "Поставке изборника"
 
-#: src/menus.c:2026
+#: src/menus.c:2022
 msgid ""
 "Enlightenment Menu\n"
 "Settings Dialog"
@@ -1307,123 +1307,123 @@ msgstr ""
 "Прозор поставки појединачне\n"
 "прозирности Просвећења"
 
-#: src/pager.c:1010 config/strings.c:49 config/strings.c:121
+#: src/pager.c:1008 config/strings.c:49 config/strings.c:121
 msgid "Window Options"
 msgstr "Могућности прозора"
 
-#: src/pager.c:1017 config/strings.c:51 config/strings.c:124
+#: src/pager.c:1015 config/strings.c:51 config/strings.c:124
 msgid "Iconify"
 msgstr "Умањи"
 
-#: src/pager.c:1025 config/strings.c:123
+#: src/pager.c:1023 config/strings.c:123
 msgid "Annihilate"
 msgstr "Уништи"
 
-#: src/pager.c:1029
+#: src/pager.c:1027
 msgid "Stick / Unstick"
 msgstr "Залепи / Одлепи"
 
-#: src/pager.c:1036
+#: src/pager.c:1034
 msgid "Desktop Options"
 msgstr "Могућности површи"
 
-#: src/pager.c:1042
+#: src/pager.c:1040
 msgid "Pager Settings..."
 msgstr "Поставке страничника..."
 
-#: src/pager.c:1047
+#: src/pager.c:1045
 msgid "Snapshotting Off"
 msgstr "Сликање је искључено"
 
-#: src/pager.c:1051
+#: src/pager.c:1049
 msgid "High Quality Off"
 msgstr "Висок квалитет је искључен"
 
-#: src/pager.c:1053
+#: src/pager.c:1051
 msgid "High Quality On"
 msgstr "Висок квалитет"
 
-#: src/pager.c:1058
+#: src/pager.c:1056
 msgid "Snapshotting On"
 msgstr "Сликање је укључено"
 
-#: src/pager.c:1062
+#: src/pager.c:1060
 msgid "Zoom Off"
 msgstr "Увећање је искључено"
 
-#: src/pager.c:1064
+#: src/pager.c:1062
 msgid "Zoom On"
 msgstr "Увећање је укључено"
 
-#: src/pager.c:1808 src/pager.c:1903
+#: src/pager.c:1806 src/pager.c:1901
 msgid "Pager scanning speed:"
 msgstr "Брзина прегледа страничника"
 
-#: src/pager.c:1809 src/pager.c:1904
+#: src/pager.c:1807 src/pager.c:1902
 msgid "lines per second"
 msgstr "линија по секунди"
 
-#: src/pager.c:1842
+#: src/pager.c:1840
 msgid "Enable pager display"
 msgstr "Омогући приказ страничника"
 
-#: src/pager.c:1852
+#: src/pager.c:1850
 msgid "Pager Mode:"
 msgstr "Начин рада страничника"
 
-#: src/pager.c:1856
+#: src/pager.c:1854
 msgid "Simple"
 msgstr "Једноставно"
 
-#: src/pager.c:1862
+#: src/pager.c:1860
 msgid "Make miniature snapshots of the screen"
 msgstr "Образује умањени приказ екрана"
 
-#: src/pager.c:1869
+#: src/pager.c:1867
 msgid "Live Update"
 msgstr "Живи приказ"
 
-#: src/pager.c:1880
+#: src/pager.c:1878
 msgid "Smooth high quality snapshots in snapshot mode"
 msgstr "Глатки високи квалитет слика у начину рада приказа слика"
 
-#: src/pager.c:1885
+#: src/pager.c:1883
 msgid "Zoom in on pager windows when mouse is over them"
 msgstr ""
 
-#: src/pager.c:1891
+#: src/pager.c:1889
 msgid "Pop up window title when mouse is over the window"
 msgstr ""
 
-#: src/pager.c:1896
+#: src/pager.c:1894
 msgid "Continuously scan screen to update pager"
 msgstr ""
 
-#: src/pager.c:1919
+#: src/pager.c:1917
 msgid "Mouse button to select and drag windows:"
 msgstr ""
 
-#: src/pager.c:1929 src/pager.c:1954 src/pager.c:1979
+#: src/pager.c:1927 src/pager.c:1952 src/pager.c:1977
 msgid "Middle"
 msgstr "Средње"
 
-#: src/pager.c:1944
+#: src/pager.c:1942
 msgid "Mouse button to select desktops:"
 msgstr ""
 
-#: src/pager.c:1969
+#: src/pager.c:1967
 msgid "Mouse button to display pager menu:"
 msgstr ""
 
-#: src/pager.c:1993
+#: src/pager.c:1991
 msgid "Pagers"
 msgstr "Страничници"
 
-#: src/pager.c:1994
+#: src/pager.c:1992
 msgid "Pager Settings"
 msgstr "Поставке страничника"
 
-#: src/pager.c:1997
+#: src/pager.c:1995
 msgid ""
 "Enlightenment Desktop & Area\n"
 "Pager Settings Dialog"

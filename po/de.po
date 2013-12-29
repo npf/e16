@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-12-28 00:31+0100\n"
+"POT-Creation-Date: 2013-12-29 09:52+0100\n"
 "PO-Revision-Date: 2010-05-09 01:21+0000\n"
 "Last-Translator: Peter Wehrfritz <Unknown>\n"
 "Language-Team: Enlightenment l10n <enlightenment-intl@lists.sourceforge."
@@ -213,7 +213,7 @@ msgstr "OK"
 
 # src/settings.c:2273 src/settings.c:2395 src/settings.c:2651
 # src/settings.c:2774 src/settings.c:3393
-#: src/backgrounds.c:1517
+#: src/backgrounds.c:1509
 #, c-format
 msgid ""
 "Background definition information:\n"
@@ -226,12 +226,12 @@ msgstr ""
 
 # src/settings.c:2270 src/settings.c:2392 src/settings.c:2648
 # src/settings.c:2771 src/settings.c:3390
-#: src/backgrounds.c:1518
+#: src/backgrounds.c:1510
 msgid "-NONE-"
 msgstr "-/-"
 
 # src/settings.c:2526 src/settings.c:2528
-#: src/backgrounds.c:1690 src/backgrounds.c:1692
+#: src/backgrounds.c:1682 src/backgrounds.c:1684
 msgid ""
 "No\n"
 "Background"
@@ -240,48 +240,48 @@ msgstr ""
 "Hintergrund"
 
 # src/settings.c:2713 src/settings.c:3281
-#: src/backgrounds.c:1786 src/backgrounds.c:2222
+#: src/backgrounds.c:1778 src/backgrounds.c:2214
 #, c-format
 msgid "Unused backgrounds freed after %2i:%02i:%02i"
 msgstr "Unbenutzte Hintergründe freigeben nach %2i:%02i:%02i"
 
 # src/settings.c:3123
-#: src/backgrounds.c:2008
+#: src/backgrounds.c:2000
 msgid "Use background image"
 msgstr "Hintergrundbild verwenden"
 
 # src/settings.c:3145
-#: src/backgrounds.c:2012
+#: src/backgrounds.c:2004
 msgid "Keep aspect on scale"
 msgstr "Proportionen beim Skalieren beibehalten"
 
 # src/settings.c:3167
-#: src/backgrounds.c:2016
+#: src/backgrounds.c:2008
 msgid "Tile image across background"
 msgstr "Hintergrund damit kacheln"
 
 # src/settings.c:3081
-#: src/backgrounds.c:2025
+#: src/backgrounds.c:2017
 msgid "Move to Front"
 msgstr "An Anfang stellen"
 
 # src/settings.c:3088
-#: src/backgrounds.c:2030
+#: src/backgrounds.c:2022
 msgid "Duplicate"
 msgstr "Duplizieren"
 
 # src/settings.c:3094
-#: src/backgrounds.c:2034
+#: src/backgrounds.c:2026
 msgid "Unlist"
 msgstr "Aus Liste entfernen"
 
 # src/settings.c:3100
-#: src/backgrounds.c:2039
+#: src/backgrounds.c:2031
 msgid "Delete File"
 msgstr "Datei löschen"
 
 # src/settings.c:3183
-#: src/backgrounds.c:2050
+#: src/backgrounds.c:2042
 msgid ""
 "Background\n"
 "Image\n"
@@ -295,71 +295,71 @@ msgstr ""
 "-ausrichtung\n"
 
 # src/settings.c:3070
-#: src/backgrounds.c:2107
+#: src/backgrounds.c:2099
 msgid "BG Colour"
 msgstr "Hintergrundfarbe"
 
 # src/settings.c:3109
-#: src/backgrounds.c:2112
+#: src/backgrounds.c:2104
 msgid "Red:"
 msgstr "Rot:"
 
 # src/settings.c:3131
-#: src/backgrounds.c:2123
+#: src/backgrounds.c:2115
 msgid "Green:"
 msgstr "Grün:"
 
 # src/settings.c:3153
-#: src/backgrounds.c:2134
+#: src/backgrounds.c:2126
 msgid "Blue:"
 msgstr "Blau:"
 
 # src/settings.c:3328
-#: src/backgrounds.c:2167
+#: src/backgrounds.c:2159
 msgid "Pre-scan BG's"
 msgstr "Hintergründe überfliegen"
 
 # src/settings.c:3338
-#: src/backgrounds.c:2175
+#: src/backgrounds.c:2167
 msgid "Sort by File"
 msgstr "Nach Datei sortieren"
 
 # src/settings.c:3344
-#: src/backgrounds.c:2180
+#: src/backgrounds.c:2172
 msgid "Sort by Attr."
 msgstr "Nach Attr. sortieren"
 
 # src/settings.c:3350
-#: src/backgrounds.c:2186
+#: src/backgrounds.c:2178
 msgid "Sort by Image"
 msgstr "Nach Bild sortieren"
 
 # src/settings.c:3264
-#: src/backgrounds.c:2206
+#: src/backgrounds.c:2198
 msgid "Use dithering in Hi-Colour"
 msgstr "In High Color rastern"
 
 # src/settings.c:3271
-#: src/backgrounds.c:2210
+#: src/backgrounds.c:2202
 msgid "Background overrides theme"
 msgstr "Hintergrund hat Vorrang vor Thema"
 
-#: src/backgrounds.c:2215
+#: src/backgrounds.c:2207
 msgid "Enable background transparency compatibility mode"
 msgstr "Verwende Kompatibilitätsmodus für Pseudodurchsichtigkeit"
 
 # src/settings.c:2526 src/settings.c:2528
-#: src/backgrounds.c:2239 src/mod-trans.c:200
+#: src/backgrounds.c:2231 src/mod-trans.c:200
 msgid "Background"
 msgstr "Hintergrund"
 
 # src/settings.c:3044
-#: src/backgrounds.c:2240
+#: src/backgrounds.c:2232
 msgid "Desktop Background Settings"
 msgstr "Hintergrundeinstellungen"
 
 # src/settings.c:3044
-#: src/backgrounds.c:2243
+#: src/backgrounds.c:2235
 msgid ""
 "Enlightenment Desktop\n"
 "Background Settings Dialog"
@@ -504,7 +504,7 @@ msgstr "Einstellungen ..."
 # src/settings.c:1524 src/settings.c:1612 src/settings.c:2014
 # src/settings.c:3407 src/settings.c:3752 src/settings.c:4050
 # src/settings.c:4188
-#: src/container.c:1187 src/dialog.c:702 src/pager.c:1021 config/strings.c:30
+#: src/container.c:1187 src/dialog.c:702 src/pager.c:1019 config/strings.c:30
 #: config/strings.c:122
 msgid "Close"
 msgstr "Schließen"
@@ -515,7 +515,7 @@ msgid "Create New Iconbox"
 msgstr "Neue Iconbox erzeugen"
 
 # src/settings.c:3643
-#: src/container.c:1504 src/container.c:1580 src/menus.c:1972
+#: src/container.c:1504 src/container.c:1580 src/menus.c:1968
 #, c-format
 msgid "Icon size: %2d"
 msgstr "Icongröße: %2d"
@@ -614,7 +614,7 @@ msgstr "Iconnamen anzeigen"
 msgid "Animation mode:"
 msgstr ""
 
-#: src/container.c:1676 src/desktops.c:2727
+#: src/container.c:1676 src/desktops.c:2731
 msgid "Off"
 msgstr "An"
 
@@ -720,69 +720,69 @@ msgstr ""
 "ganz nach unten zu heben."
 
 # src/settings.c:882
-#: src/desktops.c:2486
+#: src/desktops.c:2490
 msgid "Number of virtual desktops:"
 msgstr "Anzahl virtueller Desktops:"
 
 # src/settings.c:1750
-#: src/desktops.c:2512
+#: src/desktops.c:2516
 msgid "Slide desktops around when changing"
 msgstr "Desktops gleiten beim Wechseln herum"
 
 # src/settings.c:1922
-#: src/desktops.c:2518
+#: src/desktops.c:2522
 msgid "Desktop Slide speed:"
 msgstr "Desktop-Gleitgeschwindigkeit:"
 
 # src/settings.c:1120
-#: src/desktops.c:2532
+#: src/desktops.c:2536
 msgid "Wrap desktops around"
 msgstr "Virtuelle Desktops zyklisch durchlaufen"
 
 # src/settings.c:1858
-#: src/desktops.c:2540
+#: src/desktops.c:2544
 msgid "Display desktop dragbar"
 msgstr "Desktop-Ziehbalken anzeigen"
 
 # src/settings.c:1867
-#: src/desktops.c:2546
+#: src/desktops.c:2550
 msgid "Drag bar position:"
 msgstr "Position des Ziehbalkens:"
 
 # src/settings.c:1878
-#: src/desktops.c:2550
+#: src/desktops.c:2554
 msgid "Top"
 msgstr "Oben"
 
 # src/settings.c:1885
-#: src/desktops.c:2556
+#: src/desktops.c:2560
 msgid "Bottom"
 msgstr "Unten"
 
 # src/settings.c:218 src/settings.c:250 src/settings.c:282
 # src/settings.c:1896
-#: src/desktops.c:2562 src/pager.c:1923 src/pager.c:1948 src/pager.c:1973
+#: src/desktops.c:2566 src/pager.c:1921 src/pager.c:1946 src/pager.c:1971
 msgid "Left"
 msgstr "Links"
 
 # src/settings.c:234 src/settings.c:266 src/settings.c:298
 # src/settings.c:1903
-#: src/desktops.c:2568 src/pager.c:1935 src/pager.c:1960 src/pager.c:1985
+#: src/desktops.c:2572 src/pager.c:1933 src/pager.c:1958 src/pager.c:1983
 msgid "Right"
 msgstr "Rechts"
 
 # src/snaps.c:453
-#: src/desktops.c:2576 src/menus-misc.c:575
+#: src/desktops.c:2580 src/menus-misc.c:575
 msgid "Desks"
 msgstr "Desktops"
 
 # src/settings.c:856
-#: src/desktops.c:2577
+#: src/desktops.c:2581
 msgid "Multiple Desktop Settings"
 msgstr "Mehrfach-Desktop-Einstellungen"
 
 # src/main.c:89
-#: src/desktops.c:2580
+#: src/desktops.c:2584
 msgid ""
 "Enlightenment Multiple Desktop\n"
 "Settings Dialog"
@@ -791,43 +791,43 @@ msgstr ""
 "Einstellungsdialog"
 
 # src/settings.c:1066
-#: src/desktops.c:2681
+#: src/desktops.c:2685
 msgid "Virtual Desktop size:"
 msgstr "Virtuelle Desktopgröße:"
 
 # src/settings.c:1120
-#: src/desktops.c:2717
+#: src/desktops.c:2721
 msgid "Wrap virtual desktops around"
 msgstr "Virtuelle Desktops zyklisch durchlaufen"
 
-#: src/desktops.c:2724
+#: src/desktops.c:2728
 msgid "Edge Flip Mode:"
 msgstr "Magische Kanten Modus"
 
-#: src/desktops.c:2732
+#: src/desktops.c:2736
 msgid "On"
 msgstr "Aus"
 
-#: src/desktops.c:2737
+#: src/desktops.c:2741
 msgid "Only when moving window"
 msgstr "Nur beim Verschieben von Fenstern"
 
 # src/settings.c:1134
-#: src/desktops.c:2743
+#: src/desktops.c:2747
 msgid "Resistance at edge of screen:"
 msgstr "Widerstand der Bildschirmkante:"
 
-#: src/desktops.c:2755
+#: src/desktops.c:2759
 msgid "Areas"
 msgstr "Bereiche"
 
 # src/settings.c:1040
-#: src/desktops.c:2756
+#: src/desktops.c:2760
 msgid "Virtual Desktop Settings"
 msgstr "Einstellungen zu virtuellen Desktops"
 
 # src/settings.c:1040
-#: src/desktops.c:2759
+#: src/desktops.c:2763
 msgid ""
 "Enlightenment Virtual Desktop\n"
 "Settings Dialog"
@@ -844,7 +844,7 @@ msgstr ""
 msgid "Apply"
 msgstr "Übernehmen"
 
-#: src/ecompmgr.c:2311
+#: src/ecompmgr.c:2304
 msgid ""
 "Cannot enable Composite Manager.\n"
 "Use xdpyinfo to check that\n"
@@ -1496,32 +1496,32 @@ msgid "Group %i"
 msgstr "Gruppe %i"
 
 # src/settings.c:1795
-#: src/menus.c:1995
+#: src/menus.c:1991
 msgid "Animated display of menus"
 msgstr "Animierte Menüdarstellung"
 
 # src/settings.c:1810
-#: src/menus.c:2000
+#: src/menus.c:1996
 msgid "Always pop up menus on screen"
 msgstr "Menüs immer auf dem Bildschirm erscheinen lassen"
 
 # src/settings.c:1826
-#: src/menus.c:2005
+#: src/menus.c:2001
 msgid "Warp pointer after moving menus"
 msgstr "Zeiger verschieben, wenn Menüs bewegt werden"
 
 # src/snaps.c:437
-#: src/menus.c:2022
+#: src/menus.c:2018
 msgid "Menus"
 msgstr "Menüs"
 
 # src/settings.c:393
-#: src/menus.c:2023
+#: src/menus.c:2019
 msgid "Menu Settings"
 msgstr "Menü-Einstellungen"
 
 # src/main.c:89
-#: src/menus.c:2026
+#: src/menus.c:2022
 msgid ""
 "Enlightenment Menu\n"
 "Settings Dialog"
@@ -1595,147 +1595,147 @@ msgstr ""
 "Einstellungsdialog"
 
 # src/pager.c:1268
-#: src/pager.c:1010 config/strings.c:49 config/strings.c:121
+#: src/pager.c:1008 config/strings.c:49 config/strings.c:121
 msgid "Window Options"
 msgstr "Fensteroptionen"
 
 # src/pager.c:1274
-#: src/pager.c:1017 config/strings.c:51 config/strings.c:124
+#: src/pager.c:1015 config/strings.c:51 config/strings.c:124
 msgid "Iconify"
 msgstr "Minimieren"
 
 # src/pager.c:1280
-#: src/pager.c:1025 config/strings.c:123
+#: src/pager.c:1023 config/strings.c:123
 msgid "Annihilate"
 msgstr "Zerstören"
 
 # src/pager.c:1283
-#: src/pager.c:1029
+#: src/pager.c:1027
 msgid "Stick / Unstick"
 msgstr "Ankleben / Ablösen"
 
 # src/pager.c:1295
-#: src/pager.c:1036
+#: src/pager.c:1034
 msgid "Desktop Options"
 msgstr "Desktopoptionen"
 
 # src/pager.c:1301
-#: src/pager.c:1042
+#: src/pager.c:1040
 msgid "Pager Settings..."
 msgstr "Pager-Einstellungen..."
 
 # src/pager.c:1311
-#: src/pager.c:1047
+#: src/pager.c:1045
 msgid "Snapshotting Off"
 msgstr "Schnappschüsse aus"
 
 # src/pager.c:1323
-#: src/pager.c:1051
+#: src/pager.c:1049
 msgid "High Quality Off"
 msgstr "Hohe Qualität aus"
 
 # src/pager.c:1318
-#: src/pager.c:1053
+#: src/pager.c:1051
 msgid "High Quality On"
 msgstr "Hohe Qualität ein"
 
 # src/pager.c:1306
-#: src/pager.c:1058
+#: src/pager.c:1056
 msgid "Snapshotting On"
 msgstr "Schnappschüsse ein"
 
-#: src/pager.c:1062
+#: src/pager.c:1060
 msgid "Zoom Off"
 msgstr "Zoom aus"
 
-#: src/pager.c:1064
+#: src/pager.c:1062
 msgid "Zoom On"
 msgstr "Zoom an"
 
 # src/settings.c:87 src/settings.c:192
-#: src/pager.c:1808 src/pager.c:1903
+#: src/pager.c:1806 src/pager.c:1901
 msgid "Pager scanning speed:"
 msgstr "Pager-Abtastgeschwindigkeit:"
 
 # src/settings.c:88 src/settings.c:193
-#: src/pager.c:1809 src/pager.c:1904
+#: src/pager.c:1807 src/pager.c:1902
 msgid "lines per second"
 msgstr "Zeilen pro Sekunde"
 
 # src/settings.c:135
-#: src/pager.c:1842
+#: src/pager.c:1840
 msgid "Enable pager display"
 msgstr "Pager anzeigen"
 
-#: src/pager.c:1852
+#: src/pager.c:1850
 msgid "Pager Mode:"
 msgstr "Pager Modus:"
 
-#: src/pager.c:1856
+#: src/pager.c:1854
 msgid "Simple"
 msgstr "Schlicht"
 
 # src/settings.c:144
-#: src/pager.c:1862
+#: src/pager.c:1860
 msgid "Make miniature snapshots of the screen"
 msgstr "Mini-Schnappschüsse des Bildschirms"
 
-#: src/pager.c:1869
+#: src/pager.c:1867
 msgid "Live Update"
 msgstr "Mini-Ansicht des Bildschirms"
 
 # src/settings.c:154
-#: src/pager.c:1880
+#: src/pager.c:1878
 msgid "Smooth high quality snapshots in snapshot mode"
 msgstr "Weiche, hochwertige Schnappschüsse im Schnappschussmodus"
 
 # src/settings.c:164
-#: src/pager.c:1885
+#: src/pager.c:1883
 msgid "Zoom in on pager windows when mouse is over them"
 msgstr "Auf Pager-Fenster einzoomen, wenn Maus darüber ist"
 
 # src/settings.c:174
-#: src/pager.c:1891
+#: src/pager.c:1889
 msgid "Pop up window title when mouse is over the window"
 msgstr "Fenstertitel anzeigen, wenn Maus über Fenster ist"
 
 # src/settings.c:183
-#: src/pager.c:1896
+#: src/pager.c:1894
 msgid "Continuously scan screen to update pager"
 msgstr "Ständig den Bildschirm abtasten, um Pager zu aktualisieren"
 
 # src/settings.c:212
-#: src/pager.c:1919
+#: src/pager.c:1917
 msgid "Mouse button to select and drag windows:"
 msgstr "Mausknopf zum Auswählen und Ziehen von Fenstern:"
 
 # src/settings.c:226 src/settings.c:258 src/settings.c:290
-#: src/pager.c:1929 src/pager.c:1954 src/pager.c:1979
+#: src/pager.c:1927 src/pager.c:1952 src/pager.c:1977
 msgid "Middle"
 msgstr "Mitte"
 
 # src/settings.c:244
-#: src/pager.c:1944
+#: src/pager.c:1942
 msgid "Mouse button to select desktops:"
 msgstr "Mausknopf zum Auswählen von Desktops:"
 
 # src/settings.c:276
-#: src/pager.c:1969
+#: src/pager.c:1967
 msgid "Mouse button to display pager menu:"
 msgstr "Mausknopf zum Anzeigen des Pager-Menüs:"
 
 # src/settings.c:126
-#: src/pager.c:1993
+#: src/pager.c:1991
 msgid "Pagers"
 msgstr "Pagers"
 
 # src/settings.c:126
-#: src/pager.c:1994
+#: src/pager.c:1992
 msgid "Pager Settings"
 msgstr "Pager-Einstellungen"
 
 # src/main.c:89
-#: src/pager.c:1997
+#: src/pager.c:1995
 msgid ""
 "Enlightenment Desktop & Area\n"
 "Pager Settings Dialog"
