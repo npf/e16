@@ -332,7 +332,7 @@ DialogRedraw(Dialog * d)
       return;
 
 #if DEBUG_DIALOGS
-   Eprintf("DialogRedraw win=%#lx pmap=%#lx\n",
+   Eprintf("%s: win=%#lx pmap=%#lx\n", __func__,
 	   WinGetXwin(d->win), WinGetPmap(d->win));
 #endif
 
@@ -1023,217 +1023,207 @@ DialogRealizeItem(Dialog * d, DItem * di)
      case DITEM_TABLE:
 	{
 	   int                 cols, rows;
+	   int                 i, r, c, x, y;
+	   int                *col_size, *row_size;
 
 	   pad = ImageclassGetPadding(d->iclass);
 
 	   cols = di->item.table.num_columns;
 	   rows = 1;
-	   if (cols > 0)
+	   if (cols <= 0)
+	      break;
+
+	   col_size = ECALLOC(int, cols);
+	   row_size = ECALLOC(int, rows);
+
+	   if (!col_size || !row_size)
+	      goto bail_out;
+
+	   r = c = 0;
+	   for (i = 0; i < di->item.table.num_items; i++)
 	     {
-		int                 i, r, c, x, y;
-		int                *col_size, *row_size;
+		DItem              *dii;
+		int                 w, h, j, ww;
 
-		col_size = ECALLOC(int, cols);
-		row_size = ECALLOC(int, rows);
-
-		if (!col_size || !row_size)
-		   goto bail_out;
-
-		r = c = 0;
-		for (i = 0; i < di->item.table.num_items; i++)
+		dii = di->item.table.items[i];
+		w = dii->w + (dii->padding.left + dii->padding.right);
+		h = dii->h + (dii->padding.top + dii->padding.bottom);
+		ww = 0;
+		for (j = 0; j < dii->col_span; j++)
+		   ww += col_size[c + j];
+		if (w > ww)
 		  {
-		     DItem              *dii;
-		     int                 w, h, j, ww;
-
-		     dii = di->item.table.items[i];
-		     w = dii->w + (dii->padding.left + dii->padding.right);
-		     h = dii->h + (dii->padding.top + dii->padding.bottom);
-		     ww = 0;
+		     ww = (w + dii->col_span - 1) / dii->col_span;
 		     for (j = 0; j < dii->col_span; j++)
-			ww += col_size[c + j];
-		     if (w > ww)
-		       {
-			  ww = (w + dii->col_span - 1) / dii->col_span;
-			  for (j = 0; j < dii->col_span; j++)
-			     if (col_size[c + j] < ww)
-				col_size[c + j] = ww;
-		       }
-		     if (h > row_size[r])
-			row_size[r] = h;
-		     c += dii->col_span;
-		     if (c >= cols)
-		       {
-			  c = 0;
-			  r++;
-			  rows++;
-			  row_size = EREALLOC(int, row_size, rows);
-
-			  if (!row_size)
-			     goto bail_out;
-
-			  row_size[rows - 1] = 0;
-		       }
+			if (col_size[c + j] < ww)
+			   col_size[c + j] = ww;
 		  }
-		if (di->item.table.homogenous_h)
+		if (h > row_size[r])
+		   row_size[r] = h;
+		c += dii->col_span;
+		if (c >= cols)
 		  {
-		     int                 max = 0;
+		     c = 0;
+		     r++;
+		     rows++;
+		     row_size = EREALLOC(int, row_size, rows);
 
-		     for (i = 0; i < cols; i++)
-		       {
-			  if (col_size[i] > max)
-			     max = col_size[i];
-		       }
-		     for (i = 0; i < cols; i++)
-			col_size[i] = max;
+		     if (!row_size)
+			goto bail_out;
+
+		     row_size[rows - 1] = 0;
 		  }
-		if (di->item.table.homogenous_v)
-		  {
-		     int                 max = 0;
-
-		     for (i = 0; i < rows; i++)
-		       {
-			  if (row_size[i] > max)
-			     max = row_size[i];
-		       }
-		     for (i = 0; i < rows; i++)
-			row_size[i] = max;
-		  }
-
-		iw = ih = 0;
-		for (i = 0; i < cols; i++)
-		   iw += col_size[i];
-		for (i = 0; i < rows; i++)
-		   ih += row_size[i];
-		di->w = iw;
-		di->h = ih;
-
-		x = y = 0;
-		r = c = 0;
-		for (i = 0; i < di->item.table.num_items; i++)
-		  {
-		     DItem              *dii;
-		     int                 j, sw = 0, sh = 0;
-
-		     dii = di->item.table.items[i];
-
-		     for (j = 0; j < dii->col_span; j++)
-			sw += col_size[c + j];
-		     for (j = 0; j < dii->row_span; j++)
-			sh += row_size[r + j];
-		     if (dii->fill_h)
-			dii->w = sw - (dii->padding.left + dii->padding.right);
-		     if (dii->fill_v)
-			dii->h = sh - (dii->padding.top + dii->padding.bottom);
-		     if (dii->w <= 0 || dii->h <= 0)
-			goto skip;
-		     if (dii->type == DITEM_TABLE)
-		       {
-			  int                 dx, dy, newx, newy;
-
-			  newx =
-			     di->x + x + pad->left +
-			     dii->padding.left +
-			     (((sw
-				- (dii->padding.left + dii->padding.right) -
-				dii->w) * dii->align_h) >> 10);
-			  newy =
-			     di->y + y + pad->top +
-			     dii->padding.top +
-			     (((sh
-				- (dii->padding.top + dii->padding.bottom) -
-				dii->h) * dii->align_v) >> 10);
-			  dx = newx - dii->x - pad->left;
-			  dy = newy - dii->y - pad->top;
-			  MoveTableBy(d, dii, dx, dy);
-		       }
-		     else
-		       {
-			  dii->x =
-			     di->x + x + pad->left +
-			     dii->padding.left +
-			     (((sw
-				- (dii->padding.left + dii->padding.right) -
-				dii->w) * dii->align_h) >> 10);
-			  dii->y =
-			     di->y + y + pad->top +
-			     dii->padding.top +
-			     (((sh
-				- (dii->padding.top + dii->padding.bottom) -
-				dii->h) * dii->align_v) >> 10);
-			  if (dii->win)
-			     EMoveResizeWindow(dii->win, dii->x, dii->y,
-					       dii->w, dii->h);
-			  if (dii->type == DITEM_CHECKBUTTON)
-			     EMoveResizeWindow(dii->item.check_button.check_win,
-					       dii->x,
-					       dii->y +
-					       (dii->h -
-						dii->item.check_button.orig_h) /
-					       2, dii->item.check_button.orig_w,
-					       dii->item.check_button.orig_h);
-			  if (dii->type == DITEM_RADIOBUTTON)
-			     EMoveResizeWindow(dii->item.radio_button.radio_win,
-					       dii->x,
-					       dii->y +
-					       (dii->h -
-						dii->item.radio_button.orig_h) /
-					       2, dii->item.radio_button.orig_w,
-					       dii->item.radio_button.orig_h);
-			  if (dii->type == DITEM_AREA)
-			    {
-			       pad = ImageclassGetPadding(dii->iclass);
-			       dii->item.area.w =
-				  dii->w - (pad->left + pad->right);
-			       dii->item.area.h =
-				  dii->h - (pad->top + pad->bottom);
-			       EMoveResizeWindow(dii->item.area.area_win,
-						 pad->left, pad->top,
-						 dii->item.area.w,
-						 dii->item.area.h);
-			    }
-			  if (dii->type == DITEM_SLIDER)
-			    {
-			       dii->item.slider.base_x = 0;
-			       dii->item.slider.base_y = 0;
-			       dii->item.slider.base_w = dii->w;
-			       dii->item.slider.base_h = dii->h;
-			       dii->item.slider.knob_w =
-				  dii->item.slider.knob_orig_w;
-			       dii->item.slider.knob_h =
-				  dii->item.slider.knob_orig_h;
-			       if (dii->item.slider.base_win)
-				  EMoveResizeWindow(dii->item.slider.base_win,
-						    dii->x +
-						    dii->item.slider.base_x,
-						    dii->y +
-						    dii->item.slider.base_y,
-						    dii->item.slider.base_w,
-						    dii->item.slider.base_h);
-			       if (dii->win)
-				  EMoveResizeWindow(dii->win,
-						    dii->x +
-						    dii->item.slider.numeric_x,
-						    dii->y +
-						    dii->item.slider.numeric_y,
-						    dii->item.slider.numeric_w,
-						    dii->item.slider.numeric_h);
-			    }
-		       }
-		   skip:
-		     x += sw;
-		     c += dii->col_span;
-		     if (c >= cols)
-		       {
-			  x = 0;
-			  y += row_size[r];
-			  c = 0;
-			  r++;
-		       }
-		  }
-	      bail_out:
-		Efree(col_size);
-		Efree(row_size);
 	     }
+	   if (di->item.table.homogenous_h)
+	     {
+		int                 max = 0;
+
+		for (i = 0; i < cols; i++)
+		  {
+		     if (col_size[i] > max)
+			max = col_size[i];
+		  }
+		for (i = 0; i < cols; i++)
+		   col_size[i] = max;
+	     }
+	   if (di->item.table.homogenous_v)
+	     {
+		int                 max = 0;
+
+		for (i = 0; i < rows; i++)
+		  {
+		     if (row_size[i] > max)
+			max = row_size[i];
+		  }
+		for (i = 0; i < rows; i++)
+		   row_size[i] = max;
+	     }
+
+	   iw = ih = 0;
+	   for (i = 0; i < cols; i++)
+	      iw += col_size[i];
+	   for (i = 0; i < rows; i++)
+	      ih += row_size[i];
+	   di->w = iw;
+	   di->h = ih;
+
+	   x = y = 0;
+	   r = c = 0;
+	   for (i = 0; i < di->item.table.num_items; i++)
+	     {
+		DItem              *dii;
+		int                 j, sw = 0, sh = 0;
+
+		dii = di->item.table.items[i];
+
+		for (j = 0; j < dii->col_span; j++)
+		   sw += col_size[c + j];
+		for (j = 0; j < dii->row_span; j++)
+		   sh += row_size[r + j];
+		if (dii->fill_h)
+		   dii->w = sw - (dii->padding.left + dii->padding.right);
+		if (dii->fill_v)
+		   dii->h = sh - (dii->padding.top + dii->padding.bottom);
+		if (dii->w <= 0 || dii->h <= 0)
+		   goto skip;
+		if (dii->type == DITEM_TABLE)
+		  {
+		     int                 dx, dy, newx, newy;
+
+		     newx =
+			di->x + x + pad->left + dii->padding.left +
+			(((sw - (dii->padding.left + dii->padding.right) -
+			   dii->w) * dii->align_h) >> 10);
+		     newy =
+			di->y + y + pad->top + dii->padding.top +
+			(((sh - (dii->padding.top + dii->padding.bottom) -
+			   dii->h) * dii->align_v) >> 10);
+		     dx = newx - dii->x - pad->left;
+		     dy = newy - dii->y - pad->top;
+		     MoveTableBy(d, dii, dx, dy);
+		  }
+		else
+		  {
+		     dii->x =
+			di->x + x + pad->left + dii->padding.left +
+			(((sw - (dii->padding.left + dii->padding.right) -
+			   dii->w) * dii->align_h) >> 10);
+		     dii->y =
+			di->y + y + pad->top + dii->padding.top +
+			(((sh - (dii->padding.top + dii->padding.bottom) -
+			   dii->h) * dii->align_v) >> 10);
+		     if (dii->win)
+			EMoveResizeWindow(dii->win, dii->x, dii->y,
+					  dii->w, dii->h);
+		     if (dii->type == DITEM_CHECKBUTTON)
+			EMoveResizeWindow(dii->item.check_button.check_win,
+					  dii->x,
+					  dii->y +
+					  (dii->h -
+					   dii->item.check_button.orig_h) / 2,
+					  dii->item.check_button.orig_w,
+					  dii->item.check_button.orig_h);
+		     if (dii->type == DITEM_RADIOBUTTON)
+			EMoveResizeWindow(dii->item.radio_button.radio_win,
+					  dii->x,
+					  dii->y +
+					  (dii->h -
+					   dii->item.radio_button.orig_h) / 2,
+					  dii->item.radio_button.orig_w,
+					  dii->item.radio_button.orig_h);
+		     if (dii->type == DITEM_AREA)
+		       {
+			  pad = ImageclassGetPadding(dii->iclass);
+			  dii->item.area.w = dii->w - (pad->left + pad->right);
+			  dii->item.area.h = dii->h - (pad->top + pad->bottom);
+			  EMoveResizeWindow(dii->item.area.area_win,
+					    pad->left, pad->top,
+					    dii->item.area.w, dii->item.area.h);
+		       }
+		     if (dii->type == DITEM_SLIDER)
+		       {
+			  dii->item.slider.base_x = 0;
+			  dii->item.slider.base_y = 0;
+			  dii->item.slider.base_w = dii->w;
+			  dii->item.slider.base_h = dii->h;
+			  dii->item.slider.knob_w =
+			     dii->item.slider.knob_orig_w;
+			  dii->item.slider.knob_h =
+			     dii->item.slider.knob_orig_h;
+			  if (dii->item.slider.base_win)
+			     EMoveResizeWindow(dii->item.slider.base_win,
+					       dii->x +
+					       dii->item.slider.base_x,
+					       dii->y +
+					       dii->item.slider.base_y,
+					       dii->item.slider.base_w,
+					       dii->item.slider.base_h);
+			  if (dii->win)
+			     EMoveResizeWindow(dii->win,
+					       dii->x +
+					       dii->item.slider.numeric_x,
+					       dii->y +
+					       dii->item.slider.numeric_y,
+					       dii->item.slider.numeric_w,
+					       dii->item.slider.numeric_h);
+		       }
+		  }
+
+	      skip:
+		x += sw;
+		c += dii->col_span;
+		if (c >= cols)
+		  {
+		     x = 0;
+		     y += row_size[r];
+		     c = 0;
+		     r++;
+		  }
+	     }
+
+	 bail_out:
+	   Efree(col_size);
+	   Efree(row_size);
 	}
 	break;
      case DITEM_NONE:
@@ -1285,27 +1275,25 @@ MoveTableBy(Dialog * d, DItem * di, int dx, int dy)
 			 ((dii->h - dii->item.radio_button.orig_h) / 2));
 	     break;
 	  case DITEM_SLIDER:
-	     {
-		if (dii->item.slider.base_win)
-		   EMoveResizeWindow(dii->item.slider.base_win,
-				     dii->x + dii->item.slider.base_x,
-				     dii->y + dii->item.slider.base_y,
-				     dii->item.slider.base_w,
-				     dii->item.slider.base_h);
-		if (dii->item.slider.knob_win)
-		   EMoveResizeWindow(dii->item.slider.knob_win,
-				     dii->x + dii->item.slider.knob_x,
-				     dii->y + dii->item.slider.knob_y,
-				     dii->item.slider.knob_w,
-				     dii->item.slider.knob_h);
-		if (dii->win)
-		   EMoveResizeWindow(dii->win,
-				     dii->x + dii->item.slider.numeric_x,
-				     dii->y + dii->item.slider.numeric_y,
-				     dii->item.slider.numeric_w,
-				     dii->item.slider.numeric_h);
-		break;
-	     }
+	     if (dii->item.slider.base_win)
+		EMoveResizeWindow(dii->item.slider.base_win,
+				  dii->x + dii->item.slider.base_x,
+				  dii->y + dii->item.slider.base_y,
+				  dii->item.slider.base_w,
+				  dii->item.slider.base_h);
+	     if (dii->item.slider.knob_win)
+		EMoveResizeWindow(dii->item.slider.knob_win,
+				  dii->x + dii->item.slider.knob_x,
+				  dii->y + dii->item.slider.knob_y,
+				  dii->item.slider.knob_w,
+				  dii->item.slider.knob_h);
+	     if (dii->win)
+		EMoveResizeWindow(dii->win,
+				  dii->x + dii->item.slider.numeric_x,
+				  dii->y + dii->item.slider.numeric_y,
+				  dii->item.slider.numeric_w,
+				  dii->item.slider.numeric_h);
+	     break;
 	  }
      }
 }
@@ -1330,7 +1318,7 @@ DialogDrawItems(Dialog * d, DItem * di, int x, int y, int w, int h)
    dialog_update_pending = 1;
 
 #if DEBUG_DIALOGS
-   Eprintf("DialogDrawItems t=%d u=%d - %d,%d -> %d,%d\n", di->type, di->update,
+   Eprintf("%s: t=%d u=%d - %d,%d -> %d,%d\n", __func__, di->type, di->update,
 	   d->xu1, d->yu1, d->xu2, d->yu2);
 #endif
 }
@@ -1350,7 +1338,7 @@ DialogDrawItem(Dialog * d, DItem * di)
       goto done;
 
 #if DEBUG_DIALOGS
-   Eprintf("DialogDrawItem t=%d u=%d - %d,%d -> %d,%d\n", di->type, di->update,
+   Eprintf("%s: t=%d u=%d - %d,%d -> %d,%d\n", __func__, di->type, di->update,
 	   d->xu1, d->yu1, d->xu2, d->yu2);
 #endif
 
