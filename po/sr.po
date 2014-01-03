@@ -4,17 +4,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: trunk\n"
-"Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-12-29 09:52+0100\n"
+"Report-Msgid-Bugs-To: $MSGID_BUGS_ADDRESS\n"
+"POT-Creation-Date: 2013-12-30 11:50+0100\n"
 "PO-Revision-Date: 2013-06-20 12:49+0000\n"
 "Last-Translator: Саша Петровић <salepetronije@gmail.com>\n"
 "Language-Team: српски <српски <xfce-i18n@xfce.org>>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-06-21 05:36+0000\n"
-"X-Generator: Launchpad (build 16677)\n"
+"X-Launchpad-Export-Date: 2013-12-31 04:55+0000\n"
+"X-Generator: Launchpad (build 16877)\n"
+"Language: \n"
 
 #: src/about.c:35
 #, c-format
@@ -771,7 +771,8 @@ msgstr "Само нови прозори потврде бивају узети 
 
 #: src/focus.c:879
 msgid "Only new dialogs whose owner is focused get the focus"
-msgstr "Само нови прозори потврде чији власник је под жижом се узимају у жижу"
+msgstr ""
+"Само нови прозори потврде чији власник је под жижом се узимају у жижу"
 
 #: src/focus.c:884
 msgid "Raise windows while switching focus"
@@ -830,7 +831,8 @@ msgid "Send mouse pointer to window after focus switch"
 msgstr "Пошаљи показивач миша на прозор по промени жиже"
 
 #: src/focus.c:973
-msgid "Focuslist image display policy (if one operation fails, try the next):"
+msgid ""
+"Focuslist image display policy (if one operation fails, try the next):"
 msgstr ""
 "Смернице приказа списка прозора у жижи (ако једна радња откаже, покушај "
 "следећу):"
@@ -2237,7 +2239,8 @@ msgid "Stick/Unstick"
 msgstr "Залепи/Одлепи"
 
 #: config/strings.c:61
-msgid "Toggle the Omnipresent (visible on all Desktops) state of this window."
+msgid ""
+"Toggle the Omnipresent (visible on all Desktops) state of this window."
 msgstr ""
 "Прекидач стања свеприсутности (видљивог на свим радним површима) прозора."
 
