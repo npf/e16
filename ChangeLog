@@ -5770,9 +5770,33 @@ Autofoo macro cleanups.
 Sun Oct 13 08:56:20 CEST 2013
 
 --- 1.0.13.003 ---
-
 Obsolete event handling tweak (click grabs).
 Obsolete event handling tweak (serial wrap).
 Remove useless Name[] entries from .desktop files.
 Fix menu generation some more.
 Update gettext version to 0.17.
+
+-------------------------------------------------------------------------------
+
+Sat Feb 15 14:26:19 CET 2014
+
+--- 1.0.13.004 ---
+Wrap XGetWindowAttributes().
+Simplify registration of override-redirect windows.
+Avoid redundant calls of XGetWindowAttributes.
+Only manage InputOutput windows.
+Add server grab around initial window pickup loop.
+Don't play sound in ShowAlert().
+Rename EDrawableCheck to EXDrawableOk and remove unused parameter.
+Add EXWindowOk().
+Use our own window property functions in stead of various Xlib ones.
+Remove some use of X11 Bool type/values.
+Wrap the last XClearArea call.
+Use NoXID in stead of None.
+Use XCopyArea wrapper function.
+Wrap remaining XCopyArea calls.
+Tweak error handler API.
+Wrap some calls to XFillRectangle.
+Fix memory leak when changing area.
+Reduce nesting in DialogRealizeItem().
+Simplify/fix dialog layout code.
