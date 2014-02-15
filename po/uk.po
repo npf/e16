@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-12-29 09:52+0100\n"
+"POT-Creation-Date: 2014-02-15 14:42+0100\n"
 "PO-Revision-Date: 2010-01-25 00:46+0000\n"
 "Last-Translator: Sergiy Gavrylov <sergiovana@bigmir.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -176,7 +176,7 @@ msgstr "Вийти з Enlightenment"
 msgid "Attention !!!"
 msgstr "Увага !!!"
 
-#: src/alert.c:580 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
+#: src/alert.c:580 src/dialog.c:690 src/dialog.c:1831 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:309
 msgid "OK"
 msgstr "Гаразд"
@@ -421,7 +421,7 @@ msgstr "Запуск Enlightenment..."
 msgid "Settings..."
 msgstr "Налаштування..."
 
-#: src/container.c:1187 src/dialog.c:702 src/pager.c:1019 config/strings.c:30
+#: src/container.c:1187 src/dialog.c:701 src/pager.c:1019 config/strings.c:30
 #: config/strings.c:122
 msgid "Close"
 msgstr "Закрити"
@@ -704,7 +704,7 @@ msgstr ""
 "Діалог параметрів віртуальних\n"
 "стільниць Enlightenment"
 
-#: src/dialog.c:696
+#: src/dialog.c:695
 msgid "Apply"
 msgstr "Застосувати"
 

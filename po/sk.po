@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-12-29 09:52+0100\n"
+"POT-Creation-Date: 2014-02-15 14:42+0100\n"
 "PO-Revision-Date: 2010-03-11 06:45+0000\n"
 "Last-Translator: milboy <Unknown>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -169,7 +169,7 @@ msgstr "Vypnúť Enlightenment"
 msgid "Attention !!!"
 msgstr "Upozornenie !!!"
 
-#: src/alert.c:580 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
+#: src/alert.c:580 src/dialog.c:690 src/dialog.c:1831 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:309
 msgid "OK"
 msgstr "OK"
@@ -394,7 +394,7 @@ msgstr "Enlightenment sa spúšťa..."
 msgid "Settings..."
 msgstr "Nastavenia..."
 
-#: src/container.c:1187 src/dialog.c:702 src/pager.c:1019 config/strings.c:30
+#: src/container.c:1187 src/dialog.c:701 src/pager.c:1019 config/strings.c:30
 #: config/strings.c:122
 msgid "Close"
 msgstr "Zavrieť"
@@ -663,7 +663,7 @@ msgstr ""
 "Virtuálna pracovná plocha Enlightenment\n"
 "Nastavenia dialógu"
 
-#: src/dialog.c:696
+#: src/dialog.c:695
 msgid "Apply"
 msgstr "Použiť"
 

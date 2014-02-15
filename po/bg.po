@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2013-12-29 09:52+0100\n"
+"POT-Creation-Date: 2014-02-15 14:42+0100\n"
 "PO-Revision-Date: 2010-05-09 01:24+0000\n"
 "Last-Translator: Aron Xu <Unknown>\n"
 "Language-Team: Bulgarian\n"
@@ -162,7 +162,7 @@ msgstr "Излезте от Enlightenment"
 msgid "Attention !!!"
 msgstr "Внимание !!!"
 
-#: src/alert.c:580 src/dialog.c:691 src/dialog.c:1895 src/events.c:95
+#: src/alert.c:580 src/dialog.c:690 src/dialog.c:1831 src/events.c:95
 #: src/setup.c:159 src/setup.c:172 src/sound.c:309
 msgid "OK"
 msgstr "Да"
@@ -402,7 +402,7 @@ msgstr "Enlightenment стартира..."
 msgid "Settings..."
 msgstr ""
 
-#: src/container.c:1187 src/dialog.c:702 src/pager.c:1019 config/strings.c:30
+#: src/container.c:1187 src/dialog.c:701 src/pager.c:1019 config/strings.c:30
 #: config/strings.c:122
 msgid "Close"
 msgstr "Затвори"
@@ -684,7 +684,7 @@ msgid ""
 "Settings Dialog"
 msgstr "Е: Виртуални полетаДиалог за настройки"
 
-#: src/dialog.c:696
+#: src/dialog.c:695
 msgid "Apply"
 msgstr "Приложи"
 
