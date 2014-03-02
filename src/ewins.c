@@ -926,11 +926,11 @@ AddToFamily(EWin * ewin, Window xwin, XWindowAttributes * pxwa, int startup)
    /* if it hasn't been placed yet.... find a spot for it */
    if ((!ewin->state.placed) && (!manplace))
      {
+	int                 cx, cy, sx, sy, sw, sh;
+
 	/* Place the window below the mouse pointer */
 	if (Conf.place.manual_mouse_pointer)
 	  {
-	     int                 cx, cy, sx, sy, sw, sh;
-
 	     /* if the loser has manual placement on and the app asks to be on */
 	     /*  a desktop, then send E to that desktop so the user can place */
 	     /* the window there */
@@ -959,8 +959,20 @@ AddToFamily(EWin * ewin, Window xwin, XWindowAttributes * pxwa, int startup)
 	     if (EwinGetTransientFor(ewin) != NoXID)
 		ewin2 = EwinFindByClient(EwinGetTransientFor(ewin));
 	     parent = (ewin2) ? EoGetWin(ewin2) : VROOT;
-	     x = (WinGetW(parent) - EoGetW(ewin)) / 2;
-	     y = (WinGetH(parent) - EoGetH(ewin)) / 2;
+
+	     cx = WinGetX(parent);
+	     cy = WinGetY(parent);
+	     x = cx + (WinGetW(parent) - EoGetW(ewin)) / 2;
+	     y = cy + (WinGetH(parent) - EoGetH(ewin)) / 2;
+
+	     ScreenGetAvailableArea(cx, cy, &sx, &sy, &sw, &sh,
+				    Conf.place.ignore_struts);
+
+	     /* keep it all on this screen if possible */
+	     x = MIN(x, sx + sw - EoGetW(ewin));
+	     y = MIN(y, sy + sh - EoGetH(ewin));
+	     x = MAX(x, sx);
+	     y = MAX(y, sy);
 	  }
 	else
 	  {
