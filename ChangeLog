@@ -5800,3 +5800,11 @@ Wrap some calls to XFillRectangle.
 Fix memory leak when changing area.
 Reduce nesting in DialogRealizeItem().
 Simplify/fix dialog layout code.
+
+-------------------------------------------------------------------------------
+
+Sat Mar 29 12:19:32 CET 2014
+
+--- 1.0.14 ---
+Fix placement of transient dialogs.
+Autofoo update (AC_PROG_LIBTOOL -> LT_INIT).
