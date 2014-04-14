@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2010 Kim Woelders
+ * Copyright (C) 2010-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -51,6 +51,7 @@ EFont_draw_string(Display * dpy, Drawable win, GC gc, int x, int y,
    Imlib_Image         im;
    int                 w, h, ascent, descent, max_asc;
 
+   ascent = descent = w = max_asc = 0;
    Efont_extents(f, text, &ascent, &descent, &w, &max_asc, NULL, NULL, NULL);
    h = ascent + descent;
 
