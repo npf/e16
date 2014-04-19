@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -994,9 +994,12 @@ ImagestateMakePmapMask(ImageState * is, Win win, PmapMask * pmm,
 	XDrawRectangle(disp, win, gc, x, y, w, h);
 
 static void
-ImagestateDrawBevel(ImageState * is, Drawable win, GC gc,
-		    int x, int y, int w, int h)
+ImagestateDrawBevel(ImageState * is, Drawable win, int x, int y, int w, int h)
 {
+   GC                  gc;
+
+   gc = EXCreateGC(win, 0, NULL);
+
    ImagestateColorsAlloc(is);
 
    switch (is->bevelstyle)
@@ -1088,21 +1091,18 @@ ImagestateDrawBevel(ImageState * is, Drawable win, GC gc,
      default:
 	break;
      }
+
+   EXFreeGC(gc);
 }
 
 static void
 ImagestateDrawNoImg(ImageState * is, Drawable draw, int x, int y, int w, int h)
 {
-   GC                  gc;
-
    ImagestateColorsAlloc(is);
 
-   gc = EXCreateGC(draw, 0, NULL);
-   XSetForeground(disp, gc, is->bg_pixel);
-   XFillRectangle(disp, draw, gc, x, y, w, h);
+   EXFillAreaSolid(draw, x, y, w, h, is->bg_pixel);
    if (is->bevelstyle != BEVEL_NONE)
-      ImagestateDrawBevel(is, draw, gc, x, y, w, h);
-   EXFreeGC(gc);
+      ImagestateDrawBevel(is, draw, x, y, w, h);
 }
 
 void
@@ -1156,13 +1156,7 @@ ITApply(Win win, ImageClass * ic, ImageState * is,
 		    }
 
 		  if (is->bevelstyle != BEVEL_NONE)
-		    {
-		       GC                  gc;
-
-		       gc = EXCreateGC(WinGetXwin(win), 0, NULL);
-		       ImagestateDrawBevel(is, pmap, gc, 0, 0, w, h);
-		       EXFreeGC(gc);
-		    }
+		     ImagestateDrawBevel(is, pmap, 0, 0, w, h);
 
 		  if (ts && text)
 		     TextstateTextDraw(ts, win, pmap, text, 0, 0, w, h,
