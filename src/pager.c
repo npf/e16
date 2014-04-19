@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -400,7 +400,7 @@ doPagerUpdate(Pager * p)
    p->do_update = 0;
 
    gc = EXCreateGC(pmap, 0, NULL);
-   if (gc == NoXID)
+   if (!gc)
       return;
 
    Dprintf("doPagerUpdate %d: Repaint\n", p->dsk->num);
@@ -623,7 +623,7 @@ PagerUpdateBg(Pager * p)
      }
 
    gc = EXCreateGC(pmap, 0, NULL);
-   if (gc == NoXID)
+   if (!gc)
       return;
 
    XSetForeground(disp, gc, Dpy.pixel_black);
