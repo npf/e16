@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -1694,9 +1694,10 @@ EXFillAreaSolid(Drawable dst, int x, int y, unsigned int w, unsigned int h,
 		unsigned int pixel)
 {
    GC                  gc;
+   XGCValues           gcv;
 
-   gc = EXCreateGC(dst, 0, NULL);
-   XSetForeground(disp, gc, pixel);
+   gcv.foreground = pixel;
+   gc = EXCreateGC(dst, GCForeground, &gcv);
    XFillRectangle(disp, dst, gc, x, y, w, h);
    EXFreeGC(gc);
 }
