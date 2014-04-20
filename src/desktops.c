@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -539,16 +539,16 @@ DeskBackgroundConfigure(Desk * dsk)
 	if (ECompMgrIsActive())
 	  {
 	     ECompMgrDeskConfigure(dsk);
-	     ESetWindowBackgroundPixmap(win, NoXID);
+	     ESetWindowBackgroundPixmap(win, NoXID, 0);
 	  }
 	else
 #endif
 	  {
 	     if (pmap != NoXID)
 	       {
-		  ESetWindowBackgroundPixmap(win, pmap);
+		  ESetWindowBackgroundPixmap(win, pmap, 1);
 		  if (dsk->num == 0 && win != VROOT)
-		     ESetWindowBackgroundPixmap(VROOT, pmap);
+		     ESetWindowBackgroundPixmap(VROOT, pmap, 1);
 	       }
 	     else
 	       {
@@ -566,9 +566,9 @@ DeskBackgroundConfigure(Desk * dsk)
 	if (!Conf.hints.set_xroot_info_on_root_window)
 	   HintsSetRootInfo(EoGetWin(dsk), NoXID, 0);
 
-	ESetWindowBackgroundPixmap(win, NoXID);
+	ESetWindowBackgroundPixmap(win, NoXID, 0);
 	if (dsk->num == 0 && win != VROOT)
-	   ESetWindowBackgroundPixmap(VROOT, NoXID);
+	   ESetWindowBackgroundPixmap(VROOT, NoXID, 0);
      }
 }
 

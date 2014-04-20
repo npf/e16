@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -476,7 +476,7 @@ EImageApplyToWin(EImage * im, Win win, int flags, int w, int h)
    Pixmap              pmap, mask;
 
    EImageRenderPixmaps(im, win, flags, &pmap, &mask, w, h);
-   ESetWindowBackgroundPixmap(win, pmap);
+   ESetWindowBackgroundPixmap(win, pmap, 0);
    if ((mask != NoXID) || (mask == NoXID && WinIsShaped(win)))
       EShapeSetMask(win, 0, 0, mask);
    EImagePixmapsFree(pmap, mask);

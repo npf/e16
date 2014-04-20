@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -619,7 +619,7 @@ BackgroundRealize(Background * bg, Win win, Drawable draw, unsigned int rw,
 #if 0				/* FIXME - Remove? */
 	if (x == 0 && y == 0)	/* Hmmm. Always true. */
 	  {
-	     ESetWindowBackgroundPixmap(draw, pmap);
+	     ESetWindowBackgroundPixmap(draw, pmap, 1);
 	  }
 	else
 	  {
@@ -715,7 +715,7 @@ BackgroundApplyWin(Background * bg, Win win)
    BackgroundRealize(bg, win, NoXID, w, h, 1, &pmap, &pixel);
    if (pmap != NoXID)
      {
-	ESetWindowBackgroundPixmap(win, pmap);
+	ESetWindowBackgroundPixmap(win, pmap, 0);
 	EImagePixmapsFree(pmap, NoXID);
      }
    else
@@ -742,7 +742,7 @@ BackgroundSet(Background * bg, Win win, unsigned int w, unsigned int h)
 
    bg->pmap = pmap;
    if (pmap != NoXID)
-      ESetWindowBackgroundPixmap(win, pmap);
+      ESetWindowBackgroundPixmap(win, pmap, 1);
    else
       ESetWindowBackground(win, pixel);
    EClearWindow(win);

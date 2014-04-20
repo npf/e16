@@ -956,14 +956,14 @@ EConfigureWindow(Win win, unsigned int mask, XWindowChanges * wc)
 #endif
 
 void
-ESetWindowBackgroundPixmap(Win win, Pixmap pmap)
+ESetWindowBackgroundPixmap(Win win, Pixmap pmap, int kept)
 {
    if (!win)
       return;
 
    if (win->bgpmap && win->bg_owned)
       EFreeWindowBackgroundPixmap(win);
-   win->bgpmap = pmap;
+   win->bgpmap = kept ? pmap : NoXID;
    win->bg_owned = 0;		/* Don't manage pixmap */
    win->bgcol = 0xffffffff;	/* Hmmm.. */
 
@@ -985,7 +985,7 @@ EGetWindowBackgroundPixmap(Win win)
 
    /* Allocate/set new */
    pmap = ECreatePixmap(win, win->w, win->h, 0);
-   ESetWindowBackgroundPixmap(win, pmap);
+   ESetWindowBackgroundPixmap(win, pmap, 1);
    win->bg_owned = 1;		/* Manage pixmap */
 
    return pmap;
@@ -999,7 +999,7 @@ EFreeWindowBackgroundPixmap(Win win)
 
    if (win->bg_owned)
       EFreePixmap(win->bgpmap);
-   win->bgpmap = 0;
+   win->bgpmap = NoXID;
    win->bg_owned = 0;
 }
 
