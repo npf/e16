@@ -341,7 +341,7 @@ PagerEwinUpdateMini(Pager * p, EWin * ewin)
 static void
 doPagerUpdate(Pager * p)
 {
-   int                 x, y, ax, ay, cx, cy, vx, vy;
+   int                 cx, cy, vx, vy;
    GC                  gc = NULL;
    EWin               *const *lst;
    int                 i, num, update_screen_included, update_screen_only;
@@ -350,10 +350,10 @@ doPagerUpdate(Pager * p)
 
 #if USE_COMPOSITE
    Picture             pager_pict, pict, alpha;
+   XRenderPictureAttributes pa;
 #endif
 
    p->update_phase = 0;
-   DesksGetAreaSize(&ax, &ay);
    DeskGetArea(p->dsk, &cx, &cy);
    vx = cx * WinGetW(VROOT);
    vy = cy * WinGetH(VROOT);
@@ -404,22 +404,20 @@ doPagerUpdate(Pager * p)
       return;
 
    Dprintf("doPagerUpdate %d: Repaint\n", p->dsk->num);
-   for (y = 0; y < ay; y++)
-     {
-	for (x = 0; x < ax; x++)
-	  {
-#if 0				/* Skip? */
-	     if (update_screen_included && x == cx && y == cy)
-		continue;
-#endif
-	     EXCopyAreaGC(p->bgpmap, pmap, gc, 0, 0, p->dw, p->dh,
-			  x * p->dw, y * p->dh);
-	  }
-     }
 
+   /* Tile background over pager areas */
 #if USE_COMPOSITE
    pager_pict = EPictureCreate(NULL, pmap);
+   pict = EPictureCreate(NULL, p->bgpmap);
+   pa.repeat = True;
+   XRenderChangePicture(disp, pict, CPRepeat, &pa);
+   XRenderComposite(disp, PictOpSrc, pict, NoXID, pager_pict,
+		    0, 0, 0, 0, 0, 0, p->w, p->h);
+   EPictureDestroy(pict);
+#else
+   EXCopyAreaTiled(p->bgpmap, NoXID, pmap, 0, 0, p->w, p->h, 0, 0);
 #endif
+
    for (i = num - 1; i >= 0; i--)
      {
 	EWin               *ewin;
