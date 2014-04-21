@@ -68,8 +68,6 @@ typedef struct {
    GC                  gc1;
 } fx_ripple_data_t;
 
-#define FX_RIPPLE_DATA_INIT { NULL, 0, 0, 0.f, 0.f, NULL }
-
 static Animator    *fx_ripple = NULL;
 
 static int
@@ -112,18 +110,21 @@ FX_ripple_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 
    for (y = 0; y < FX_RIPPLE_WATERH; y++)
      {
-	float               aa, a, p;
-	int                 yoff, off, yy;
+	float               a, p;
+	int                 xoff, yoff, yy;
 
-	p = (((float)(FX_RIPPLE_WATERH - y)) / ((float)FX_RIPPLE_WATERH));
+	p = (float)(FX_RIPPLE_WATERH - y) / (float)FX_RIPPLE_WATERH;
+
 	a = p * p * 48 + d->incv;
 	yoff = y + (int)(sinf(a) * 7) + 1;
 	yy = (FX_RIPPLE_WATERH * 2) - yoff;
-	aa = p * p * 64 + d->inch;
-	off = (int)(sinf(aa) * 10 * (1 - p));
-	EXCopyAreaGC(d->above, WinGetXwin(d->win), d->gc1, 0, yy,
-		     WinGetW(VROOT), 1, off,
-		     WinGetH(VROOT) - FX_RIPPLE_WATERH + y);
+
+	a = p * p * 64 + d->inch;
+	xoff = (int)(sinf(a) * 10 * (1 - p));
+
+	EXCopyAreaGC(d->above, WinGetXwin(d->win), d->gc1,
+		     0, yy, WinGetW(VROOT), 1,
+		     xoff, WinGetH(VROOT) - FX_RIPPLE_WATERH + y);
      }
 
    return 4;
@@ -132,7 +133,9 @@ FX_ripple_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 static void
 FX_Ripple_Init(const char *name __UNUSED__)
 {
-   fx_ripple_data_t    fxd = FX_RIPPLE_DATA_INIT;
+   fx_ripple_data_t    fxd;
+
+   memset(&fxd, 0, sizeof(fxd));
 
    fx_ripple = AnimatorAdd(NULL, ANIM_FX_RIPPLES, FX_ripple_timeout, -1, 0,
 			   sizeof(fxd), &fxd);
@@ -180,8 +183,6 @@ typedef struct {
    GC                  gc1;
 } fx_waves_data_t;
 
-#define FX_WAVE_DATA_INIT { NULL, 0, 0, 0.f, 0.f, 0.f, NULL }
-
 static Animator    *fx_waves = NULL;
 
 static int
@@ -207,11 +208,9 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 
    /* On the zero, grab the desktop again. */
    if (d->count == 0)
-     {
-	EXCopyArea(WinGetXwin(d->win), d->above,
-		   0, WinGetH(VROOT) - (FX_WAVE_WATERH * 3),
-		   WinGetW(VROOT), FX_WAVE_WATERH * 2, 0, 0);
-     }
+      EXCopyArea(WinGetXwin(d->win), d->above,
+		 0, WinGetH(VROOT) - (FX_WAVE_WATERH * 3),
+		 WinGetW(VROOT), FX_WAVE_WATERH * 2, 0, 0);
 
    /* Increment and roll the counter */
    d->count++;
@@ -235,27 +234,28 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 
    /* Copy the area to correct bugs */
    if (d->count == 0)
-     {
-	EXCopyAreaGC(d->above, WinGetXwin(d->win), d->gc1, 0,
-		     WinGetH(VROOT) - FX_WAVE_GRABH, WinGetW(VROOT),
-		     FX_WAVE_DEPTH * 2, 0, WinGetH(VROOT) - FX_WAVE_GRABH);
-     }
+      EXCopyAreaGC(d->above, WinGetXwin(d->win), d->gc1,
+		   0, WinGetH(VROOT) - FX_WAVE_GRABH,
+		   WinGetW(VROOT), FX_WAVE_DEPTH * 2,
+		   0, WinGetH(VROOT) - FX_WAVE_GRABH);
 
    /* Go through the bottom couple (FX_WAVE_WATERH) lines of the window */
    for (y = 0; y < FX_WAVE_WATERH; y++)
      {
 	/* Variables */
-	float               aa, a, p;
-	int                 yoff, off, yy;
+	float               a, p;
+	int                 xoff, yoff, yy;
 	int                 x;
 
 	/* Figure out the side-to-side movement */
-	p = (((float)(FX_WAVE_WATERH - y)) / ((float)FX_WAVE_WATERH));
+	p = (float)(FX_WAVE_WATERH - y) / (float)FX_WAVE_WATERH;
+
 	a = p * p * 48 + d->incv;
 	yoff = y + (int)(sinf(a) * 7) + 1;
 	yy = (FX_WAVE_WATERH * 2) - yoff;
-	aa = p * p * FX_WAVE_WATERH + d->inch;
-	off = (int)(sinf(aa) * 10 * (1 - p));
+
+	a = p * p * 64 + d->inch;
+	xoff = (int)(sinf(a) * 10 * (1 - p));
 
 	/* Set up the next part */
 	incx2 = d->incx;
@@ -276,10 +276,9 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 	     sx = (int)(sinf(incx2) * FX_WAVE_DEPTH);
 
 	     /* Display this block */
-	     EXCopyAreaGC(d->above, WinGetXwin(d->win), d->gc1, x, yy,	/* x, y */
-			  FX_WAVE_WATERW, 1,	/* w, h */
-			  off + x, WinGetH(VROOT) - FX_WAVE_WATERH + y + sx	/* dx, dy */
-		);
+	     EXCopyAreaGC(d->above, WinGetXwin(d->win), d->gc1,
+			  x, yy, FX_WAVE_WATERW, 1,
+			  xoff + x, WinGetH(VROOT) - FX_WAVE_WATERH + y + sx);
 	  }
      }
 
@@ -289,7 +288,9 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 static void
 FX_Waves_Init(const char *name __UNUSED__)
 {
-   fx_waves_data_t     fxd = FX_WAVE_DATA_INIT;
+   fx_waves_data_t     fxd;
+
+   memset(&fxd, 0, sizeof(fxd));
 
    fx_waves = AnimatorAdd(NULL, ANIM_FX_WAVES, FX_Wave_timeout, -1, 0,
 			  sizeof(fxd), &fxd);
