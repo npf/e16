@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -53,33 +53,35 @@ ECreatePixmapCursor(Pixmap cpmap, Pixmap cmask, unsigned int w, unsigned int h,
 {
    Cursor              curs;
    Pixmap              pmap;
-   XGCValues           gcv;
-   GC                  gc;
    Picture             pict;
    XRenderPictFormat  *pictfmt;
+   XRenderPictureAttributes pa;
+   XRenderColor        c;
 
    pictfmt = XRenderFindStandardFormat(disp, PictStandardARGB32);
 
    pmap = XCreatePixmap(disp, WinGetXwin(VROOT), w, h, 32);
+   pict = XRenderCreatePicture(disp, pmap, pictfmt, 0, NULL);
+   XFreePixmap(disp, pmap);
 
-   gcv.foreground = 0;
-   gc = EXCreateGC(pmap, GCForeground, &gcv);
-   XFillRectangle(disp, pmap, gc, 0, 0, w, h);
-   gcv.fill_style = FillOpaqueStippled;
-   gcv.stipple = cpmap;
-   gcv.clip_mask = cmask;
-   gcv.foreground = fg;
-   gcv.background = bg;
-   XChangeGC(disp, gc,
-	     GCForeground | GCBackground | GCFillStyle | GCStipple | GCClipMask,
-	     &gcv);
-   XFillRectangle(disp, pmap, gc, 0, 0, w, h);
-   EXFreeGC(gc);
+   /* Clear entirely (alpha = 0) */
+   COLOR32_TO_ARGB16(0, c.alpha, c.red, c.green, c.blue);
+   XRenderFillRectangle(disp, PictOpSrc, pict, &c, 0, 0, w, h);
 
-   pict = XRenderCreatePicture(disp, pmap, pictfmt, 0, 0);
+   /* Set bg color (cursor shape) */
+   pa.clip_mask = cmask;
+   XRenderChangePicture(disp, pict, CPClipMask, &pa);
+   COLOR32_TO_ARGB16(bg, c.alpha, c.red, c.green, c.blue);
+   XRenderFillRectangle(disp, PictOpSrc, pict, &c, 0, 0, w, h);
+
+   /* Set fg color */
+   pa.clip_mask = cpmap;
+   XRenderChangePicture(disp, pict, CPClipMask, &pa);
+   COLOR32_TO_ARGB16(fg, c.alpha, c.red, c.green, c.blue);
+   XRenderFillRectangle(disp, PictOpSrc, pict, &c, 0, 0, w, h);
+
    curs = XRenderCreateCursor(disp, pict, xh, yh);
 
-   XFreePixmap(disp, pmap);
    XRenderFreePicture(disp, pict);
 
    return curs;
@@ -120,8 +122,8 @@ ECursorCreate(const char *name, const char *image, int native_id,
    ec->name = Estrdup(name);
 
    ec->file = Estrdup(image);
-   ec->fg = fg;
-   ec->bg = bg;
+   ec->fg = 0xff000000 | fg;
+   ec->bg = 0xff000000 | bg;
    ec->native_id = native_id;
 
    LIST_PREPEND(ECursor, &cursor_list, ec);
