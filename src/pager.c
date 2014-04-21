@@ -299,7 +299,7 @@ PagerEwinUpdateMini(Pager * p, EWin * ewin)
    if (!update)
       return;
 
-   Dprintf("PagerEwinUpdateMini %#lx/%#lx wxh=%dx%d ser=%#x/%#x dif=%d: %s\n",
+   Dprintf("%s %#lx/%#lx wxh=%dx%d ser=%#x/%#x dif=%d: %s\n", __func__,
 	   EwinGetClientXwin(ewin), EoGetXwin(ewin), w, h,
 	   EoGetSerial(ewin), p->serial, serdif, EwinGetTitle(ewin));
 
@@ -403,7 +403,7 @@ doPagerUpdate(Pager * p)
    if (!gc)
       return;
 
-   Dprintf("doPagerUpdate %d: Repaint\n", p->dsk->num);
+   Dprintf("%s %d: Repaint\n", __func__, p->dsk->num);
 
    /* Tile background over pager areas */
 #if USE_COMPOSITE
@@ -478,7 +478,7 @@ doPagerUpdate(Pager * p)
      }
 
  do_screen_update:
-   Dprintf("doPagerUpdate %d: Snap screen\n", p->dsk->num);
+   Dprintf("%s %d: Snap screen\n", __func__, p->dsk->num);
    /* Update pager area by snapshotting entire screen */
    ScaleRect(VROOT, WinGetXwin(VROOT), p->win, pmap, 0, 0,
 	     WinGetW(VROOT), WinGetH(VROOT), cx * p->dw, cy * p->dh,
@@ -875,7 +875,7 @@ PagerEwinUpdateFromPager(Pager * p, EWin * ewin)
    if (!EoIsShown(ewin) || !EwinIsOnScreen(ewin))
       return;
 
-   Dprintf("PagerEwinUpdateFromPager %d\n", p->dsk->num);
+   Dprintf("%s %d\n", __func__, p->dsk->num);
 
    x = EwinGetVX(ewin);
    y = EwinGetVY(ewin);
@@ -1091,7 +1091,7 @@ PagerShowTt(EWin * ewin)
    static EWin        *tt_ewin = NULL;
    ToolTip            *tt;
 
-   Dprintf("PagerShowTt %s\n", (ewin) ? EwinGetTitle(ewin) : NULL);
+   Dprintf("%s %s\n", __func__, (ewin) ? EwinGetTitle(ewin) : NULL);
 
    if (!Conf_pagers.title || (ewin == tt_ewin))
       return;
@@ -1140,7 +1140,7 @@ PagerHiwinInit(Pager * p, EWin * ewin)
 static void
 PagerHiwinHide(void)
 {
-   Dprintf("PagerHiwinHide\n");
+   Dprintf("%s\n", __func__);
    HiwinHide(hiwin);
    PagerShowTt(NULL);
 }
@@ -1167,7 +1167,7 @@ PagerHiwinShow(Pager * p, EWin * ewin, int zoom, int confine)
 static void
 PagerZoomChange(Pager * p, int delta)
 {
-   Dprintf("PagerZoomChange delta=%d\n", delta);
+   Dprintf("%s delta=%d\n", __func__, delta);
 
    if (delta == 0)
       return;
@@ -1530,7 +1530,7 @@ PagerEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 {
    Pager              *p = (Pager *) prm;
 
-   Dprintf("PagerEvent ev=%d\n", ev->type);
+   Dprintf("%s ev=%d\n", __func__, ev->type);
 
    switch (ev->type)
      {
@@ -1576,7 +1576,7 @@ PagerHiwinEvent(Win win __UNUSED__, XEvent * ev, void *prm)
    if (!p)
       return;
 
-   Dprintf("PagerHiwinEvent ev=%d\n", ev->type);
+   Dprintf("%s ev=%d\n", __func__, ev->type);
 
    switch (ev->type)
      {
