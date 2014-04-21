@@ -27,6 +27,7 @@ e16_SOURCES = \
 	aclass.c		aclass.h		\
 	actions.c		\
 	alert.c			alert.h			\
+	animation.c		animation.h		\
 	arrange.c		\
 	backgrounds.c		backgrounds.h		\
 	borders.c		borders.h		\
@@ -41,7 +42,6 @@ e16_SOURCES = \
 	dialog.c	        dialog.h	        \
 	dock.c			\
 	draw.c			\
-	list.c			list.h			\
 	econfig.c		econfig.h		\
 	edebug.h		\
 	edge.c			\
@@ -70,6 +70,7 @@ e16_SOURCES = \
 	icons.c			icons.h			\
 	ipc.c			ipc.h \
 	lang.c			lang.h			\
+	list.c			list.h			\
 	main.c			\
 	memory.c		\
 	menus.c			menus.h			\
@@ -87,7 +88,7 @@ e16_SOURCES = \
 	session.c               session.h               \
 	settings.c              settings.h              \
 	setup.c			\
-	shapewin.c		\
+	shapewin.c		shapewin.h		\
 	size.c			\
 	slide.c			slide.h			\
 	slideout.c		\
@@ -102,7 +103,6 @@ e16_SOURCES = \
 	text.c			\
 	theme.c                 \
 	time.c			\
-	animation.c		animation.h		\
 	timers.c		timers.h		\
 	tooltips.c		tooltips.h		\
 	user.c			user.h			\

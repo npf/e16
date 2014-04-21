@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2013 Kim Woelders
+ * Copyright (C) 2007-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -22,6 +22,7 @@
  */
 #include "E.h"
 #include "ewins.h"
+#include "shapewin.h"
 #include "xwin.h"
 
 #define _SHAPE_SET_RECT(rl, _x, _y, _w, _h) \

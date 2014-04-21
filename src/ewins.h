@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -499,22 +499,5 @@ void                ReZoom(EWin * ewin);
 #define ReZoom(ewin)   do {} while(0)
 #define Zoom(ewin, on) do {} while(0)
 #endif
-
-typedef struct _ShapeWin ShapeWin;
-struct _ShapeWin {
-   EObj                o;
-   Pixmap              mask;
-   GC                  gc;
-};
-
-ShapeWin           *ShapewinCreate(int md);
-void                ShapewinDestroy(ShapeWin * sw);
-void                ShapewinShapeSet(ShapeWin * sw, int md, int x, int y, int w,
-				     int h, int bl, int br, int bt, int bb,
-				     int seqno);
-
-void                do_draw_technical(Drawable dr, GC gc,
-				      int a, int b, int c, int d, int bl,
-				      int br, int bt, int bb);
 
 #endif /* _EWIN_H_ */
