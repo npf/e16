@@ -145,8 +145,6 @@ ExtInitWinMain(void)
 {
    int                 i, loop, err;
    EX_Window           win;
-   XGCValues           gcv;
-   GC                  gc;
    EX_Pixmap           pmap;
    EX_Atom             a;
    EiwData             eiwd;
@@ -177,14 +175,11 @@ ExtInitWinMain(void)
 
    pmap = XCreatePixmap(disp, win,
 			WinGetW(VROOT), WinGetH(VROOT), WinGetDepth(VROOT));
-   gcv.subwindow_mode = IncludeInferiors;
-   gc = XCreateGC(disp, win, GCSubwindowMode, &gcv);
-   EXCopyAreaGC(WinGetXwin(VROOT), pmap, gc,
-		0, 0, WinGetW(VROOT), WinGetH(VROOT), 0, 0);
+   EXCopyArea(WinGetXwin(VROOT), pmap,
+	      0, 0, WinGetW(VROOT), WinGetH(VROOT), 0, 0);
    XSetWindowBackgroundPixmap(disp, win, pmap);
    XMapRaised(disp, win);
    XFreePixmap(disp, pmap);
-   XFreeGC(disp, gc);
 
    a = ex_atom_get("ENLIGHTENMENT_RESTART_SCREEN");
    ex_window_prop_window_set(WinGetXwin(VROOT), a, &win, 1);

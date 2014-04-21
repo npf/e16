@@ -345,7 +345,6 @@ static void
 doPagerUpdate(Pager * p)
 {
    int                 cx, cy, vx, vy;
-   GC                  gc = NULL;
    EWin               *const *lst;
    int                 i, num, update_screen_included, update_screen_only;
    int                 pager_mode = PagersGetMode();
@@ -402,10 +401,6 @@ doPagerUpdate(Pager * p)
       return;
    p->do_update = 0;
 
-   gc = EXCreateGC(pmap, 0, NULL);
-   if (!gc)
-      return;
-
    Dprintf("%s %d: Repaint\n", __func__, p->dsk->num);
 
    /* Tile background over pager areas */
@@ -457,7 +452,7 @@ doPagerUpdate(Pager * p)
 		  XSetClipOrigin(disp, gc, wx, wy);
 	       }
 #endif
-	     EXCopyAreaGC(ewin->mini_pmm.pmap, pmap, gc, 0, 0, ww, wh, wx, wy);
+	     EXCopyArea(ewin->mini_pmm.pmap, pmap, 0, 0, ww, wh, wx, wy);
 #if 0				/* Mask is currently not set anywhere */
 	     if (ewin->mini_pmm.mask)
 		XSetClipMask(disp, gc, NoXID);
@@ -493,7 +488,7 @@ doPagerUpdate(Pager * p)
    PagerUpdateEwinsFromPager(p);
 
  done:
-   EXFreeGC(gc);
+   ;
 }
 
 static void
@@ -873,7 +868,6 @@ static void
 PagerEwinUpdateFromPager(Pager * p, EWin * ewin)
 {
    int                 x, y, w, h;
-   static GC           gc = NULL;
 
    if (!EoIsShown(ewin) || !EwinIsOnScreen(ewin))
       return;
@@ -893,14 +887,11 @@ PagerEwinUpdateFromPager(Pager * p, EWin * ewin)
    if (h <= 0)
       h = 1;
 
-   if (!gc)
-      gc = EXCreateGC(WinGetPmap(p->win), 0, NULL);
-
    PmapMaskInit(&ewin->mini_pmm, p->win, w, h);
    if (!ewin->mini_pmm.pmap)
       return;
 
-   EXCopyAreaGC(WinGetPmap(p->win), ewin->mini_pmm.pmap, gc, x, y, w, h, 0, 0);
+   EXCopyArea(WinGetPmap(p->win), ewin->mini_pmm.pmap, x, y, w, h, 0, 0);
 
 #if 0				/* FIXME - Remove? */
    if (hiwin && ewin == hiwin->ewin)

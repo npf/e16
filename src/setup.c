@@ -144,6 +144,8 @@ SetupX(const char *dstr)
 	VROOT = RROOT;
      }
 
+   Dpy.root_gc = EXCreateGC(WinGetXwin(VROOT), 0, NULL);
+
    /* Initialise event handling */
    EventsInit();
 

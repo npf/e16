@@ -1686,11 +1686,9 @@ void
 EXCopyArea(EX_Drawable src, EX_Drawable dst, int sx, int sy,
 	   unsigned int w, unsigned int h, int dx, int dy)
 {
-   GC                  gc;
+   GC                  gc = (GC) Dpy.root_gc;
 
-   gc = EXCreateGC(src, 0, NULL);
    XCopyArea(disp, src, dst, gc, sx, sy, w, h, dx, dy);
-   EXFreeGC(gc);
 }
 
 void
@@ -1769,8 +1767,9 @@ EXCreateGC(EX_Drawable draw, unsigned int mask, XGCValues * val)
      }
    else
      {
-	mask = GCGraphicsExposures;
+	mask = GCSubwindowMode | GCGraphicsExposures;
 	val = &xgcv;
+	val->subwindow_mode = IncludeInferiors;
 	val->graphics_exposures = False;
      }
    return XCreateGC(disp, draw, mask, val);

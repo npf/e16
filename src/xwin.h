@@ -37,6 +37,8 @@ typedef struct {
    Win                 rroot;	/* Real root window */
    Win                 vroot;	/* Virtual root window */
 
+   void               *root_gc;
+
    int                 server_grabbed;
 
    unsigned char       last_error_code;

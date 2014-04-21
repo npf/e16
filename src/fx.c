@@ -78,6 +78,7 @@ FX_ripple_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
    fx_ripple_data_t   *d = (fx_ripple_data_t *) state;
    int                 y;
    EObj               *bgeo;
+   XGCValues           xgcv;
 
    bgeo = DeskGetBackgroundObj(DesksGetCurrent());
 
@@ -86,8 +87,9 @@ FX_ripple_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 	d->win = EobjGetWin(bgeo);
 	d->above = ECreatePixmap(d->win, WinGetW(VROOT),
 				 FX_RIPPLE_WATERH * 2, 0);
+	xgcv.subwindow_mode = ClipByChildren;
 	if (!d->gc1)
-	   d->gc1 = EXCreateGC(WinGetXwin(d->win), 0, NULL);
+	   d->gc1 = EXCreateGC(WinGetXwin(d->win), GCSubwindowMode, &xgcv);
      }
 
    if (d->count == 0)
@@ -189,6 +191,7 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
    float               incx2;
    int                 y;
    EObj               *bgeo;
+   XGCValues           xgcv;
 
    bgeo = DeskGetBackgroundObj(DesksGetCurrent());
 
@@ -197,8 +200,9 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
      {
 	d->win = EobjGetWin(bgeo);
 	d->above = ECreatePixmap(d->win, WinGetW(VROOT), FX_WAVE_WATERH * 2, 0);
+	xgcv.subwindow_mode = ClipByChildren;
 	if (!d->gc1)
-	   d->gc1 = EXCreateGC(WinGetXwin(d->win), 0, NULL);
+	   d->gc1 = EXCreateGC(WinGetXwin(d->win), GCSubwindowMode, &xgcv);
      }
 
    /* On the zero, grab the desktop again. */
