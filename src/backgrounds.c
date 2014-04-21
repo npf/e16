@@ -615,22 +615,6 @@ BackgroundRealize(Background * bg, Win win, Drawable draw, unsigned int rw,
 	pmap = BackgroundCreatePixmap(win, w, h);
 	EImageRenderOnDrawable(bg->bg.im, win, pmap, EIMAGE_ANTI_ALIAS,
 			       0, 0, w, h);
-
-#if 0				/* FIXME - Remove? */
-	if (x == 0 && y == 0)	/* Hmmm. Always true. */
-	  {
-	     ESetWindowBackgroundPixmap(draw, pmap, 1);
-	  }
-	else
-	  {
-	     gc = EXCreateGC(draw, 0, NULL);
-	     XSetTile(disp, gc, pmap);
-	     XSetTSOrigin(disp, gc, x, y);
-	     XSetFillStyle(disp, gc, FillTiled);
-	     XFillRectangle(disp, draw, gc, 0, 0, rw, rh);
-	     EXFreeGC(gc);
-	  }
-#endif
 	goto done;
      }
 
