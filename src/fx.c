@@ -116,8 +116,8 @@ FX_ripple_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 	p = (float)(FX_RIPPLE_WATERH - y) / (float)FX_RIPPLE_WATERH;
 
 	a = p * p * 48 + d->incv;
-	yoff = y + (int)(sinf(a) * 7) + 1;
-	yy = (FX_RIPPLE_WATERH * 2) - yoff;
+	yoff = y + (int)(sinf(a) * 7) + 8;	/* 0:63 + -7:7 + 8 = 1:78 */
+	yy = (FX_RIPPLE_WATERH * 2) - yoff;	/* 128 - 1:78 = 127:50    */
 
 	a = p * p * 64 + d->inch;
 	xoff = (int)(sinf(a) * 10 * (1 - p));
@@ -251,8 +251,8 @@ FX_Wave_timeout(EObj * eo __UNUSED__, int run __UNUSED__, void *state)
 	p = (float)(FX_WAVE_WATERH - y) / (float)FX_WAVE_WATERH;
 
 	a = p * p * 48 + d->incv;
-	yoff = y + (int)(sinf(a) * 7) + 1;
-	yy = (FX_WAVE_WATERH * 2) - yoff;
+	yoff = y + (int)(sinf(a) * 7) + 8;	/* 0:63 + -7:7 + 8 = 1:78 */
+	yy = (FX_WAVE_WATERH * 2) - yoff;	/* 128 - 1:78 = 127:50    */
 
 	a = p * p * 64 + d->inch;
 	xoff = (int)(sinf(a) * 10 * (1 - p));
