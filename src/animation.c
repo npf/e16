@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012 Daniel Manjarres
- * Copyright (C) 2013 Kim Woelders
+ * Copyright (C) 2013-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -69,7 +69,7 @@ _AnimatorsTimer(void *timer_call)
 
    /* time = partial_frames * usecs_per_partial_frame */
    if (frame_skip < 1000000)
-      dt = (frame_skip + 1) * (1e3 / FPS);
+      dt = (1000 * (frame_skip + 1)) / FPS;
    else
       dt = 1000000000;		/* Some arbitrary high value */
 
