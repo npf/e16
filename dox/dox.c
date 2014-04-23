@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2007-2010 Kim Woelders
+ * Copyright (C) 2007-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -446,7 +446,7 @@ main(int argc, char **argv)
 
    for (;;)
      {
-	KeySym              key;
+	KeySym              keysym;
 	XEvent              ev;
 
 	prev_pagenum = pagenum;
@@ -455,8 +455,8 @@ main(int argc, char **argv)
 	switch (ev.type)
 	  {
 	  case KeyPress:
-	     key = XLookupKeysym(&ev.xkey, 0);
-	     switch (key)
+	     keysym = XLookupKeysym(&ev.xkey, 0);
+	     switch (keysym)
 	       {
 	       case XK_Escape:
 		  exit(0);

@@ -443,7 +443,7 @@ static void
 WarpFocusHandleEvent(Win win __UNUSED__, XEvent * ev, void *prm __UNUSED__)
 {
    WarpFocusWin       *fw = warpFocusWindow;
-   KeySym              key;
+   KeySym              keysym;
    unsigned int        mask;
 
    if (!EoIsShown(fw))
@@ -456,13 +456,13 @@ WarpFocusHandleEvent(Win win __UNUSED__, XEvent * ev, void *prm __UNUSED__)
 	  {
 	     if (((ev->xkey.state ^ warpFocusState) &
 		  Mode.masks.mod_key_mask) == 0)
-		key = 0x80000000;
+		keysym = 0x80000000;
 	     else
-		key = 0x80000001;
+		keysym = 0x80000001;
 	  }
 	else
-	   key = XLookupKeysym(&ev->xkey, 0);
-	switch (key)
+	   keysym = XLookupKeysym(&ev->xkey, 0);
+	switch (keysym)
 	  {
 	  default:
 	     break;
@@ -486,10 +486,10 @@ WarpFocusHandleEvent(Win win __UNUSED__, XEvent * ev, void *prm __UNUSED__)
 	     break;
 	  }
 	if (ev->xkey.keycode == warpFocusKey)
-	   key = 0x80000000;
+	   keysym = 0x80000000;
 	else
-	   key = XLookupKeysym(&ev->xkey, 0);
-	switch (key)
+	   keysym = XLookupKeysym(&ev->xkey, 0);
+	switch (keysym)
 	  {
 	  case XK_Escape:
 	     WarpFocusHide();

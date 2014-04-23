@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2012 Kim Woelders
+ * Copyright (C) 2007-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -474,9 +474,9 @@ GlwinRun(EObj * eobj __UNUSED__, int remaining __UNUSED__,
 }
 
 static int
-GlwinKeyPress(GLWindow * gw, KeySym key)
+GlwinKeyPress(GLWindow * gw, KeySym keysym)
 {
-   switch (key)
+   switch (keysym)
      {
      case XK_q:
      case XK_Escape:
@@ -576,7 +576,7 @@ static void
 GlwinEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 {
    GLWindow           *gw = (GLWindow *) prm;
-   KeySym              key;
+   KeySym              keysym;
    int                 done = 0;
 
    switch (ev->type)
@@ -594,8 +594,8 @@ GlwinEvent(Win win __UNUSED__, XEvent * ev, void *prm)
      default:
 	break;
      case KeyPress:
-	key = XLookupKeysym(&ev->xkey, ev->xkey.state);
-	done = GlwinKeyPress(gw, key);
+	keysym = XLookupKeysym(&ev->xkey, ev->xkey.state);
+	done = GlwinKeyPress(gw, keysym);
 	break;
 #if 0
      case EnterNotify:

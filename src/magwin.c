@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2013 Kim Woelders
+ * Copyright (C) 2007-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -240,9 +240,9 @@ _MagwinGrabRelease(MagWindow * mw)
 }
 
 static int
-MagwinKeyPress(MagWindow * mw, KeySym key)
+MagwinKeyPress(MagWindow * mw, KeySym keysym)
 {
-   switch (key)
+   switch (keysym)
      {
      case XK_q:		/* Quit */
      case XK_Escape:
@@ -312,7 +312,7 @@ static void
 MagwinEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 {
    MagWindow          *mw = (MagWindow *) prm;
-   KeySym              key;
+   KeySym              keysym;
    int                 done = 0;
 
    switch (ev->type)
@@ -321,8 +321,8 @@ MagwinEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 	break;
 
      case KeyPress:
-	key = XLookupKeysym(&ev->xkey, 0);
-	done = MagwinKeyPress(mw, key);
+	keysym = XLookupKeysym(&ev->xkey, 0);
+	done = MagwinKeyPress(mw, keysym);
 	mw->update = 1;
 	break;
 

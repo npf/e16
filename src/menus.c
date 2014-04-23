@@ -1198,30 +1198,30 @@ MenuFindNextItem(Menu * m, MenuItem * mi, int inc)
 }
 
 static              KeySym
-MenuKeyPressConversion(KeySym key)
+MenuKeyPressConversion(KeySym keysym)
 {
-   if (key == Conf.menus.key.left)
+   if (keysym == Conf.menus.key.left)
       return XK_Left;
-   if (key == Conf.menus.key.right)
+   if (keysym == Conf.menus.key.right)
       return XK_Right;
-   if (key == Conf.menus.key.up)
+   if (keysym == Conf.menus.key.up)
       return XK_Up;
-   if (key == Conf.menus.key.down)
+   if (keysym == Conf.menus.key.down)
       return XK_Down;
-   if (key == Conf.menus.key.escape)
+   if (keysym == Conf.menus.key.escape)
       return XK_Escape;
-   if (key == Conf.menus.key.ret)
+   if (keysym == Conf.menus.key.ret)
       return XK_Return;
 
    /* The key does not correspond to any set, use the default behavior 
     * associated to the key */
-   return key;
+   return keysym;
 }
 
 static void
 MenuEventKeyPress(Menu * m, XEvent * ev)
 {
-   KeySym              key;
+   KeySym              keysym;
    MenuItem           *mi;
    EWin               *ewin;
 
@@ -1234,8 +1234,8 @@ MenuEventKeyPress(Menu * m, XEvent * ev)
 
    /* NB! m != NULL */
 
-   key = XLookupKeysym(&ev->xkey, 0);
-   switch (MenuKeyPressConversion(key))
+   keysym = XLookupKeysym(&ev->xkey, 0);
+   switch (MenuKeyPressConversion(keysym))
      {
      case XK_Escape:
 	MenusHide();
