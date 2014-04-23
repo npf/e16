@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2003-2013 Kim Woelders
+ * Copyright (C) 2003-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -61,47 +61,48 @@ _ScreenShowInfoXrandr(void)
    if (!psr)
       return;
 
-   IpcPrintf("Crtc  ID      X,Y         WxH     mode   rot   nout\n");
+   IpcPrintf("Crtc   ID      X,Y         WxH      mode   rot   nout\n");
    for (i = 0; i < psr->ncrtc; i++)
      {
 	pci = XRRGetCrtcInfo(disp, psr, psr->crtcs[i]);
 	if (!pci)
 	   break;
-	IpcPrintf("%3d  %#04lx  %4d,%4d   %4ux%4u  %#04lx %4d %5d\n",
+	IpcPrintf("%3d  %#05lx  %4d,%4d   %4ux%4u  %#05lx %4d %5d\n",
 		  i, psr->crtcs[i],
 		  pci->x, pci->y, pci->width, pci->height,
 		  pci->mode, pci->rotation, pci->noutput);
 	XRRFreeCrtcInfo(pci);
      }
 
-   IpcPrintf("Outp  ID  Name            WxH     crtc  Crtcs clOnes Modes\n");
+   IpcPrintf
+      ("Outp   ID  Name            WxH      crtc    Crtcs clOnes Modes\n");
    for (i = 0; i < psr->noutput; i++)
      {
 	poi = XRRGetOutputInfo(disp, psr, psr->outputs[i]);
 	if (!poi)
 	   break;
 	l = Esnprintf(buf, sizeof(buf),
-		      "%3d  %#04lx %-8s     %4lux%4lu  %#04lx",
+		      "%3d  %#05lx %-10s   %4lux%4lu  %#05lx",
 		      i, psr->outputs[i],
 		      poi->name, poi->mm_width, poi->mm_height, poi->crtc);
 	l += Esnprintf(buf + l, sizeof(buf) - l, " c:");
 	for (j = 0; j < poi->ncrtc; j++)
-	   l += Esnprintf(buf + l, sizeof(buf) - l, " %#04lx", poi->crtcs[j]);
+	   l += Esnprintf(buf + l, sizeof(buf) - l, " %#05lx", poi->crtcs[j]);
 	l += Esnprintf(buf + l, sizeof(buf) - l, " o:");
 	for (j = 0; j < poi->nclone; j++)
-	   l += Esnprintf(buf + l, sizeof(buf) - l, " %#04lx", poi->clones[j]);
+	   l += Esnprintf(buf + l, sizeof(buf) - l, " %#05lx", poi->clones[j]);
 	l += Esnprintf(buf + l, sizeof(buf) - l, " m:");
 	for (j = 0; j < poi->nmode; j++)
-	   l += Esnprintf(buf + l, sizeof(buf) - l, " %#04lx", poi->modes[j]);
+	   l += Esnprintf(buf + l, sizeof(buf) - l, " %#05lx", poi->modes[j]);
 	IpcPrintf("%s\n", buf);
 	XRRFreeOutputInfo(poi);
      }
 
-   IpcPrintf("Mode  ID  Name            WxH\n");
+   IpcPrintf("Mode   ID  Name            WxH\n");
    for (i = 0; i < psr->nmode; i++)
      {
 	pmi = psr->modes + i;
-	IpcPrintf("%3d  %#04lx %-8s     %4ux%4u\n",
+	IpcPrintf("%3d  %#05lx %-10s   %4ux%4u\n",
 		  i, pmi->id, pmi->name, pmi->width, pmi->height);
      }
 
