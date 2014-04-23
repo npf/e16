@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -251,7 +251,7 @@ GrabButtonRelease(unsigned int button, unsigned int modifiers, Win win)
 }
 
 void
-GrabKeySet(unsigned int key, unsigned int modifiers, Win win)
+GrabKeySet(unsigned int keycode, unsigned int modifiers, Win win)
 {
    Bool                owner_events = False;
    int                 pointer_mode = GrabModeAsync;
@@ -284,14 +284,14 @@ GrabKeySet(unsigned int key, unsigned int modifiers, Win win)
 	     num_modifiers++;
 	  }
      }
-   XIGrabKeycode(disp, DEV_KBD, key, WinGetXwin(win),
+   XIGrabKeycode(disp, DEV_KBD, keycode, WinGetXwin(win),
 		 keyboard_mode, pointer_mode, owner_events,
 		 &em.em, num_modifiers, modifiers_inouts);
 #else
 
    if (modifiers == AnyModifier)
      {
-	XGrabKey(disp, key, modifiers, WinGetXwin(win), owner_events,
+	XGrabKey(disp, keycode, modifiers, WinGetXwin(win), owner_events,
 		 pointer_mode, keyboard_mode);
 	return;
      }
@@ -300,14 +300,14 @@ GrabKeySet(unsigned int key, unsigned int modifiers, Win win)
      {
 	if (i && !Mode.masks.mod_combos[i])
 	   continue;
-	XGrabKey(disp, key, modifiers | Mode.masks.mod_combos[i],
+	XGrabKey(disp, keycode, modifiers | Mode.masks.mod_combos[i],
 		 WinGetXwin(win), owner_events, pointer_mode, keyboard_mode);
      }
 #endif
 }
 
 void
-GrabKeyRelease(unsigned int key, unsigned int modifiers, Win win)
+GrabKeyRelease(unsigned int keycode, unsigned int modifiers, Win win)
 {
    int                 i;
 
@@ -334,13 +334,13 @@ GrabKeyRelease(unsigned int key, unsigned int modifiers, Win win)
 	     num_modifiers++;
 	  }
      }
-   XIUngrabKeycode(disp, DEV_KBD, key, WinGetXwin(win),
+   XIUngrabKeycode(disp, DEV_KBD, keycode, WinGetXwin(win),
 		   num_modifiers, modifiers_inouts);
 #else
 
    if (modifiers == AnyModifier)
      {
-	XUngrabKey(disp, key, modifiers, WinGetXwin(win));
+	XUngrabKey(disp, keycode, modifiers, WinGetXwin(win));
 	return;
      }
 
@@ -348,7 +348,7 @@ GrabKeyRelease(unsigned int key, unsigned int modifiers, Win win)
      {
 	if (i && !Mode.masks.mod_combos[i])
 	   continue;
-	XUngrabKey(disp, key, modifiers | Mode.masks.mod_combos[i],
+	XUngrabKey(disp, keycode, modifiers | Mode.masks.mod_combos[i],
 		   WinGetXwin(win));
      }
 #endif

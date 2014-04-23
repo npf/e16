@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -144,7 +144,7 @@ struct _ditem {
 };
 
 typedef struct {
-   KeyCode             key;
+   KeyCode             keycode;
    DialogCallbackFunc *func;
    int                 val;
    void               *data;
@@ -208,7 +208,7 @@ DialogBindKey(Dialog * d, const char *key, DialogCallbackFunc * func, int val,
    d->keybindings[d->num_bindings - 1].val = val;
    d->keybindings[d->num_bindings - 1].func = func;
    d->keybindings[d->num_bindings - 1].data = data;
-   d->keybindings[d->num_bindings - 1].key = EKeynameToKeycode(key);
+   d->keybindings[d->num_bindings - 1].keycode = EKeynameToKeycode(key);
 }
 
 void
@@ -1865,7 +1865,7 @@ DialogEventKeyPress(Dialog * d, XEvent * ev)
 
    for (i = 0; i < d->num_bindings; i++)
      {
-	if (ev->xkey.keycode != d->keybindings[i].key)
+	if (ev->xkey.keycode != d->keybindings[i].keycode)
 	   continue;
 	d->keybindings[i].func(d, d->keybindings[i].val,
 			       d->keybindings[i].data);

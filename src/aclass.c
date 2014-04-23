@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -45,7 +45,7 @@ struct _action {
    char                anybutton;
    int                 button;
    char                anykey;
-   KeyCode             key;
+   KeyCode             keycode;
    char               *key_str;
    char               *tooltipstring;
    ActionType         *action;
@@ -104,10 +104,10 @@ ActionCreate(char event, char anymod, int mod, int anybut, int but,
    aa->button = but;
    aa->anykey = anykey;
    if (!key || !key[0] || (event != EVENT_KEY_DOWN && event != EVENT_KEY_UP))
-      aa->key = 0;
+      aa->keycode = 0;
    else
-      aa->key = EKeynameToKeycode(key);
-   aa->key_str = (aa->key) ? Estrdup(key) : NULL;
+      aa->keycode = EKeynameToKeycode(key);
+   aa->key_str = (aa->keycode) ? Estrdup(key) : NULL;
    aa->tooltipstring =
       (tooltipstring) ? Estrdup((tooltipstring[0]) ? tooltipstring : "?!?") :
       NULL;
@@ -989,14 +989,14 @@ handleAction(EWin * ewin, ActionType * action)
 int
 ActionclassEvent(ActionClass * ac, XEvent * ev, EWin * ewin)
 {
-   KeyCode             key;
+   KeyCode             keycode;
    int                 i, type, button, modifiers, ok, mouse, mask, val = 0;
    Action             *aa;
 
    if (ewin && ewin->state.inhibit_actions)
       return 0;
 
-   key = type = button = modifiers = mouse = 0;
+   keycode = type = button = modifiers = mouse = 0;
 
    mask = Mode.masks.mod_key_mask;
 
@@ -1004,13 +1004,13 @@ ActionclassEvent(ActionClass * ac, XEvent * ev, EWin * ewin)
      {
      case KeyPress:
 	type = EVENT_KEY_DOWN;
-	key = ev->xkey.keycode;
+	keycode = ev->xkey.keycode;
 	modifiers = ev->xbutton.state & mask;
 	mouse = 0;
 	break;
      case KeyRelease:
 	type = EVENT_KEY_UP;
-	key = ev->xkey.keycode;
+	keycode = ev->xkey.keycode;
 	modifiers = ev->xbutton.state & mask;
 	mouse = 0;
 	break;
@@ -1103,14 +1103,14 @@ ActionclassEvent(ActionClass * ac, XEvent * ev, EWin * ewin)
 			 {
 			    if (aa->anykey)
 			       ok = 1;
-			    else if (aa->key == key)
+			    else if (aa->keycode == keycode)
 			       ok = 1;
 			 }
 		       else if (aa->modifiers == modifiers)
 			 {
 			    if (aa->anykey)
 			       ok = 1;
-			    else if (aa->key == key)
+			    else if (aa->keycode == keycode)
 			       ok = 1;
 			 }
 		    }
@@ -1324,12 +1324,12 @@ GrabActionKey(Action * aa)
 {
    int                 mod;
 
-   if (!aa || !aa->key)
+   if (!aa || !aa->keycode)
       return;
 
    mod = (aa->anymodifier) ? AnyModifier : aa->modifiers;
 
-   GrabKeySet(aa->key, mod, VROOT);
+   GrabKeySet(aa->keycode, mod, VROOT);
 }
 
 static void
@@ -1337,10 +1337,10 @@ UnGrabActionKey(Action * aa)
 {
    int                 mod;
 
-   if (!aa->key)
+   if (!aa->keycode)
       return;
 
    mod = (aa->anymodifier) ? AnyModifier : aa->modifiers;
 
-   GrabKeyRelease(aa->key, mod, VROOT);
+   GrabKeyRelease(aa->keycode, mod, VROOT);
 }

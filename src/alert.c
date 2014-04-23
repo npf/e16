@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -181,7 +181,7 @@ ShowAlert(const char *title,
    Colormap            cmap;
    int                 cnum, fh, x, y, ww, hh, bw, bh;
    char               *str1, *str2, *str3, *p;
-   KeyCode             key;
+   KeyCode             keycode;
    int                 button;
    char              **missing_charset_list_return, *def_string_return;
    int                 missing_charset_count_return;
@@ -386,8 +386,8 @@ ShowAlert(const char *title,
 	switch (ev.type)
 	  {
 	  case KeyPress:
-	     key = XKeysymToKeycode(dd, XK_F1);
-	     if (key == ev.xkey.keycode)
+	     keycode = XKeysymToKeycode(dd, XK_F1);
+	     if (keycode == ev.xkey.keycode)
 	       {
 		  DRAW_BOX_IN(dd, gc, b1, 0, 0, bw, bh);
 		  XSync(dd, False);
@@ -396,8 +396,8 @@ ShowAlert(const char *title,
 		  button = 1;
 		  goto do_sync;
 	       }
-	     key = XKeysymToKeycode(dd, XK_F2);
-	     if (key == ev.xkey.keycode)
+	     keycode = XKeysymToKeycode(dd, XK_F2);
+	     if (keycode == ev.xkey.keycode)
 	       {
 		  DRAW_BOX_IN(dd, gc, b2, 0, 0, bw, bh);
 		  XSync(dd, False);
@@ -406,8 +406,8 @@ ShowAlert(const char *title,
 		  button = 2;
 		  goto do_sync;
 	       }
-	     key = XKeysymToKeycode(dd, XK_F3);
-	     if (key == ev.xkey.keycode)
+	     keycode = XKeysymToKeycode(dd, XK_F3);
+	     if (keycode == ev.xkey.keycode)
 	       {
 		  DRAW_BOX_IN(dd, gc, b3, 0, 0, bw, bh);
 		  XSync(dd, False);

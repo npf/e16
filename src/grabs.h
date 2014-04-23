@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2006-2012 Kim Woelders
+ * Copyright (C) 2006-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -37,9 +37,9 @@ void                GrabButtonSet(unsigned int button, unsigned int modifiers,
 				  unsigned int csr, int confine);
 void                GrabButtonRelease(unsigned int button,
 				      unsigned int modifiers, Win win);
-void                GrabKeySet(unsigned int key, unsigned int modifiers,
+void                GrabKeySet(unsigned int keycode, unsigned int modifiers,
 			       Win win);
-void                GrabKeyRelease(unsigned int key, unsigned int modifiers,
+void                GrabKeyRelease(unsigned int keycode, unsigned int modifiers,
 				   Win win);
 
 #endif /* _GRABS_H_ */
