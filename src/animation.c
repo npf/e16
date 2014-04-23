@@ -30,7 +30,6 @@
 
 #define ENABLE_DEBUG   1
 #if ENABLE_DEBUG
-#define EDBUG_TYPE_ANIM 180
 #define Dprintf(fmt...)  if(EDebug(EDBUG_TYPE_ANIM))Eprintf(fmt)
 #define D2printf(fmt...) if(EDebug(EDBUG_TYPE_ANIM)>1)Eprintf(fmt)
 #define D3printf(fmt...)
