@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2004-2007 Jaron Omega
- * Copyright (C) 2004-2011 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -67,12 +67,9 @@ typedef struct {
 } TransDlgData;
 
 static void
-CB_ConfigureTrans(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplyThemeTrans(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    TransDlgData       *dd = DLG_DATA_GET(d, TransDlgData);
-
-   if (val >= 2)
-      return;
 
    Conf.trans.border = dd->st_border;
    Conf.trans.widget = dd->st_widget;
@@ -266,7 +263,7 @@ const DialogDef     DlgThemeTrans = {
    "pix/tips.png",
    N_("Enlightenment Selective Transparency\n" "Settings Dialog"),
    _DlgFillThemeTrans,
-   DLG_OAC, CB_ConfigureTrans,
+   DLG_OAC, _DlgApplyThemeTrans, NULL
 };
 #endif /* ENABLE_DIALOGS */
 

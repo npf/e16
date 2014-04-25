@@ -1461,13 +1461,10 @@ typedef struct {
 } ContainerDlgData;
 
 static void
-CB_ConfigureContainer(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplyContainer(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    ContainerDlgData   *dd = DLG_DATA_GET(d, ContainerDlgData);
    Container          *ct;
-
-   if (val >= 2)
-      return;
 
    ct = LIST_CHECK(Container, &container_list, dd->ct);
    if (!ct)
@@ -1738,7 +1735,7 @@ static const DialogDef DlgContainer = {
    "pix/iconbox.png",
    N_("Enlightenment Iconbox\n" "Settings Dialog"),
    _DlgFillContainer,
-   DLG_OAC, CB_ConfigureContainer,
+   DLG_OAC, _DlgApplyContainer, NULL
 };
 #endif /* ENABLE_DIALOGS */
 

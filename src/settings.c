@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -41,12 +41,9 @@ typedef struct {
 } MovResDlgData;
 
 static void
-CB_ConfigureMoveResize(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
+_DlgApplyMoveResize(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    MovResDlgData      *dd = DLG_DATA_GET(d, MovResDlgData);
-
-   if (val >= 2)
-      return;
 
    Conf.movres.mode_move = dd->move;
    Conf.movres.mode_resize = dd->resize;
@@ -249,7 +246,7 @@ const DialogDef     DlgMoveResize = {
    "pix/moveres.png",
    N_("Enlightenment Move & Resize\n" "Method Settings Dialog"),
    _DlgFillMoveResize,
-   DLG_OAC, CB_ConfigureMoveResize,
+   DLG_OAC, _DlgApplyMoveResize, NULL
 };
 
 typedef struct {
@@ -275,12 +272,9 @@ typedef struct {
 } PlaceDlgData;
 
 static void
-CB_ConfigurePlacement(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
+_DlgApplyPlacement(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    PlaceDlgData       *dd = DLG_DATA_GET(d, PlaceDlgData);
-
-   if (val >= 2)
-      return;
 
    Conf.focus.transientsfollowleader = dd->with_leader;
    Conf.focus.switchfortransientmap = dd->switch_popup;
@@ -494,7 +488,7 @@ const DialogDef     DlgPlacement = {
    "pix/place.png",
    N_("Enlightenment Window Placement\n" "Settings Dialog"),
    _DlgFillPlacement,
-   DLG_OAC, CB_ConfigurePlacement,
+   DLG_OAC, _DlgApplyPlacement, NULL
 };
 
 typedef struct {
@@ -506,12 +500,9 @@ typedef struct {
 } MiscDlgData;
 
 static void
-CB_ConfigureMiscellaneous(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
+_DlgApplyMisc(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    MiscDlgData        *dd = DLG_DATA_GET(d, MiscDlgData);
-
-   if (val >= 2)
-      return;
 
    Conf.dialogs.headers = dd->dialog_headers;
    Conf.dialogs.button_image = dd->button_image;
@@ -592,7 +583,7 @@ const DialogDef     DlgMisc = {
    "pix/miscellaneous.png",
    N_("Enlightenment Miscellaneous\n" "Settings Dialog"),
    _DlgFillMisc,
-   DLG_OAC, CB_ConfigureMiscellaneous,
+   DLG_OAC, _DlgApplyMisc, NULL
 };
 
 #if USE_COMPOSITE
@@ -603,15 +594,11 @@ const DialogDef     DlgMisc = {
  */
 
 static void
-CB_ConfigureComposite(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplyComposite(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
-   cfg_composite      *dd;
-
-   if (val >= 2)
-      return;
+   cfg_composite      *dd = DLG_DATA_GET(d, cfg_composite);
 
    /* Configure and read back */
-   dd = DLG_DATA_GET(d, cfg_composite);
    ECompMgrConfigSet(dd);
    ECompMgrConfigGet(dd);
 }
@@ -729,7 +716,7 @@ const DialogDef     DlgComposite = {
    "pix/pager.png",
    N_("Enlightenment Composite\n" "Settings Dialog"),
    _DlgFillComposite,
-   DLG_OAC, CB_ConfigureComposite,
+   DLG_OAC, _DlgApplyComposite, NULL
 };
 #endif
 
@@ -817,7 +804,7 @@ static const DialogDef DlgConfiguration = {
    NULL,
    NULL,
    _DlgFillConfiguration,
-   0, NULL,
+   0, NULL, NULL
 };
 
 void

@@ -757,14 +757,12 @@ static char         tmp_logout_dialog;
 static char         tmp_reboot_halt;
 
 static void
-CB_ConfigureSession(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
+_DlgApplySession(Dialog * d __UNUSED__, int val __UNUSED__,
+		 void *data __UNUSED__)
 {
-   if (val < 2)
-     {
-	Conf.session.enable_script = tmp_session_script;
-	Conf.session.enable_logout_dialog = tmp_logout_dialog;
-	Conf.session.enable_reboot_halt = tmp_reboot_halt;
-     }
+   Conf.session.enable_script = tmp_session_script;
+   Conf.session.enable_logout_dialog = tmp_logout_dialog;
+   Conf.session.enable_reboot_halt = tmp_reboot_halt;
    autosave();
 }
 
@@ -803,6 +801,6 @@ const DialogDef     DlgSession = {
    "pix/miscellaneous.png",
    N_("Enlightenment Session\n" "Settings Dialog"),
    _DlgFillSession,
-   DLG_OAC, CB_ConfigureSession,
+   DLG_OAC, _DlgApplySession, NULL
 };
 #endif /* ENABLE_DIALOGS */

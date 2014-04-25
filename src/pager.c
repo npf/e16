@@ -1747,12 +1747,9 @@ typedef struct {
 } PagerDlgData;
 
 static void
-CB_ConfigurePager(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplyPagers(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    PagerDlgData       *dd = DLG_DATA_GET(d, PagerDlgData);
-
-   if (val >= 2)
-      return;
 
    PagersShow(dd->show_pagers);
    if (Conf_pagers.hiq != dd->pager_hiq)
@@ -1974,7 +1971,7 @@ const DialogDef     DlgPagers = {
    "pix/pager.png",
    N_("Enlightenment Desktop & Area\n" "Pager Settings Dialog"),
    _DlgFillPagers,
-   DLG_OAC, CB_ConfigurePager,
+   DLG_OAC, _DlgApplyPagers, NULL
 };
 #endif /* ENABLE_DIALOGS */
 

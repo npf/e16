@@ -161,8 +161,7 @@ struct _dialog {
    TextClass          *tclass;
    ImageClass         *iclass;
    DItem              *item;
-   DialogCallbackFunc *exit_func;
-   int                 exit_val;
+   DialogExitFunc     *exit_func;
    int                 num_bindings;
    DKeyBind           *keybindings;
    void               *data;
@@ -283,17 +282,16 @@ DialogSetTitle(Dialog * d, const char *title)
 }
 
 void
-DialogSetExitFunction(Dialog * d, DialogCallbackFunc * func, int val)
+DialogSetExitFunction(Dialog * d, DialogExitFunc * func)
 {
    d->exit_func = func;
-   d->exit_val = val;
 }
 
 void
 DialogCallExitFunction(Dialog * d)
 {
    if (d->exit_func)
-      d->exit_func(d, d->exit_val, NULL);
+      d->exit_func(d);
 }
 
 void               *
@@ -514,8 +512,10 @@ DialogFill(Dialog * d, DItem * parent, const DialogDef * dd, void *data)
 
    dd->fill(d, content, data);
 
-   if (dd->func)
-      DialogAddFooter(d, parent, dd->flags, dd->func);
+   if (dd->func_apply)
+      DialogAddFooter(d, parent, dd->flags, dd->func_apply);
+
+   DialogSetExitFunction(d, dd->func_exit);
 }
 
 void
@@ -692,8 +692,8 @@ DialogAddFooter(Dialog * d, DItem * parent, int flags, DialogCallbackFunc * cb)
      }
    if (flags & 2)
      {
-	DialogItemAddButton(table, _("Apply"), cb, 1, 0, DLG_BUTTON_APPLY);
-	DialogBindKey(d, "Return", cb, 1, NULL);
+	DialogItemAddButton(table, _("Apply"), cb, 0, 0, DLG_BUTTON_APPLY);
+	DialogBindKey(d, "Return", cb, 0, NULL);
 	n_buttons++;
      }
    if (flags & 4)
@@ -704,8 +704,6 @@ DialogAddFooter(Dialog * d, DItem * parent, int flags, DialogCallbackFunc * cb)
      }
 
    DialogItemTableSetOptions(table, n_buttons, 0, 1, 0);
-
-   DialogSetExitFunction(d, cb, 2);
 }
 
 Dialog             *

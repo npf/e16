@@ -1412,40 +1412,39 @@ static void         BG_RedrawView(Dialog * d);
 static void         BGSettingsGoTo(Dialog * d, Background * bg);
 
 static void
-CB_ConfigureBG(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplyBG(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    BgDlgData          *dd = DLG_DATA_GET(d, BgDlgData);
 
-   if (val == 2)
-     {
-	BackgroundImagesKeep(dd->bg, 0);
-	return;
-     }
+   Conf.backgrounds.timeout = dd->bg_timeout;
+   Conf.backgrounds.hiquality = dd->hiq;
+   Conf.backgrounds.user = dd->userbg;
+   Conf.hints.set_xroot_info_on_root_window = dd->root_hint;
 
-   if (val < 2)
-     {
-	Conf.backgrounds.timeout = dd->bg_timeout;
-	Conf.backgrounds.hiquality = dd->hiq;
-	Conf.backgrounds.user = dd->userbg;
-	Conf.hints.set_xroot_info_on_root_window = dd->root_hint;
+   COLOR32_FROM_RGB(dd->bg->bg_solid, dd->bg_r, dd->bg_g, dd->bg_b);
+   dd->bg->bg_tile = dd->bg_tile;
+   dd->bg->bg.keep_aspect = dd->bg_keep_aspect;
+   dd->bg->bg.xjust = dd->bg_xjust;
+   dd->bg->bg.yjust = dd->bg_yjust;
+   dd->bg->bg.xperc = dd->bg_xperc;
+   dd->bg->bg.yperc = dd->bg_yperc;
+   if (!dd->bg_image)
+      BackgroundFilesRemove(dd->bg);
 
-	COLOR32_FROM_RGB(dd->bg->bg_solid, dd->bg_r, dd->bg_g, dd->bg_b);
-	dd->bg->bg_tile = dd->bg_tile;
-	dd->bg->bg.keep_aspect = dd->bg_keep_aspect;
-	dd->bg->bg.xjust = dd->bg_xjust;
-	dd->bg->bg.yjust = dd->bg_yjust;
-	dd->bg->bg.xperc = dd->bg_xperc;
-	dd->bg->bg.yperc = dd->bg_yperc;
-	if (!dd->bg_image)
-	   BackgroundFilesRemove(dd->bg);
+   BackgroundInvalidate(dd->bg, 1);
 
-	BackgroundInvalidate(dd->bg, 1);
-
-	BackgroundCacheMini(dd->bg, 0, 1);
-	BG_RedrawView(d);
-     }
+   BackgroundCacheMini(dd->bg, 0, 1);
+   BG_RedrawView(d);
 
    autosave();
+}
+
+static void
+_DlgBGExit(Dialog * d)
+{
+   BgDlgData          *dd = DLG_DATA_GET(d, BgDlgData);
+
+   BackgroundImagesKeep(dd->bg, 0);
 }
 
 /* Draw the background preview image */
@@ -2229,7 +2228,7 @@ const DialogDef     DlgBackground = {
    "pix/bg.png",
    N_("Enlightenment Desktop\n" "Background Settings Dialog"),
    _DlgFillBackground,
-   DLG_OAC, CB_ConfigureBG,
+   DLG_OAC, _DlgApplyBG, _DlgBGExit
 };
 
 #endif /* ENABLE_DIALOGS */

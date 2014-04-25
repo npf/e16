@@ -749,12 +749,9 @@ typedef struct {
 } FocusDlgData;
 
 static void
-CB_ConfigureFocus(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplyFocus(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    FocusDlgData       *dd = DLG_DATA_GET(d, FocusDlgData);
-
-   if (val >= 2)
-      return;
 
    Conf.focus.mode = dd->focus.mode;
    Conf.focus.clickraises = dd->focus.clickalways;
@@ -1000,7 +997,7 @@ const DialogDef     DlgFocus = {
    "pix/focus.png",
    N_("Enlightenment Focus\n" "Settings Dialog"),
    _DlgFillFocus,
-   DLG_OAC, CB_ConfigureFocus,
+   DLG_OAC, _DlgApplyFocus, NULL
 };
 #endif /* ENABLE_DIALOGS */
 

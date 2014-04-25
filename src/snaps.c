@@ -579,14 +579,11 @@ typedef struct {
 } SnapDlgData;
 
 static void
-CB_ApplySnap(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplySnap(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    EWin               *ewin;
    SnapDlgData        *sd = DLG_DATA_GET(d, SnapDlgData);
    unsigned int        match_flags, use_flags;
-
-   if (val >= 2)
-      goto done;
 
    ewin = EwinFindByClient(sd->client);
    if (!ewin)
@@ -920,7 +917,7 @@ static const DialogDef DlgSnap = {
    N_("Select the attributes of this\n"
       "window you wish to Remember\n" "from now on\n"),
    _DlgFillSnap,
-   DLG_OAC, CB_ApplySnap,
+   DLG_OAC, _DlgApplySnap, NULL
 };
 
 static void
@@ -945,28 +942,30 @@ typedef struct _remwinlist {
 static RememberWinList *rd_ewin_list;
 
 static void
-CB_ApplyRemember(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
+_DlgApplyRemember(Dialog * d __UNUSED__,
+		  int val __UNUSED__, void *data __UNUSED__)
 {
    int                 i;
 
-   if (val < 2 && rd_ewin_list)
-     {
-	for (i = 0; rd_ewin_list[i].snap; i++)
-	  {
-	     if (!rd_ewin_list[i].remove)
-		continue;
+   if (!rd_ewin_list)
+      return;
 
-	     _SnapDestroy(rd_ewin_list[i].snap);
-	  }
-	/* save snapshot info to disk */
-	SnapshotsSave();
-     }
-
-   if (((val == 0) || (val == 2)) && rd_ewin_list)
+   for (i = 0; rd_ewin_list[i].snap; i++)
      {
-	Efree(rd_ewin_list);
-	rd_ewin_list = NULL;
+	if (!rd_ewin_list[i].remove)
+	   continue;
+
+	_SnapDestroy(rd_ewin_list[i].snap);
      }
+   /* save snapshot info to disk */
+   SnapshotsSave();
+}
+
+static void
+_DlgExitRemember(Dialog * d __UNUSED__)
+{
+   Efree(rd_ewin_list);
+   rd_ewin_list = NULL;
 }
 
 static void
@@ -1066,7 +1065,7 @@ const DialogDef     DlgRemember = {
    "pix/snapshots.png",
    N_("Enlightenment Remembered\n" "Windows Settings Dialog"),
    _DlgFillRemember,
-   DLG_OC, CB_ApplyRemember,
+   DLG_OC, _DlgApplyRemember, _DlgExitRemember
 };
 #endif /* ENABLE_DIALOGS */
 

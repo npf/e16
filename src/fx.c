@@ -434,11 +434,8 @@ static char         tmp_effect_ripples;
 static char         tmp_effect_waves;
 
 static void
-CB_ConfigureFX(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
+_DlgApplyFx(Dialog * d __UNUSED__, int val __UNUSED__, void *data __UNUSED__)
 {
-   if (val >= 2)
-      return;
-
    FX_Op(&fx_rip, tmp_effect_ripples ? FX_OP_ENABLE : FX_OP_DISABLE);
    FX_Op(&fx_wav, tmp_effect_waves ? FX_OP_ENABLE : FX_OP_DISABLE);
 
@@ -474,7 +471,7 @@ const DialogDef     DlgFx = {
    "pix/fx.png",
    N_("Enlightenment Special Effects\n" "Settings Dialog"),
    _DlgFillFx,
-   DLG_OAC, CB_ConfigureFX,
+   DLG_OAC, _DlgApplyFx, NULL
 };
 #endif /* ENABLE_DIALOGS */
 

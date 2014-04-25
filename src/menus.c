@@ -1941,12 +1941,9 @@ typedef struct {
 } MenudDlgData;
 
 static void
-CB_ConfigureMenus(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplyMenus(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    MenudDlgData       *dd = DLG_DATA_GET(d, MenudDlgData);
-
-   if (val >= 2)
-      return;
 
    Conf.menus.warp = dd->warp;
    Conf.menus.animate = dd->animate;
@@ -2021,7 +2018,7 @@ const DialogDef     DlgMenus = {
    "pix/place.png",
    N_("Enlightenment Menu\n" "Settings Dialog"),
    _DlgFillMenus,
-   DLG_OAC, CB_ConfigureMenus,
+   DLG_OAC, _DlgApplyMenus, NULL
 };
 #endif /* ENABLE_DIALOGS */
 

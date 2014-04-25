@@ -2349,12 +2349,9 @@ typedef struct {
 } DeskDlgData;
 
 static void
-CB_ConfigureDesktops(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplyDesktops(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    DeskDlgData        *dd = DLG_DATA_GET(d, DeskDlgData);
-
-   if (val >= 2)
-      return;
 
    ChangeNumberOfDesktops(dd->desktops);
    Conf.desks.slidein = dd->desktop_slide;
@@ -2583,7 +2580,7 @@ const DialogDef     DlgDesks = {
    "pix/desktops.png",
    N_("Enlightenment Multiple Desktop\n" "Settings Dialog"),
    _DlgFillDesks,
-   DLG_OAC, CB_ConfigureDesktops,
+   DLG_OAC, _DlgApplyDesktops, NULL
 };
 
 typedef struct {
@@ -2598,12 +2595,9 @@ typedef struct {
 } AreaDlgData;
 
 static void
-CB_ConfigureAreas(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplyAreas(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    AreaDlgData        *dd = DLG_DATA_GET(d, AreaDlgData);
-
-   if (val >= 2)
-      return;
 
    SetNewAreaSize(dd->area_x, dd->area_y);
    Conf.desks.areas_wraparound = dd->area_wraparound;
@@ -2762,7 +2756,7 @@ const DialogDef     DlgAreas = {
    "pix/areas.png",
    N_("Enlightenment Virtual Desktop\n" "Settings Dialog"),
    _DlgFillAreas,
-   DLG_OAC, CB_ConfigureAreas,
+   DLG_OAC, _DlgApplyAreas, NULL
 };
 #endif /* ENABLE_DIALOGS */
 

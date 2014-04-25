@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -59,6 +59,7 @@ typedef struct _dialog Dialog;
 typedef struct _ditem DItem;
 
 typedef void        (DialogCallbackFunc) (Dialog * d, int val, void *data);
+typedef void        (DialogExitFunc) (Dialog * d);
 typedef void        (DialogItemCallbackFunc) (DItem * di, int val, void *data);
 
 typedef struct {
@@ -70,7 +71,8 @@ typedef struct {
    const char         *header_text;
    void                (*fill) (Dialog * d, DItem * table, void *data);
    int                 flags;
-   DialogCallbackFunc *func;
+   DialogCallbackFunc *func_apply;
+   DialogExitFunc     *func_exit;
 } DialogDef;
 
 /* dialog.c */
@@ -80,8 +82,7 @@ void                DialogBindKey(Dialog * d, const char *key,
 				  DialogCallbackFunc * func, int val,
 				  void *data);
 void                DialogSetTitle(Dialog * d, const char *title);
-void                DialogSetExitFunction(Dialog * d, DialogCallbackFunc * func,
-					  int val);
+void                DialogSetExitFunction(Dialog * d, DialogExitFunc * func);
 void                DialogCallExitFunction(Dialog * d);
 
 void               *DialogDataSet(Dialog * d, unsigned int size);

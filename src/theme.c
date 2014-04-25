@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -368,10 +368,8 @@ static char         tmp_use_theme_font;
 static char         tmp_use_alt_font;
 
 static void
-_DlgThemeConfigure(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
+_DlgThemeApply(Dialog * d __UNUSED__, int val __UNUSED__, void *data __UNUSED__)
 {
-   if (val >= 2)
-      return;
    if (Conf.theme.use_theme_font_cfg == tmp_use_theme_font &&
        Conf.theme.use_alt_font_cfg == tmp_use_alt_font)
       return;
@@ -415,7 +413,7 @@ const DialogDef     DlgTheme = {
    "pix/miscellaneous.png",
    N_("Enlightenment Theme\n" "Settings Dialog"),
    _DlgThemeFill,
-   DLG_OAC, _DlgThemeConfigure,
+   DLG_OAC, _DlgThemeApply, NULL
 };
 #endif /* ENABLE_DIALOGS */
 

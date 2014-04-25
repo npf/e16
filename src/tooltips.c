@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -822,14 +822,13 @@ static int          tmp_tooltiptime;
 static char         tmp_roottip;
 
 static void
-CB_ConfigureTooltips(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
+_DlgApplyTooltips(Dialog * d __UNUSED__, int val __UNUSED__,
+		  void *data __UNUSED__)
 {
-   if (val < 2)
-     {
-	Conf_tooltips.enable = tmp_tooltips;
-	Conf_tooltips.delay = tmp_tooltiptime * 10;
-	Conf_tooltips.showroottooltip = tmp_roottip;
-     }
+   Conf_tooltips.enable = tmp_tooltips;
+   Conf_tooltips.delay = tmp_tooltiptime * 10;
+   Conf_tooltips.showroottooltip = tmp_roottip;
+
    autosave();
 }
 
@@ -873,7 +872,7 @@ const DialogDef     DlgTooltips = {
    "pix/tips.png",
    N_("Enlightenment Tooltip\n" "Settings Dialog"),
    _DlgFillTooltips,
-   DLG_OAC, CB_ConfigureTooltips,
+   DLG_OAC, _DlgApplyTooltips, NULL
 };
 #endif /* ENABLE_DIALOGS */
 

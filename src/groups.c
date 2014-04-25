@@ -610,47 +610,44 @@ typedef struct {
 } GroupSelDlgData;
 
 static void
-ChooseGroup(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
+_DlgApplyGroupChoose(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    GroupSelDlgData    *dd = DLG_DATA_GET(d, GroupSelDlgData);
 
-   if (((val == 0) || (val == 2)) && dd->groups)
+   if (!dd->groups)
+      return;
+
+   switch (dd->action)
      {
-	ShowHideWinGroups(dd->ewin, dd->cur_grp, SET_OFF);
+     case GROUP_OP_ADD:
+	AddEwinToGroup(dd->ewin, dd->groups[dd->cur_grp]);
+	break;
+     case GROUP_OP_DEL:
+	RemoveEwinFromGroup(dd->ewin, dd->groups[dd->cur_grp]);
+	break;
+     case GROUP_OP_BREAK:
+	BreakWindowGroup(dd->ewin, dd->groups[dd->cur_grp]);
+	break;
+     default:
+	break;
      }
 
-   if (val == 0)
-     {
-	if (dd->groups)
-	  {
-	     switch (dd->action)
-	       {
-	       case GROUP_OP_ADD:
-		  AddEwinToGroup(dd->ewin, dd->groups[dd->cur_grp]);
-		  break;
-	       case GROUP_OP_DEL:
-		  RemoveEwinFromGroup(dd->ewin, dd->groups[dd->cur_grp]);
-		  break;
-	       case GROUP_OP_BREAK:
-		  BreakWindowGroup(dd->ewin, dd->groups[dd->cur_grp]);
-		  break;
-	       default:
-		  break;
-	       }
-	  }
-     }
-
-   if (((val == 0) || (val == 2)) && dd->groups)
-     {
-	Efree(dd->groups);
-	dd->groups = NULL;
-
-	GroupsSave();
-     }
+   GroupsSave();
 }
 
 static void
-GroupCallback(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
+_DlgExitGroupChoose(Dialog * d)
+{
+   GroupSelDlgData    *dd = DLG_DATA_GET(d, GroupSelDlgData);
+
+   if (!dd->groups)
+      return;
+   ShowHideWinGroups(dd->ewin, dd->cur_grp, SET_OFF);
+   Efree(dd->groups);
+}
+
+static void
+GroupCallback(Dialog * d, int val, void *data __UNUSED__)
 {
    GroupSelDlgData    *dd = DLG_DATA_GET(d, GroupSelDlgData);
 
@@ -711,7 +708,7 @@ static const DialogDef DlgGroupChoose = {
    "pix/group.png",
    N_("Enlightenment Window Group\n" "Selection Dialog"),
    _DlgFillGroupChoose,
-   DLG_OC, ChooseGroup,
+   DLG_OC, _DlgApplyGroupChoose, _DlgExitGroupChoose
 };
 
 static void
@@ -789,7 +786,7 @@ typedef struct {
 } EwinGroupDlgData;
 
 static void
-CB_ConfigureGroup(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplyGroups(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    EwinGroupDlgData   *dd = DLG_DATA_GET(d, EwinGroupDlgData);
    EWin               *ewin;
@@ -800,19 +797,26 @@ CB_ConfigureGroup(Dialog * d, int val, void *data __UNUSED__)
    if (ewin && ewin->num_groups != dd->ngrp)
       ewin = NULL;
 
-   if (val < 2 && ewin)
+   if (ewin)
      {
 	dd->cfgs[dd->cur_grp] = dd->cfg;
 	for (i = 0; i < ewin->num_groups; i++)
 	   ewin->groups[i]->cfg = dd->cfgs[i];
      }
-   if ((val == 0) || (val == 2))
-     {
-	ShowHideWinGroups(ewin, dd->cur_grp, SET_OFF);
-	Efree(dd->cfgs);
-	dd->cfgs = NULL;
-     }
+
    autosave();
+}
+
+static void
+_DlgExitGroups(Dialog * d)
+{
+   EwinGroupDlgData   *dd = DLG_DATA_GET(d, EwinGroupDlgData);
+   EWin               *ewin;
+
+   ewin = EwinFindByPtr(dd->ewin);
+   ShowHideWinGroups(ewin, dd->cur_grp, SET_OFF);
+
+   Efree(dd->cfgs);
 }
 
 static void
@@ -933,7 +937,7 @@ static const DialogDef DlgGroups = {
    "pix/group.png",
    N_("Enlightenment Window Group\n" "Settings Dialog"),
    _DlgFillGroups,
-   DLG_OAC, CB_ConfigureGroup,
+   DLG_OAC, _DlgApplyGroups, _DlgExitGroups
 };
 
 static void
@@ -961,12 +965,9 @@ typedef struct {
 } GroupCfgDlgData;
 
 static void
-CB_ConfigureDefaultGroupSettings(Dialog * d, int val, void *data __UNUSED__)
+_DlgApplyGroupDefaults(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 {
    GroupCfgDlgData    *dd = DLG_DATA_GET(d, GroupCfgDlgData);
-
-   if (val >= 2)
-      return;
 
    Conf_groups.dflt = dd->group_cfg;
    Conf_groups.swapmove = dd->group_swap;
@@ -1054,7 +1055,7 @@ const DialogDef     DlgGroupDefaults = {
    "pix/group.png",
    N_("Enlightenment Default\n" "Group Control Settings Dialog"),
    _DlgFillGroupDefaults,
-   DLG_OAC, CB_ConfigureDefaultGroupSettings,
+   DLG_OAC, _DlgApplyGroupDefaults, NULL
 };
 
 static void

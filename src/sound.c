@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -437,16 +437,15 @@ SoundSighan(int sig, void *prm __UNUSED__)
 static char         tmp_audio;
 
 static void
-CB_ConfigureAudio(Dialog * d __UNUSED__, int val, void *data __UNUSED__)
+_Dlg_ApplySound(Dialog * d __UNUSED__, int val __UNUSED__,
+		void *data __UNUSED__)
 {
-   if (val < 2)
-     {
-	Conf_sound.enable = tmp_audio;
-	if (Conf_sound.enable)
-	   SoundInit();
-	else
-	   SoundExit();
-     }
+   Conf_sound.enable = tmp_audio;
+   if (Conf_sound.enable)
+      SoundInit();
+   else
+      SoundExit();
+
    autosave();
 }
 
@@ -473,7 +472,7 @@ const DialogDef     DlgSound = {
    "pix/sound.png",
    N_("Enlightenment Audio\n" "Settings Dialog"),
    _DlgFillSound,
-   DLG_OAC, CB_ConfigureAudio,
+   DLG_OAC, _Dlg_ApplySound, NULL
 };
 #endif /* ENABLE_DIALOGS */
 
