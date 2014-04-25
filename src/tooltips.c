@@ -866,8 +866,8 @@ _DlgFillTooltips(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgTooltips = {
    "CONFIGURE_TOOLTIPS",
-   N_("Tooltips"),
-   N_("Tooltip Settings"),
+   N_("Tooltips"), N_("Tooltip Settings"),
+   0,
    SOUND_SETTINGS_TOOLTIPS,
    "pix/tips.png",
    N_("Enlightenment Tooltip\n" "Settings Dialog"),

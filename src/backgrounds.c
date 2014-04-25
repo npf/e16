@@ -1946,17 +1946,13 @@ CB_InitView(DItem * di, int val __UNUSED__, void *data __UNUSED__)
 static void
 _DlgFillBackground(Dialog * d, DItem * table, void *data)
 {
+   BgDlgData          *dd = DLG_DATA_GET(d, BgDlgData);
    Background         *bg = (Background *) data;
    DItem              *di, *table2, *table3, *label;
    int                 i, num;
    char                s[1024];
    int                 mini_w = Mode.backgrounds.mini_w;
    int                 mini_h = Mode.backgrounds.mini_h;
-   BgDlgData          *dd;
-
-   dd = DLG_DATA_SET(d, BgDlgData);
-   if (!dd)
-      return;
 
    if (!Conf.backgrounds.no_scan)
       ScanBackgroundMenu();
@@ -2222,8 +2218,8 @@ _DlgFillBackground(Dialog * d, DItem * table, void *data)
 
 const DialogDef     DlgBackground = {
    "CONFIGURE_BG",
-   N_("Background"),
-   N_("Desktop Background Settings"),
+   N_("Background"), N_("Desktop Background Settings"),
+   sizeof(BgDlgData),
    SOUND_SETTINGS_BG,
    "pix/bg.png",
    N_("Enlightenment Desktop\n" "Background Settings Dialog"),

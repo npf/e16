@@ -407,8 +407,8 @@ _DlgThemeFill(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgTheme = {
    "CONFIGURE_AUDIO",
-   N_("Theme"),
-   N_("Theme Settings"),
+   N_("Theme"), N_("Theme Settings"),
+   0,
    SOUND_SETTINGS_MISCELLANEOUS,
    "pix/miscellaneous.png",
    N_("Enlightenment Theme\n" "Settings Dialog"),

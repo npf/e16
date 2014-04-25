@@ -150,6 +150,8 @@ typedef struct {
    void               *data;
 } DKeyBind;
 
+#define DD_SIZE 800		/* Extra dialog data size */
+
 struct _dialog {
    dlist_t             list;
    EWin               *ewin;
@@ -164,7 +166,6 @@ struct _dialog {
    DialogExitFunc     *exit_func;
    int                 num_bindings;
    DKeyBind           *keybindings;
-   void               *data;
 
    char                redraw;
    char                update;
@@ -172,6 +173,7 @@ struct _dialog {
    char                close;
    char                set_title;
    int                 xu1, yu1, xu2, yu2;
+   int                 dd[DD_SIZE / sizeof(int)];
 };
 
 static EWin        *FindEwinByDialog(Dialog * d);
@@ -249,7 +251,6 @@ DialogDestroy(Dialog * d)
 
    Efree(d->name);
    Efree(d->title);
-   Efree(d->data);
    DialogKeybindingsDestroy(d);
    if (d->item)
       DialogItemDestroy(d->item, 0);
@@ -295,16 +296,9 @@ DialogCallExitFunction(Dialog * d)
 }
 
 void               *
-DialogDataSet(Dialog * d, unsigned int size)
-{
-   d->data = Ecalloc(size, 1);
-   return d->data;
-}
-
-void               *
 DialogDataGet(Dialog * d)
 {
-   return d->data;
+   return d->dd;
 }
 
 DItem              *
@@ -507,10 +501,9 @@ DialogFill(Dialog * d, DItem * parent, const DialogDef * dd, void *data)
    if (!content)
       return;
 
-   Efree(d->data);
-   d->data = NULL;
-
-   dd->fill(d, content, data);
+   memset(d->dd, 0, dd->dd_size);
+   if (dd->dd_size <= DD_SIZE)
+      dd->fill(d, content, data);
 
    if (dd->func_apply)
       DialogAddFooter(d, parent, dd->flags, dd->func_apply);

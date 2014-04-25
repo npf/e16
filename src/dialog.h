@@ -66,7 +66,8 @@ typedef struct {
    const char         *name;
    const char         *label;
    const char         *title;
-   int                 sound;
+   unsigned short      dd_size;
+   short               sound;
    const char         *header_image;
    const char         *header_text;
    void                (*fill) (Dialog * d, DItem * table, void *data);
@@ -85,10 +86,8 @@ void                DialogSetTitle(Dialog * d, const char *title);
 void                DialogSetExitFunction(Dialog * d, DialogExitFunc * func);
 void                DialogCallExitFunction(Dialog * d);
 
-void               *DialogDataSet(Dialog * d, unsigned int size);
 void               *DialogDataGet(Dialog * d);
 
-#define DLG_DATA_SET(dlg, type) (type*)DialogDataSet(dlg, sizeof(type))
 #define DLG_DATA_GET(dlg, type) (type*)DialogDataGet(dlg)
 
 void                DialogShow(Dialog * d);

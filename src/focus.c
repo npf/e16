@@ -787,12 +787,8 @@ _DlgApplyFocus(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 static void
 _DlgFillFocus(Dialog * d, DItem * table, void *data __UNUSED__)
 {
+   FocusDlgData       *dd = DLG_DATA_GET(d, FocusDlgData);
    DItem              *di, *radio, *radio2;
-   FocusDlgData       *dd;
-
-   dd = DLG_DATA_SET(d, FocusDlgData);
-   if (!dd)
-      return;
 
    dd->focus.mode = Conf.focus.mode;
    dd->focus.clickalways = Conf.focus.clickraises;
@@ -991,8 +987,8 @@ _DlgFillFocus(Dialog * d, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgFocus = {
    "CONFIGURE_FOCUS",
-   N_("Focus"),
-   N_("Focus Settings"),
+   N_("Focus"), N_("Focus Settings"),
+   sizeof(FocusDlgData),
    SOUND_SETTINGS_FOCUS,
    "pix/focus.png",
    N_("Enlightenment Focus\n" "Settings Dialog"),

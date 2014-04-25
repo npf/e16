@@ -61,14 +61,10 @@ _DlgApplyMoveResize(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 }
 
 static void
-_DlgFillMoveResize(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
+_DlgFillMoveResize(Dialog * d, DItem * table, void *data __UNUSED__)
 {
+   MovResDlgData      *dd = DLG_DATA_GET(d, MovResDlgData);
    DItem              *di, *radio1, *radio2, *radio3, *radio4;
-   MovResDlgData      *dd;
-
-   dd = DLG_DATA_SET(d, MovResDlgData);
-   if (!dd)
-      return;
 
    dd->move = Conf.movres.mode_move;
    dd->resize = Conf.movres.mode_resize;
@@ -240,8 +236,8 @@ _DlgFillMoveResize(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgMoveResize = {
    "CONFIGURE_MOVERESIZE",
-   N_("Move/Resize"),
-   N_("Move & Resize Settings"),
+   N_("Move/Resize"), N_("Move & Resize Settings"),
+   sizeof(MovResDlgData),
    SOUND_SETTINGS_MOVERESIZE,
    "pix/moveres.png",
    N_("Enlightenment Move & Resize\n" "Method Settings Dialog"),
@@ -305,14 +301,10 @@ _DlgApplyPlacement(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 }
 
 static void
-_DlgFillPlacement(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
+_DlgFillPlacement(Dialog * d, DItem * table, void *data __UNUSED__)
 {
+   PlaceDlgData       *dd = DLG_DATA_GET(d, PlaceDlgData);
    DItem              *di, *radio;
-   PlaceDlgData       *dd;
-
-   dd = DLG_DATA_SET(d, PlaceDlgData);
-   if (!dd)
-      return;
 
    dd->with_leader = Conf.focus.transientsfollowleader;
    dd->switch_popup = Conf.focus.switchfortransientmap;
@@ -482,8 +474,8 @@ _DlgFillPlacement(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgPlacement = {
    "CONFIGURE_PLACEMENT",
-   N_("Placement"),
-   N_("Window Placement Settings"),
+   N_("Placement"), N_("Window Placement Settings"),
+   sizeof(PlaceDlgData),
    SOUND_SETTINGS_PLACEMENT,
    "pix/place.png",
    N_("Enlightenment Window Placement\n" "Settings Dialog"),
@@ -514,14 +506,10 @@ _DlgApplyMisc(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 }
 
 static void
-_DlgFillMisc(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
+_DlgFillMisc(Dialog * d, DItem * table, void *data __UNUSED__)
 {
+   MiscDlgData        *dd = DLG_DATA_GET(d, MiscDlgData);
    DItem              *di;
-   MiscDlgData        *dd;
-
-   dd = DLG_DATA_SET(d, MiscDlgData);
-   if (!dd)
-      return;
 
    dd->dialog_headers = Conf.dialogs.headers;
    dd->button_image = Conf.dialogs.button_image;
@@ -577,8 +565,8 @@ _DlgFillMisc(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgMisc = {
    "CONFIGURE_MISCELLANEOUS",
-   N_("Miscellaneous"),
-   N_("Miscellaneous Settings"),
+   N_("Miscellaneous"), N_("Miscellaneous Settings"),
+   sizeof(MiscDlgData),
    SOUND_SETTINGS_MISCELLANEOUS,
    "pix/miscellaneous.png",
    N_("Enlightenment Miscellaneous\n" "Settings Dialog"),
@@ -606,12 +594,8 @@ _DlgApplyComposite(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 static void
 _DlgFillComposite(Dialog * d, DItem * table, void *data __UNUSED__)
 {
+   cfg_composite      *dd = DLG_DATA_GET(d, cfg_composite);
    DItem              *di, *radio;
-   cfg_composite      *dd;
-
-   dd = DLG_DATA_SET(d, cfg_composite);
-   if (!dd)
-      return;
 
    /* Get current settings */
    ECompMgrConfigGet(dd);
@@ -710,8 +694,8 @@ _DlgFillComposite(Dialog * d, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgComposite = {
    "CONFIGURE_COMPOSITE",
-   N_("Composite"),
-   N_("Composite Settings"),
+   N_("Composite"), N_("Composite Settings"),
+   sizeof(cfg_composite),
    SOUND_SETTINGS_COMPOSITE,
    "pix/pager.png",
    N_("Enlightenment Composite\n" "Settings Dialog"),
@@ -798,8 +782,8 @@ _DlgFillConfiguration(Dialog * d, DItem * table, void *data __UNUSED__)
 
 static const DialogDef DlgConfiguration = {
    "CONFIGURE_ALL",
-   NULL,
-   N_("Enlightenment Settings"),
+   NULL, N_("Enlightenment Settings"),
+   0,
    SOUND_SETTINGS_ALL,
    NULL,
    NULL,

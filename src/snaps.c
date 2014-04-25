@@ -648,15 +648,11 @@ _DlgApplySnap(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 static void
 _DlgFillSnap(Dialog * d, DItem * table, void *data)
 {
+   SnapDlgData        *sd = DLG_DATA_GET(d, SnapDlgData);
    DItem              *di;
    Snapshot           *sn;
-   SnapDlgData        *sd;
    char                s[1024];
    const EWin         *ewin = (EWin *) data;
-
-   sd = DLG_DATA_SET(d, SnapDlgData);
-   if (!sd)
-      return;
 
    sd->client = EwinGetClientXwin(ewin);
 
@@ -910,8 +906,8 @@ _DlgFillSnap(Dialog * d, DItem * table, void *data)
 
 static const DialogDef DlgSnap = {
    NULL,
-   NULL,
-   N_("Remembered Application Attributes"),
+   NULL, N_("Remembered Application Attributes"),
+   sizeof(SnapDlgData),
    SOUND_NONE,
    "pix/snapshots.png",
    N_("Select the attributes of this\n"
@@ -1059,8 +1055,8 @@ _DlgFillRemember(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgRemember = {
    "CONFIGURE_PAGER",
-   N_("Remember"),
-   N_("Remembered Windows Settings"),
+   N_("Remember"), N_("Remembered Windows Settings"),
+   0,
    SOUND_SETTINGS_PAGER,
    "pix/snapshots.png",
    N_("Enlightenment Remembered\n" "Windows Settings Dialog"),

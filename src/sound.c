@@ -466,8 +466,8 @@ _DlgFillSound(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgSound = {
    "CONFIGURE_AUDIO",
-   N_("Sound"),
-   N_("Audio Settings"),
+   N_("Sound"), N_("Audio Settings"),
+   0,
    SOUND_SETTINGS_AUDIO,
    "pix/sound.png",
    N_("Enlightenment Audio\n" "Settings Dialog"),

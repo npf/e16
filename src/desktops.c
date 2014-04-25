@@ -2462,12 +2462,8 @@ CB_DesktopDisplayAreaRedraw(DItem * di, int val __UNUSED__,
 static void
 _DlgFillDesks(Dialog * d, DItem * table, void *data __UNUSED__)
 {
+   DeskDlgData        *dd = DLG_DATA_GET(d, DeskDlgData);
    DItem              *di, *slider, *radio;
-   DeskDlgData        *dd;
-
-   dd = DLG_DATA_SET(d, DeskDlgData);
-   if (!dd)
-      return;
 
    dd->desktops = Conf.desks.num;
    dd->prev_desktops = -1;
@@ -2574,8 +2570,8 @@ _DlgFillDesks(Dialog * d, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgDesks = {
    "CONFIGURE_DESKTOPS",
-   N_("Desks"),
-   N_("Multiple Desktop Settings"),
+   N_("Desks"), N_("Multiple Desktop Settings"),
+   sizeof(DeskDlgData),
    SOUND_SETTINGS_DESKTOPS,
    "pix/desktops.png",
    N_("Enlightenment Multiple Desktop\n" "Settings Dialog"),
@@ -2659,12 +2655,8 @@ CB_AreaDisplayAreaRedraw(DItem * di, int val __UNUSED__, void *data __UNUSED__)
 static void
 _DlgFillAreas(Dialog * d, DItem * table, void *data __UNUSED__)
 {
+   AreaDlgData        *dd = DLG_DATA_GET(d, AreaDlgData);
    DItem              *di, *slider, *slider2, *table2, *radio;
-   AreaDlgData        *dd;
-
-   dd = DLG_DATA_SET(d, AreaDlgData);
-   if (!dd)
-      return;
 
    dd->area_wraparound = Conf.desks.areas_wraparound;
 
@@ -2750,8 +2742,8 @@ _DlgFillAreas(Dialog * d, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgAreas = {
    "CONFIGURE_AREA",
-   N_("Areas"),
-   N_("Virtual Desktop Settings"),
+   N_("Areas"), N_("Virtual Desktop Settings"),
+   sizeof(AreaDlgData),
    SOUND_SETTINGS_AREA,
    "pix/areas.png",
    N_("Enlightenment Virtual Desktop\n" "Settings Dialog"),

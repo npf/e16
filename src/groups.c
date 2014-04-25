@@ -660,14 +660,10 @@ GroupCallback(Dialog * d, int val, void *data __UNUSED__)
 static void
 _DlgFillGroupChoose(Dialog * d, DItem * table, void *data)
 {
+   GroupSelDlgData    *dd = DLG_DATA_GET(d, GroupSelDlgData);
    DItem              *di, *radio;
    int                 i, num_groups;
    char              **group_member_strings;
-   GroupSelDlgData    *dd;
-
-   dd = DLG_DATA_SET(d, GroupSelDlgData);
-   if (!dd)
-      return;
 
    *dd = *(GroupSelDlgData *) data;
 
@@ -702,8 +698,8 @@ _DlgFillGroupChoose(Dialog * d, DItem * table, void *data)
 
 static const DialogDef DlgGroupChoose = {
    "GROUP_SELECTION",
-   NULL,
-   N_("Window Group Selection"),
+   NULL, N_("Window Group Selection"),
+   sizeof(GroupSelDlgData),
    SOUND_SETTINGS_GROUP,
    "pix/group.png",
    N_("Enlightenment Window Group\n" "Selection Dialog"),
@@ -836,15 +832,11 @@ GroupSelectCallback(Dialog * d, int val, void *data __UNUSED__)
 static void
 _DlgFillGroups(Dialog * d, DItem * table, void *data)
 {
+   EwinGroupDlgData   *dd = DLG_DATA_GET(d, EwinGroupDlgData);
    EWin               *ewin = (EWin *) data;
    DItem              *radio, *di;
    int                 i;
    char              **group_member_strings;
-   EwinGroupDlgData   *dd;
-
-   dd = DLG_DATA_SET(d, EwinGroupDlgData);
-   if (!dd)
-      return;
 
    dd->ewin = ewin;
    dd->cfgs = EMALLOC(GroupConfig, ewin->num_groups);
@@ -931,8 +923,8 @@ _DlgFillGroups(Dialog * d, DItem * table, void *data)
 
 static const DialogDef DlgGroups = {
    "CONFIGURE_GROUP",
-   NULL,
-   N_("Window Group Settings"),
+   NULL, N_("Window Group Settings"),
+   sizeof(EwinGroupDlgData),
    SOUND_SETTINGS_GROUP,
    "pix/group.png",
    N_("Enlightenment Window Group\n" "Settings Dialog"),
@@ -978,12 +970,8 @@ _DlgApplyGroupDefaults(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 static void
 _DlgFillGroupDefaults(Dialog * d, DItem * table, void *data __UNUSED__)
 {
+   GroupCfgDlgData    *dd = DLG_DATA_GET(d, GroupCfgDlgData);
    DItem              *di;
-   GroupCfgDlgData    *dd;
-
-   dd = DLG_DATA_SET(d, GroupCfgDlgData);
-   if (!dd)
-      return;
 
    dd->group_cfg = Conf_groups.dflt;
    dd->group_swap = Conf_groups.swapmove;
@@ -1049,8 +1037,8 @@ _DlgFillGroupDefaults(Dialog * d, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgGroupDefaults = {
    "CONFIGURE_DEFAULT_GROUP_CONTROL",
-   N_("Groups"),
-   N_("Default Group Control Settings"),
+   N_("Groups"), N_("Default Group Control Settings"),
+   sizeof(GroupCfgDlgData),
    SOUND_SETTINGS_GROUP,
    "pix/group.png",
    N_("Enlightenment Default\n" "Group Control Settings Dialog"),

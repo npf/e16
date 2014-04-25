@@ -110,14 +110,10 @@ CB_ThemeTransparency(Dialog * d, int val __UNUSED__, void *data)
 static void
 _DlgFillThemeTrans(Dialog * d, DItem * table, void *data __UNUSED__)
 {
+   TransDlgData       *dd = DLG_DATA_GET(d, TransDlgData);
    DItem              *di, *label;
    DItem              *radio_border, *radio_widget, *radio_menu,
       *radio_dialog, *radio_tooltip, *radio_hilight;
-   TransDlgData       *dd;
-
-   dd = DLG_DATA_SET(d, TransDlgData);
-   if (!dd)
-      return;
 
    dd->st_border = Conf.trans.border;
    dd->st_widget = Conf.trans.widget;
@@ -257,8 +253,8 @@ _DlgFillThemeTrans(Dialog * d, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgThemeTrans = {
    "CONFIGURE_TRANS",
-   N_("Transparency"),
-   N_("Selective Transparency Settings"),
+   N_("Transparency"), N_("Selective Transparency Settings"),
+   sizeof(TransDlgData),
    SOUND_SETTINGS_TRANS,
    "pix/tips.png",
    N_("Enlightenment Selective Transparency\n" "Settings Dialog"),

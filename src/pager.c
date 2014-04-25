@@ -1774,7 +1774,7 @@ _DlgApplyPagers(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
 }
 
 static void
-CB_PagerScanSlide(Dialog * d __UNUSED__, int val __UNUSED__, void *data)
+CB_PagerScanSlide(Dialog * d, int val __UNUSED__, void *data)
 {
    PagerDlgData       *dd = DLG_DATA_GET(d, PagerDlgData);
    DItem              *di = (DItem *) data;
@@ -1788,13 +1788,9 @@ CB_PagerScanSlide(Dialog * d __UNUSED__, int val __UNUSED__, void *data)
 static void
 _DlgFillPagers(Dialog * d, DItem * table, void *data __UNUSED__)
 {
+   PagerDlgData       *dd = DLG_DATA_GET(d, PagerDlgData);
    DItem              *di, *radio, *label;
    char                s[256];
-   PagerDlgData       *dd;
-
-   dd = DLG_DATA_SET(d, PagerDlgData);
-   if (!dd)
-      return;
 
    dd->show_pagers = Conf_pagers.enable;
    dd->pager_hiq = Conf_pagers.hiq;
@@ -1965,8 +1961,8 @@ _DlgFillPagers(Dialog * d, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgPagers = {
    "CONFIGURE_PAGER",
-   N_("Pagers"),
-   N_("Pager Settings"),
+   N_("Pagers"), N_("Pager Settings"),
+   sizeof(PagerDlgData),
    SOUND_SETTINGS_PAGER,
    "pix/pager.png",
    N_("Enlightenment Desktop & Area\n" "Pager Settings Dialog"),

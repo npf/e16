@@ -795,8 +795,8 @@ _DlgFillSession(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgSession = {
    "CONFIGURE_SESSION",
-   N_("Session"),
-   N_("Session Settings"),
+   N_("Session"), N_("Session Settings"),
+   0,
    SOUND_SETTINGS_SESSION,
    "pix/miscellaneous.png",
    N_("Enlightenment Session\n" "Settings Dialog"),

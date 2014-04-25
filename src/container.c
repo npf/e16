@@ -1505,14 +1505,10 @@ CB_IconSizeSlider(Dialog * d, int val __UNUSED__, void *data)
 static void
 _DlgFillContainer(Dialog * d, DItem * table, void *data)
 {
-   ContainerDlgData   *dd;
+   ContainerDlgData   *dd = DLG_DATA_GET(d, ContainerDlgData);
    Container          *ct = (Container *) data;
    DItem              *di, *table2, *radio, *label;
    char                s[256];
-
-   dd = DLG_DATA_SET(d, ContainerDlgData);
-   if (!dd)
-      return;
 
    if (!ct)
       return;
@@ -1729,8 +1725,8 @@ _DlgFillContainer(Dialog * d, DItem * table, void *data)
 
 static const DialogDef DlgContainer = {
    "CONFIGURE_ICONBOX",
-   NULL,
-   NULL,
+   NULL, NULL,
+   sizeof(ContainerDlgData),
    SOUND_SETTINGS_ICONBOX,
    "pix/iconbox.png",
    N_("Enlightenment Iconbox\n" "Settings Dialog"),

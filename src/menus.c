@@ -1969,12 +1969,8 @@ _DlgCbIconSize(Dialog * d, int val __UNUSED__, void *data)
 static void
 _DlgFillMenus(Dialog * d, DItem * table, void *data __UNUSED__)
 {
+   MenudDlgData       *dd = DLG_DATA_GET(d, MenudDlgData);
    DItem              *di, *label;
-   MenudDlgData       *dd;
-
-   dd = DLG_DATA_SET(d, MenudDlgData);
-   if (!dd)
-      return;
 
    dd->warp = Conf.menus.warp;
    dd->animate = Conf.menus.animate;
@@ -2012,8 +2008,8 @@ _DlgFillMenus(Dialog * d, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgMenus = {
    "CONFIGURE_MENUS",
-   N_("Menus"),
-   N_("Menu Settings"),
+   N_("Menus"), N_("Menu Settings"),
+   sizeof(MenudDlgData),
    SOUND_SETTINGS_MENUS,
    "pix/place.png",
    N_("Enlightenment Menu\n" "Settings Dialog"),

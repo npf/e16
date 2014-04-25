@@ -465,8 +465,8 @@ _DlgFillFx(Dialog * d __UNUSED__, DItem * table, void *data __UNUSED__)
 
 const DialogDef     DlgFx = {
    "CONFIGURE_FX",
-   N_("FX"),
-   N_("Special FX Settings"),
+   N_("FX"), N_("Special FX Settings"),
+   0,
    SOUND_SETTINGS_FX,
    "pix/fx.png",
    N_("Enlightenment Special Effects\n" "Settings Dialog"),
