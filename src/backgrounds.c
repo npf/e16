@@ -1658,7 +1658,7 @@ BG_RedrawView(Dialog * d)
 
 	   ImageclassApplySimple(ic, win, pmap,
 				 (bg == dd->bg) ? STATE_CLICKED : STATE_NORMAL,
-				 x, 0, mini_w + 8, 48 + 8);
+				 x, 0, mini_w + 8, mini_h + 8);
 
 	   if (BackgroundIsNone(bg))
 	     {
