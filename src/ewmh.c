@@ -664,7 +664,7 @@ EWMH_GetWindowUserTime(EWin * ewin __UNUSED__)
    if (num <= 0)
       return;
 
-   Eprintf("EWMH_GetWindowUserTime %#x\n", ts);
+   Eprintf("%s %#x\n", __func__, ts);
 #endif
 }
 

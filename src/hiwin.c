@@ -217,7 +217,7 @@ HiwinEwinEvent(Win win __UNUSED__, XEvent * ev, void *prm)
    Hiwin              *phi = (Hiwin *) prm;
 
 #if DEBUG_HIWIN
-   Eprintf("HiwinEwinEvent type=%d %s\n", ev->type, EwinGetTitle(phi->ewin));
+   Eprintf("%s: type=%d %s\n", __func__, ev->type, EwinGetTitle(phi->ewin));
 #endif
 
    switch (ev->type)
@@ -269,7 +269,7 @@ HiwinInit(Hiwin * phi, EWin * ewin)
    if (phi->ewin)
      {
 #if DEBUG_HIWIN
-	Eprintf("Unregister %s\n", EwinGetTitle(phi->ewin));
+	Eprintf("%s: Unregister %s\n", __func__, EwinGetTitle(phi->ewin));
 #endif
 	EventCallbackUnregister(EoGetWin(phi->ewin), HiwinEwinEvent, phi);
      }
@@ -281,7 +281,7 @@ HiwinInit(Hiwin * phi, EWin * ewin)
    if (phi->ewin)
      {
 #if DEBUG_HIWIN
-	Eprintf("Register %s\n", EwinGetTitle(phi->ewin));
+	Eprintf("%s: Register %s\n", __func__, EwinGetTitle(phi->ewin));
 #endif
 	EventCallbackRegister(EoGetWin(phi->ewin), HiwinEwinEvent, phi);
      }
@@ -392,7 +392,7 @@ HiwinShow(Hiwin * phi, EWin * ewin, int zoom, int confine)
      }
 
 #if DEBUG_HIWIN
-   Eprintf("HiwinShow %s zoom=%d->%d step=%d %d,%d %dx%d\n",
+   Eprintf("%s: %s zoom=%d->%d step=%d %d,%d %dx%d\n", __func__,
 	   EoGetName(ewin), phi->zoom, zoom, step, x, y, w, h);
 #endif
 

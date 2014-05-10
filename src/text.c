@@ -774,7 +774,7 @@ TextStateLoadFont(TextState * ts)
    if (!ts->ops)
       Eprintf("*** Unable to load font \"%s\"\n", ts->fontname);
    else if (EDebug(EDBUG_TYPE_FONTS))
-      Eprintf("TextStateLoadFont %s: type=%d\n", ts->fontname, ts->type);
+      Eprintf("%s: %s: type=%d\n", __func__, ts->fontname, ts->type);
    return;
 }
 
@@ -885,7 +885,7 @@ TextstateTextDraw(TextState * ts, Win win, EX_Drawable draw,
      }
 
 #if 0
-   Eprintf("TextstateTextDraw %d,%d %dx%d(%dx%d): %s\n", x, y, w, h,
+   Eprintf("%s: %d,%d %dx%d(%dx%d): %s\n", __func__, x, y, w, h,
 	   textwidth_limit, textheight_limit, text);
 #endif
 

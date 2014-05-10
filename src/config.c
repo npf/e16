@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2012 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -171,7 +171,7 @@ GetLine(char *s, int size, FILE * f)
       *so = '\0';
 
    if (EDebug(EDBUG_TYPE_CONFIG) > 1)
-      Eprintf("GetLine %s\n", s);
+      Eprintf("%s: %s\n", __func__, s);
 
    return s;
 }
@@ -235,7 +235,7 @@ ConfigFilePreparse(const char *src, const char *dst, const char *themepath)
    const char         *variant;
 
    if (EDebug(EDBUG_TYPE_CONFIG))
-      Eprintf("ConfigFilePreparse %s -> %s\n", src, dst);
+      Eprintf("%s: %s -> %s\n", __func__, src, dst);
 
    /* When themepath is NULL it shouldn't be used, but this is consistent
     * with old behavior */
@@ -556,7 +556,7 @@ ConfigFileLoad(const char *name, const char *themepath,
    FILE               *fs;
 
    if (EDebug(EDBUG_TYPE_CONFIG))
-      Eprintf("ConfigFileLoad %s\n", name);
+      Eprintf("%s: %s\n", __func__, name);
 
    file = ConfigFileFind(name, themepath, preparse);
    if (!file)

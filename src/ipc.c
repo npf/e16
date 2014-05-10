@@ -1711,7 +1711,7 @@ IpcExec(const char *params)
    const IpcItem     **lst, *ipc;
 
    if (EDebug(EDBUG_TYPE_IPC))
-      Eprintf("IpcExec: %s\n", params);
+      Eprintf("%s: %s\n", __func__, params);
 
    cmd[0] = 0;
    num = 0;

@@ -292,7 +292,7 @@ ImagestateRealize(ImageState * is)
      {
 #define S(s) ((s) ? (s) : "(null)")
 	Eprintf
-	   ("ImagestateRealize: Hmmm... is->im is NULL (im_file=%s real_file=%s)\n",
+	   ("%s: Hmmm... is->im is NULL (im_file=%s real_file=%s)\n", __func__,
 	    S(is->im_file), S(is->real_file));
 	Efree(is->real_file);
 	is->real_file = NULL;
@@ -795,7 +795,7 @@ pt_get_bg_image(Win win, int w, int h, int use_root)
      }
    ETranslateCoordinates(win, cr, 0, 0, &xx, &yy, NULL);
 #if 0
-   Eprintf("pt_get_bg_image %#lx %d %d %d %d\n", win, xx, yy, w, h);
+   Eprintf("%s: %#x %d %d %d %d\n", __func__, WinGetXwin(win), xx, yy, w, h);
 #endif
    if (xx < WinGetW(VROOT) && yy < WinGetH(VROOT) && xx + w >= 0 && yy + h >= 0)
      {
@@ -907,7 +907,7 @@ ImagestateMakePmapMask(ImageState * is, Win win, PmapMask * pmm,
    else
      {
 #if 0
-	Eprintf("ImagestateMakePmapMask %#lx %d %d\n", win, w, h);
+	Eprintf("%s: %#x %d %d\n", __func__, WinGetXwin(win), w, h);
 #endif
      }
 
@@ -1286,7 +1286,7 @@ ImageclassApplyCopy(ImageClass * ic, Win win, int w, int h,
    else
      {
 	if (pmm->pmap)
-	   Eprintf("ImageclassApplyCopy: Hmm... pmm->pmap already set\n");
+	   Eprintf("%s: Hmm... pmm->pmap already set\n", __func__);
 
 	pmm->type = 0;
 	pmm->pmap = ECreatePixmap(win, w, h, 0);

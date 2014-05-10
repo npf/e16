@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2009 Kim Woelders
+ * Copyright (C) 2003-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -96,7 +96,7 @@ ModuleConfigShow(const char *name, const char *item)
    int                 i;
 
 #if 0
-   Eprintf("ModuleConfigShow: %s:%s\n", name, item);
+   Eprintf("%s: %s:%s\n", __func__, name, item);
 #endif
    em = EModuleFind(name);
    if (!em)

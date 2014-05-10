@@ -86,8 +86,8 @@ BorderWinpartITclassApply(EWin * ewin, int i, int force)
       return;
 
 #if 0				/* Debug */
-   Eprintf("BorderWpITApply: %#lx %#lx %2d %d %s\n",
-	   EwinGetClientXwin(ewin), EoGetWin(ewin), i, force,
+   Eprintf("%s: %#x %#x %2d %d %s\n", __func__,
+	   EwinGetClientXwin(ewin), EoGetXwin(ewin), i, force,
 	   EwinGetTitle(ewin));
 #endif
 
@@ -220,9 +220,8 @@ EwinBorderDraw(EWin * ewin, int do_shape, int do_paint)
    int                 i;
 
 #if 0				/* Debug */
-   Eprintf("EwinBorderDraw %#lx %s d=%d s=%d p=%d\n",
-	   EwinGetClientXwin(ewin), EoGetName(ewin), EoGetDeskNum(ewin),
-	   do_shape, do_paint);
+   Eprintf("%s: %#x %s s=%d p=%d\n", __func__,
+	   EwinGetClientXwin(ewin), EoGetName(ewin), do_shape, do_paint);
 #endif
 
    for (i = 0; i < ewin->border->num_winparts; i++)
@@ -452,7 +451,7 @@ EwinBorderCalcSizes(EWin * ewin, int propagate)
      }
 
 #if 0				/* Debug */
-   Eprintf("EwinBorderCalcSizes prop=%d reshape=%d\n", propagate, reshape);
+   Eprintf("%s: prop=%d reshape=%d\n", __func__, propagate, reshape);
 #endif
    if (reshape)
       ewin->update.shape = 1;
@@ -885,8 +884,7 @@ BorderWinpartEventMouseDown(EWinBit * wbit, XEvent * ev)
 
    wbit->state = STATE_CLICKED;
 #if DEBUG_BORDER_EVENTS
-   Eprintf("BorderWinpartEventMouseDown %#lx %d\n", WinGetXwin(wbit->win),
-	   wbit->state);
+   Eprintf("%s: %#x %d\n", __func__, WinGetXwin(wbit->win), wbit->state);
 #endif
    BorderWinpartChange(ewin, part, 0);
 
@@ -924,8 +922,7 @@ BorderWinpartEventMouseUp(EWinBit * wbit, XEvent * ev)
    else
       wbit->state = STATE_NORMAL;
 #if DEBUG_BORDER_EVENTS
-   Eprintf("BorderWinpartEventMouseUp %#lx %d\n", WinGetXwin(wbit->win),
-	   wbit->state);
+   Eprintf("%s: %#x %d\n", __func__, WinGetXwin(wbit->win), wbit->state);
 #endif
    BorderWinpartChange(ewin, part, 0);
 
@@ -944,8 +941,7 @@ BorderWinpartEventEnter(EWinBit * wbit, XEvent * ev)
    int                 part = wbit - ewin->bits;
 
 #if DEBUG_BORDER_EVENTS
-   Eprintf("BorderWinpartEventEnter %#lx %d\n", WinGetXwin(wbit->win),
-	   wbit->state);
+   Eprintf("%s: %#x %d\n", __func__, WinGetXwin(wbit->win), wbit->state);
 #endif
    if (wbit->state == STATE_CLICKED)
       wbit->left = 0;
@@ -963,8 +959,7 @@ BorderWinpartEventLeave(EWinBit * wbit, XEvent * ev)
    int                 part = wbit - ewin->bits;
 
 #if DEBUG_BORDER_EVENTS
-   Eprintf("BorderWinpartEventLeave %#lx %d\n", WinGetXwin(wbit->win),
-	   wbit->state);
+   Eprintf("%s: %#x %d\n", __func__, WinGetXwin(wbit->win), wbit->state);
 #endif
    if (wbit->state == STATE_CLICKED)
       wbit->left = 1;

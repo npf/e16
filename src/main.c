@@ -319,7 +319,7 @@ EExit(int exitcode)
    int                 i;
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("EExit(%d)\n", exitcode);
+      Eprintf("%s: %d\n", __func__, exitcode);
 
    if (disp)
      {

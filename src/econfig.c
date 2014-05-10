@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2010 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -158,7 +158,7 @@ CfgItemLoad(ECfgFile * ecf, const char *prefix, const CfgItem * ci, int dflt)
       name = ci->name;
 
    if (EDebug(EDBUG_TYPE_CONFIG) > 1)
-      Eprintf("CfgItemLoad %s\n", name);
+      Eprintf("%s: %s\n", __func__, name);
 
    if (!ci->ptr)
       return;
@@ -180,7 +180,7 @@ CfgItemSave(ECfgFile * ecf, const char *prefix, const CfgItem * ci)
       name = ci->name;
 
    if (EDebug(EDBUG_TYPE_CONFIG) > 1)
-      Eprintf("CfgItemSave %s\n", name);
+      Eprintf("%s: %s\n", __func__, name);
 
    if (!ci->ptr)
       return;
@@ -205,7 +205,7 @@ _ConfigurationLoad(const char *file, int dflt)
    ECfgFile           *ecf;
 
    if (EDebug(EDBUG_TYPE_CONFIG))
-      Eprintf("ConfigurationLoad\n");
+      Eprintf("%s\n", __func__);
 
    ecf = e16_db_open_read(file);
    /* NB! We have to assign the defaults even if it doesn't exist */
@@ -248,7 +248,7 @@ ConfigurationSave(void)
    ECfgFile           *ecf;
 
    if (EDebug(EDBUG_TYPE_CONFIG))
-      Eprintf("ConfigurationSave\n");
+      Eprintf("%s\n", __func__);
 
    ecf = e16_db_open(ConfigurationGetFile(buf, sizeof(buf)));
    if (!ecf)
@@ -414,7 +414,7 @@ ConfigurationSet(const char *params)
    p = strchr(params, '.');
    if (!p)
      {
-	Eprintf("ConfigurationSet - missed: %s\n", params);
+	Eprintf("%s: missed: %s\n", __func__, params);
 	return;
      }
 

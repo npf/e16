@@ -589,7 +589,7 @@ EventsCompress(XEvent * evq, int count)
    if (EDebug(EDBUG_TYPE_COMPRESSION))
       for (i = 0; i < count; i++)
 	 if (evq[i].type)
-	    Eprintf("EventsCompress-1 %3d %s w=%#lx\n", i,
+	    Eprintf("%s-1 %3d %s w=%#lx\n", __func__, i,
 		    EventName(evq[i].type), evq[i].xany.window);
 #endif
 
@@ -621,7 +621,7 @@ EventsCompress(XEvent * evq, int count)
 	       }
 #if ENABLE_DEBUG_EVENTS
 	     if (n && EDebug(EDBUG_TYPE_COMPRESSION))
-		Eprintf("EventsCompress n=%4d %s %#lx x,y = %d,%d\n",
+		Eprintf("%s: n=%4d %s %#lx x,y = %d,%d\n", __func__,
 			n, EventName(type), ev->xmotion.window,
 			ev->xmotion.x, ev->xmotion.y);
 #endif
@@ -652,7 +652,7 @@ EventsCompress(XEvent * evq, int count)
 	       }
 #if ENABLE_DEBUG_EVENTS
 	     if (EDebug(EDBUG_TYPE_COMPRESSION))
-		Eprintf("EventsCompress n=%4d %s %#lx\n",
+		Eprintf("%s: n=%4d %s %#lx\n", __func__,
 			1, EventName(type), ev->xcrossing.window);
 #endif
 	     break;
@@ -741,7 +741,7 @@ EventsCompress(XEvent * evq, int count)
 	       }
 #if ENABLE_DEBUG_EVENTS
 	     if (EDebug(EDBUG_TYPE_COMPRESSION))
-		Eprintf("EventsCompress n=%4d %s %#lx x=%4d-%4d y=%4d-%4d\n",
+		Eprintf("%s: n=%4d %s %#lx x=%4d-%4d y=%4d-%4d\n", __func__,
 			n, EventName(type), ev->xexpose.window, xa, xb, ya, yb);
 #endif
 	     break;
@@ -759,7 +759,7 @@ EventsCompress(XEvent * evq, int count)
 	       }
 #if ENABLE_DEBUG_EVENTS
 	     if (n && EDebug(EDBUG_TYPE_COMPRESSION))
-		Eprintf("EventsCompress n=%4d %s %#lx\n",
+		Eprintf("%s: n=%4d %s %#lx\n", __func__,
 			n, EventName(type), ev->xmotion.window);
 #endif
 	     break;
@@ -777,7 +777,7 @@ EventsCompress(XEvent * evq, int count)
    if (EDebug(EDBUG_TYPE_COMPRESSION))
       for (i = 0; i < count; i++)
 	 if (evq[i].type)
-	    Eprintf("EventsCompress-2 %3d %s w=%#lx\n", i,
+	    Eprintf("%s-2 %3d %s w=%#lx\n", __func__, i,
 		    EventName(evq[i].type), evq[i].xany.window);
 #endif
 }
@@ -958,7 +958,7 @@ EventsProcess(XEvent ** evq_p, int *evq_n, int *evq_f)
    evq = *evq_p;
 
    if (EDebug(EDBUG_TYPE_EVENTS) > 1)
-      Eprintf("EventsProcess-B %d\n", n);
+      Eprintf("%s-B %d\n", __func__, n);
 
    for (i = count = 0; i < n; i++)
      {
@@ -974,7 +974,7 @@ EventsProcess(XEvent ** evq_p, int *evq_n, int *evq_f)
      }
 
    if (EDebug(EDBUG_TYPE_EVENTS) > 1)
-      Eprintf("EventsProcess-E %d/%d\n", count, n);
+      Eprintf("%s-E %d/%d\n", __func__, count, n);
 
    if (n > *evq_f)
       *evq_f = n;
@@ -1013,8 +1013,8 @@ EventsMain(void)
 	     evq_fetch =
 		(pfetch > evq_fetch) ? pfetch : (3 * evq_fetch + pfetch) / 4;
 	     if (EDebug(EDBUG_TYPE_EVENTS) > 1)
-		Eprintf("EventsMain - Alloc/fetch/pfetch/peak=%d/%d/%d/%d)\n",
-			evq_alloc, evq_fetch, pfetch, count);
+		Eprintf("%s - Alloc/fetch/pfetch/peak=%d/%d/%d/%d)\n",
+			__func__, evq_alloc, evq_fetch, pfetch, count);
 	     if ((evq_ptr) && ((evq_alloc - evq_fetch) > 64))
 	       {
 		  evq_alloc = 0;
@@ -1076,10 +1076,9 @@ EventsMain(void)
 	  }
 
 	if (EDebug(EDBUG_TYPE_EVENTS))
-	   Eprintf
-	      ("EventsMain - count=%d xfd=%d:%d dtl=%.6lf dt=%.6lf\n",
-	       count, pfds[0].fd, FD_ISSET(pfds[0].fd, &fdset),
-	       dtl * 1e-3, dt * 1e-3);
+	   Eprintf("%s: count=%d xfd=%d:%d dtl=%.6lf dt=%.6lf\n", __func__,
+		   count, pfds[0].fd, FD_ISSET(pfds[0].fd, &fdset),
+		   dtl * 1e-3, dt * 1e-3);
 
 	if (count <= 0)
 	   continue;		/* Timeout (or error) */

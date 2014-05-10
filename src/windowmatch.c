@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2005-2013 Kim Woelders
+ * Copyright (C) 2005-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -301,7 +301,7 @@ WindowMatchDecode(const char *line)
    num = MatchFind(MatchType, match);
    if (num <= 0)
      {
-	Eprintf("WindowMatchDecode: Error (%s): %s\n", match, line);
+	Eprintf("%s: Error (%s): %s\n", __func__, match, line);
 	err = 1;
 	goto done;
      }
@@ -357,7 +357,7 @@ WindowMatchDecode(const char *line)
 	break;
 
       case_error:
-	Eprintf("WindowMatchDecode: Error (%s): %s\n", value, line);
+	Eprintf("%s: Error (%s): %s\n", __func__, value, line);
 	err = 1;
 	goto done;
      }
@@ -365,7 +365,7 @@ WindowMatchDecode(const char *line)
    wm->op = MatchFind(MatchOp, op);
    if (wm->op <= 0)
      {
-	Eprintf("WindowMatchDecode: Error (%s): %s\n", op, line);
+	Eprintf("%s: Error (%s): %s\n", __func__, op, line);
 	err = 1;
 	goto done;
      }
@@ -389,7 +389,7 @@ WindowMatchDecode(const char *line)
      case MATCH_OP_WINOP:
 	if (WindowMatchEobjOpsParse(NULL, args))
 	  {
-	     Eprintf("WindowMatchDecode: Error (%s): %s\n", args, line);
+	     Eprintf("%s: Error (%s): %s\n", __func__, args, line);
 	     err = 1;
 	     goto done;
 	  }
@@ -603,7 +603,7 @@ WindowMatchEwinBorder(const EWin * ewin)
 
    wm = WindowMatchType(ewin, MATCH_OP_BORDER);
 #if 0
-   Eprintf("WindowMatchEwinBorder %s %s\n", EwinGetTitle(ewin),
+   Eprintf("%s: %s %s\n", __func__, EwinGetTitle(ewin),
 	   (wm) ? BorderGetName(wm->border) : "???");
 #endif
    if (wm)
@@ -618,7 +618,7 @@ WindowMatchEwinIcon(const EWin * ewin)
 
    wm = WindowMatchType(ewin, MATCH_OP_ICON);
 #if 0
-   Eprintf("WindowMatchEwinIcon %s %s\n", EwinGetTitle(ewin),
+   Eprintf("%s: %s %s\n", __func__, EwinGetTitle(ewin),
 	   (wm) ? wm->args : "???");
 #endif
    if (wm)

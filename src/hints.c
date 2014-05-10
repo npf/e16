@@ -270,7 +270,7 @@ HintsProcessPropertyChange(EWin * ewin, XEvent * ev)
 #if 0
    if (EDebug(1))
      {
-	Eprintf("HintsProcessPropertyChange:\n");
+	Eprintf("%s:\n", __func__);
 	EventShow(ev);
      }
 #endif
@@ -289,7 +289,7 @@ HintsProcessClientClientMessage(EWin * ewin, XClientMessageEvent * event)
 #endif
    if (EDebug(1))
      {
-	Eprintf("HintsProcessClientClientMessage:\n");
+	Eprintf("%s:\n", __func__);
 	EventShow((XEvent *) event);
      }
 }
@@ -307,7 +307,7 @@ HintsProcessRootClientMessage(XClientMessageEvent * event)
 #endif
    if (EDebug(1))
      {
-	Eprintf("HintsProcessRootClientMessage:\n");
+	Eprintf("%s:\n", __func__);
 	EventShow((XEvent *) event);
      }
 }
@@ -560,7 +560,7 @@ EHintsSetInfoOnAll(void)
    EWin               *const *lst;
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("SetEInfoOnAll\n");
+      Eprintf("%s\n", __func__);
 
    lst = EwinListGetAll(&num);
    for (i = 0; i < num; i++)

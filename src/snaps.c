@@ -529,7 +529,7 @@ SnapshotEwinUpdate(const EWin * ewin, unsigned int flags)
       return;
 
 #if 0
-   Eprintf("SnapshotEwinUpdate %s: %#x\n", EwinGetTitle(ewin), flags);
+   Eprintf("%s: %s: %#x\n", __func__, EwinGetTitle(ewin), flags);
 #endif
 
    if (flags & sn->use_flags)
@@ -1157,7 +1157,7 @@ SnapshotsSaveReal(void)
    Esnprintf(buf, sizeof(buf), "%s.snapshots", EGetSavePrefix());
 
    if (EDebug(EDBUG_TYPE_SNAPS))
-      Eprintf("SnapshotsSaveReal: %s\n", buf);
+      Eprintf("%s: %s\n", __func__, buf);
    E_mv(s, buf);
    if (!isfile(buf))
       Alert(_("Error saving snaps file"));

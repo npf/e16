@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2008 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -35,7 +35,7 @@ SignalHandler(int sig)
    Mode.wm.in_signal_handler = 1;
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("SignalHandler signal=%d\n", sig);
+      Eprintf("%s: signal=%d\n", __func__, sig);
 
    switch (sig)
      {

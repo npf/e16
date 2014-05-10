@@ -1602,7 +1602,7 @@ MenuHandleEvents(Win win __UNUSED__, XEvent * ev, void *prm)
    Menu               *m = (Menu *) prm;
 
 #if DEBUG_MENU_EVENTS
-   Eprintf("MenuHandleEvents %d\n", ev->type);
+   Eprintf("%s: %d\n", __func__, ev->type);
 #endif
    switch (ev->type)
      {
@@ -1623,7 +1623,7 @@ MenuItemHandleEvents(Win win __UNUSED__, XEvent * ev, void *prm)
    MenuItem           *mi = (MenuItem *) prm;
 
 #if DEBUG_MENU_EVENTS
-   Eprintf("MenuItemHandleEvents %d\n", ev->type);
+   Eprintf("%s: %d\n", __func__, ev->type);
 #endif
    switch (ev->type)
      {
@@ -1646,7 +1646,7 @@ static void
 MenuMaskerHandleEvents(Win win __UNUSED__, XEvent * ev, void *prm __UNUSED__)
 {
 #if DEBUG_MENU_EVENTS
-   Eprintf("MenuMaskerHandleEvents %d\n", ev->type);
+   Eprintf("%s: %d\n", __func__, ev->type);
 #endif
 
    switch (ev->type)

@@ -369,7 +369,7 @@ ICCCM_Cmap(EWin * ewin)
 
  set_cmap:
    if (EDebug(EDBUG_TYPE_FOCUS))
-      Eprintf("ICCCM_Cmap %#x\n", ccmap);
+      Eprintf("%s: %#x\n", __func__, ccmap);
    XInstallColormap(disp, ccmap);
    Mode.current_cmap = ccmap;
 }
@@ -380,11 +380,11 @@ ICCCM_Focus(const EWin * ewin)
    if (EDebug(EDBUG_TYPE_FOCUS))
      {
 	if (ewin)
-	   Eprintf("ICCCM_Focus T=%#x R=%#x %#x %s\n", Mode.events.time,
+	   Eprintf("%s: T=%#x R=%#x %#x %s\n", __func__, Mode.events.time,
 		   (int)NextRequest(disp), EwinGetClientXwin(ewin),
 		   EwinGetTitle(ewin));
 	else
-	   Eprintf("ICCCM_Focus T=%#x R=%#x None\n", Mode.events.time,
+	   Eprintf("%s: T=%#x R=%#x None\n", __func__, Mode.events.time,
 		   (int)NextRequest(disp));
      }
 
@@ -922,7 +922,7 @@ EwinSyncRequestWait(EWin * ewin)
    tus = GetTimeUs();
    XSyncAwait(disp, xswc, 2);
    if (EDebug(EDBUG_TYPE_SYNC))
-      Eprintf("Sync t=%#lx c=%llx: Delay=%u us\n",
+      Eprintf("%s: t=%#lx c=%llx: Delay=%u us\n", __func__,
 	      xswc[0].trigger.counter, ewin->ewmh.sync_request_count,
 	      GetTimeUs() - tus);
 }

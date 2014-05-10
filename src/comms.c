@@ -224,7 +224,7 @@ ClientHandleComms(XClientMessageEvent * ev)
       return;
 
    if (EDebug(EDBUG_TYPE_IPC))
-      Eprintf("ClientHandleComms: %s\n", s);
+      Eprintf("%s: %s\n", __func__, s);
 
    if (!strncmp(s, "set ", 4))
      {
@@ -258,8 +258,7 @@ ClientHandleRootEvents(Win win __UNUSED__, XEvent * ev, void *prm __UNUSED__)
    Client             *c;
 
 #if 0
-   Eprintf("ClientHandleRootEvents: type=%d win=%#lx\n", ev->type,
-	   ev->xany.window);
+   Eprintf("%s: type=%d win=%#lx\n", __func__, ev->type, ev->xany.window);
 #endif
    switch (ev->type)
      {
@@ -276,8 +275,7 @@ static void
 ClientHandleCommsEvents(Win win __UNUSED__, XEvent * ev, void *prm __UNUSED__)
 {
 #if 0
-   Eprintf("ClientHandleCommsEvents: type=%d win=%#lx\n", ev->type,
-	   ev->xany.window);
+   Eprintf("%s: type=%d win=%#lx\n", __func__, ev->type, ev->xany.window);
 #endif
    switch (ev->type)
      {

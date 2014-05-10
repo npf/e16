@@ -509,11 +509,11 @@ DeskBackgroundConfigure(Desk * dsk)
    unsigned int        pixel = dsk->bg.pixel;
 
    if (EDebug(EDBUG_TYPE_DESKS))
-      Eprintf
-	 ("DeskBackgroundConfigure %d v=%d %#x/%#x: ext=%d pmap=%#x/%#x pixel=%#x/%#x\n",
-	  dsk->num, dsk->viewable, EoGetXwin(dsk), EobjGetXwin(dsk->bg.o),
-	  BackgroundIsNone(dsk->bg.bg), pmap, dsk->bg.pmap_set, pixel,
-	  dsk->bg.pixel);
+      Eprintf("%s: %d v=%d %#x/%#x: ext=%d pmap=%#x/%#x pixel=%#x/%#x\n",
+	      __func__,
+	      dsk->num, dsk->viewable, EoGetXwin(dsk), EobjGetXwin(dsk->bg.o),
+	      BackgroundIsNone(dsk->bg.bg), pmap, dsk->bg.pmap_set, pixel,
+	      dsk->bg.pixel);
 
 #if USE_COMPOSITE
    if (dsk->bg.o_bg)
@@ -582,7 +582,7 @@ DeskBackgroundRefresh(Desk * dsk, int why)
    int                 reconfigure = 0;
 
    if (EDebug(EDBUG_TYPE_DESKS))
-      Eprintf("DeskBackgroundRefresh %d v=%d why=%d pmap=%#x pixel=%#x\n",
+      Eprintf("%s: %d v=%d why=%d pmap=%#x pixel=%#x\n", __func__,
 	      dsk->num, dsk->viewable, why, pmap, pixel);
 
    switch (why)
@@ -785,7 +785,7 @@ DeskSetDirtyStack(Desk * dsk, EObj * eo)
    if (EobjGetType(eo) == EOBJ_TYPE_EWIN)
       dsk->stack.update_client_list = 1;
    if (EDebug(EDBUG_TYPE_STACKING))
-      Eprintf("DeskSetDirtyStack %d (%d): %s\n", dsk->num, dsk->stack.dirty,
+      Eprintf("%s: %d (%d): %s\n", __func__, dsk->num, dsk->stack.dirty,
 	      EobjGetName(eo));
 }
 
@@ -1193,7 +1193,7 @@ static void
 _DeskGotoStart(Desk * dsk)
 {
    if (EDebug(EDBUG_TYPE_DESKS))
-      Eprintf("DeskGoto %d\n", dsk->num);
+      Eprintf("%s: %d\n", __func__, dsk->num);
 
    ModulesSignal(ESIGNAL_DESK_SWITCH_START, NULL);
 
@@ -1210,7 +1210,7 @@ _DeskGotoEnd(Desk * dsk)
    ModulesSignal(ESIGNAL_DESK_SWITCH_DONE, NULL);
 
    if (EDebug(EDBUG_TYPE_DESKS))
-      Eprintf("DeskGoto %d done\n", dsk->num);
+      Eprintf("%s: %d\n", __func__, dsk->num);
 }
 
 static int
@@ -1329,7 +1329,7 @@ DeskRaise(unsigned int desk)
    dsk = _DeskGet(desk);
 
    if (EDebug(EDBUG_TYPE_DESKS))
-      Eprintf("DeskRaise(%d) current=%d\n", desk, desks.current->num);
+      Eprintf("%s: %d current=%d\n", __func__, desk, desks.current->num);
 
    DeskSwitchStart();
    DeskEnter(dsk);
@@ -1354,7 +1354,7 @@ DeskLower(unsigned int desk)
    MoveToDeskBottom(dsk);
 
    if (EDebug(EDBUG_TYPE_DESKS))
-      Eprintf("DeskLower(%d) %d -> %d\n", desk, desks.current->num,
+      Eprintf("%s: %d %d -> %d\n", __func__, desk, desks.current->num,
 	      desks.order[0]);
 
    desks.previous = desks.current = DeskGet(desks.order[0]);
@@ -1422,7 +1422,7 @@ DeskRestackSimple(Desk * dsk)
    eo->stacked = 1;
 
    if (EDebug(EDBUG_TYPE_STACKING))
-      Eprintf("DeskRestackSimple %#x %s\n", EobjGetXwin(eo), EobjGetName(eo));
+      Eprintf("%s: %#x %s\n", __func__, EobjGetXwin(eo), EobjGetName(eo));
 
    if (i < num - 1)
      {
@@ -1436,7 +1436,7 @@ DeskRestackSimple(Desk * dsk)
      }
    value_mask = CWSibling | CWStackMode;
    if (EDebug(EDBUG_TYPE_STACKING))
-      Eprintf("DeskRestackSimple %#10x %s %#10lx\n", EobjGetXwin(eo),
+      Eprintf("%s: %#10x %s %#10lx\n", __func__, EobjGetXwin(eo),
 	      (xwc.stack_mode == Above) ? "Above" : "Below", xwc.sibling);
    XConfigureWindow(disp, EobjGetXwin(eo), value_mask, &xwc);
 }
@@ -1478,7 +1478,7 @@ DeskRestack(Desk * dsk)
 
    if (EDebug(EDBUG_TYPE_STACKING))
      {
-	Eprintf("DeskRestack %d (%d):\n", dsk->num, dsk->stack.dirty);
+	Eprintf("%s: %d (%d):\n", __func__, dsk->num, dsk->stack.dirty);
 	for (i = 0; i < tot; i++)
 	   Eprintf(" win=%#10x parent=%#10x\n", wl[i],
 		   EXWindowGetParent(wl[i]));
@@ -1692,7 +1692,7 @@ static void
 _DeskCurrentGotoAreaStart(int pax, int pay, int ax, int ay)
 {
    if (EDebug(EDBUG_TYPE_DESKS))
-      Eprintf("DeskCurrentGotoArea %d,%d\n", ax, ay);
+      Eprintf("%s: %d,%d\n", __func__, ax, ay);
 
    ModulesSignal(ESIGNAL_AREA_SWITCH_START, NULL);
 
@@ -2018,7 +2018,7 @@ static void
 DeskRootResize(int root, int w, int h)
 {
    if (EDebug(EDBUG_TYPE_DESKS))
-      Eprintf("DeskRootResize %d %dx%d\n", root, w, h);
+      Eprintf("%s: %d %dx%d\n", __func__, root, w, h);
 
    if (root && (VROOT != RROOT))
      {
@@ -2061,7 +2061,7 @@ DeskPropertyChange(Desk * dsk, XEvent * ev)
 	/* Possible race here? */
 	pmap = HintsGetRootPixmap(EoGetWin(dsk));
 	if (EDebug(EDBUG_TYPE_DESKS))
-	   Eprintf("DeskPropertyChange win=%#lx _XROOTPMAP_ID=%#x\n",
+	   Eprintf("%s: win=%#lx _XROOTPMAP_ID=%#x\n", __func__,
 		   ev->xany.window, pmap);
 	if (ev->xany.window != WinGetXwin(VROOT))
 	   return;
@@ -2076,7 +2076,7 @@ DeskPropertyChange(Desk * dsk, XEvent * ev)
    else if (ev->xproperty.atom == E_XROOTCOLOR_PIXEL)
      {
 	if (EDebug(EDBUG_TYPE_DESKS))
-	   Eprintf("DeskPropertyChange win=%#lx _XROOTCOLOR_PIXEL\n",
+	   Eprintf("%s: win=%#lx _XROOTCOLOR_PIXEL\n", __func__,
 		   ev->xany.window);
 	if (ev->xany.window != WinGetXwin(VROOT))
 	   return;

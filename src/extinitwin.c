@@ -151,7 +151,7 @@ ExtInitWinMain(void)
    EiwLoopFunc        *eiwc_loop_func;
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("ExtInitWinMain enter\n");
+      Eprintf("%s: enter\n", __func__);
 
    err = EDisplayOpen(NULL, -1);
    if (err)
@@ -218,7 +218,7 @@ ExtInitWinMain(void)
 
 	   Esnprintf(s, sizeof(s), "pix/wait%i.png", i);
 	   if (EDebug(EDBUG_TYPE_SESSION) > 1)
-	      Eprintf("ExtInitWinCreate - child %s\n", s);
+	      Eprintf("%s: child %s\n", __func__, s);
 
 	   im = ThemeImageLoad(s);
 	   if (im)
@@ -236,7 +236,7 @@ ExtInitWinMain(void)
    }
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("ExtInitWinMain exit\n");
+      Eprintf("%s: exit\n", __func__);
 
    EDisplayClose();
 
@@ -251,7 +251,7 @@ ExtInitWinCreate(void)
    EX_Atom             a;
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("ExtInitWinCreate\n");
+      Eprintf("%s\n", __func__);
 
    a = ex_atom_get("ENLIGHTENMENT_RESTART_SCREEN");
    ESync(0);
@@ -264,7 +264,7 @@ ExtInitWinCreate(void)
 	for (;;)
 	  {
 	     if (EDebug(EDBUG_TYPE_SESSION))
-		Eprintf("ExtInitWinCreate - parent\n");
+		Eprintf("%s: parent\n", __func__);
 
 	     /* Hack to give the child some space. Not foolproof. */
 	     sleep(1);
@@ -276,7 +276,7 @@ ExtInitWinCreate(void)
 
 	win = win_ex;
 	if (EDebug(EDBUG_TYPE_SESSION))
-	   Eprintf("ExtInitWinCreate - parent - %#x\n", win);
+	   Eprintf("%s: parent - %#x\n", __func__, win);
 
 	return win;
      }
@@ -284,7 +284,7 @@ ExtInitWinCreate(void)
    /* Child - Create the init window */
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("ExtInitWinCreate - child\n");
+      Eprintf("%s: child\n", __func__);
 
    /* Clean up inherited stuff */
 
@@ -320,7 +320,7 @@ ExtInitWinKill(void)
       return;
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("Kill init window %#x\n", init_win_ext);
+      Eprintf("%s: %#x\n", __func__, init_win_ext);
    XUnmapWindow(disp, init_win_ext);
    init_win_ext = NoXID;
 }

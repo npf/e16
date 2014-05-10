@@ -93,7 +93,7 @@ set_save_props(SmcConn smc_conn, int master_flag)
    char                bufs[32], bufm[32];
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("set_save_props\n");
+      Eprintf("%s\n", __func__);
 
    programProp.name = (char *)SmProgram;
    programProp.type = (char *)SmARRAY8;
@@ -248,7 +248,7 @@ static void
 callback_save_yourself2(SmcConn smc_conn, SmPointer client_data __UNUSED__)
 {
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("callback_save_yourself2\n");
+      Eprintf("%s\n", __func__);
 
    set_save_props(smc_conn, Mode.wm.master);
    SmcSaveYourselfDone(smc_conn, True);
@@ -262,7 +262,7 @@ callback_save_yourself(SmcConn smc_conn, SmPointer client_data __UNUSED__,
 		       int interact_style __UNUSED__, Bool fast __UNUSED__)
 {
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("callback_save_yourself\n");
+      Eprintf("%s\n", __func__);
 
    SmcRequestSaveYourselfPhase2(smc_conn, callback_save_yourself2, NULL);
 }
@@ -271,7 +271,7 @@ static void
 callback_die(SmcConn smc_conn __UNUSED__, SmPointer client_data __UNUSED__)
 {
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("callback_die\n");
+      Eprintf("%s\n", __func__);
 
    SessionExit(EEXIT_EXIT, NULL);
 }
@@ -281,14 +281,14 @@ callback_save_complete(SmcConn smc_conn __UNUSED__,
 		       SmPointer client_data __UNUSED__)
 {
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("callback_save_complete\n");
+      Eprintf("%s\n", __func__);
 }
 
 static void
 callback_shutdown_cancelled(SmcConn smc_conn, SmPointer client_data __UNUSED__)
 {
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("callback_shutdown_cancelled\n");
+      Eprintf("%s\n", __func__);
 
    SmcSaveYourselfDone(smc_conn, False);
 }
@@ -303,7 +303,7 @@ static void
 ice_io_error_handler(IceConn connection __UNUSED__)
 {
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("ice_io_error_handler\n");
+      Eprintf("%s\n", __func__);
 
    /* The less we do here the better - the default handler does an
     * exit(1) instead of closing the losing connection. */
@@ -462,7 +462,7 @@ static void
 SessionSave(int shutdown)
 {
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("SessionSave(%d)\n", shutdown);
+      Eprintf("%s: %d\n", __func__, shutdown);
 
    SnapshotsSaveReal();
 
@@ -489,7 +489,7 @@ doSMExit(int mode, const char *params)
    const char         *ss;
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("doSMExit: mode=%d prm=%p\n", mode, params);
+      Eprintf("%s: mode=%d prm=%p\n", __func__, mode, params);
 
    restarting = 1;
 
@@ -520,7 +520,7 @@ doSMExit(int mode, const char *params)
 	EDisplayClose();
 
 	if (EDebug(EDBUG_TYPE_SESSION))
-	   Eprintf("doSMExit: exec %s\n", params);
+	   Eprintf("%s: exec %s\n", __func__, params);
 	Eexec(params);
 	break;
 
@@ -557,7 +557,7 @@ doSMExit(int mode, const char *params)
 	   l += Esnprintf(s + l, sizeof(s) - l, " -t %s", ss);
 
 	if (EDebug(EDBUG_TYPE_SESSION))
-	   Eprintf("doSMExit: exec %s\n", s);
+	   Eprintf("%s: exec %s\n", __func__, s);
 
 	Eexec(s);
 	break;
@@ -663,7 +663,7 @@ SessionExit(int mode, const char *param)
       return;
 
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("SessionExit: mode=%d(%d) prm=%s\n", mode, Mode.wm.exit_mode,
+      Eprintf("%s: mode=%d(%d) prm=%s\n", __func__, mode, Mode.wm.exit_mode,
 	      param);
 
    if (Mode.wm.exiting)
@@ -689,7 +689,7 @@ SessionExit(int mode, const char *param)
 	if (!Mode.wm.exiting)
 	   break;
 	/* This may be possible during nested signal handling */
-	Eprintf("SessionExit already in progress ... now exiting\n");
+	Eprintf("%s: already in progress ... now exiting\n", __func__);
 	exit(1);
 	break;
 
@@ -724,7 +724,7 @@ SessionRunProg(const char *prog, const char *params)
 	s = prog;
      }
    if (EDebug(EDBUG_TYPE_SESSION))
-      Eprintf("SessionRunProg: %s\n", s);
+      Eprintf("%s: %s\n", __func__, s);
    Esystem(s);
 }
 

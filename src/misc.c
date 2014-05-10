@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2013 Kim Woelders
+ * Copyright (C) 2004-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -171,17 +171,17 @@ ModLoadSym(const char *lib, const char *sym, const char *name)
 
    Esnprintf(buf, sizeof(buf), "%s/lib%s_%s.so", EDirLib(), lib, name);
    if (EDebug(1))
-      Eprintf("ModLoad %s\n", buf);
+      Eprintf("%s: %s\n", __func__, buf);
    h = dlopen(buf, RTLD_NOW | RTLD_LOCAL);
    if (!h)
-      Eprintf("*** ModLoad %s: %s\n", buf, dlerror());
+      Eprintf("*** %s: %s: %s\n", __func__, buf, dlerror());
    if (!h)
       return NULL;
 
    Esnprintf(buf, sizeof(buf), "%s_%s", sym, name);
    h = dlsym(h, buf);
    if (!h)
-      Eprintf("*** ModLoad %s: %s\n", buf, dlerror());
+      Eprintf("*** %s: %s: %s\n", __func__, buf, dlerror());
 
    return h;
 }

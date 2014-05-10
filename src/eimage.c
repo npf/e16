@@ -567,8 +567,8 @@ ScaleTile(Win wsrc, EX_Drawable src, Win wdst, EX_Pixmap dst,
    tw = (int)((float)(stw * scale * dw) / sw + .5f);
    th = (int)((float)(sth * scale * dh) / sh + .5f);
 #if 0
-   Eprintf("ScaleTile: Tile %#lx %dx%d -> %dx%d T %dx%d -> %dx%d\n", src,
-	   stw, sth, tw, th, scale * dw, scale * dh, dw, dh);
+   Eprintf("%s: Tile %#x %dx%d -> %dx%d T %dx%d -> %dx%d\n", __func__,
+	   src, stw, sth, tw, th, scale * dw, scale * dh, dw, dh);
 #endif
    tim =
       EImageGrabDrawableScaled(wsrc, src, NoXID, 0, 0, stw, sth, tw, th, 0, 0);
@@ -598,8 +598,8 @@ EDrawableDumpImage(EX_Drawable draw, const char *txt)
       imlib_create_image_from_drawable(NoXID, 0, 0, w, h, !EServerIsGrabbed());
    imlib_context_set_image(im);
    imlib_image_set_format("png");
-   sprintf(buf, "%s-%#lx-%d.png", txt, draw, seqn++);
-   Eprintf("EDrawableDumpImage: %s\n", buf);
+   sprintf(buf, "%s-%#x-%d.png", txt, draw, seqn++);
+   Eprintf("%s: %s\n", __func__, buf);
    imlib_save_image(buf);
    imlib_free_image_and_decache();
 }

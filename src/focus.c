@@ -61,7 +61,7 @@ FocusEnable(int on)
      }
 
    if (EDebug(EDBUG_TYPE_FOCUS))
-      Eprintf("FocusEnable inhibit=%d\n", focus_inhibit);
+      Eprintf("%s: inhibit=%d\n", __func__, focus_inhibit);
 }
 
 /*
@@ -74,7 +74,7 @@ FocusEwinValid(EWin * ewin, int want_on_screen, int click, int want_visible)
       return 0;
 
 #if 0
-   Eprintf("FocusEwinValid %#x %s: st=%d sh=%d inh=%d cl=%d(%d) vis=%d(%d)\n",
+   Eprintf("%s: %#x %s: st=%d sh=%d inh=%d cl=%d(%d) vis=%d(%d)\n", __func__,
 	   EwinGetClientXwin(ewin), EwinGetTitle(ewin),
 	   ewin->state.state, EoIsShown(ewin), ewin->state.inhibit_focus,
 	   click, ewin->props.focusclick, want_visible, ewin->state.visibility);
@@ -224,7 +224,7 @@ ClickGrabsSet(EWin * ewin)
 	     GrabButtonSet(AnyButton, AnyModifier, EwinGetClientConWin(ewin),
 			   ButtonPressMask, ECSR_PGRAB, 1);
 	     if (EDebug(EDBUG_TYPE_GRABS))
-		Eprintf("ClickGrabsSet: %#x set %s\n",
+		Eprintf("%s: %#x set %s\n", __func__,
 			EwinGetClientXwin(ewin), EwinGetTitle(ewin));
 	     ewin->state.click_grab_isset = 1;
 	  }
@@ -236,7 +236,7 @@ ClickGrabsSet(EWin * ewin)
 	     GrabButtonRelease(AnyButton, AnyModifier,
 			       EwinGetClientConWin(ewin));
 	     if (EDebug(EDBUG_TYPE_GRABS))
-		Eprintf("ClickGrabsSet: %#x unset %s\n",
+		Eprintf("%s: %#x unset %s\n", __func__,
 			EwinGetClientXwin(ewin), EwinGetTitle(ewin));
 	     ewin->state.click_grab_isset = 0;
 	  }
@@ -291,7 +291,7 @@ doFocusToEwin(EWin * ewin, int why)
       return;
 
    if (EDebug(EDBUG_TYPE_FOCUS))
-      Eprintf("doFocusToEWin %#x %s why=%d\n",
+      Eprintf("%s: %#x %s why=%d\n", __func__,
 	      (ewin) ? EwinGetClientXwin(ewin) : 0,
 	      (ewin) ? EwinGetTitle(ewin) : "None", why);
 
@@ -466,7 +466,7 @@ void
 FocusToEWin(EWin * ewin, int why)
 {
    if (EDebug(EDBUG_TYPE_FOCUS))
-      Eprintf("FocusToEWin(%d) %#x %s why=%d\n", focus_inhibit,
+      Eprintf("%s(%d) %#x %s why=%d\n", __func__, focus_inhibit,
 	      (ewin) ? EwinGetClientXwin(ewin) : 0,
 	      (ewin) ? EwinGetTitle(ewin) : "None", why);
 
@@ -622,7 +622,7 @@ FocusHandleEnter(EWin * ewin, XEvent * ev)
        ev->xcrossing.detail == NotifyNonlinearVirtual)
      {
 	if (EDebug(1))
-	   Eprintf("Previously ignored: focused: %s, enter: %s\n",
+	   Eprintf("%s: Previously ignored: focused: %s, enter: %s\n", __func__,
 		   EoGetNameSafe(Mode.focuswin), EoGetNameSafe(ewin));
      }
 #endif
@@ -632,7 +632,7 @@ FocusHandleEnter(EWin * ewin, XEvent * ev)
 	/* This event was caused by a request older than the latest
 	 * focus assignment request - ignore */
 	if (EDebug(EDBUG_TYPE_FOCUS))
-	   Eprintf("FocusHandleEnter: Ignore serial < %#x\n", focus_request);
+	   Eprintf("%s: Ignore serial < %#x\n", __func__, focus_request);
 	return;
      }
 
@@ -669,7 +669,7 @@ FocusHandleLeave(EWin * ewin, XEvent * ev)
 	/* This event was caused by a request older than the latest
 	 * focus assignment request - ignore */
 	if (EDebug(EDBUG_TYPE_FOCUS))
-	   Eprintf("FocusHandleLeave: Ignore serial < %#x\n", focus_request);
+	   Eprintf("%s: Ignore serial < %#x\n", __func__, focus_request);
 	return;
      }
 
@@ -687,7 +687,7 @@ FocusHandleChange(EWin * ewin __UNUSED__, XEvent * ev __UNUSED__)
 {
 #if 0				/* Debug */
    if (ewin == Mode.focuswin && ev->type == FocusOut)
-      Eprintf("??? Lost focus: %s\n", EwinGetTitle(ewin));
+      Eprintf("%s: ??? Lost focus: %s\n", __func__, EwinGetTitle(ewin));
 #endif
 }
 
@@ -701,7 +701,7 @@ FocusHandleClick(EWin * ewin, Win win)
 
    /* Allow click to pass thorugh */
    if (EDebug(EDBUG_TYPE_GRABS))
-      Eprintf("FocusHandleClick %#x %#x\n", WinGetXwin(win),
+      Eprintf("%s: %#x %#x\n", __func__, WinGetXwin(win),
 	      EwinGetContainerXwin(ewin));
    if (win == EwinGetClientConWin(ewin))
      {
