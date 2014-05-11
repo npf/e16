@@ -1116,6 +1116,7 @@ static void
 EwinWithdraw(EWin * ewin, Win to)
 {
    int                 x, y;
+   EX_Window           xwin;
 
    /* Only external clients should go here */
 
@@ -1125,10 +1126,16 @@ EwinWithdraw(EWin * ewin, Win to)
 
    EGrabServer();
 
+   xwin = EXWindowGetParent(EwinGetClientXwin(ewin));
+
+   /* Window may be destroyed after unmap but DestroyNotify not received yet */
+   if (xwin == NoXID)
+      goto done;
+
    ESelectInput(EwinGetClientWin(ewin), NoEventMask);
    XShapeSelectInput(disp, EwinGetClientXwin(ewin), NoEventMask);
 
-   if (EXWindowGetParent(EwinGetClientXwin(ewin)) == EwinGetContainerXwin(ewin))
+   if (xwin == EwinGetContainerXwin(ewin))
      {
 	/* Park the client window on the new root */
 	x = ewin->client.x;
@@ -1142,6 +1149,8 @@ EwinWithdraw(EWin * ewin, Win to)
    ICCCM_Withdraw(ewin);
 
    ESync(0);
+
+ done:
    EUngrabServer();
 }
 
