@@ -5,17 +5,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
-"Report-Msgid-Bugs-To: $MSGID_BUGS_ADDRESS\n"
-"POT-Creation-Date: 2014-05-24 09:16+0200\n"
+"Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
+"POT-Creation-Date: 2014-04-27 20:54+0200\n"
 "PO-Revision-Date: 2014-05-24 08:31+0000\n"
 "Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-9\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2014-05-25 05:44+0000\n"
 "X-Generator: Launchpad (build 17017)\n"
-"Language: tr\n"
 
 #: src/about.c:35
 #, c-format
@@ -831,8 +831,7 @@ msgid "Send mouse pointer to window after focus switch"
 msgstr "Odaklanma deðiþtikten sonra pencereye fare iþaretçisini belirt"
 
 #: src/focus.c:966
-msgid ""
-"Focuslist image display policy (if one operation fails, try the next):"
+msgid "Focuslist image display policy (if one operation fails, try the next):"
 msgstr ""
 "Odaklama listesi resim görüntüleme planý (birisi baþarýsýz olursa, sonrakini "
 "dene):"
@@ -1162,8 +1161,7 @@ msgstr "Þu an kullanýlabilir komutlar:\n"
 
 #: src/ipc.c:1841
 msgid "Use \"help full\" for full descriptions of each command\n"
-msgstr ""
-"Her bir komutun tam açýklamasýný görmek için \"help full\" kullanýn\n"
+msgstr "Her bir komutun tam açýklamasýný görmek için \"help full\" kullanýn\n"
 
 #: src/ipc.c:1842
 msgid "Use \"help <command>\" for an individual description\n"
@@ -1653,8 +1651,7 @@ msgstr ""
 
 #: src/settings.c:338
 msgid "Dialog windows appear together with their owner"
-msgstr ""
-"Ýletiþim pencerelerini ana pencereleriyle beraber ayný masaüstünde aç"
+msgstr "Ýletiþim pencerelerini ana pencereleriyle beraber ayný masaüstünde aç"
 
 #: src/settings.c:343
 msgid "Switch to desktop where dialog appears"
@@ -2357,8 +2354,7 @@ msgid "Stick/Unstick"
 msgstr "Yapýþtýr / Yapýþtýrma"
 
 #: config/strings.c:61
-msgid ""
-"Toggle the Omnipresent (visible on all Desktops) state of this window."
+msgid "Toggle the Omnipresent (visible on all Desktops) state of this window."
 msgstr "Hazýr olarak bulunan pencere durumuna geçiþ yapýn."
 
 #: config/strings.c:63

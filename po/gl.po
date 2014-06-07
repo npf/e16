@@ -6,11 +6,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: enlightenment\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-05-24 09:16+0200\n"
+"Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
+"POT-Creation-Date: 2014-04-27 20:54+0200\n"
 "PO-Revision-Date: 2013-06-19 22:16+0000\n"
 "Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <gl@li.org>\n"
+"Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -754,8 +755,7 @@ msgid "Send mouse pointer to window after focus switch"
 msgstr "Enviar o punteiro do rato ata a xanela ao cambiar o foco"
 
 #: src/focus.c:966
-msgid ""
-"Focuslist image display policy (if one operation fails, try the next):"
+msgid "Focuslist image display policy (if one operation fails, try the next):"
 msgstr ""
 
 #: src/focus.c:970
@@ -2154,8 +2154,7 @@ msgid "Stick/Unstick"
 msgstr ""
 
 #: config/strings.c:61
-msgid ""
-"Toggle the Omnipresent (visible on all Desktops) state of this window."
+msgid "Toggle the Omnipresent (visible on all Desktops) state of this window."
 msgstr ""
 
 #: config/strings.c:63
