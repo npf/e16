@@ -2,12 +2,6 @@
 Encoding=UTF-8
 Type=Application
 Name=E16
-Name[eo]=E16
-Name[fr]=E16
-Name[gl]=E16
-Name[ms]=E16
-Name[sr]=Е16
-Name[tr]=E16
 Comment=The Enlightenment (e16) window manager
 Comment[eo]=Enlightenment (e16) la fenestra agordilo
 Comment[fr]=Gestionnaire de fenêtres Enlightenment (e16)

@@ -2,12 +2,6 @@
 Encoding=UTF-8
 Type=XSession
 Name=E16-KDE
-Name[eo]=E16-KDE
-Name[fr]=E16-KDE
-Name[gl]=E16-KDE
-Name[ms]=E16-KDE
-Name[sr]=Е16-КДЕ
-Name[tr]=E16-KDE
 Comment=This session starts KDE using enlightenment (e16) as window manager
 Comment[eo]=Tiu sesio lanĉas KDE uzante Enlightenment (e16) kiel fenestro-administrilo.
 Comment[fr]=Démarre une session KDE en utilisant enlightenment (e16) comme gestionnaire de fenêtres
