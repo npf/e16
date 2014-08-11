@@ -29,6 +29,7 @@
 #include "xwin.h"
 #include <X11/cursorfont.h>
 #if USE_XRENDER
+#include <X11/extensions/Xfixes.h>
 #include <X11/extensions/Xrender.h>
 #endif
 
@@ -55,8 +56,8 @@ ECreatePixmapCursor(EX_Pixmap cpmap, EX_Pixmap cmask, unsigned int w,
    EX_Cursor           curs;
    EX_Pixmap           pmap;
    EX_Picture          pict;
+   EX_SrvRegion        rgn1, rgn2;
    XRenderPictFormat  *pictfmt;
-   XRenderPictureAttributes pa;
    XRenderColor        c;
 
    pictfmt = XRenderFindStandardFormat(disp, PictStandardARGB32);
@@ -70,19 +71,22 @@ ECreatePixmapCursor(EX_Pixmap cpmap, EX_Pixmap cmask, unsigned int w,
    XRenderFillRectangle(disp, PictOpSrc, pict, &c, 0, 0, w, h);
 
    /* Set bg color (cursor shape) */
-   pa.clip_mask = cmask;
-   XRenderChangePicture(disp, pict, CPClipMask, &pa);
+   rgn1 = XFixesCreateRegionFromBitmap(disp, cmask);
+   XFixesSetPictureClipRegion(disp, pict, 0, 0, rgn1);
    COLOR32_TO_ARGB16(bg, c.alpha, c.red, c.green, c.blue);
    XRenderFillRectangle(disp, PictOpSrc, pict, &c, 0, 0, w, h);
 
    /* Set fg color */
-   pa.clip_mask = cpmap;
-   XRenderChangePicture(disp, pict, CPClipMask, &pa);
+   rgn2 = XFixesCreateRegionFromBitmap(disp, cpmap);
+   XFixesIntersectRegion(disp, rgn1, rgn1, rgn2);
+   XFixesSetPictureClipRegion(disp, pict, 0, 0, rgn1);
    COLOR32_TO_ARGB16(fg, c.alpha, c.red, c.green, c.blue);
    XRenderFillRectangle(disp, PictOpSrc, pict, &c, 0, 0, w, h);
 
    curs = XRenderCreateCursor(disp, pict, xh, yh);
 
+   XFixesDestroyRegion(disp, rgn1);
+   XFixesDestroyRegion(disp, rgn2);
    XRenderFreePicture(disp, pict);
 
    return curs;
