@@ -2124,6 +2124,16 @@ EPictureDestroy(EX_Picture pict)
    XRenderFreePicture(disp, pict);
 }
 
+void
+EPictureFillRect(EX_Picture pict, int x, int y, int w, int h,
+		 unsigned int color)
+{
+   XRenderColor        c;
+
+   COLOR32_TO_ARGB16(color, c.alpha, c.red, c.green, c.blue);
+   XRenderFillRectangle(disp, PictOpSrc, pict, &c, x, y, w, h);
+}
+
 #endif /* USE_XRENDER */
 
 #if USE_COMPOSITE
@@ -2210,6 +2220,12 @@ ERegionCreateFromWindow(Win win)
 	   n_rgn_c - n_rgn_d, n_rgn_c, n_rgn_d);
 #endif
    return rgn;
+}
+
+EX_SrvRegion
+ERegionCreateFromBitmap(EX_Pixmap mask)
+{
+   return XFixesCreateRegionFromBitmap(disp, mask);
 }
 
 EX_SrvRegion

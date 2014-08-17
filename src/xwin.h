@@ -312,6 +312,8 @@ EX_Picture          EPictureCreateSolid(EX_Window xwin, int argb,
 EX_Picture          EPictureCreateBuffer(Win win, int w, int h, int argb,
 					 EX_Pixmap * ppmap);
 void                EPictureDestroy(EX_Picture pict);
+void                EPictureFillRect(EX_Picture pict, int x, int y,
+				     int w, int h, unsigned int color);
 
 #endif /* USE_XRENDER */
 
@@ -325,6 +327,7 @@ EX_SrvRegion        ERegionCreateFromRects(XRectangle * rectangles,
 					   int nrectangles);
 #endif
 EX_SrvRegion        ERegionCreateFromWindow(Win win);
+EX_SrvRegion        ERegionCreateFromBitmap(EX_Pixmap mask);
 EX_SrvRegion        ERegionCopy(EX_SrvRegion rgn, EX_SrvRegion src);
 EX_SrvRegion        ERegionClone(EX_SrvRegion src);
 void                ERegionDestroy(EX_SrvRegion rgn);
