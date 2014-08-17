@@ -54,40 +54,30 @@ ECreatePixmapCursor(EX_Pixmap cpmap, EX_Pixmap cmask, unsigned int w,
 		    unsigned int bg)
 {
    EX_Cursor           curs;
-   EX_Pixmap           pmap;
    EX_Picture          pict;
    EX_SrvRegion        rgn1, rgn2;
-   XRenderPictFormat  *pictfmt;
-   XRenderColor        c;
 
-   pictfmt = XRenderFindStandardFormat(disp, PictStandardARGB32);
-
-   pmap = XCreatePixmap(disp, WinGetXwin(VROOT), w, h, 32);
-   pict = XRenderCreatePicture(disp, pmap, pictfmt, 0, NULL);
-   XFreePixmap(disp, pmap);
+   pict = EPictureCreateBuffer(VROOT, w, h, 1, NULL);
 
    /* Clear entirely (alpha = 0) */
-   COLOR32_TO_ARGB16(0, c.alpha, c.red, c.green, c.blue);
-   XRenderFillRectangle(disp, PictOpSrc, pict, &c, 0, 0, w, h);
+   EPictureFillRect(pict, 0, 0, w, h, 0);
 
    /* Set bg color (cursor shape) */
-   rgn1 = XFixesCreateRegionFromBitmap(disp, cmask);
-   XFixesSetPictureClipRegion(disp, pict, 0, 0, rgn1);
-   COLOR32_TO_ARGB16(bg, c.alpha, c.red, c.green, c.blue);
-   XRenderFillRectangle(disp, PictOpSrc, pict, &c, 0, 0, w, h);
+   rgn1 = ERegionCreateFromBitmap(cmask);
+   EPictureSetClip(pict, rgn1);
+   EPictureFillRect(pict, 0, 0, w, h, bg);
 
    /* Set fg color */
-   rgn2 = XFixesCreateRegionFromBitmap(disp, cpmap);
-   XFixesIntersectRegion(disp, rgn1, rgn1, rgn2);
-   XFixesSetPictureClipRegion(disp, pict, 0, 0, rgn1);
-   COLOR32_TO_ARGB16(fg, c.alpha, c.red, c.green, c.blue);
-   XRenderFillRectangle(disp, PictOpSrc, pict, &c, 0, 0, w, h);
+   rgn2 = ERegionCreateFromBitmap(cpmap);
+   ERegionIntersect(rgn1, rgn2);
+   EPictureSetClip(pict, rgn1);
+   EPictureFillRect(pict, 0, 0, w, h, fg);
 
    curs = XRenderCreateCursor(disp, pict, xh, yh);
 
-   XFixesDestroyRegion(disp, rgn1);
-   XFixesDestroyRegion(disp, rgn2);
-   XRenderFreePicture(disp, pict);
+   ERegionDestroy(rgn1);
+   ERegionDestroy(rgn2);
+   EPictureDestroy(pict);
 
    return curs;
 }
