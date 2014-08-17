@@ -1990,7 +1990,7 @@ static void
 ECompMgrRootBufferCreate(unsigned int w, unsigned int h)
 {
    /* Root buffer picture and pixmap */
-   rootBuffer = EPictureCreateBuffer(VROOT, w, h, &Mode_compmgr.pmap);
+   rootBuffer = EPictureCreateBuffer(VROOT, w, h, 0, &Mode_compmgr.pmap);
 
    /* Screen region */
    Mode_compmgr.rgn_screen = ERegionCreateRect(0, 0, w, h);

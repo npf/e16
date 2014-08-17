@@ -309,7 +309,7 @@ void                PmapMaskFree(PmapMask * pmm);
 EX_Picture          EPictureCreate(Win win, EX_Drawable draw);
 EX_Picture          EPictureCreateSolid(EX_Window xwin, int argb,
 					unsigned int a, unsigned int rgb);
-EX_Picture          EPictureCreateBuffer(Win win, int w, int h,
+EX_Picture          EPictureCreateBuffer(Win win, int w, int h, int argb,
 					 EX_Pixmap * ppmap);
 void                EPictureDestroy(EX_Picture pict);
 

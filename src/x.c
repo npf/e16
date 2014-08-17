@@ -2063,7 +2063,7 @@ EPictureCreate(Win win, EX_Drawable draw)
    if (!win)
       win = VROOT;
    pictfmt = XRenderFindVisualFormat(disp, WinGetVisual(win));
-   pict = XRenderCreatePicture(disp, draw, pictfmt, 0, 0);
+   pict = XRenderCreatePicture(disp, draw, pictfmt, 0, NULL);
 
    return pict;
 }
@@ -2097,15 +2097,19 @@ EPictureCreateSolid(EX_Window xwin, int argb, unsigned int a, unsigned int rgb)
 }
 
 EX_Picture
-EPictureCreateBuffer(Win win, int w, int h, EX_Pixmap * ppmap)
+EPictureCreateBuffer(Win win, int w, int h, int argb, EX_Pixmap * ppmap)
 {
    EX_Picture          pict;
    EX_Pixmap           pmap;
    XRenderPictFormat  *pictfmt;
+   int                 depth;
 
-   pmap = XCreatePixmap(disp, WinGetXwin(win), w, h, WinGetDepth(win));
-   pictfmt = XRenderFindVisualFormat(disp, WinGetVisual(win));
-   pict = XRenderCreatePicture(disp, pmap, pictfmt, 0, 0);
+   depth = argb ? 32 : WinGetDepth(win);
+   pictfmt = argb ?
+      XRenderFindStandardFormat(disp, PictStandardARGB32) :
+      XRenderFindVisualFormat(disp, WinGetVisual(win));
+   pmap = XCreatePixmap(disp, WinGetXwin(win), w, h, depth);
+   pict = XRenderCreatePicture(disp, pmap, pictfmt, 0, NULL);
    if (ppmap)
       *ppmap = pmap;
    else
