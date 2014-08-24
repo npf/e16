@@ -28,7 +28,7 @@
 #include "list.h"
 #include "xwin.h"
 #include <X11/cursorfont.h>
-#if USE_XRENDER
+#if USE_COMPOSITE
 #include <X11/extensions/Xfixes.h>
 #include <X11/extensions/Xrender.h>
 #endif
@@ -46,7 +46,7 @@ struct _ecursor {
 
 static              LIST_HEAD(cursor_list);
 
-#if USE_XRENDER
+#if USE_COMPOSITE
 /* Assuming we have XRenderCreateCursor (render >= 0.5) */
 static              EX_Cursor
 ECreatePixmapCursor(EX_Pixmap cpmap, EX_Pixmap cmask, unsigned int w,
