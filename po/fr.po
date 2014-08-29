@@ -6,17 +6,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: e16 svn-rev69488\n"
-"Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2014-04-27 20:54+0200\n"
+"Report-Msgid-Bugs-To: $MSGID_BUGS_ADDRESS\n"
+"POT-Creation-Date: 2014-05-24 09:16+0200\n"
 "PO-Revision-Date: 2013-04-25 05:08+0000\n"
 "Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: French\n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2013-04-26 05:40+0000\n"
-"X-Generator: Launchpad (build 16580)\n"
+"X-Launchpad-Export-Date: 2014-05-25 05:43+0000\n"
+"X-Generator: Launchpad (build 17017)\n"
+"Language: fr\n"
 
 #: src/about.c:35
 #, c-format
@@ -817,7 +817,8 @@ msgstr "Inclure les fenêtres des autres bureaux dans la liste de fenêtres"
 
 #: src/focus.c:941
 msgid "Focus windows while switching"
-msgstr "Mettre le focus sur la fenêtre sélectionnée dans la liste de fenêtres"
+msgstr ""
+"Mettre le focus sur la fenêtre sélectionnée dans la liste de fenêtres"
 
 #: src/focus.c:946
 msgid "Outline windows while switching"
@@ -833,7 +834,8 @@ msgid "Send mouse pointer to window after focus switch"
 msgstr "Placer le pointeur de souris sur la fenêtre après obtention du focus"
 
 #: src/focus.c:966
-msgid "Focuslist image display policy (if one operation fails, try the next):"
+msgid ""
+"Focuslist image display policy (if one operation fails, try the next):"
 msgstr "Afficher les icônes dans la liste de fenêtres dans l'ordre suivant:"
 
 #: src/focus.c:970
@@ -1578,7 +1580,8 @@ msgstr "Opaque+Tech."
 
 #: src/settings.c:138
 msgid "Avoid server grab"
-msgstr "Éviter de figer l'affichage pendant les changements de taille/position"
+msgstr ""
+"Éviter de figer l'affichage pendant les changements de taille/position"
 
 #: src/settings.c:148
 msgid "Move/Resize Geometry Info Postion:"
@@ -2354,7 +2357,8 @@ msgid "Stick/Unstick"
 msgstr "Coller/Décoller"
 
 #: config/strings.c:61
-msgid "Toggle the Omnipresent (visible on all Desktops) state of this window."
+msgid ""
+"Toggle the Omnipresent (visible on all Desktops) state of this window."
 msgstr ""
 "Basculer l'état d'omniprésence (visibilité sur tous les bureaux) de cette "
 "fenêtre."
