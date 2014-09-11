@@ -2,6 +2,19 @@
 Encoding=UTF-8
 Type=XSession
 Name=E16 GNOME3
+Name[ca]=E16 GNOME3
+Name[de]=E16-GNOME3
+Name[el]=E16 GNOME3
+Name[eo]=E16 GNOME3
+Name[fi]=E16 GNOME3
+Name[fr]=E16 GNOME3
+Name[gl]=E16 GNOME3
+Name[ja]=E16 GNOME3
+Name[ko]=E16 GNOME3
+Name[ms]=E16 GNOME3
+Name[pl]=E16 GNOME3
 Name[sr]=Е16 Гном3
+Name[tr]=E16 GNOME3
+Comment[it]=Questo avvia GNOME 3 usando Enlightenment (e16) come window manager
 TryExec=/usr/bin/gnome-session
 Exec=gnome-session --session=e16-gnome
