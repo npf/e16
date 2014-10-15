@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2014-04-27 20:54+0200\n"
+"POT-Creation-Date: 2014-09-19 21:04+0200\n"
 "PO-Revision-Date: 2010-02-14 04:53+0000\n"
 "Last-Translator: Teylo Laundos Aguiar <teylo.aguiar@gmail.com>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
-"Language: pt\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -37,7 +37,7 @@ msgid ""
 msgstr ""
 
 #: src/aclass.c:218 src/backgrounds.c:256 src/borders.c:695 src/buttons.c:186
-#: src/cursors.c:141 src/iclass.c:356 src/tclass.c:119 src/tooltips.c:132
+#: src/cursors.c:135 src/iclass.c:356 src/tclass.c:119 src/tooltips.c:132
 #, c-format
 msgid "%u references remain"
 msgstr "%u referências remanescentes"

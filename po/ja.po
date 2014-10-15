@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2014-04-27 20:54+0200\n"
+"POT-Creation-Date: 2014-09-19 21:04+0200\n"
 "PO-Revision-Date: 2011-10-11 18:12+0900\n"
 "Last-Translator: Yasufumi Haga <yasufumi.haga@nifty.com>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -49,7 +49,7 @@ msgstr ""
 "Kim Woelders - kim@woelders.dk\n"
 
 #: src/aclass.c:218 src/backgrounds.c:256 src/borders.c:695 src/buttons.c:186
-#: src/cursors.c:141 src/iclass.c:356 src/tclass.c:119 src/tooltips.c:132
+#: src/cursors.c:135 src/iclass.c:356 src/tclass.c:119 src/tooltips.c:132
 #, c-format
 msgid "%u references remain"
 msgstr "%u 参照残っています。"

@@ -6,11 +6,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: enlightenment\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-05-24 09:16+0200\n"
+"Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
+"POT-Creation-Date: 2014-09-19 21:04+0200\n"
 "PO-Revision-Date: 2014-06-03 09:11+0000\n"
 "Last-Translator: joancoll <Unknown>\n"
 "Language-Team: Catalan <ca@li.org>\n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -46,7 +47,7 @@ msgstr ""
 "Kim Woelders - kim@woelders.dk\n"
 
 #: src/aclass.c:218 src/backgrounds.c:256 src/borders.c:695 src/buttons.c:186
-#: src/cursors.c:141 src/iclass.c:356 src/tclass.c:119 src/tooltips.c:132
+#: src/cursors.c:135 src/iclass.c:356 src/tclass.c:119 src/tooltips.c:132
 #, c-format
 msgid "%u references remain"
 msgstr "Resten %u referències"
@@ -785,8 +786,7 @@ msgstr "Enviar punter del ratolí a la finestra mentre es canvia el focus"
 
 #: src/focus.c:889
 msgid "Always send mouse pointer to window on focus switch"
-msgstr ""
-"Envia sempre el punter de ratolí a la finestra quan en canvia el focus"
+msgstr "Envia sempre el punter de ratolí a la finestra quan en canvia el focus"
 
 #: src/focus.c:897
 msgid "Raise windows automatically"
@@ -833,8 +833,7 @@ msgid "Send mouse pointer to window after focus switch"
 msgstr "Envia punter de ratolí a la finestra després de canviar el focus"
 
 #: src/focus.c:966
-msgid ""
-"Focuslist image display policy (if one operation fails, try the next):"
+msgid "Focuslist image display policy (if one operation fails, try the next):"
 msgstr ""
 "Política al mostrar imatges Focuslist (si una operació falla, prova això):"
 
@@ -2248,8 +2247,7 @@ msgid "Stick/Unstick"
 msgstr ""
 
 #: config/strings.c:61
-msgid ""
-"Toggle the Omnipresent (visible on all Desktops) state of this window."
+msgid "Toggle the Omnipresent (visible on all Desktops) state of this window."
 msgstr ""
 
 #: config/strings.c:63
