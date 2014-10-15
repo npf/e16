@@ -81,7 +81,7 @@ static void
 _EXidDestroy(Win win)
 {
 #if DEBUG_XWIN
-   Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
+   Eprintf("%s: %p %#x\n", __func__, win, win->xwin);
 #endif
    if (win->rects)
       XFree(win->rects);
@@ -93,7 +93,7 @@ static void
 _EXidAdd(Win win)
 {
 #if DEBUG_XWIN
-   Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
+   Eprintf("%s: %p %#x\n", __func__, win, win->xwin);
 #endif
    if (!xid_context)
       xid_context = XUniqueContext();
@@ -116,7 +116,7 @@ static void
 _EXidDel(Win win)
 {
 #if DEBUG_XWIN
-   Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
+   Eprintf("%s: %p %#x\n", __func__, win, win->xwin);
 #endif
    if (win == win_first)
      {
@@ -185,7 +185,7 @@ _EXidSet(EX_Window xwin, Win parent, int x, int y, int w, int h, int depth,
    win->cmap = cmap;
    win->argb = depth == 32;
 #if DEBUG_XWIN
-   Eprintf("%s: %#lx\n", __func__, win->xwin);
+   Eprintf("%s: %#x\n", __func__, win->xwin);
 #endif
    _EXidAdd(win);
 
@@ -200,8 +200,7 @@ EventCallbackRegister(Win win, EventCallbackFunc * func, void *prm)
    if (!win)
       return;
 #if 0
-   Eprintf("%s: %p %#lx: func=%p prm=%p\n", __func__, win, win->xwin,
-	   func, prm);
+   Eprintf("%s: %p %#x: func=%p prm=%p\n", __func__, win, win->xwin, func, prm);
 #endif
 
    win->cbl.num++;
@@ -221,8 +220,7 @@ EventCallbackUnregister(Win win, EventCallbackFunc * func, void *prm)
    if (!win)
       return;
 #if 0
-   Eprintf("%s: %p %#lx: func=%p prm=%p\n", __func__, win, win->xwin,
-	   func, prm);
+   Eprintf("%s: %p %#x: func=%p prm=%p\n", __func__, win, win->xwin, func, prm);
 #endif
 
    ecl = &win->cbl;
@@ -492,7 +490,7 @@ EMoveWindow(Win win, int x, int y)
       return;
 
 #if 0
-   Eprintf("%s: %p %#lx: %d,%d %dx%d -> %d,%d\n", __func__,
+   Eprintf("%s: %p %#x: %d,%d %dx%d -> %d,%d\n", __func__,
 	   win, win->xwin, win->x, win->y, win->w, win->h, x, y);
 #endif
    if ((x == win->x) && (y == win->y))
@@ -527,7 +525,7 @@ EMoveResizeWindow(Win win, int x, int y, int w, int h)
       return;
 
 #if 0
-   Eprintf("%s: %p %#lx: %d,%d %dx%d -> %d,%d %dx%d\n", __func__,
+   Eprintf("%s: %p %#x: %d,%d %dx%d -> %d,%d %dx%d\n", __func__,
 	   win, win->xwin, win->x, win->y, win->w, win->h, x, y, w, h);
 #endif
    if ((w == win->w) && (h == win->h) && (x == win->x) && (y == win->y))
@@ -574,7 +572,7 @@ EDestroyWindow(Win win)
       return;
 
 #if DEBUG_XWIN
-   Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
+   Eprintf("%s: %p %#x\n", __func__, win, win->xwin);
 #endif
    if (win->parent != NoXID)
      {
@@ -612,7 +610,7 @@ EWindowSync(Win win)
 
    XGetGeometry(disp, win->xwin, &rr, &x, &y, &w, &h, &bw, &depth);
 #if 0
-   Eprintf("%s: %p %#lx: %d,%d %dx%d -> %d,%d %dx%d\n", __func__,
+   Eprintf("%s: %p %#x: %d,%d %dx%d -> %d,%d %dx%d\n", __func__,
 	   win, win->xwin, win->x, win->y, win->w, win->h, x, y, w, h);
 #endif
    win->x = x;
@@ -684,7 +682,7 @@ ECreateWinFromXwin(EX_Window xwin)
    win->visual = WinGetVisual(VROOT);
    win->cmap = WinGetCmap(VROOT);
 #if DEBUG_XWIN
-   Eprintf("%s: %p %#lx\n", __func__, win, win->xwin);
+   Eprintf("%s: %p %#x\n", __func__, win, win->xwin);
 #endif
 
    return win;
@@ -714,7 +712,8 @@ ERegisterWindow(EX_Window xwin, XWindowAttributes * pxwa)
      }
 
 #if 0
-   Eprintf("%s %#lx %d+%d %dx%d\n", __func__, win, x, y, w, h);
+   Eprintf("%s: %p #%x %d+%d %dx%d\n", __func__, win, xwin,
+	   pxwa->x, pxwa->y, pxwa->width, pxwa->height);
 #endif
    win = _EXidSet(xwin, NoXID, pxwa->x, pxwa->y, pxwa->width, pxwa->height,
 		  pxwa->depth, pxwa->visual, pxwa->colormap);
@@ -1273,7 +1272,7 @@ EKeynameToKeycode(const char *name)
    return XKeysymToKeycode(disp, XStringToKeysym(name));
 }
 
-#define DEBUG_SHAPE_OPS 0
+#define DEBUG_SHAPE_OPS       0
 #define DEBUG_SHAPE_PROPAGATE 0
 
 #if DEBUG_SHAPE_OPS || DEBUG_SHAPE_PROPAGATE
@@ -1282,7 +1281,7 @@ _EShapeShow(const char *txt, EX_Window xwin, XRectangle * pr, int nr)
 {
    int                 i;
 
-   Eprintf("%s %#lx nr=%d\n", txt, xwin, nr);
+   Eprintf("%s %#x nr=%d\n", txt, xwin, nr);
    for (i = 0; i < nr; i++)
       Eprintf(" %d - %4d,%4d %4dx%4d\n", i,
 	      pr[i].x, pr[i].y, pr[i].width, pr[i].height);
@@ -1354,7 +1353,7 @@ _EShapeCombineMask(Win win, int dest, int x, int y, EX_Pixmap pmap, int op)
 	wasshaped = 1;
      }
 #if DEBUG_SHAPE_OPS
-   Eprintf("%s %#lx %d,%d %dx%d mask=%#lx wassh=%d\n", __func__,
+   Eprintf("%s %#x %d,%d %dx%d mask=%#x wassh=%d\n", __func__,
 	   win->xwin, win->x, win->y, win->w, win->h, pmap, wasshaped);
 #endif
    if (pmap)
@@ -1394,7 +1393,7 @@ _EShapeCombineRectangles(Win win, int dest, int x, int y,
    if (!win)
       return;
 #if DEBUG_SHAPE_OPS
-   Eprintf("%s %#lx %d\n", __func__, win->xwin, n_rects);
+   Eprintf("%s %#x %d\n", __func__, win->xwin, n_rects);
 #endif
 
    if (n_rects == 1 && op == ShapeSet)
@@ -1446,7 +1445,7 @@ EShapePropagate(Win win)
       return 0;
 
 #if DEBUG_SHAPE_PROPAGATE
-   Eprintf("%s %#lx %d,%d %dx%d\n", __func__, win->xwin,
+   Eprintf("%s %#x %d,%d %dx%d\n", __func__, win->xwin,
 	   win->x, win->y, win->w, win->h);
 #endif
 
@@ -1460,7 +1459,7 @@ EShapePropagate(Win win)
 	   continue;
 
 #if DEBUG_SHAPE_PROPAGATE > 1
-	Eprintf("%#lx(%d): %4d,%4d %4dx%4d\n", xch->xwin, xch->mapped,
+	Eprintf("%#x(%d): %4d,%4d %4dx%4d\n", xch->xwin, xch->mapped,
 		xch->x, xch->y, xch->w, xch->h);
 #endif
 	if (!xch->mapped)
@@ -1644,7 +1643,7 @@ ECreatePixmap(Win win, unsigned int width, unsigned int height,
 
    pmap = XCreatePixmap(disp, win->xwin, width, height, depth);
 #if DEBUG_PIXMAP
-   Eprintf("%s: %#lx\n", __func__, pmap);
+   Eprintf("%s: %#x\n", __func__, pmap);
 #endif
    return pmap;
 }
@@ -1653,7 +1652,7 @@ void
 EFreePixmap(EX_Pixmap pmap)
 {
 #if DEBUG_PIXMAP
-   Eprintf("%s: %#lx\n", __func__, pmap);
+   Eprintf("%s: %#x\n", __func__, pmap);
 #endif
    XFreePixmap(disp, pmap);
 }
@@ -1670,7 +1669,7 @@ EXCreatePixmapCopy(EX_Pixmap src, unsigned int w, unsigned int h,
    XCopyArea(disp, src, pmap, gc, 0, 0, w, h, 0, 0);
    EXFreeGC(gc);
 #if DEBUG_PIXMAP
-   Eprintf("%s: %#lx\n", __func__, pmap);
+   Eprintf("%s: %#x\n", __func__, pmap);
 #endif
    return pmap;
 }
@@ -2163,7 +2162,7 @@ ERegionCreate(void)
 
 #if DEBUG_REGIONS
    n_rgn_c++;
-   Eprintf("%s: %#lx %d %d %d\n", __func__, rgn,
+   Eprintf("%s: %#x %d %d %d\n", __func__, rgn,
 	   n_rgn_c - n_rgn_d, n_rgn_c, n_rgn_d);
 #endif
    return rgn;
@@ -2183,7 +2182,7 @@ ERegionCreateRect(int x, int y, int w, int h)
 
 #if DEBUG_REGIONS
    n_rgn_c++;
-   Eprintf("%s: %#lx %d %d %d\n", __func__, rgn,
+   Eprintf("%s: %#x %d %d %d\n", __func__, rgn,
 	   n_rgn_c - n_rgn_d, n_rgn_c, n_rgn_d);
 #endif
    return rgn;
@@ -2199,7 +2198,7 @@ ERegionCreateFromRects(XRectangle * rectangles, int nrectangles)
 
 #if DEBUG_REGIONS
    n_rgn_c++;
-   Eprintf("%s: %#lx %d %d %d\n", __func__, rgn,
+   Eprintf("%s: %#x %d %d %d\n", __func__, rgn,
 	   n_rgn_c - n_rgn_d, n_rgn_c, n_rgn_d);
 #endif
    return rgn;
@@ -2216,7 +2215,7 @@ ERegionCreateFromWindow(Win win)
 
 #if DEBUG_REGIONS
    n_rgn_c++;
-   Eprintf("%s: %#lx %d %d %d\n", __func__, rgn,
+   Eprintf("%s: %#x %d %d %d\n", __func__, rgn,
 	   n_rgn_c - n_rgn_d, n_rgn_c, n_rgn_d);
 #endif
    return rgn;
@@ -2251,7 +2250,7 @@ ERegionDestroy(EX_SrvRegion rgn)
 {
 #if DEBUG_REGIONS
    n_rgn_d++;
-   Eprintf("%s: %#lx %d %d %d\n", __func__, rgn,
+   Eprintf("%s: %#x %d %d %d\n", __func__, rgn,
 	   n_rgn_c - n_rgn_d, n_rgn_c, n_rgn_d);
 #endif
    XFixesDestroyRegion(disp, rgn);
@@ -2376,18 +2375,18 @@ ERegionShow(const char *txt, EX_SrvRegion rgn,
 
    if (rgn == NoXID)
      {
-	prf(" - region: %s %#lx is None\n", txt, rgn);
+	prf(" - region: %s %#x is None\n", txt, rgn);
 	return;
      }
 
    pr = XFixesFetchRegion(disp, rgn, &nr);
    if (!pr || nr <= 0)
      {
-	prf(" - region: %s %#lx is empty\n", txt, rgn);
+	prf(" - region: %s %#x is empty\n", txt, rgn);
 	goto done;
      }
 
-   prf(" - region: %s %#lx:\n", txt, rgn);
+   prf(" - region: %s %#x:\n", txt, rgn);
    for (i = 0; i < nr; i++)
       prf("%4d: %4d+%4d %4dx%4d\n", i, pr[i].x, pr[i].y, pr[i].width,
 	  pr[i].height);
