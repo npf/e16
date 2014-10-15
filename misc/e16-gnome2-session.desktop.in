@@ -1,20 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Type=XSession
-Name=E16 GNOME2
-Name[ca]=E16 GNOME2
-Name[de]=E16-GNOME2
-Name[el]=E16 GNOME2
-Name[eo]=E16 GNOME2
-Name[fi]=E16 GNOME2
-Name[fr]=E16 GNOME2
-Name[gl]=E16 GNOME2
-Name[ja]=E16 GNOME2
-Name[ko]=E16 GNOME2
-Name[ms]=E16 GNOME2
-Name[pl]=E16 GNOME2
-Name[sr]=Е16 Гном 2
-Name[tr]=E16 GNOME2
+Name=E16-GNOME2
 Comment=This session starts GNOME using enlightenment (e16) as window manager
 Comment[ca]=Aquesta sessió inicia GNOME utilitzant enlightenment (e16) coma gestor de finestres
 Comment[eo]=Tiu sesio lanĉas GNOME uzante Enlightenment (e16) kiel fenestro-administrilon
