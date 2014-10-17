@@ -87,58 +87,52 @@ AM_CONDITIONAL(ENABLE_GNOME, test "x$enable_hints_gnome" = "xyes")
 
 AC_ARG_ENABLE(sound,
   AC_HELP_STRING([--enable-sound],
-                 [compile with sound support @<:@default=yes@:>@]),,
-  enable_sound=yes)
-if test "x$enable_sound" = "xyes"; then
-  AC_ARG_ENABLE(sound_pulse,
-    AC_HELP_STRING([--enable-sound-pulse],
-                   [compile with PulseAudio sound support @<:@default=yes@:>@]),,
-    enable_sound_pulse=yes)
-  AC_ARG_ENABLE(sound_esound,
-    AC_HELP_STRING([--enable-sound-esound],
-                   [compile with EsounD sound support @<:@default=no@:>@]),,
-    enable_sound_esound=no)
-  AC_ARG_WITH(sndldr,
-    AC_HELP_STRING([--with-sndldr],
-                   [select sound loader (audiofile/sndfile/none) @<:@default=sndfile@:>@]),,
-    with_sndldr=sndfile)
-fi
-enable_sound=no
+                 [compile with sound support (pulseaudio/esound/no)@<:@default=pulseaudio@:>@]),,
+  enable_sound=pulseaudio)
+case x$enable_sound in
+xyes)
+  enable_sound=pulseaudio;;
+xpulseaudio|xesound)
+  ;;
+*)
+  enable_sound=no;;
+esac
+
+AC_ARG_WITH(sndldr,
+  AC_HELP_STRING([--with-sndldr],
+                 [select sound loader (audiofile/sndfile/none) @<:@default=sndfile@:>@]),,
+  with_sndldr=sndfile)
 
 if test "x$with_sndldr" = "xsndfile"; then
   PKG_CHECK_MODULES(SNDFILE, sndfile,
     AC_DEFINE(USE_SOUND_LOADER_SNDFILE, 1, [Use sndfile sound loader]),
     with_sndldr=none)
 fi
-
 if test "x$with_sndldr" = "xaudiofile"; then
   PKG_CHECK_MODULES(AUDIOFILE, audiofile,
     AC_DEFINE(USE_SOUND_LOADER_AUDIOFILE, 1, [Use audiofile sound loader]),
     with_sndldr=none)
 fi
 
-if test "x$enable_sound_pulse" = "xyes"; then
+if test "x$enable_sound" = "xpulseaudio"; then
   PKG_CHECK_MODULES(PA, libpulse,
     AC_DEFINE(HAVE_SOUND, 1, [Sound support])
-    AC_DEFINE(HAVE_SOUND_PA, 1, [PulseAudio sound support])
-    enable_sound=pulseaudio
-    enable_sound_esound=no,
-    enable_sound_pulse=no)
+    AC_DEFINE(HAVE_SOUND_PA, 1, [PulseAudio sound support]),
+    enable_sound=no)
 fi
-AM_CONDITIONAL(USE_LIBPA, test "x$enable_sound_pulse" = "xyes")
+AM_CONDITIONAL(USE_LIBPA, test "x$enable_sound" = "xpulseaudio")
 
-if test "x$enable_sound_esound" = "xyes"; then
+if test "x$enable_sound" = "xesound"; then
   AM_PATH_ESD(0.2.17,,[
-    enable_sound_esound=no
+    enable_sound=no
     AC_MSG_WARN([EsounD sound support was requested but not found.])
   ])
-  if test "x$enable_sound_esound" = "xyes"; then
+  if test "x$enable_sound" = "xesound"; then
     AC_DEFINE(HAVE_SOUND, 1, [Sound support])
     AC_DEFINE(HAVE_SOUND_ESD, 1, [EsounD sound support])
-    enable_sound=esound
   fi
 fi
-AM_CONDITIONAL(USE_LIBESD, test "x$enable_sound_esound" = "xyes")
+AM_CONDITIONAL(USE_LIBESD, test "x$enable_sound" = "xesound")
 
 # Save CPPFLAGS/LDFLAGS and add X_... to each
 SAVE_CPPFLAGS="$CPPFLAGS"
