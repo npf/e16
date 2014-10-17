@@ -5808,3 +5808,49 @@ Sat Mar 29 12:19:32 CET 2014
 --- 1.0.14 ---
 Fix placement of transient dialogs.
 Autofoo update (AC_PROG_LIBTOOL -> LT_INIT).
+
+-------------------------------------------------------------------------------
+
+Fri Oct 17 07:16:06 CEST 2014
+
+--- 1.0.14.001 ---
+Fix warnings with gcc 4.9.x.
+Minor simplifications in ImagestateDraw...() functions.
+Minor tweak in EXFillAreaSolid().
+Fix potential use of freed pixmap.
+Move shape window stuff to separate header file.
+Simplify pager background update.
+Change some operations to render ones.
+Wrap XDraw/FillRectangle.
+Debug tweaks (pager).
+Remove ancient unused code.
+Cosmetics (key->keycode).
+Cosmetics (key->keysym).
+Avoid unnecessary FP calculation.
+Avoid divide by 0 crash (Randr may report FPS = 0).
+Move EDBUG_TYPE_ANIM to where it belongs.
+Tweak screen info printout.
+Wrap XID and some other X types.
+Use initially created GC for various operations.
+Refactor background dialog data handling.
+Refactor group dialog data handling.
+Exec/spawn function tweaks.
+Eliminate some use of EspawnApplication().
+Refactor dialog apply/exit handling.
+Simplify dialog data handling.
+Avoid some potential X-calls/errors when client is destroyed.
+Updating translations (eo)
+Updating turkish and adding lithuanian and galician translations
+Adding catalan traslation
+Remove bogus lithuanian translation (0 translated messages).
+Remove useless Name[] entries from .desktop files (again).
+Updating catalan translation
+Autofoo cosmetics (use AC_HELP_STRING).
+Fix creating bitmap cursor.
+Add argb option to EPictureCreateBuffer().
+Add ERegionCreateFromBitmap() and EPictureFillRect().
+Use wrapper functions in ECreatePixmapCursor().
+Updating esperanto and french translations
+Updating desktop files
+Remove useless Name[] entries from .desktop files (again).
+Fix some normally disabled debug format strings.
