@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Kim Woelders
+ * Copyright (C) 2013-2014 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -68,8 +68,8 @@ EobjSlideSizeTo(EObj * eo, int fx, int fy, int tx, int ty, int fw, int fh,
    p.tw = tw;
    p.th = th;
 
-   if (speed <= 10)
-      speed = 10;
+   if (speed < SPEED_MIN)
+      speed = SPEED_MIN;
    duration = 1000000 / speed;
 
    AnimatorAdd(eo, ANIM_SLIDE, _EobjSlideSizeTo, duration, 1, sizeof(p), &p);
@@ -166,8 +166,8 @@ EwinSlideSizeTo(EWin * ewin, int tx, int ty, int tw, int th,
    p.firstlast = 0;
    p.warp = warp;
 
-   if (speed <= 10)
-      speed = 10;
+   if (speed < SPEED_MIN)
+      speed = SPEED_MIN;
    duration = 1000000 / speed;
 
    an = AnimatorAdd((EObj *) ewin, ANIM_SLIDE, _EwinSlideSizeTo, duration, 0,

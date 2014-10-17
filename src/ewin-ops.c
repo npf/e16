@@ -1049,6 +1049,8 @@ EwinShade(EWin * ewin)
    _EwinShadeStart(&esd);
    if ((Conf.shading.animate) || (ewin->type == EWIN_TYPE_MENU))
      {
+	if (Conf.shading.speed < SPEED_MIN)
+	   Conf.shading.speed = SPEED_MIN;
 	duration = 1000000 / Conf.shading.speed;
 	an = AnimatorAdd(&ewin->o, ANIM_SHADE, _EwinShadeRun, duration, 0,
 			 sizeof(esd), &esd);
@@ -1266,6 +1268,8 @@ EwinUnShade(EWin * ewin)
    _EwinUnshadeStart(&esd);
    if ((Conf.shading.animate) || (ewin->type == EWIN_TYPE_MENU))
      {
+	if (Conf.shading.speed < SPEED_MIN)
+	   Conf.shading.speed = SPEED_MIN;
 	duration = 1000000 / Conf.shading.speed;
 	an = AnimatorAdd(&ewin->o, ANIM_SHADE, _EwinUnshadeRun, duration, 0,
 			 sizeof(esd), &esd);
