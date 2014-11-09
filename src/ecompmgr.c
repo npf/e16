@@ -38,6 +38,7 @@
 #include "ewins.h"		/* EwinsManage() */
 #include "hints.h"
 #include "timers.h"
+#include "util.h"
 #include "windowmatch.h"
 #include "xwin.h"
 
@@ -62,7 +63,7 @@
 #define USE_CLIP_RELATIVE_TO_DESK 1
 
 /* Composite Overlay Window (client) availability */
-#if (1000 * COMPOSITE_MAJOR + COMPOSITE_MINOR) >= 3
+#if VERS(COMPOSITE_MAJOR, COMPOSITE_MINOR) >= VERS(0, 3)
 #define USE_COMPOSITE_OVERLAY_WINDOW 1
 #else
 #define USE_COMPOSITE_OVERLAY_WINDOW 0

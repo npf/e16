@@ -39,7 +39,7 @@ static int          n_screens = 0;
 
 #if USE_XRANDR
 #include <X11/extensions/Xrandr.h>
-#define RANDR_VERSION (RANDR_MAJOR * 100 + RANDR_MINOR)
+#define RANDR_VERSION VERS(RANDR_MAJOR, RANDR_MINOR)
 
 static void
 _ScreenInitXrandr(void)
@@ -49,7 +49,7 @@ _ScreenInitXrandr(void)
 static void
 _ScreenShowInfoXrandr(void)
 {
-#if RANDR_VERSION >= 102	/* >= 1.2 */
+#if RANDR_VERSION >= VERS(1, 2)	/* >= 1.2 */
    char                buf[4096];
    XRRScreenResources *psr;
    XRRCrtcInfo        *pci;

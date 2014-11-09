@@ -131,6 +131,8 @@
 
 #define XEXT_AVAILABLE(ext)  (Mode.server.extensions & (1 << ext))
 
+int                 ExtVersion(int ext_ix);
+
 /*
  * Types
  */

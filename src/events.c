@@ -66,7 +66,7 @@ static const char  *EventName(unsigned int type);
  */
 
 typedef struct {
-   int                 major, minor;
+   int                 version;
    int                 major_op, event_base, error_base;
 } EServerExtData;
 
@@ -280,7 +280,7 @@ static const EServerExt Extensions[] = {
 static void
 ExtQuery(const EServerExt * ext)
 {
-   int                 available;
+   int                 available, major, minor;
    EServerExtData     *exd = ExtData + ext->ix;
 
    available = XQueryExtension(disp, ext->name, &(exd->major_op),
@@ -290,17 +290,26 @@ ExtQuery(const EServerExt * ext)
      {
 	Mode.server.extensions |= 1 << ext->ix;
 
-	ext->query_ver(disp, &(exd->major), &(exd->minor));
+	ext->query_ver(disp, &major, &minor);
+	exd->version = VERS(major, minor);
 
 	if (EDebug(EDBUG_TYPE_VERBOSE))
 	   Eprintf("Extension %-15s version %d.%d -"
 		   " req/evt/err base = %3d/%3d/%3d\n", ext->name,
-		   exd->major, exd->minor,
+		   major, minor,
 		   exd->major_op, exd->event_base, exd->error_base);
      }
 
    if (ext->init)
       ext->init(available);
+}
+
+int
+ExtVersion(int ext_ix)
+{
+   EServerExtData     *exd = ExtData + ext_ix;
+
+   return exd->version;
 }
 
 /*
@@ -357,8 +366,7 @@ EventsInit(void)
 #define XEXT_MASK_CM_ALL ((1 << XEXT_COMPOSITE) | (1 << XEXT_DAMAGE) | \
                           (1 << XEXT_FIXES) | (1 << XEXT_RENDER))
    if (((Mode.server.extensions & XEXT_MASK_CM_ALL) == XEXT_MASK_CM_ALL) &&
-       (ExtData[XEXT_COMPOSITE].major > 0 ||
-	ExtData[XEXT_COMPOSITE].minor >= 2))
+       (ExtData[XEXT_COMPOSITE].version >= VERS(0, 2)))
       Mode.server.extensions |= 1 << XEXT_CM_ALL;
 #endif
 
