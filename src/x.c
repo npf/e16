@@ -33,6 +33,7 @@
 #include <X11/extensions/shape.h>
 #if USE_XRENDER
 #include <X11/extensions/Xrender.h>
+#define RENDER_VERSION VERS(RENDER_MAJOR, RENDER_MINOR)
 #endif
 #if USE_GLX
 #include "eglx.h"
@@ -2071,26 +2072,35 @@ EX_Picture
 EPictureCreateSolid(EX_Window xwin, int argb, unsigned int a, unsigned int rgb)
 {
    Display            *dpy = disp;
-   EX_Pixmap           pmap;
-   EX_Picture          pict;
-   XRenderPictFormat  *pictfmt;
-   XRenderPictureAttributes pa;
    XRenderColor        c;
-
-   pmap = XCreatePixmap(dpy, xwin, 1, 1, argb ? 32 : 8);
-   pictfmt = XRenderFindStandardFormat(dpy,
-				       argb ? PictStandardARGB32 :
-				       PictStandardA8);
-   pa.repeat = True;
-   pict = XRenderCreatePicture(dpy, pmap, pictfmt, CPRepeat, &pa);
+   EX_Picture          pict;
 
    c.alpha = (unsigned short)(a * 0x101);
    c.red = (unsigned short)(_R(rgb) * 0x101);
    c.green = (unsigned short)(_G(rgb) * 0x101);
    c.blue = (unsigned short)(_B(rgb) * 0x101);
-   XRenderFillRectangle(dpy, PictOpSrc, pict, &c, 0, 0, 1, 1);
 
-   XFreePixmap(dpy, pmap);
+#if RENDER_VERSION >= VERS(0, 10)
+   if (ExtVersion(XEXT_RENDER) >= VERS(0, 10))
+     {
+	pict = XRenderCreateSolidFill(dpy, &c);
+     }
+   else
+#endif
+     {
+	EX_Pixmap           pmap;
+	XRenderPictFormat  *pictfmt;
+	XRenderPictureAttributes pa;
+
+	pmap = XCreatePixmap(dpy, xwin, 1, 1, argb ? 32 : 8);
+	pictfmt = XRenderFindStandardFormat(dpy,
+					    argb ? PictStandardARGB32 :
+					    PictStandardA8);
+	pa.repeat = True;
+	pict = XRenderCreatePicture(dpy, pmap, pictfmt, CPRepeat, &pa);
+	XRenderFillRectangle(dpy, PictOpSrc, pict, &c, 0, 0, 1, 1);
+	XFreePixmap(dpy, pmap);
+     }
 
    return pict;
 }
