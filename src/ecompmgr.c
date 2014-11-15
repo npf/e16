@@ -295,9 +295,8 @@ ECompMgrDeskConfigure(Desk * dsk)
 
    cw->picture = pict;
 
-   D1printf
-      ("ECompMgrDeskConfigure: Desk %d: using pixmap %#x picture=%#x\n",
-       dsk->num, pmap, cw->picture);
+   D1printf("%s: Desk %d: using pixmap %#x picture=%#x\n", __func__,
+	    dsk->num, pmap, cw->picture);
 
    /* New background, all must be repainted */
    ECompMgrDamageAll();
@@ -776,8 +775,8 @@ ECompMgrWinSetExtents(EObj * eo)
  done:
    cw->have_extents = 1;
 
-   D1printf("extents %#x %d %d %d %d\n", EobjGetXwin(eo), r.x, r.y, r.width,
-	    r.height);
+   D1printf("%s: %#x %d %d %d %d\n", __func__, EobjGetXwin(eo),
+	    r.x, r.y, r.width, r.height);
 
    if (EDebug(EDBUG_TYPE_COMPMGR2))
       ERegionShow("extents", cw->extents, NULL);
@@ -822,7 +821,8 @@ ECompMgrWinSetShape(EObj * eo)
    cw->shape_y = EobjGetY(eo) + EobjGetBW(eo);
    cw->have_shape = 1;
 
-   D1printf("shape %#x: %d %d\n", EobjGetXwin(eo), cw->shape_x, cw->shape_y);
+   D1printf("%s: %#x: %d %d\n", __func__, EobjGetXwin(eo),
+	    cw->shape_x, cw->shape_y);
    if (EDebug(EDBUG_TYPE_COMPMGR2))
       ERegionShow("shape", cw->shape, NULL);
 }
@@ -860,7 +860,7 @@ ECompMgrWinInvalidate(EObj * eo, int what)
    if (!cw)
       return;
 
-   D1printf("ECompMgrWinInvalidate %#x: %#x\n", EobjGetXwin(eo), what);
+   D1printf("%s: %#x: %#x\n", __func__, EobjGetXwin(eo), what);
 
    if ((what & (INV_SIZE | INV_PIXMAP)) && cw->pixmap != NoXID)
      {
@@ -909,8 +909,7 @@ ECompMgrWinSetOpacity(EObj * eo, unsigned int opacity)
 
    cw->opacity = opacity;
 
-   D1printf("ECompMgrWinSetOpacity: %#x opacity=%#x\n", EobjGetXwin(eo),
-	    cw->opacity);
+   D1printf("%s: %#x opacity=%#x\n", __func__, EobjGetXwin(eo), cw->opacity);
 
    if (eo->shown || cw->fadeout)
       ECompMgrDamageMergeObject(eo, cw->extents);
@@ -1084,7 +1083,7 @@ ECompMgrWinMap(EObj * eo)
 	   return;
      }
 
-   D1printf("ECompMgrWinMap %#x\n", EobjGetXwin(eo));
+   D1printf("%s: %#x\n", __func__, EobjGetXwin(eo));
 
    if (!cw->have_extents)
       ECompMgrWinSetExtents(eo);
@@ -1101,7 +1100,7 @@ ECompMgrWinUnmap(EObj * eo)
 {
    ECmWinInfo         *cw = eo->cmhook;
 
-   D1printf("ECompMgrWinUnmap %#x shown=%d\n", EobjGetXwin(eo), eo->shown);
+   D1printf("%s: %#x shown=%d\n", __func__, EobjGetXwin(eo), eo->shown);
    if (!eo->shown)		/* Sometimes we get a synthetic one too */
       return;
 
@@ -1125,8 +1124,7 @@ ECompMgrWinSetPicts(EObj * eo)
        (Mode_compmgr.use_pixmap || (eo->fade && Conf_compmgr.fading.enable)))
      {
 	cw->pixmap = EWindowGetPixmap(EobjGetWin(eo));
-	D1printf("ECompMgrWinSetPicts %#x: Pmap=%#x\n", EobjGetXwin(eo),
-		 cw->pixmap);
+	D1printf("%s: %#x: Pmap=%#x\n", __func__, EobjGetXwin(eo), cw->pixmap);
      }
 
    if (cw->picture == NoXID)
@@ -1144,7 +1142,7 @@ ECompMgrWinSetPicts(EObj * eo)
 	pa.subwindow_mode = IncludeInferiors;
 	cw->picture = XRenderCreatePicture(disp, draw,
 					   pictfmt, CPSubwindowMode, &pa);
-	D1printf("ECompMgrWinSetPicts %#x: Pict=%#x (drawable=%#x)\n",
+	D1printf("%s: %#x: Pict=%#x (drawable=%#x)\n", __func__,
 		 EobjGetXwin(eo), cw->picture, draw);
 
 #if 0				/* Pixmap must be clipped by window shape */
@@ -1178,7 +1176,7 @@ ECompMgrWinNew(EObj * eo)
    if (!cw)
       return;
 
-   D1printf("ECompMgrWinNew %#x\n", EobjGetXwin(eo));
+   D1printf("%s: %#x\n", __func__, EobjGetXwin(eo));
 
    eo->cmhook = cw;
 
@@ -1242,7 +1240,7 @@ ECompMgrWinMoveResize(EObj * eo, int change_xy, int change_wh, int change_bw)
    ECmWinInfo         *cw = eo->cmhook;
    int                 invalidate;
 
-   D1printf("ECompMgrWinMoveResize %#x xy=%d wh=%d bw=%d\n",
+   D1printf("%s: %#x xy=%d wh=%d bw=%d\n", __func__,
 	    EobjGetXwin(eo), change_xy, change_wh, change_bw);
 
    invalidate = 0;
@@ -1351,7 +1349,7 @@ ECompMgrWinReparent(EObj * eo, Desk * dsk, int change_xy)
 {
    ECmWinInfo         *cw = eo->cmhook;
 
-   D1printf("ECompMgrWinReparent %#x %#x d=%d->%d x,y=%d,%d %d\n",
+   D1printf("%s: %#x %#x d=%d->%d x,y=%d,%d %d\n", __func__,
 	    EobjGetXwin(eo), cw->extents,
 	    (eo->desk) ? (int)eo->desk->num : -1, dsk->num,
 	    EobjGetX(eo), EobjGetY(eo), change_xy);
@@ -1383,8 +1381,7 @@ ECompMgrWinReparent(EObj * eo, Desk * dsk, int change_xy)
 static void
 ECompMgrWinCirculate(EObj * eo, XEvent * ev)
 {
-   D1printf("ECompMgrWinCirculate %#lx %#x\n", ev->xany.window,
-	    EobjGetXwin(eo));
+   D1printf("%s: %#lx %#x\n", __func__, ev->xany.window, EobjGetXwin(eo));
 
    _ECM_SET_STACK_CHANGED();
 }
@@ -1394,7 +1391,7 @@ ECompMgrWinChangeShape(EObj * eo)
 {
    ECmWinInfo         *cw = eo->cmhook;
 
-   D1printf("ECompMgrWinChangeShape %#x\n", EobjGetXwin(eo));
+   D1printf("%s: %#x\n", __func__, EobjGetXwin(eo));
 
    EShapeUpdate(EobjGetWin(eo));
 
@@ -1413,7 +1410,7 @@ ECompMgrWinRaiseLower(EObj * eo, int delta)
 {
    ECmWinInfo         *cw = eo->cmhook;
 
-   D1printf("ECompMgrWinRaiseLower %#x delta=%d\n", EobjGetXwin(eo), delta);
+   D1printf("%s: %#x delta=%d\n", __func__, EobjGetXwin(eo), delta);
 
    if (delta < 0)		/* Raise */
       _ECM_SET_STACK_CHANGED();
@@ -1430,7 +1427,7 @@ ECompMgrWinDel(EObj * eo)
    if (!cw)
       return;
 
-   D1printf("ECompMgrWinDel %#x\n", EobjGetXwin(eo));
+   D1printf("%s: %#x\n", __func__, EobjGetXwin(eo));
 
    if (eo->fading)
       ECompMgrWinFadeEnd(eo, 1);
@@ -1476,7 +1473,7 @@ ECompMgrWinDamage(EObj * eo, XEvent * ev)
    XDamageNotifyEvent *de = (XDamageNotifyEvent *) ev;
    EX_SrvRegion        parts;
 
-   D2printf("ECompMgrWinDamage %#lx %#x damaged=%d %d,%d %dx%d\n",
+   D2printf("%s: %#lx %#x damaged=%d %d,%d %dx%d\n", __func__,
 	    ev->xany.window, EobjGetXwin(eo), cw->damaged,
 	    de->area.x, de->area.y, de->area.width, de->area.height);
 
@@ -1554,7 +1551,7 @@ ECompMgrDetermineOrder(EObj * const *lst, int num, EObj ** first,
    int                 i, stop;
    ECmWinInfo         *cw;
 
-   D1printf("ECompMgrDetermineOrder %d\n", dsk->num);
+   D1printf("%s: %d\n", __func__, dsk->num);
    if (!lst)
       lst = EobjListStackGet(&num);
    if (clip == NoXID)
@@ -1654,9 +1651,8 @@ ECompMgrDetermineOrder(EObj * const *lst, int num, EObj ** first,
 	     continue;
 	  }
 
-	D3printf
-	   ("ECompMgrDetermineOrder hook in %d - %#x desk=%d shown=%d\n",
-	    dsk->num, EobjGetXwin(eo), eo->desk->num, eo->shown);
+	D3printf("%s: hook in %d - %#x desk=%d shown=%d\n", __func__,
+		 dsk->num, EobjGetXwin(eo), eo->desk->num, eo->shown);
 
 	if (!eo_first)
 	   eo_first = eo;
@@ -1908,7 +1904,7 @@ ECompMgrRepaint(void)
 
    ERegionIntersect(Mode_compmgr.damage, Mode_compmgr.rgn_screen);
 
-   Dprintf("ECompMgrRepaint rootBuffer=%#x rootPicture=%#x\n",
+   Dprintf("%s: rootBuffer=%#x rootPicture=%#x\n", __func__,
 	   rootBuffer, rootPicture);
    if (EDebug(EDBUG_TYPE_COMPMGR2))
       ERegionShow("damage", Mode_compmgr.damage, NULL);
@@ -1935,7 +1931,7 @@ ECompMgrRepaint(void)
 
    /* Repaint background, clipped by damage region and opaque windows */
    pict = dsk->o.cmhook->picture;
-   D1printf("ECompMgrRepaint desk picture=%#lx\n", pict);
+   D1printf("%s: desk picture=%#lx\n", __func__, pict);
    EPictureSetClip(pbuf, region);
    XRenderComposite(disp, PictOpSrc, pict, NoXID, pbuf,
 		    0, 0, 0, 0, 0, 0, WinGetW(VROOT), WinGetH(VROOT));
@@ -2019,7 +2015,7 @@ ECompMgrGetRootBuffer(void)
 static void
 ECompMgrRootConfigure(void *prm __UNUSED__, XEvent * ev)
 {
-   Dprintf("ECompMgrRootConfigure root\n");
+   Dprintf("%s\n", __func__);
 
    ECompMgrRootBufferDestroy();
    ECompMgrRootBufferCreate(ev->xconfigure.width, ev->xconfigure.height);
@@ -2037,7 +2033,7 @@ ECompMgrRootExpose(void *prm __UNUSED__, XEvent * ev)
    if (ev->xexpose.window != WinGetXwin(VROOT))
       return;
 
-   D1printf("ECompMgrRootExpose %d %d %d\n", n_expose, size_expose,
+   D1printf("%s: %d %d %d\n", __func__, n_expose, size_expose,
 	    ev->xexpose.count);
 
    if (n_expose == size_expose)
@@ -2353,7 +2349,7 @@ ECompMgrHandleWindowEvent(Win win __UNUSED__, XEvent * ev, void *prm)
 {
    EObj               *eo = (EObj *) prm;
 
-   D2printf("ECompMgrHandleWindowEvent: type=%d\n", ev->type);
+   D2printf("%s: type=%d\n", __func__, ev->type);
 
    switch (ev->type)
      {
@@ -2401,7 +2397,7 @@ ECompMgrHandleRootEvent(Win win __UNUSED__, XEvent * ev, void *prm)
    EX_Window           xwin;
    EObj               *eo;
 
-   D2printf("ECompMgrHandleRootEvent: type=%d\n", ev->type);
+   D2printf("%s: type=%d\n", __func__, ev->type);
 
    switch (ev->type)
      {
@@ -2523,8 +2519,8 @@ ECompMgrInit(void)
  done:
    if (Conf_compmgr.mode == ECM_MODE_OFF)
       Conf_compmgr.enable = 0;
-   Dprintf("ECompMgrInit: enable=%d mode=%d\n", Conf_compmgr.enable,
-	   Conf_compmgr.mode);
+   Dprintf("%s: enable=%d mode=%d\n", __func__,
+	   Conf_compmgr.enable, Conf_compmgr.mode);
 }
 
 static void
