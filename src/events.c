@@ -56,6 +56,7 @@
 #if USE_XI2
 #include <X11/extensions/XInput2.h>
 #endif
+#define USE_GENERIC defined(USE_XI2)
 
 #if ENABLE_DEBUG_EVENTS
 static const char  *EventName(unsigned int type);
@@ -84,7 +85,6 @@ static EServerExtData ExtData[11];
 #define event_base_damage ExtData[XEXT_DAMAGE].event_base
 #define event_base_saver  ExtData[XEXT_SCRSAVER].event_base
 #define event_base_glx    ExtData[XEXT_GLX].event_base
-#define major_op_xi       ExtData[XEXT_XI].major_op
 
 static void
 ExtInitShape(int available)
@@ -790,6 +790,8 @@ EventsCompress(XEvent * evq, int count)
 #endif
 }
 
+#if USE_GENERIC
+
 #if USE_XI2
 typedef union {
    XIEvent             gen;	/* Generic XI2 */
@@ -798,22 +800,14 @@ typedef union {
 } xie_t;
 
 static void
-EventFetchXI2(XEvent * ev)
+_EventFetchXI2(XEvent * ev)
 {
-   XGenericEventCookie gec;
-   xie_t              *xie;
-
-   if (!XGetEventData(disp, &ev->xcookie))
-      return;
-
-   xie = (xie_t *) ev->xcookie.data;
+   xie_t              *xie = (xie_t *) ev->xcookie.data;
 
    if (EDebug(EDBUG_TYPE_XI2))
       Eprintf("%s: %#lx: type=%d devid=%d srcid=%d\n",
 	      __func__, xie->dev.event, xie->gen.evtype,
 	      xie->dev.deviceid, xie->dev.sourceid);
-
-   gec = ev->xcookie;		/* Save copy for XFreeEventData() */
 
    switch (xie->gen.evtype)
      {
@@ -891,10 +885,35 @@ EventFetchXI2(XEvent * ev)
 	ev->xfocus.detail = xie->elf.detail;
 	break;
      }
+}
+#endif /* USE_XI2 */
 
+static void
+_EventFetchGeneric(XEvent * ev)
+{
+   XGenericEventCookie gec;
+
+   if (!XGetEventData(disp, &ev->xcookie))
+      return;
+
+   gec = ev->xcookie;		/* Save copy for XFreeEventData() */
+
+#if USE_XI2
+   if (ev->xcookie.extension == ExtData[XEXT_XI].major_op)
+     {
+	_EventFetchXI2(ev);
+	goto done;
+     }
+#endif
+   /* We should never go here */
+   Eprintf("*** %s: ext=%d type=%d\n", __func__,
+	   ev->xcookie.extension, ev->xcookie.evtype);
+
+ done:
    XFreeEventData(disp, &gec);
 }
-#endif
+
+#endif /* USE_GENERIC */
 
 static int
 EventsFetch(XEvent ** evq_p, int *evq_n)
@@ -916,14 +935,13 @@ EventsFetch(XEvent ** evq_p, int *evq_n)
 	for (; i < count; i++, ev++)
 	  {
 	     XNextEvent(disp, ev);
-#if USE_XI2
+#if USE_GENERIC
 	     if (ev->type == GenericEvent)
 	       {
-		  if (ev->xcookie.extension == major_op_xi)
-		     EventFetchXI2(ev);
+		  _EventFetchGeneric(ev);
 		  continue;
 	       }
-#endif /* USE_XI2 */
+#endif
 
 	     /* Map some event types to E internals */
 	     if (ev->type == event_base_shape + ShapeNotify)
