@@ -50,13 +50,16 @@
 #include <X11/extensions/Xfixes.h>
 #include <X11/extensions/Xrender.h>
 #endif
+#if USE_XPRESENT
+#include <X11/extensions/Xpresent.h>
+#endif
 #if USE_GLX
 #include <GL/glx.h>
 #endif
 #if USE_XI2
 #include <X11/extensions/XInput2.h>
 #endif
-#define USE_GENERIC defined(USE_XI2)
+#define USE_GENERIC defined(USE_XI2) || defined(USE_XPRESENT)
 
 #if ENABLE_DEBUG_EVENTS
 static const char  *EventName(unsigned int type);
@@ -78,7 +81,7 @@ typedef struct {
    void                (*init) (int avaliable);
 } EServerExt;
 
-static EServerExtData ExtData[11];
+static EServerExtData ExtData[12];
 
 #define event_base_shape ExtData[XEXT_SHAPE].event_base
 #define event_base_randr ExtData[XEXT_RANDR].event_base
@@ -249,6 +252,21 @@ ExtInitInput(int available)
 }
 #endif
 
+#if USE_XPRESENT
+static void
+ExtInitPresent(int available)
+{
+   if (!available)
+      return;
+
+   if (EDebug(EDBUG_TYPE_VERBOSE))
+     {
+	Eprintf(" Capabilities: %#x\n",
+		XPresentQueryCapabilities(disp, WinGetXwin(VROOT)));
+     }
+}
+#endif
+
 static const EServerExt Extensions[] = {
    {"SHAPE", XEXT_SHAPE, XShapeQueryVersion, ExtInitShape},
 #if USE_XSYNC
@@ -274,6 +292,9 @@ static const EServerExt Extensions[] = {
 #endif
 #if USE_XI2
    {"XInputExtension", XEXT_XI, EInputQueryVersion, ExtInitInput},
+#endif
+#if USE_XPRESENT
+   {"Present", XEXT_PRESENT, XPresentQueryVersion, ExtInitPresent},
 #endif
 };
 
@@ -888,6 +909,25 @@ _EventFetchXI2(XEvent * ev)
 }
 #endif /* USE_XI2 */
 
+#if USE_XPRESENT
+typedef union {
+   XPresentEvent       xpe;
+   XPresentConfigureNotifyEvent conf;
+   XPresentCompleteNotifyEvent cmpl;
+   XPresentIdleNotifyEvent idle;
+} xpe_t;
+
+static void
+_EventFetchPresent(XEvent * ev)
+{
+   xpe_t              *xpe = (xpe_t *) ev->xcookie.data;
+
+   if (EDebug(EDBUG_TYPE_PRESENT))
+      Eprintf("%s: %#lx: type=%d\n",
+	      __func__, xpe->idle.window, xpe->xpe.evtype);
+}
+#endif /* USE_XPRESENT */
+
 static void
 _EventFetchGeneric(XEvent * ev)
 {
@@ -902,6 +942,13 @@ _EventFetchGeneric(XEvent * ev)
    if (ev->xcookie.extension == ExtData[XEXT_XI].major_op)
      {
 	_EventFetchXI2(ev);
+	goto done;
+     }
+#endif
+#if USE_XPRESENT
+   if (ev->xcookie.extension == ExtData[XEXT_PRESENT].major_op)
+     {
+	_EventFetchPresent(ev);
 	goto done;
      }
 #endif

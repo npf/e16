@@ -57,6 +57,7 @@
 #define EDBUG_TYPE_XI2          153
 #define EDBUG_TYPE_ZOOM         154
 #define EDBUG_TYPE_ANIM         155
+#define EDBUG_TYPE_PRESENT      156
 
 #define EDBUG_TYPE_COMPMGR      161
 #define EDBUG_TYPE_COMPMGR2     162

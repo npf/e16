@@ -126,6 +126,7 @@
 #define XEXT_RENDER      8
 #define XEXT_GLX         9
 #define XEXT_XI         10
+#define XEXT_PRESENT    11
 
 #define XEXT_CM_ALL     16
 

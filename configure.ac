@@ -294,6 +294,16 @@ if test "x$enable_composite" = "xyes"; then
 fi
 AM_CONDITIONAL(ENABLE_COMPOSITE, test "x$enable_composite" = "xyes")
 
+AC_ARG_ENABLE(xpresent,
+  AC_HELP_STRING([--enable-xpresent], [compile with Present support (experimental) @<:@default=no@:>@]),,
+  enable_xpresent=no)
+if test "x$enable_xpresent" = "xyes"; then
+  PKG_CHECK_MODULES(XPRESENT, xpresent,
+    AC_DEFINE(USE_XPRESENT, 1, [Present support]),
+    enable_xpresent=no
+    AC_MSG_WARN([Present support was requested but not found]) )
+fi
+
 AC_ARG_ENABLE(zoom,
   AC_HELP_STRING([--enable-zoom], [compile with zoom support @<:@default=yes@:>@]),,
   enable_zoom=yes)
@@ -514,6 +524,7 @@ echo "  GLX .......................... $enable_glx"
 echo "  ScreenSaver .................. $enable_xscrnsaver"
 echo "  D-Bus ........................ $enable_dbus"
 echo "  XI2 .......................... $enable_xi2"
+echo "  Present....................... $enable_xpresent"
 echo "  Use container window ......... $enable_container"
 echo
 echo "Installation path .............. $prefix"

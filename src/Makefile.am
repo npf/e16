@@ -135,6 +135,7 @@ e16_CPPFLAGS = \
 	$(DBUS_CFLAGS) \
 	$(XI_CFLAGS) \
 	$(XRANDR_CFLAGS) \
+	$(XPRESENT_CFLAGS) \
 	$(X_CFLAGS)
 
 LDADD = \
@@ -145,6 +146,7 @@ LDADD = \
 	$(GLX_LIBS)		\
 	$(XI_LIBS)		\
 	$(XRANDR_LIBS)		\
+	$(XPRESENT_LIBS)	\
 	$(X_LIBS)		\
 	$(SM_LIBS)		\
 	$(XINERAMA_LIBS)	\
