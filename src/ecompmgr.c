@@ -54,6 +54,9 @@
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/Xfixes.h>
 #include <X11/extensions/Xrender.h>
+#if USE_XPRESENT
+#include <X11/extensions/Xpresent.h>
+#endif
 
 #define ENABLE_SHADOWS      1
 
@@ -203,6 +206,9 @@ static struct {
    int                 shadow_mode;
    float               opac_blur;	/* 0. -> 1. */
    float               opac_sharp;	/* 0. -> 1. */
+#if USE_XPRESENT
+   unsigned int        present_serial;
+#endif
 } Mode_compmgr;
 
 /* FIXME - Optimize according to what actually changed */
@@ -1949,8 +1955,14 @@ ECompMgrRepaint(void)
      {
 	EPictureSetClip(pbuf, NoXID);
 	EPictureSetClip(rootPicture, Mode_compmgr.damage);
+#if !USE_XPRESENT
 	XRenderComposite(disp, PictOpSrc, pbuf, NoXID, rootPicture,
 			 0, 0, 0, 0, 0, 0, WinGetW(VROOT), WinGetH(VROOT));
+#else
+	XPresentPixmap(disp, Mode_compmgr.root, Mode_compmgr.pmap,
+		       Mode_compmgr.present_serial++, None, None, 0, 0, None,
+		       None, None, None, 0, 0, 0, NULL, 0);
+#endif
      }
 
    Mode_compmgr.got_damage = 0;
