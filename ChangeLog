@@ -5854,3 +5854,12 @@ Updating esperanto and french translations
 Updating desktop files
 Remove useless Name[] entries from .desktop files (again).
 Fix some normally disabled debug format strings.
+
+-------------------------------------------------------------------------------
+
+Tue Nov 18 21:42:34 CET 2014
+
+--- 1.0.15 ---
+Simplify sound configuration.
+Set lower limit on slide/shade speed (fix crash if speed is set to 0).
+Debug printout cleanups.
