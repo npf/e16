@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -1284,7 +1284,7 @@ _EShapeShow(const char *txt, EX_Window xwin, XRectangle * pr, int nr)
 
    Eprintf("%s %#x nr=%d\n", txt, xwin, nr);
    for (i = 0; i < nr; i++)
-      Eprintf(" %d - %4d,%4d %4dx%4d\n", i,
+      Eprintf(" %3d - %4d,%4d %4dx%4d\n", i,
 	      pr[i].x, pr[i].y, pr[i].width, pr[i].height);
 }
 #endif
@@ -1460,7 +1460,8 @@ EShapePropagate(Win win)
 	   continue;
 
 #if DEBUG_SHAPE_PROPAGATE > 1
-	Eprintf("%#x(%d): %4d,%4d %4dx%4d\n", xch->xwin, xch->mapped,
+	Eprintf("%#x(%d/%d): %4d,%4d %4dx%4d\n",
+		xch->xwin, xch->mapped, xch->num_rect,
 		xch->x, xch->y, xch->w, xch->h);
 #endif
 	if (!xch->mapped)
@@ -1483,22 +1484,21 @@ EShapePropagate(Win win)
 		goto bail_out;
 	     rects = rectsn;
 
-	     /* go through all clip rects in thsi window's shape */
+	     /* go through all clip rects in this window's shape */
 	     for (k = 0; k < rn; k++)
 	       {
 		  /* for each clip rect, add it to the rect list */
-		  rects[num_rects + k].x = x + rl[k].x;
-		  rects[num_rects + k].y = y + rl[k].y;
-		  rects[num_rects + k].width = rl[k].width;
-		  rects[num_rects + k].height = rl[k].height;
+		  rects[num_rects].x = x + rl[k].x;
+		  rects[num_rects].y = y + rl[k].y;
+		  rects[num_rects].width = rl[k].width;
+		  rects[num_rects].height = rl[k].height;
 #if DEBUG_SHAPE_PROPAGATE > 1
-		  Eprintf(" - %d: %4d,%4d %4dx%4d\n", k,
-			  rects[num_rects + k].x,
-			  rects[num_rects + k].y, rects[num_rects + k].width,
-			  rects[num_rects + k].height);
+		  Eprintf(" - %x %d: %4d,%4d %4dx%4d\n", xch->xwin, k,
+			  rects[num_rects].x, rects[num_rects].y,
+			  rects[num_rects].width, rects[num_rects].height);
 #endif
+		  num_rects++;
 	       }
-	     num_rects += rn;
 	  }
 	else if (rn == 0)
 	  {
@@ -1512,6 +1512,11 @@ EShapePropagate(Win win)
 	     rects[num_rects].y = y;
 	     rects[num_rects].width = w;
 	     rects[num_rects].height = h;
+#if DEBUG_SHAPE_PROPAGATE > 1
+	     Eprintf(" - %x  : %4d,%4d %4dx%4d\n", xch->xwin,
+		     rects[num_rects].x, rects[num_rects].y,
+		     rects[num_rects].width, rects[num_rects].height);
+#endif
 	     num_rects++;
 	  }
      }
