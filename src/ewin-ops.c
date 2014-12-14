@@ -891,30 +891,30 @@ _EwinShadeStart(_ewin_shade_data * esd)
      case SHADE_LEFT:
 	att.win_gravity = EastGravity;
 	esd->a = esd->start.w;
-	esd->b = minw;
-	esd->final.w = esd->b;
+	esd->b = ewin->border->border.left + ewin->border->border.right;
+	esd->final.w = minw;
 	break;
      case SHADE_RIGHT:
 	att.win_gravity = WestGravity;
 	esd->a = esd->start.w;
-	esd->b = minw;
+	esd->b = ewin->border->border.left + ewin->border->border.right;
 	esd->c = esd->start.x + esd->start.w;
-	esd->final.x = esd->c - esd->b;
-	esd->final.w = esd->b;
+	esd->final.x = esd->c - minw;
+	esd->final.w = minw;
 	break;
      case SHADE_UP:
 	att.win_gravity = SouthGravity;
 	esd->a = esd->start.h;
-	esd->b = minh;
-	esd->final.h = esd->b;
+	esd->b = ewin->border->border.top + ewin->border->border.bottom;
+	esd->final.h = minh;
 	break;
      case SHADE_DOWN:
 	att.win_gravity = SouthGravity;
 	esd->a = esd->start.h;
-	esd->b = minh;
+	esd->b = ewin->border->border.top + ewin->border->border.bottom;
 	esd->c = esd->start.y + esd->start.h;
-	esd->final.y = esd->c - esd->b;
-	esd->final.h = esd->b;
+	esd->final.y = esd->c - minh;
+	esd->final.h = minh;
 	break;
      }
 
