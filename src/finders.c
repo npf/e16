@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2008-2014 Kim Woelders
+ * Copyright (C) 2008-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -22,7 +22,6 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "E.h"
-#include "borders.h"
 #include "ewins.h"
 #include "groups.h"
 #include "util.h"
@@ -59,32 +58,6 @@ EwinFindByClient(EX_Window win)
    return NULL;
 }
 
-static EWin        *
-EwinFindByChildren(EX_Window win)
-{
-   EWin               *const *ewins;
-   int                 i, j, num;
-
-   ewins = EwinListGetAll(&num);
-   for (i = 0; i < num; i++)
-     {
-	if ((win == EwinGetClientXwin(ewins[i])) ||
-	    (win == EwinGetContainerXwin(ewins[i])))
-	  {
-	     return ewins[i];
-	  }
-	else
-	  {
-	     for (j = 0; j < ewins[i]->border->num_winparts; j++)
-		if (win == WinGetXwin(ewins[i]->bits[j].win))
-		  {
-		     return ewins[i];
-		  }
-	  }
-     }
-   return NULL;
-}
-
 EWin              **
 EwinsFindByExpr(const char *match, int *pnum, int *pflags)
 {
@@ -117,7 +90,7 @@ EwinsFindByExpr(const char *match, int *pnum, int *pflags)
 	unsigned int        win;
 
 	sscanf(match, "%x", &win);
-	ewin = EwinFindByChildren(win);
+	ewin = EwinFindByClient(win);
 	goto do_one;
      }
 
