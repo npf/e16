@@ -45,6 +45,8 @@ AC_C_CONST
 AC_C_INLINE
 EC_C___ATTRIBUTE__
 EC_C___FUNC__
+EC_C_VISIBILITY(yes)
+
 AC_CHECK_SIZEOF(int, 4)
 AC_CHECK_SIZEOF(long, 4)
 AC_CHECK_SIZEOF(wchar_t, 4)
@@ -398,15 +400,6 @@ if test "x$enable_modules" = "xyes"; then
   AC_DEFINE(USE_MODULES, 1, [Loadable module support])
 fi
 AM_CONDITIONAL(BUILD_MODULES, test "x$enable_modules" = "xyes")
-
-dnl Set default visibility to hidden (only useful with --enable-modules)
-AC_ARG_ENABLE(visibility-hiding,
-  AC_HELP_STRING([--enable-visibility-hiding], [enable visibility hiding @<:@default=no@:>@]),,
-  enable_visibility_hiding=no
-)
-if test "x$enable_visibility_hiding" = xyes ; then
-  CPPFLAGS="$CPPFLAGS -fvisibility=hidden"
-fi
 
 AC_ARG_ENABLE(dialogs,
   AC_HELP_STRING([--enable-dialogs],

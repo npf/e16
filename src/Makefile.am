@@ -122,6 +122,7 @@ e16_SOURCES = \
 
 AM_CPPFLAGS = \
 	$(CFLAGS_WARNINGS) \
+	$(CFLAGS_VISIBILITY) \
 	-D LOCALEDIR=\"$(datadir)/locale\" \
 	-D ENLIGHTENMENT_BIN=\"$(bindir)\" \
 	-D ENLIGHTENMENT_LIB=\"$(pkglibdir)\" \

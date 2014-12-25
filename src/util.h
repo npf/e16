@@ -36,15 +36,6 @@
 #define INT2PTR(i) ((void*)(long)(i))
 #define PTR2INT(p) ((int)(long)(p))
 
-/* Inspired by Xfuncproto.h */
-#if defined(__GNUC__) && ((__GNUC__ * 100 + __GNUC_MINOR__) >= 303)
-#define __EXPORT__      __attribute__((visibility("default")))
-#elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550)
-#define __EXPORT__      __global
-#else /* not gcc >= 3.3 and not Sun Studio >= 8 */
-#define __EXPORT__
-#endif
-
 #if HAVE___ATTRIBUTE__
 #define __PRINTF_N__(no)  __attribute__((__format__(__printf__, (no), (no)+1)))
 #define __NORETURN__      __attribute__((noreturn))
