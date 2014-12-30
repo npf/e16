@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012 Daniel Manjarres
- * Copyright (C) 2013-2014 Kim Woelders
+ * Copyright (C) 2013-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -50,10 +50,11 @@ static int          timing_engine(void);
 static struct {
    Timer              *timer;
    Idler              *idler;
-   unsigned int        time_ms;
+   unsigned int        time_ms;	/* Just use Mode.events.time_ms? */
+   unsigned int        seqn;
 } Mode_anim =
 {
-NULL, NULL, 0};
+NULL, NULL, 0, 0};
 
 static int
 _AnimatorsTimer(void *timer_call)
@@ -61,6 +62,8 @@ _AnimatorsTimer(void *timer_call)
    int                 frame_skip;
    int                 dt;
 
+   /* Remember current event run sequence number */
+   Mode_anim.seqn = Mode.events.seqn;
    /* Remember current event time */
    Mode_anim.time_ms = Mode.events.time_ms;
 
@@ -92,7 +95,7 @@ static void
 _AnimatorsIdler(void *data)
 {
    /* Don't run idler if we have just run timer */
-   if (Mode_anim.time_ms == Mode.events.time_ms)
+   if (Mode_anim.seqn == Mode.events.seqn)
       return;
 
    _AnimatorsTimer(data);

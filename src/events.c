@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -1100,6 +1100,7 @@ EventsMain(void)
 	time2 = GetTimeMs();
 	dtl = time2 - time1;
 	Mode.events.time_ms = time1 = time2;
+	Mode.events.seqn++;
 	/* dtl = time spent since we last were here */
 
 	/* Run all expired timers */

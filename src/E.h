@@ -3,7 +3,7 @@
 /*****************************************************************************/
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -352,6 +352,7 @@ typedef struct {
 #endif
    } display;
    struct {
+      unsigned int        seqn;	/* Event run sequence number */
       unsigned int        time_ms;	/* Local ms time */
       EX_Time             time;	/* Latest X event time */
       int                 cx, cy;	/* Any detected pointer movement */
