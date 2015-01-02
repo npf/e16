@@ -123,6 +123,7 @@ struct _animator {
    int                 duration;
    esound_e            start_sound;
    esound_e            end_sound;
+   char                initialized;
    char                serialize;
    char                cancelled;
    unsigned int        start_frame;
@@ -253,26 +254,23 @@ _AnimatorsRun(Animator ** head, unsigned int frame_num, unsigned int next_frame)
 	     res = ANIM_RET_CANCEL_ANIM;
 	     goto check_res;
 	  }
-	if (an->serialize)
-	  {
-	     /* Start when other non-forever animations have run */
-	     if (!first)
-		goto do_next;
-	     Dprintf("%s: %#x %p C%d: De-serialize\n", __func__, EOW(an->eo),
-		     an, an->category);
-	     an->next_frame = frame_num;
-	     an->start_frame = an->next_frame;
-	     an->end_frame = an->start_frame + an->duration - 1;
-	     an->serialize = 0;
-	  }
-	else if (an->start_frame == an->end_frame)
+
+	if (!an->initialized)
 	  {
 	     /* Just added - calculate first/last frame */
-	     /* Start "now" or after initial delay (-serialize) */
 	     /* NB! New animations start one frame into the future */
-	     an->next_frame = current_frame_num + 1 - an->serialize;
-	     an->start_frame = an->next_frame;
+	     if (an->serialize)
+	       {
+		  /* Start when other non-forever animations have run */
+		  if (!first)
+		     goto do_next;
+		  Dprintf("%s: %#x %p C%d: De-serialize\n", __func__,
+			  EOW(an->eo), an, an->category);
+	       }
+	     an->initialized = 1;
+	     an->start_frame = frame_num + 1;
 	     an->end_frame = an->start_frame + an->duration - 1;
+	     an->next_frame = an->start_frame;
 	     an->last_tms = Mode_anim.time_ms;
 	  }
 
