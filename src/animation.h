@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012 Daniel Manjarres
- * Copyright (C) 2012-2014 Kim Woelders
+ * Copyright (C) 2012-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -85,12 +85,6 @@ void                AnimatorSetSound(Animator * an,
 void                AnimatorSetDoneFunc(Animator * an, AnimDoneFunc * done);
 
 int                 AnimatorDel(EObj * eo, Animator * an);
-int                 AnimatorsDelCat(EObj * eo, animation_category category,
-				    int complete);
-#if 0				/* Unused */
-int                 AnimatorsDelCatAll(animation_category category,
-				       int complete);
-#endif
 
 void                AnimatorsFree(EObj * eo);
 

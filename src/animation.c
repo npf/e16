@@ -400,44 +400,6 @@ AnimatorDel(EObj * eo, Animator * anx)
    return 0;
 }
 
-int
-AnimatorsDelCat(EObj * eo, animation_category category, int complete)
-{
-   Animator           *an;
-   int                 accum = 0;
-
-   Dprintf("%s: cat=%d?\n", __func__, category);
-
-   for (an = (eo) ? eo->animations : global_animators; an; an = an->next)
-     {
-	if (an->category == category && !an->cancelled)
-	  {
-	     Dprintf("... %p: complete=%d\n", an, complete);
-	     an->cancelled = 1 + complete;
-	     accum++;
-	  }
-     }
-   return accum;
-}
-
-#if 0				/* Unused */
-int
-AnimatorsDelCatAll(animation_category category, int complete)
-{
-   EObj               *const *lst;
-   int                 num, i, accum;
-
-   accum = AnimatorsDelCat(NULL, category, complete);
-   lst = EobjListStackGet(&num);
-
-   for (i = 0; i < num; i++)
-     {
-	accum += AnimatorsDelCat(lst[i], category, complete);
-     }
-   return accum;
-}
-#endif
-
 static unsigned int
 _FrameNum(void)
 {
