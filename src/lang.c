@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2011 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -21,18 +21,19 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "E.h"
-#include "emodule.h"
-#include "lang.h"
-#include <X11/Xlib.h>
+#include "config.h"
 
 #ifdef HAVE_LOCALE_H
 #include <locale.h>
 #endif
-
 #if HAVE_LANGINFO_CODESET
 #include <langinfo.h>
 #endif
+#include <X11/Xlib.h>
+
+#include "E.h"
+#include "emodule.h"
+#include "lang.h"
 
 #ifndef ENABLE_NLS
 #define bindtextdomain(pkg,locale)

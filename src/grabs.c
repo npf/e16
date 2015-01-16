@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -21,15 +21,19 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "E.h"
-#include "cursors.h"
-#include "grabs.h"
-#include "xwin.h"
+#include "config.h"
+
+#include <X11/Xlib.h>
 #if USE_XI2
 #include <X11/extensions/XInput2.h>
 #define DEV_PTR Mode.events.xi2_ptr
 #define DEV_KBD Mode.events.xi2_kbd
 #endif
+
+#include "E.h"
+#include "cursors.h"
+#include "grabs.h"
+#include "xwin.h"
 
 static int
 _GrabKeyboard(Win win, int sync_kbd)

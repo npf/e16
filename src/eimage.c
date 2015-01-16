@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -20,13 +20,17 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "E.h"
-#include "eimage.h"
-#include "xwin.h"
+#include "config.h"
+
 #include <Imlib2.h>
+#include <X11/Xlib.h>
 #if USE_XRENDER
 #include <X11/extensions/Xrender.h>
 #endif
+
+#include "E.h"
+#include "eimage.h"
+#include "xwin.h"
 
 void
 EImageInit(void)

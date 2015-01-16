@@ -21,13 +21,12 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "E.h"
-#include "edebug.h"
-#include "util.h"
-#include "xwin.h"
+#include "config.h"
+
 #include <string.h>
 #include <unistd.h>
 #include <X11/Xatom.h>
+#include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xresource.h>
 #include <X11/extensions/shape.h>
@@ -35,11 +34,16 @@
 #include <X11/extensions/Xrender.h>
 #define RENDER_VERSION VERS(RENDER_MAJOR, RENDER_MINOR)
 #endif
-#if USE_GLX
-#include "eglx.h"
-#endif
 #if USE_XI2
 #include <X11/extensions/XInput2.h>
+#endif
+
+#include "E.h"
+#include "edebug.h"
+#include "util.h"
+#include "xwin.h"
+#if USE_GLX
+#include "eglx.h"
 #endif
 
 #define DEBUG_XWIN   0

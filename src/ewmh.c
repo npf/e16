@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2014 Kim Woelders
+ * Copyright (C) 2003-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -23,6 +23,10 @@
 /*
  * Extended Window Manager Hints.
  */
+#include "config.h"
+
+#include <X11/Xlib.h>
+
 #include "E.h"
 #include "desktops.h"
 #include "events.h"

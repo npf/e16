@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2014 Kim Woelders
+ * Copyright (C) 2007-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -20,15 +20,20 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include "config.h"
+
+#include <stdlib.h>
 #define GLX_GLXEXT_PROTOTYPES 1
-#include "E.h"
-#include "eglx.h"
-#include "eimage.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glx.h>
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xrender.h>
+
+#include "E.h"
+#include "eglx.h"
+#include "eimage.h"
+#include "xwin.h"
 
 #define ENABLE_DEBUG   1
 #if ENABLE_DEBUG

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2014 Kim Woelders
+ * Copyright (C) 2003-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -23,6 +23,11 @@
 /*
  * Feeble attempt to collect hint stuff in one place
  */
+#include "config.h"
+
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+
 #include "E.h"
 #include "borders.h"		/* FIXME - Should not be here */
 #include "desktops.h"		/* FIXME - Should not be here */
@@ -31,7 +36,6 @@
 #include "hints.h"
 #include "xprop.h"
 #include "xwin.h"
-#include <X11/Xatom.h>
 
 static void         EHintsSetDeskInfo(void);
 static void         EHintsSetAreaInfo(void);

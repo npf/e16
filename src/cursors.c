@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -21,17 +21,21 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include "config.h"
+
+#include <X11/Xlib.h>
+#include <X11/cursorfont.h>
+#if USE_COMPOSITE
+#include <X11/extensions/Xfixes.h>
+#include <X11/extensions/Xrender.h>
+#endif
+
 #include "E.h"
 #include "conf.h"
 #include "cursors.h"
 #include "emodule.h"
 #include "list.h"
 #include "xwin.h"
-#include <X11/cursorfont.h>
-#if USE_COMPOSITE
-#include <X11/extensions/Xfixes.h>
-#include <X11/extensions/Xrender.h>
-#endif
 
 struct _ecursor {
    dlist_t             list;

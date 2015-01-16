@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -20,10 +20,13 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include "config.h"
+
+#include <ctype.h>
+
 #include "E.h"
 #include "econfig.h"
 #include "emodule.h"
-#include <ctype.h>
 
 /*
  * Braindead flat ASCII config file implementation

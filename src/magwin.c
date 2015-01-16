@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2014 Kim Woelders
+ * Copyright (C) 2007-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -20,6 +20,14 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include "config.h"
+
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <X11/Xlib.h>
+#include <X11/keysym.h>
+
 #include "E.h"
 #include "animation.h"
 #include "cursors.h"
@@ -33,11 +41,6 @@
 #include "hints.h"
 #include "tclass.h"
 #include "util.h"
-
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <X11/keysym.h>
 
 /* Magnifier window */
 typedef struct {

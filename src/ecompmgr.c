@@ -26,22 +26,9 @@
  * It has been mostly rewritten since, only the shadow code is more or less
  * intact.
  */
+#include "config.h"
 
-#include "E.h"
 #if USE_COMPOSITE
-#include "animation.h"
-#include "desktops.h"
-#include "ecompmgr.h"
-#include "emodule.h"
-#include "eobj.h"
-#include "events.h"
-#include "ewins.h"		/* EwinsManage() */
-#include "hints.h"
-#include "timers.h"
-#include "util.h"
-#include "windowmatch.h"
-#include "xwin.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -57,6 +44,19 @@
 #if USE_XPRESENT
 #include <X11/extensions/Xpresent.h>
 #endif
+
+#include "E.h"
+#include "animation.h"
+#include "desktops.h"
+#include "ecompmgr.h"
+#include "emodule.h"
+#include "eobj.h"
+#include "events.h"
+#include "ewins.h"		/* EwinsManage() */
+#include "hints.h"
+#include "timers.h"
+#include "windowmatch.h"
+#include "xwin.h"
 
 #define ENABLE_SHADOWS      1
 

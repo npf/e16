@@ -21,12 +21,15 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include "config.h"
+
+#include <ctype.h>
+#include <string.h>
+
 #include "E.h"
 #include "ewins.h"
 #include "groups.h"
 #include "util.h"
-#include <ctype.h>
-#include <string.h>
 
 EWin               *
 EwinFindByPtr(const EWin * ewin)

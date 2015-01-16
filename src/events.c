@@ -21,15 +21,10 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#include "E.h"
-#include "aclass.h"
-#include "ecompmgr.h"
-#include "emodule.h"
-#include "events.h"
-#include "timers.h"
-#include "tooltips.h"
-#include "xwin.h"
+#include "config.h"
+
 #include <sys/time.h>
+#include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/extensions/shape.h>
 #if USE_XSYNC
@@ -60,6 +55,15 @@
 #include <X11/extensions/XInput2.h>
 #endif
 #define USE_GENERIC defined(USE_XI2) || defined(USE_XPRESENT)
+
+#include "E.h"
+#include "aclass.h"
+#include "ecompmgr.h"
+#include "emodule.h"
+#include "events.h"
+#include "timers.h"
+#include "tooltips.h"
+#include "xwin.h"
 
 #if ENABLE_DEBUG_EVENTS
 static const char  *EventName(unsigned int type);

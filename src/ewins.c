@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -21,6 +21,12 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+#include "config.h"
+
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/extensions/shape.h>
+
 #include "E.h"
 #include "aclass.h"
 #include "borders.h"
@@ -40,8 +46,6 @@
 #include "snaps.h"
 #include "windowmatch.h"
 #include "xwin.h"
-#include <X11/Xutil.h>
-#include <X11/extensions/shape.h>
 
 #define EWIN_TOP_EVENT_MASK \
   (EnterWindowMask | LeaveWindowMask)
