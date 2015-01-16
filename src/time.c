@@ -65,3 +65,16 @@ GetTimeUs(void)
    return (unsigned int)(timev.tv_sec * 1000000 + timev.tv_usec);
 #endif
 }
+
+void
+SleepUs(unsigned int tus)
+{
+   struct timespec     ts;
+
+   ts.tv_sec = tus / 1000000;
+   tus -= ts.tv_sec * 1000000;
+   ts.tv_nsec = tus * 1000;
+
+   while (nanosleep(&ts, &ts))
+      ;
+}

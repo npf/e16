@@ -332,7 +332,7 @@ ShowAlert(const char *title,
 	XMoveResizeWindow(dd, win, x, y, w, h);
 	DRAW_BOX_OUT(dd, gc, win, 0, 0, w, h);
 	XSync(dd, False);
-	usleep(20000);
+	SleepUs(20000);
      }
    x = (wid - ww) >> 1;
    y = (hih - hh) >> 1;
@@ -393,7 +393,7 @@ ShowAlert(const char *title,
 	       {
 		  DRAW_BOX_IN(dd, gc, b1, 0, 0, bw, bh);
 		  XSync(dd, False);
-		  usleep(500000);
+		  SleepUs(500000);
 		  DRAW_BOX_OUT(dd, gc, b1, 0, 0, bw, bh);
 		  button = 1;
 		  goto do_sync;
@@ -403,7 +403,7 @@ ShowAlert(const char *title,
 	       {
 		  DRAW_BOX_IN(dd, gc, b2, 0, 0, bw, bh);
 		  XSync(dd, False);
-		  usleep(500000);
+		  SleepUs(500000);
 		  DRAW_BOX_OUT(dd, gc, b2, 0, 0, bw, bh);
 		  button = 2;
 		  goto do_sync;
@@ -413,7 +413,7 @@ ShowAlert(const char *title,
 	       {
 		  DRAW_BOX_IN(dd, gc, b3, 0, 0, bw, bh);
 		  XSync(dd, False);
-		  usleep(500000);
+		  SleepUs(500000);
 		  DRAW_BOX_OUT(dd, gc, b3, 0, 0, bw, bh);
 		  button = 3;
 		  goto do_sync;

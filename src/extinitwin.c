@@ -231,7 +231,7 @@ ExtInitWinMain(void)
 		EImageFree(im);
 	     }
 	   ESync(0);
-	   usleep(50000);
+	   SleepUs(50000);
 
 	   /* If we still are here after 5 sec something is wrong. */
 	   if (loop > 100)

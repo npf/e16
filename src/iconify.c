@@ -59,7 +59,7 @@ IB_Animate_Sleep(unsigned int t0, float a)
    dt = 1e-3 * (t - a * IB_ANIM_TIME);
    dt = 1e-3 * IB_ANIM_STEP - dt;
    if (dt > 0)
-      usleep((unsigned long)(1e6 * dt));
+      SleepUs((unsigned long)(1e6 * dt));
 }
 
 static void

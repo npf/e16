@@ -129,4 +129,6 @@ const void         *ModLoadSym(const char *lib, const char *sym,
 unsigned int        GetTimeMs(void);
 unsigned int        GetTimeUs(void);
 
+void                SleepUs(unsigned int tus);
+
 #endif /* _UTIL_H_ */
