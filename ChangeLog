@@ -5863,3 +5863,28 @@ Tue Nov 18 21:42:34 CET 2014
 Simplify sound configuration.
 Set lower limit on slide/shade speed (fix crash if speed is set to 0).
 Debug printout cleanups.
+
+-------------------------------------------------------------------------------
+
+Sat Jan 17 18:27:32 CET 2015
+
+--- 1.0.15.001 ---
+Extension version checking cleanups.
+Use XRenderCreateSolidFill() if available.
+Debug printout cleanups.
+Prepare to handle other than XI2 generic events.
+Initial Present infrastructure.
+Initial CM/Present experimental support.
+Autofoo tweaks.
+Simplify shading code.
+Correct shading end size.
+FX: Cosmetics.
+FX: Correct some offsets.
+Eliminate EwinFindByChildren().
+Minor tweaks in EShapePropagate().
+Fix animation bug (could cause major stalls and maybe lockup).
+Fix animator initialisation when duration is 0.
+Visibility cosmetics (use EC_C_VISIBILITY).
+Minor fading animation tweak.
+Remove unused AnimatorsDelCat().
+Clean up header file inclusion order.
