@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2005-2014 Kim Woelders
+ * Copyright (C) 2005-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -289,7 +289,7 @@ WindowMatchDecode(const char *line)
    int                 err, num, w1, w2, h1, h2;
 
    match[0] = value[0] = op[0] = '\0';
-   num = sscanf(line, "%32s %1024s %32s %n", match, value, op, &w1);
+   num = sscanf(line, "%31s %1023s %31s %n", match, value, op, &w1);
    if (num < 3)
       return;
    args = line + w1;

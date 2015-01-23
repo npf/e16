@@ -319,7 +319,7 @@ IPC_WinList(const char *params)
    if (match)
      {
 	num = 0;
-	sscanf(params, "%8s %n", format, &num);
+	sscanf(params, "%7s %n", format, &num);
 	match += num;
      }
    if (!match || !match[0])
@@ -433,7 +433,7 @@ IpcWinop(const WinOp * wop, EWin * ewin, const char *prm)
    int                 a, b;
 
    param1[0] = param2[0] = '\0';
-   sscanf(prm, "%128s %128s", param1, param2);
+   sscanf(prm, "%127s %127s", param1, param2);
 
    switch (wop->op)
      {
@@ -877,7 +877,7 @@ IPC_WinOps(const char *params)
 
    match[0] = operation[0] = '\0';
    num = 0;
-   sscanf(params, "%128s %128s %n", match, operation, &num);
+   sscanf(params, "%127s %127s %n", match, operation, &num);
    p = params + num;
 
    if (!operation[0])
