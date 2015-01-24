@@ -1116,15 +1116,20 @@ ECompMgrWinMap(EObj * eo)
 void
 ECompMgrWinUnmap(EObj * eo)
 {
+   int                 fadeout;
    ECmWinInfo         *cw = eo->cmhook;
 
    D1printf("%s: %#x shown=%d\n", __func__, EobjGetXwin(eo), eo->shown);
+
    if (!eo->shown)		/* Sometimes we get a synthetic one too */
       return;
 
+   fadeout = Conf_compmgr.fading.enable && eo->fade && !eo->gone;
+
    ECompMgrDamageMergeObject(eo, cw->extents);
    _ECM_SET_STACK_CHANGED();
-   if (Conf_compmgr.fading.enable && eo->fade && !eo->gone)
+
+   if (fadeout)
      {
 	ECompMgrWinInvalidate(eo, INV_PICTURE);
 	ECompMgrWinFadeOut(eo);
