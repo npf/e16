@@ -2078,6 +2078,20 @@ EPictureCreate(Win win, EX_Drawable draw)
 }
 
 EX_Picture
+EPictureCreateII(Win win, EX_Drawable draw)
+{
+   EX_Picture          pict;
+   XRenderPictFormat  *pictfmt;
+   XRenderPictureAttributes pa;
+
+   pictfmt = XRenderFindVisualFormat(disp, WinGetVisual(win));
+   pa.subwindow_mode = IncludeInferiors;
+   pict = XRenderCreatePicture(disp, draw, pictfmt, CPSubwindowMode, &pa);
+
+   return pict;
+}
+
+EX_Picture
 EPictureCreateSolid(EX_Window xwin, int argb, unsigned int a, unsigned int rgb)
 {
    Display            *dpy = disp;

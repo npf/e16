@@ -1152,8 +1152,6 @@ ECompMgrWinSetPicts(EObj * eo)
 
    if (cw->picture == NoXID)
      {
-	XRenderPictFormat  *pictfmt;
-	XRenderPictureAttributes pa;
 	EX_Drawable         draw = EobjGetXwin(eo);
 
 	if ((cw->pixmap && Mode_compmgr.use_pixmap) || (cw->fadeout))
@@ -1161,10 +1159,7 @@ ECompMgrWinSetPicts(EObj * eo)
 	if (draw == NoXID)
 	   return;
 
-	pictfmt = XRenderFindVisualFormat(disp, WinGetVisual(EobjGetWin(eo)));
-	pa.subwindow_mode = IncludeInferiors;
-	cw->picture = XRenderCreatePicture(disp, draw,
-					   pictfmt, CPSubwindowMode, &pa);
+	cw->picture = EPictureCreateII(EobjGetWin(eo), draw);
 	D1printf("%s: %#x: Pict=%#x (drawable=%#x)\n", __func__,
 		 EobjGetXwin(eo), cw->picture, draw);
 
@@ -2148,8 +2143,6 @@ ECompMgrStart(void)
 {
    EObj               *const *lst;
    int                 i, num;
-   XRenderPictFormat  *pictfmt;
-   XRenderPictureAttributes pa;
 
    if (Mode_compmgr.active || Conf_compmgr.mode == ECM_MODE_OFF)
       return;
@@ -2187,11 +2180,7 @@ ECompMgrStart(void)
 
    ECompMgrRootBufferCreate(WinGetW(VROOT), WinGetH(VROOT));
 
-   pa.subwindow_mode = IncludeInferiors;
-   pictfmt = XRenderFindVisualFormat(disp, WinGetVisual(VROOT));
-   rootPicture =
-      XRenderCreatePicture(disp, Mode_compmgr.root, pictfmt, CPSubwindowMode,
-			   &pa);
+   rootPicture = EPictureCreateII(VROOT, Mode_compmgr.root);
 
    Mode_compmgr.rgn_tmp = ERegionCreate();
    Mode_compmgr.rgn_tmp2 = ERegionCreate();

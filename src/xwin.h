@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -307,6 +307,7 @@ void                PmapMaskFree(PmapMask * pmm);
 
 #if USE_XRENDER
 EX_Picture          EPictureCreate(Win win, EX_Drawable draw);
+EX_Picture          EPictureCreateII(Win win, EX_Drawable draw);
 EX_Picture          EPictureCreateSolid(EX_Window xwin, int argb,
 					unsigned int a, unsigned int rgb);
 EX_Picture          EPictureCreateBuffer(Win win, int w, int h, int argb,

@@ -496,8 +496,6 @@ ScaleRect(Win wsrc, EX_Drawable src, Win wdst, EX_Pixmap dst,
 #if USE_XRENDER
    if (Conf.testing.use_render_for_scaling)
      {
-	XRenderPictFormat  *pictfmt;
-	XRenderPictureAttributes pa;
 	XTransform          tr;
 	EX_Picture          psrc, pdst;
 	double              scale_x, scale_y;
@@ -509,11 +507,8 @@ ScaleRect(Win wsrc, EX_Drawable src, Win wdst, EX_Pixmap dst,
 	tr.matrix[1][1] = XDoubleToFixed(scale_y);
 	tr.matrix[2][2] = XDoubleToFixed(1.);
 
-	pa.subwindow_mode = IncludeInferiors;
-	pictfmt = XRenderFindVisualFormat(disp, wsrc->visual);
-	psrc = XRenderCreatePicture(disp, src, pictfmt, CPSubwindowMode, &pa);
-	pictfmt = XRenderFindVisualFormat(disp, wdst->visual);
-	pdst = XRenderCreatePicture(disp, dst, pictfmt, CPSubwindowMode, &pa);
+	psrc = EPictureCreateII(wsrc, src);
+	pdst = EPictureCreateII(wdst, dst);
 
 	XRenderSetPictureFilter(disp, psrc, (flags & EIMAGE_ANTI_ALIAS) ?
 				FilterBest : FilterNearest, NULL, 0);
