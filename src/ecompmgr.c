@@ -74,12 +74,10 @@
 
 #define ENABLE_DEBUG   1
 #if ENABLE_DEBUG
-#define Dprintf(fmt...)  if(EDebug(EDBUG_TYPE_COMPMGR))Eprintf(fmt)
-#define D1printf(fmt...) if(EDebug(EDBUG_TYPE_COMPMGR2))Eprintf(fmt)
-#define D2printf(fmt...) if(EDebug(EDBUG_TYPE_COMPMGR3))Eprintf(fmt)
-#define D3printf(fmt...) if(EDebug(EDBUG_TYPE_COMPMGR3)>1)Eprintf(fmt)
+#define D1printf(fmt...) if(EDebug(EDBUG_TYPE_COMPMGR))Eprintf(fmt)
+#define D2printf(fmt...) if(EDebug(EDBUG_TYPE_COMPMGR2))Eprintf(fmt)
+#define D3printf(fmt...) if(EDebug(EDBUG_TYPE_COMPMGR3))Eprintf(fmt)
 #else
-#define Dprintf(fmt...)
 #define D1printf(fmt...)
 #define D2printf(fmt...)
 #define D3printf(fmt...)
@@ -97,6 +95,15 @@
 #define INV_PICTURE 0x80
 #define INV_GEOM    (INV_POS | INV_SIZE | INV_SHAPE)
 #define INV_ALL     (INV_POS | INV_SIZE | INV_CLIP | INV_OPACITY | INV_SHADOW | INV_PIXMAP)
+
+/*
+ * Eobj compositing data hook
+ */
+
+#define WINDOW_UNREDIR  0
+#define WINDOW_SOLID    1
+#define WINDOW_TRANS    2
+#define WINDOW_ARGB     3
 
 typedef struct _cmhook ECmWinInfo;
 
@@ -138,6 +145,12 @@ struct _cmhook {
 /*
  * Configuration
  */
+
+#define ECM_MODE_OFF    0
+#define ECM_MODE_ROOT   1
+#define ECM_MODE_WINDOW 2
+#define ECM_MODE_AUTO   3
+
 #if ENABLE_SHADOWS
 #define ECM_SHADOWS_OFF      0
 #define ECM_SHADOWS_SHARP    1	/* use window alpha for shadow; sharp, but precise */
@@ -150,7 +163,7 @@ struct _cmhook {
 #define ECM_OR_ON_MAPUNMAP   2
 #define ECM_OR_ON_CREATE     3
 
-static struct {
+typedef struct {
    char                enable;
    char                use_name_pixmap;
 #if USE_COMPOSITE_OVERLAY_WINDOW
@@ -177,17 +190,15 @@ static struct {
       int                 mode;
       int                 opacity;
    } override_redirect;
-} Conf_compmgr;
+} Conf_compmgr_t;
+
+Conf_compmgr_t      Conf_compmgr;
 
 /*
  * State
  */
-#define ECM_MODE_OFF    0
-#define ECM_MODE_ROOT   1
-#define ECM_MODE_WINDOW 2
-#define ECM_MODE_AUTO   3
 
-static struct {
+typedef struct {
    int                 mode;
    EX_Window           root;
 #if USE_COMPOSITE_OVERLAY_WINDOW
@@ -204,13 +215,17 @@ static struct {
    char                got_damage;
    EX_SrvRegion        rgn_screen;
    EX_SrvRegion        rgn_clip;
+   EX_SrvRegion        rgn_tmp;	/* For temporary use */
+   EX_SrvRegion        rgn_tmp2;	/* For temporary use */
    int                 shadow_mode;
    float               opac_blur;	/* 0. -> 1. */
    float               opac_sharp;	/* 0. -> 1. */
 #if USE_XPRESENT
    unsigned int        present_serial;
 #endif
-} Mode_compmgr;
+} Mode_compmgr_t;
+
+Mode_compmgr_t      Mode_compmgr;
 
 /* FIXME - Optimize according to what actually changed */
 #define _ECM_SET_CLIP_CHANGED()   Mode_compmgr.reorder = 1
@@ -220,24 +235,15 @@ static struct {
 static EX_Picture   rootPicture;
 static EX_Picture   rootBuffer;
 
-static EX_SrvRegion rgn_tmp;	/* Region for temporary use */
-static EX_SrvRegion rgn_tmp2;	/* Region for temporary use */
-
 static ESelection  *wm_cm_sel = NULL;
 
 #define OPAQUE          0xffffffff
 #define OP32To8(op) (((unsigned int)(op)) >> 24)
 
-#define WINDOW_UNREDIR  0
-#define WINDOW_SOLID    1
-#define WINDOW_TRANS    2
-#define WINDOW_ARGB     3
-
 static void         ECompMgrDamageAll(void);
 static void         ECompMgrHandleRootEvent(Win win, XEvent * ev, void *prm);
 static void         ECompMgrHandleWindowEvent(Win win, XEvent * ev, void *prm);
 static void         ECompMgrWinInvalidate(EObj * eo, int what);
-static void         ECompMgrWinSetPicts(EObj * eo);
 static void         ECompMgrWinFadeEnd(EObj * eo, int done);
 static int          ECompMgrDetermineOrder(EObj * const *lst, int num,
 					   EObj ** first, EObj ** last,
@@ -253,7 +259,7 @@ static int          ECompMgrDetermineOrder(EObj * const *lst, int num,
 void
 ECompMgrWinClipToGC(EObj * eo, GC gc)
 {
-   EX_SrvRegion        rgn = rgn_tmp2;
+   EX_SrvRegion        rgn = Mode_compmgr.rgn_tmp2;
 
    if (!eo || !eo->cmhook)
       return;
@@ -271,15 +277,12 @@ ECompMgrWinClipToGC(EObj * eo, GC gc)
 void
 ECompMgrDeskConfigure(Desk * dsk)
 {
-   EObj               *eo;
-   ECmWinInfo         *cw;
+   EObj               *eo = dsk->bg.o;
+   ECmWinInfo         *cw = eo->cmhook;
    EX_Picture          pict;
    XRenderPictFormat  *pictfmt;
    XRenderPictureAttributes pa;
    EX_Pixmap           pmap;
-
-   eo = dsk->bg.o;
-   cw = eo->cmhook;
 
    if (dsk->bg.pmap == NoXID)
      {
@@ -390,7 +393,7 @@ ECompMgrDamageMergeObject(EObj * eo, EX_SrvRegion damage)
       ECompMgrDetermineOrder(NULL, 0, &Mode_compmgr.eo_first,
 			     &Mode_compmgr.eo_last, DeskGet(0), NoXID);
 
-   damage = ERegionCopy(rgn_tmp, damage);
+   damage = ERegionCopy(Mode_compmgr.rgn_tmp, damage);
 
 #if USE_CLIP_RELATIVE_TO_DESK
    if (cw->have_clip && eo->type != EOBJ_TYPE_DESK)
@@ -810,8 +813,9 @@ ECompMgrWinSetShape(EObj * eo)
 	if (WinIsShaped(EobjGetWin(eo)))
 	  {
 	     /* Intersect with window size to get effective bounding region */
-	     ERegionSetRect(rgn_tmp, 0, 0, EobjGetW(eo), EobjGetH(eo));
-	     ERegionIntersect(cw->shape, rgn_tmp);
+	     ERegionSetRect(Mode_compmgr.rgn_tmp,
+			    0, 0, EobjGetW(eo), EobjGetH(eo));
+	     ERegionIntersect(cw->shape, Mode_compmgr.rgn_tmp);
 	  }
 	x = EobjGetX(eo) + EobjGetBW(eo);
 	y = EobjGetY(eo) + EobjGetBW(eo);
@@ -1286,12 +1290,12 @@ ECompMgrWinMoveResize(EObj * eo, int change_xy, int change_wh, int change_bw)
    if (cw->have_extents)
      {
 	/* Invalidate old window region */
-	ERegionCopy(rgn_tmp2, cw->extents);
+	ERegionCopy(Mode_compmgr.rgn_tmp2, cw->extents);
 	ECompMgrWinInvalidate(eo, invalidate);
 	/* Invalidate new window region */
 	ECompMgrWinSetExtents(eo);
-	ERegionUnion(rgn_tmp2, cw->extents);
-	ECompMgrDamageMergeObject(eo, rgn_tmp2);
+	ERegionUnion(Mode_compmgr.rgn_tmp2, cw->extents);
+	ECompMgrDamageMergeObject(eo, Mode_compmgr.rgn_tmp2);
      }
    else
      {
@@ -1499,7 +1503,7 @@ ECompMgrWinDamage(EObj * eo, XEvent * ev)
      }
    else
      {
-	parts = rgn_tmp;
+	parts = Mode_compmgr.rgn_tmp;
 	XDamageSubtract(disp, cw->damage, NoXID, parts);
 	ERegionTranslate(parts, EobjGetX(eo) + EobjGetBW(eo),
 			 EobjGetY(eo) + EobjGetBW(eo));
@@ -1686,7 +1690,7 @@ ECompMgrDetermineOrder(EObj * const *lst, int num, EObj ** first,
 	     ERegionUnion(clip, cw->shape);
 #else
 	     ERegionUnionOffset(clip, EoGetX(dsk), EoGetY(dsk), cw->shape,
-				rgn_tmp);
+				Mode_compmgr.rgn_tmp);
 #endif
 	     break;
 
@@ -1722,7 +1726,7 @@ ECompMgrRepaintObjSetClip(EX_SrvRegion rgn, EX_SrvRegion damage,
 {
    ERegionCopy(rgn, damage);
 #if USE_CLIP_RELATIVE_TO_DESK
-   ERegionSubtractOffset(rgn, x, y, clip, rgn_tmp);
+   ERegionSubtractOffset(rgn, x, y, clip, Mode_compmgr.rgn_tmp);
 #else
    ERegionSubtract(rgn, clip);
    x = y = 0;
@@ -1739,8 +1743,9 @@ ECompMgrRepaintObjSetClip2(EObj * eo, EX_SrvRegion clip, int x, int y)
     * ECompMgrWinSetPicts() (when needed, i.e. source pict is pixmap). */
    if (WinIsShaped(EobjGetWin(eo)))
      {
-	clip = ERegionCopy(rgn_tmp, clip);
-	ERegionIntersectOffset(clip, x, y, eo->cmhook->shape, rgn_tmp2);
+	clip = ERegionCopy(Mode_compmgr.rgn_tmp, clip);
+	ERegionIntersectOffset(clip, x, y, eo->cmhook->shape,
+			       Mode_compmgr.rgn_tmp2);
      }
 #else
    eo = NULL;
@@ -1827,7 +1832,7 @@ ECompMgrRepaintObj(EX_Picture pbuf, EX_SrvRegion region, EObj * eo, int mode)
 
 	if (clip == NoXID)
 	   clip = ECompMgrRepaintObjSetClip(rgn_clip, region, cw->clip, x, y);
-	ERegionSubtractOffset(clip, x, y, cw->shape, rgn_tmp);
+	ERegionSubtractOffset(clip, x, y, cw->shape, Mode_compmgr.rgn_tmp);
 	EPictureSetClip(pbuf, clip);
 
 	switch (Mode_compmgr.shadow_mode)
@@ -1918,8 +1923,8 @@ ECompMgrRepaint(void)
 
    ERegionIntersect(Mode_compmgr.damage, Mode_compmgr.rgn_screen);
 
-   Dprintf("%s: rootBuffer=%#x rootPicture=%#x\n", __func__,
-	   rootBuffer, rootPicture);
+   D2printf("%s: rootBuffer=%#x rootPicture=%#x\n", __func__,
+	    rootBuffer, rootPicture);
    if (EDebug(EDBUG_TYPE_COMPMGR2))
       ERegionShow("damage", Mode_compmgr.damage, NULL);
 
@@ -2035,7 +2040,7 @@ ECompMgrGetRootBuffer(void)
 static void
 ECompMgrRootConfigure(void *prm __UNUSED__, XEvent * ev)
 {
-   Dprintf("%s\n", __func__);
+   D1printf("%s\n", __func__);
 
    ECompMgrRootBufferDestroy();
    ECompMgrRootBufferCreate(ev->xconfigure.width, ev->xconfigure.height);
@@ -2165,8 +2170,8 @@ ECompMgrStart(void)
 	     /* Pass all input events through */
 	     XShapeCombineRectangles(disp, Mode_compmgr.cow, ShapeInput, 0, 0,
 				     NULL, 0, ShapeSet, Unsorted);
-	     Dprintf("COW/CMroot=%#x/%#x\n",
-		     Mode_compmgr.cow, Mode_compmgr.root);
+	     D1printf("COW/CMroot=%#x/%#x\n",
+		      Mode_compmgr.cow, Mode_compmgr.root);
 	  }
      }
    else
@@ -2207,8 +2212,8 @@ ECompMgrStart(void)
 
    Mode_compmgr.got_damage = 0;
 
-   rgn_tmp = ERegionCreate();
-   rgn_tmp2 = ERegionCreate();
+   Mode_compmgr.rgn_tmp = ERegionCreate();
+   Mode_compmgr.rgn_tmp2 = ERegionCreate();
 
    EventCallbackRegister(VROOT, ECompMgrHandleRootEvent, NULL);
 
@@ -2274,8 +2279,8 @@ ECompMgrStop(void)
 
    Mode_compmgr.got_damage = 0;
    REGION_DESTROY(Mode_compmgr.damage);
-   REGION_DESTROY(rgn_tmp);
-   REGION_DESTROY(rgn_tmp2);
+   REGION_DESTROY(Mode_compmgr.rgn_tmp);
+   REGION_DESTROY(Mode_compmgr.rgn_tmp2);
 
    if (Mode_compmgr.mode == ECM_MODE_ROOT)
       XCompositeUnredirectSubwindows(disp, WinGetXwin(VROOT),
@@ -2539,8 +2544,8 @@ ECompMgrInit(void)
  done:
    if (Conf_compmgr.mode == ECM_MODE_OFF)
       Conf_compmgr.enable = 0;
-   Dprintf("%s: enable=%d mode=%d\n", __func__,
-	   Conf_compmgr.enable, Conf_compmgr.mode);
+   D1printf("%s: enable=%d mode=%d\n", __func__,
+	    Conf_compmgr.enable, Conf_compmgr.mode);
 }
 
 static void
