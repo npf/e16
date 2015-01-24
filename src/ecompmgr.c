@@ -2159,8 +2159,6 @@ ECompMgrStart(void)
    Conf_compmgr.override_redirect.opacity =
       OpacityFix(Conf_compmgr.override_redirect.opacity, 100);
 
-   ECompMgrRootBufferCreate(WinGetW(VROOT), WinGetH(VROOT));
-
    Mode_compmgr.root = WinGetXwin(VROOT);
 #if USE_COMPOSITE_OVERLAY_WINDOW
    if (Conf_compmgr.use_cow && !Mode.wm.window)
@@ -2185,11 +2183,18 @@ ECompMgrStart(void)
      }
 #endif
 
+   Mode_compmgr.got_damage = 0;
+
+   ECompMgrRootBufferCreate(WinGetW(VROOT), WinGetH(VROOT));
+
    pa.subwindow_mode = IncludeInferiors;
    pictfmt = XRenderFindVisualFormat(disp, WinGetVisual(VROOT));
    rootPicture =
       XRenderCreatePicture(disp, Mode_compmgr.root, pictfmt, CPSubwindowMode,
 			   &pa);
+
+   Mode_compmgr.rgn_tmp = ERegionCreate();
+   Mode_compmgr.rgn_tmp2 = ERegionCreate();
 
    ECompMgrShadowsInit(Conf_compmgr.shadows.mode, 0);
 
@@ -2214,11 +2219,6 @@ ECompMgrStart(void)
 				     CompositeRedirectAutomatic);
 	break;
      }
-
-   Mode_compmgr.got_damage = 0;
-
-   Mode_compmgr.rgn_tmp = ERegionCreate();
-   Mode_compmgr.rgn_tmp2 = ERegionCreate();
 
    EventCallbackRegister(VROOT, ECompMgrHandleRootEvent, NULL);
 
@@ -2258,12 +2258,6 @@ ECompMgrStop(void)
    SelectionRelease(wm_cm_sel);
    wm_cm_sel = NULL;
 
-   PICTURE_DESTROY(rootPicture);
-
-   ECompMgrRootBufferDestroy();
-
-   ECompMgrShadowsInit(ECM_SHADOWS_OFF, 0);
-
    lst1 = EobjListStackGet(&num);
    if (num > 0)
      {
@@ -2284,8 +2278,12 @@ ECompMgrStop(void)
 
    Mode_compmgr.got_damage = 0;
    REGION_DESTROY(Mode_compmgr.damage);
+
+   ECompMgrShadowsInit(ECM_SHADOWS_OFF, 0);
    REGION_DESTROY(Mode_compmgr.rgn_tmp);
    REGION_DESTROY(Mode_compmgr.rgn_tmp2);
+   PICTURE_DESTROY(rootPicture);
+   ECompMgrRootBufferDestroy();
 
    if (Mode_compmgr.mode == ECM_MODE_ROOT)
       XCompositeUnredirectSubwindows(disp, WinGetXwin(VROOT),
