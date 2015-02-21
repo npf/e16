@@ -5888,3 +5888,14 @@ Visibility cosmetics (use EC_C_VISIBILITY).
 Minor fading animation tweak.
 Remove unused AnimatorsDelCat().
 Clean up header file inclusion order.
+
+-------------------------------------------------------------------------------
+
+Sun Feb  8 09:43:24 CET 2015
+
+--- 1.0.16 ---
+Fix potential buffer overruns when using sscanf().
+CM: Cosmetics.
+CM: Fadeout tweak.
+CM: Reorder start/stop details.
+Wrap some calls to XRenderCreatePicture().
