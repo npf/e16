@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2015-01-17 18:38+0100\n"
+"POT-Creation-Date: 2015-02-21 14:54+0100\n"
 "PO-Revision-Date: 2010-02-19 03:04+0000\n"
 "Last-Translator: Roth Róbert <Unknown>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 "Mandrake - mandrake@mandrake.net\n"
 "Kim Woelders - kim@woelders.dk\n"
 
-#: src/aclass.c:222 src/backgrounds.c:260 src/borders.c:696 src/buttons.c:190
+#: src/aclass.c:222 src/backgrounds.c:260 src/borders.c:698 src/buttons.c:190
 #: src/cursors.c:139 src/iclass.c:360 src/tclass.c:119 src/tooltips.c:136
 #, c-format
 msgid "%u references remain"
@@ -680,7 +680,7 @@ msgstr ""
 msgid "Apply"
 msgstr "Alkalmaz"
 
-#: src/ecompmgr.c:2321
+#: src/ecompmgr.c:2318
 msgid ""
 "Cannot enable Composite Manager.\n"
 "Use xdpyinfo to check that\n"

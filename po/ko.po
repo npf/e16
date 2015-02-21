@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2015-01-17 18:38+0100\n"
+"POT-Creation-Date: 2015-02-21 14:54+0100\n"
 "PO-Revision-Date: 2009-12-02 09:48+0000\n"
 "Last-Translator: Michael Kim <Unknown>\n"
 "Language-Team: Korean <translation-team-ko@lists.sourceforge.net>\n"
@@ -36,7 +36,7 @@ msgid ""
 "Kim Woelders - kim@woelders.dk\n"
 msgstr ""
 
-#: src/aclass.c:222 src/backgrounds.c:260 src/borders.c:696 src/buttons.c:190
+#: src/aclass.c:222 src/backgrounds.c:260 src/borders.c:698 src/buttons.c:190
 #: src/cursors.c:139 src/iclass.c:360 src/tclass.c:119 src/tooltips.c:136
 #, c-format
 msgid "%u references remain"
@@ -672,7 +672,7 @@ msgstr ""
 msgid "Apply"
 msgstr "적용"
 
-#: src/ecompmgr.c:2321
+#: src/ecompmgr.c:2318
 msgid ""
 "Cannot enable Composite Manager.\n"
 "Use xdpyinfo to check that\n"
