@@ -27,6 +27,7 @@
 
 #include "E.h"
 #include "cursors.h"
+#include "desktops.h"
 #include "eobj.h"
 #include "events.h"
 #include "ewins.h"
@@ -280,6 +281,7 @@ HiwinInit(Hiwin * phi, EWin * ewin)
 #endif
 
    phi->ewin = ewin;
+   EoReparent(phi, EoObj(DesksGetCurrent()), 0, 0);
 
 #if USE_COMPOSITE
    if (phi->ewin)
