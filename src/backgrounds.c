@@ -1762,7 +1762,7 @@ CB_BGAreaEvent(DItem * di, int val __UNUSED__, void *data)
 	     goto do_slide;
 	   do_slide:
 	     DialogItemSliderSetVal(dd->bg_sel_slider, dd->bg_sel_sliderval);
-	     CB_BGAreaSlide(NULL, 0, NULL);
+	     CB_BGAreaSlide(d, 0, NULL);
 	     break;
 	  }
      }
