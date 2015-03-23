@@ -1130,7 +1130,7 @@ PagerHiwinInit(Pager * p, EWin * ewin)
    wh = (EoGetH(ewin) * p->dh) / WinGetH(VROOT);
    ETranslateCoordinates(p->win, VROOT, 0, 0, &px, &py, NULL);
 
-   HiwinInit(phi, ewin);
+   HiwinInit(phi, ewin, EoObj(EoGetDesk(p->ewin)));
    HiwinSetGeom(phi, px + wx, py + wy, ww, wh);
    HiwinSetCallback(phi, PagerHiwinEvent, p);
 }

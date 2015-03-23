@@ -27,7 +27,6 @@
 
 #include "E.h"
 #include "cursors.h"
-#include "desktops.h"
 #include "eobj.h"
 #include "events.h"
 #include "ewins.h"
@@ -265,7 +264,7 @@ HiwinSetGeom(Hiwin * phi, int x, int y, int w, int h)
 }
 
 void
-HiwinInit(Hiwin * phi, EWin * ewin)
+HiwinInit(Hiwin * phi, EWin * ewin, EObj * parent)
 {
    if (ewin == phi->ewin)
       return;
@@ -281,7 +280,8 @@ HiwinInit(Hiwin * phi, EWin * ewin)
 #endif
 
    phi->ewin = ewin;
-   EoReparent(phi, EoObj(DesksGetCurrent()), 0, 0);
+   if (parent)
+      EoReparent(phi, parent, 0, 0);
 
 #if USE_COMPOSITE
    if (phi->ewin)
@@ -342,7 +342,7 @@ HiwinHide(Hiwin * phi)
    if (EoIsShown(phi))
      {
 	GrabPointerRelease();
-	HiwinInit(phi, NULL);
+	HiwinInit(phi, NULL, NULL);
 	EoUnmap(phi);
      }
 
