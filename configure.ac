@@ -65,7 +65,7 @@ AM_ICONV
 AM_LANGINFO_CODESET
 
 AM_GNU_GETTEXT([external])
-AM_GNU_GETTEXT_VERSION([0.17])
+AM_GNU_GETTEXT_VERSION([0.18])
 
 AC_CHECK_FUNCS([clock_gettime], [have_clock_gettime=yes],
   [AC_CHECK_LIB([rt], [clock_gettime], [have_clock_gettime=-lrt],
