@@ -808,7 +808,7 @@ IPC_Cfg(const char *params)
    for (i = 0; i < N_CFG_DLGS; i++)
      {
 	name = dialogs[i]->label;
-	if (strcasecmp(params, name))
+	if (Estrcasecmp(params, name))
 	   continue;
 	DialogShowSimple(dialogs[i], NULL);
      }

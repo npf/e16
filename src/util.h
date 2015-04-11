@@ -31,6 +31,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 #define VERS(maj, min) (1000 * (maj) + (min))
 
 #define INT2PTR(i) ((void*)(long)(i))

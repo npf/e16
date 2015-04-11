@@ -114,14 +114,14 @@ _ex_window_prop32_set(EX_Window win, EX_Atom atom,
    unsigned long      *pl;
    int                 i;
 
-   pl = (unsigned long *)malloc(num * sizeof(long));
+   pl = (unsigned long *)Emalloc(num * sizeof(long));
    if (!pl)
       return;
    for (i = 0; i < num; i++)
       pl[i] = val[i];
    XChangeProperty(_ex_disp, win, atom, type, 32, PropModeReplace,
 		   (unsigned char *)pl, num);
-   free(pl);
+   Efree(pl);
 #endif
 }
 
@@ -169,7 +169,7 @@ _ex_window_prop32_list_get(EX_Window win, EX_Atom atom,
 	else
 	  {
 	     num = (int)num_ret;
-	     lst = (unsigned int *)malloc(num * sizeof(unsigned int));
+	     lst = (unsigned int *)Emalloc(num * sizeof(unsigned int));
 	     *val = lst;
 	     if (!lst)
 		return 0;
@@ -270,12 +270,12 @@ ex_window_prop_string_list_get(EX_Window win, EX_Atom atom, char ***plst)
 	  {
 	     if (items > 0)
 	       {
-		  pstr = (char **)malloc(items * sizeof(char *));
+		  pstr = (char **)Emalloc(items * sizeof(char *));
 		  if (!pstr)
 		     goto done;
 		  for (i = 0; i < items; i++)
 		     pstr[i] = (list[i] && (*list[i] || i < items - 1)) ?
-			strdup(list[i]) : NULL;
+			Estrdup(list[i]) : NULL;
 	       }
 	     if (list)
 		XFreeStringList(list);
@@ -285,10 +285,10 @@ ex_window_prop_string_list_get(EX_Window win, EX_Atom atom, char ***plst)
 
    /* Bad format or XmbTextPropertyToTextList failed - Now what? */
    items = 1;
-   pstr = (char **)malloc(sizeof(char *));
+   pstr = (char **)Emalloc(sizeof(char *));
    if (!pstr)
       goto done;
-   pstr[0] = (xtp.value) ? strdup((char *)xtp.value) : NULL;
+   pstr[0] = (xtp.value) ? Estrdup((char *)xtp.value) : NULL;
 
  done:
    XFree(xtp.value);
@@ -328,14 +328,14 @@ ex_window_prop_string_get(EX_Window win, EX_Atom atom)
 	s = XmbTextPropertyToTextList(_ex_disp, &xtp, &list, &items);
 	if ((s == Success) && (items > 0))
 	  {
-	     str = (*list) ? strdup(*list) : NULL;
+	     str = (*list) ? Estrdup(*list) : NULL;
 	     XFreeStringList(list);
 	  }
 	else
-	   str = (xtp.value) ? strdup((char *)xtp.value) : NULL;
+	   str = (xtp.value) ? Estrdup((char *)xtp.value) : NULL;
      }
    else
-      str = (xtp.value) ? strdup((char *)xtp.value) : NULL;
+      str = (xtp.value) ? Estrdup((char *)xtp.value) : NULL;
 
    XFree(xtp.value);
 
@@ -371,7 +371,7 @@ _ex_window_prop_string_utf8_get(EX_Window win, EX_Atom atom)
 		      &format_ret, &num_ret, &bytes_after, &prop_ret);
    if (prop_ret && num_ret > 0 && format_ret == 8)
      {
-	str = (char *)malloc(num_ret + 1);
+	str = (char *)Emalloc(num_ret + 1);
 	if (str)
 	  {
 	     memcpy(str, prop_ret, num_ret);
@@ -472,8 +472,7 @@ ex_window_prop_xid_list_change(EX_Window win, EX_Atom atom,
    ex_window_prop_xid_set(win, atom, type, lst, num);
 
  done:
-   if (lst)
-      free(lst);
+   Efree(lst);
 }
 
 /*
@@ -693,9 +692,9 @@ ex_icccm_name_class_get(EX_Window win, char **name, char **clss)
    if (XGetClassHint(_ex_disp, win, &xch))
      {
 	if (name && xch.res_name)
-	   *name = strdup(xch.res_name);
+	   *name = Estrdup(xch.res_name);
 	if (clss && xch.res_class)
-	   *clss = strdup(xch.res_class);
+	   *clss = Estrdup(xch.res_class);
 	XFree(xch.res_name);
 	XFree(xch.res_class);
      }
@@ -888,7 +887,7 @@ ex_netwm_desk_names_set(EX_Window root, const char **names,
 		   (unsigned char *)buf, len);
 
  done:
-   free(buf);
+   Efree(buf);
 }
 
 void

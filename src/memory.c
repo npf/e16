@@ -56,6 +56,7 @@ Estrdup(const char *s)
    return NULL;
 #else
    int                 sz;
+   char               *ss;
 
    if (!s)
       return NULL;
@@ -332,9 +333,9 @@ Esetenv(const char *name, const char *value)
 #if HAVE_SETENV
 	setenv(name, value, 1);
 #else
-	char                buf[FILEPATH_LEN_MAX];
+	char                buf[4096];
 
-	Esnprintf(buf, FILEPATH_LEN_MAX, "%s=%s", name, value);
+	Esnprintf(buf, sizeof(buf), "%s=%s", name, value);
 	putenv(Estrdup(buf));
 #endif
      }
