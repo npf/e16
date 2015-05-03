@@ -1414,19 +1414,19 @@ DeskRestackSimple(Desk * dsk)
    eo = dsk->stack.latest;
 
    lst = EobjListStackGetForDesk(&num, dsk);
-   if (num < 2)
-      return;
-
    for (i = 0; i < num; i++)
       if (lst[i] == eo)
 	 break;
    if (i >= num)
-      return;
+      return;			/* eo not in list (can this happen?) */
 
    eo->stacked = 1;
 
    if (EDebug(EDBUG_TYPE_STACKING))
       Eprintf("%s: %#x %s\n", __func__, EobjGetXwin(eo), EobjGetName(eo));
+
+   if (num < 2)
+      return;			/* Only one window in stack - done */
 
    if (i < num - 1)
      {
