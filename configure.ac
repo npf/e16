@@ -19,6 +19,8 @@ if test "x$exec_prefix" = "xNONE"; then
   exec_prefix=$prefix
 fi
 
+AC_USE_SYSTEM_EXTENSIONS
+
 AC_PROG_CC
 AM_PROG_CC_C_O
 
@@ -446,8 +448,6 @@ if test "x$enable_gcc_cpp" = "xyes"; then
 else
   EC_C_WARNINGS()
 fi
-
-AC_DEFINE(_GNU_SOURCE, 1, [Enable extensions])
 
 AC_DEFINE(USE_EXT_INIT_WIN,          1, [Use external init window during restart])
 
