@@ -2103,8 +2103,11 @@ EPictureCreateSolid(EX_Window xwin, int argb, unsigned int a, unsigned int rgb)
    c.green = (unsigned short)(_G(rgb) * 0x101);
    c.blue = (unsigned short)(_B(rgb) * 0x101);
 
-#if RENDER_VERSION >= VERS(0, 10)
-   if (ExtVersion(XEXT_RENDER) >= VERS(0, 10))
+#if RENDER_VERSION >= VERS(0, 11)
+   /* Version 0.10 should be good but apparently sometimes isn't
+    * (or is it some broken driver?).
+    * Anyway, let's require 0.11 and avoid some trouble. */
+   if (ExtVersion(XEXT_RENDER) >= VERS(0, 11))
      {
 	pict = XRenderCreateSolidFill(dpy, &c);
      }
