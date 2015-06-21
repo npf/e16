@@ -1326,7 +1326,8 @@ EwinEventConfigureRequest(EWin * ewin, XEvent * ev)
 	winrel = 0;
 	/* This is shady - some clients send root coords, some use the
 	 * ICCCM ones sent by us */
-	if (!EwinInhGetApp(ewin, move))
+	if ((ev->xconfigurerequest.value_mask & (CWX | CWY)) &&
+	    !EwinInhGetApp(ewin, move))
 	  {
 #if 0				/* FIXME - ??? */
 	     if (ev->xconfigurerequest.value_mask & CWX)
@@ -1341,13 +1342,21 @@ EwinEventConfigureRequest(EWin * ewin, XEvent * ev)
 		y = ev->xconfigurerequest.y -
 		   (Mode.wm.win_y + EoGetY(EoGetDesk(ewin)));
 #endif
+	     /* Correct position taking gravity into account */
+	     EwinGetPosition(ewin, x, y, 0, &x, &y);
 	  }
-	if (!EwinInhGetApp(ewin, size))
+	if ((ev->xconfigurerequest.value_mask & (CWWidth | CWHeight)) &&
+	    !EwinInhGetApp(ewin, size))
 	  {
 	     if (ev->xconfigurerequest.value_mask & CWWidth)
 		w = ev->xconfigurerequest.width;
 	     if (ev->xconfigurerequest.value_mask & CWHeight)
 		h = ev->xconfigurerequest.height;
+	     if ((ev->xconfigurerequest.value_mask & (CWX | CWY)) == 0)
+	       {
+		  /* Resizing only */
+		  EwinKeepOnScreen(ewin, w, h, &x, &y);
+	       }
 	  }
 	if (ev->xconfigurerequest.value_mask & CWSibling)
 	   winrel = ev->xconfigurerequest.above;
@@ -1365,17 +1374,6 @@ EwinEventConfigureRequest(EWin * ewin, XEvent * ev)
 		  else if (xwc.stack_mode == Below)
 		     EwinLower(ewin);
 	       }
-	  }
-
-	if (ev->xconfigurerequest.value_mask & (CWX | CWY))
-	  {
-	     /* Correct position taking gravity into account */
-	     EwinGetPosition(ewin, x, y, 0, &x, &y);
-	  }
-	else if (ev->xconfigurerequest.value_mask & (CWWidth | CWHeight))
-	  {
-	     /* Resizing only */
-	     EwinKeepOnScreen(ewin, w, h, &x, &y);
 	  }
 
 	EwinMoveResize(ewin, x, y, w, h, MRF_NOCHECK_ONSCREEN);
