@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2015 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -1444,6 +1444,7 @@ SnapshotEwinApply(EWin * ewin)
 	ewin->state.placed = 1;
 	ewin->client.x = sn->x;
 	ewin->client.y = sn->y;
+	ewin->icccm.grav = NorthWestGravity;
 #if 0				/* No, do later in EwinDetermineArea() */
 	ewin->area_x = sn->area_x;
 	ewin->area_y = sn->area_y;
