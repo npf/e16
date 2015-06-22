@@ -5908,3 +5908,16 @@ Tue Mar 24 19:05:34 CET 2015
 Fix focus issues with pager zoom windows on desks other than first (T2197).
 Slightly different fix to pager zoom/focus issue.
 Fix crash when using mouse wheel in background selector (T2222).
+
+-------------------------------------------------------------------------------
+
+Mon Jun 22 20:21:33 CEST 2015
+
+--- 1.0.16.002 ---
+Use gettext 0.18.
+Eliminate deprecated usleep().
+Fixes for various build corner cases.
+Fix stacking when there is only one window.
+Require render version 0.11 before using XRenderCreateSolidFill().
+Fix ignoring ConfigureRequest from application.
+Set NorthWestGravity when applying snapshot location.
