@@ -5921,3 +5921,10 @@ Fix stacking when there is only one window.
 Require render version 0.11 before using XRenderCreateSolidFill().
 Fix ignoring ConfigureRequest from application.
 Set NorthWestGravity when applying snapshot location.
+
+-------------------------------------------------------------------------------
+
+Sun Jul 12 20:02:43 CEST 2015
+
+--- 1.0.17 ---
+No changes since 1.0.16.002.
