@@ -40,13 +40,29 @@
 #define MAX_AVAILABLE    1	/* Expand until don't cover */
 #define MAX_CONSERVATIVE 2	/* Expand until something */
 #define MAX_XINERAMA     3	/* Fill Xinerama screen */
+#define MAX_HALF_N       4	/* Expand to North half */
+#define MAX_HALF_S       5	/* Expand to South half */
+#define MAX_HALF_E       6	/* Expand to East half*/
+#define MAX_HALF_W       7	/* Expand to West half*/
+#define MAX_QUARTER_NE   8	/* Expand to NE quarter */
+#define MAX_QUARTER_NW   9	/* Expand to NW quarter */
+#define MAX_QUARTER_SE   10	/* Expand to SE quarter */
+#define MAX_QUARTER_SW   11	/* Expand to SW quarter */
 
 static int
 _ignore(const EWin * ewin, int type)
 {
    if (ewin->state.iconified || EoIsFloating(ewin) ||
        ewin->props.ignorearrange ||
-       (type == MAX_AVAILABLE && !ewin->props.never_use_area))
+       ((type == MAX_AVAILABLE ||
+         type == MAX_HALF_N ||
+         type == MAX_HALF_S ||
+         type == MAX_HALF_E ||
+         type == MAX_HALF_W ||
+         type == MAX_QUARTER_NE ||
+         type == MAX_QUARTER_NW ||
+         type == MAX_QUARTER_SE ||
+         type == MAX_QUARTER_SW) && !ewin->props.never_use_area))
       return 1;
    return 0;
 }
@@ -885,6 +901,22 @@ MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver)
       type = MAX_CONSERVATIVE;
    else if (!strcmp(resize_type, "xinerama"))
       type = MAX_XINERAMA;
+   else if (!strcmp(resize_type, "half_N"))
+      type = MAX_HALF_N;
+   else if (!strcmp(resize_type, "half_S"))
+      type = MAX_HALF_S;
+   else if (!strcmp(resize_type, "half_E"))
+      type = MAX_HALF_E;
+   else if (!strcmp(resize_type, "half_W"))
+      type = MAX_HALF_W;
+   else if (!strcmp(resize_type, "quarter_NE"))
+      type = MAX_QUARTER_NE;
+   else if (!strcmp(resize_type, "quarter_NW"))
+      type = MAX_QUARTER_NW;
+   else if (!strcmp(resize_type, "quarter_SE"))
+      type = MAX_QUARTER_SE;
+   else if (!strcmp(resize_type, "quarter_SW"))
+      type = MAX_QUARTER_SW;
 
    /* Default is no change */
    x = EoGetX(ewin);
@@ -911,6 +943,14 @@ MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver)
      case MAX_ABSOLUTE:
      case MAX_AVAILABLE:
      case MAX_CONSERVATIVE:
+     case MAX_HALF_N:
+     case MAX_HALF_S:
+     case MAX_HALF_E:
+     case MAX_HALF_W:
+     case MAX_QUARTER_NE:
+     case MAX_QUARTER_NW:
+     case MAX_QUARTER_SE:
+     case MAX_QUARTER_SW:
 	ScreenGetAvailableArea(x + w / 2, y + h / 2, &x1, &y1, &x2, &y2,
 			       Conf.place.ignore_struts_maximize);
 	x2 += x1;
@@ -982,6 +1022,37 @@ MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver)
 	     _get_span_x(ewin, type, lst, num, &x1, &x2);
 	     x = x1;
 	     w = x2 - x1;
+	  }
+
+  /* half and quarter ops are possible with toggle_size only */
+	if (hor && ver)
+	  {	
+	    if (type == MAX_HALF_E || type == MAX_HALF_W ||
+	        type == MAX_QUARTER_NE || type == MAX_QUARTER_NW ||
+          type == MAX_QUARTER_SE || type == MAX_QUARTER_SW)
+  		  {
+  		     w = w/2;
+  		  }
+		
+			if (type == MAX_HALF_N || type == MAX_HALF_S ||
+	        type == MAX_QUARTER_NE || type == MAX_QUARTER_NW ||
+          type == MAX_QUARTER_SE || type == MAX_QUARTER_SW)
+		    {
+		       h = h/2;
+		    }
+
+			if (type == MAX_HALF_E ||
+	        type == MAX_QUARTER_NE || type == MAX_QUARTER_SE)
+		    {
+		       x += w;
+		    }
+		
+		
+			if (type == MAX_HALF_S ||
+	        type == MAX_QUARTER_SE || type == MAX_QUARTER_SW)
+		    {
+		       y += h;
+		    }
 	  }
 
 	break;
