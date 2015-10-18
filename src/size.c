@@ -828,16 +828,51 @@ MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver, const char *sc
    int                 x, y, w, h, x1, x2, y1, y2, type, bl, br, bt, bb;
    EWin               *const *lst;
    int                 num, speed;
-   int                 old_hor = ewin->state.maximized_horz != 0;
-   int                 old_ver = ewin->state.maximized_vert != 0;
+   int                 old_hor, old_ver;
 
    if (!ewin)
       return;
+
+   type = MAX_ABSOLUTE;		/* Select default */
+   if (!resize_type || !resize_type[0])
+      type = Conf.movres.mode_maximize_default;
+   else if (!strcmp(resize_type, "absolute"))
+      type = MAX_ABSOLUTE;
+   else if (!strcmp(resize_type, "available"))
+      type = MAX_AVAILABLE;
+   else if (!strcmp(resize_type, "conservative"))
+      type = MAX_CONSERVATIVE;
+   else if (!strcmp(resize_type, "xinerama"))
+      type = MAX_XINERAMA;
+   else if (!strcmp(resize_type, "half_N"))
+      type = MAX_HALF_N;
+   else if (!strcmp(resize_type, "half_S"))
+      type = MAX_HALF_S;
+   else if (!strcmp(resize_type, "half_E"))
+      type = MAX_HALF_E;
+   else if (!strcmp(resize_type, "half_W"))
+      type = MAX_HALF_W;
+   else if (!strcmp(resize_type, "quarter_NE"))
+      type = MAX_QUARTER_NE;
+   else if (!strcmp(resize_type, "quarter_NW"))
+      type = MAX_QUARTER_NW;
+   else if (!strcmp(resize_type, "quarter_SE"))
+      type = MAX_QUARTER_SE;
+   else if (!strcmp(resize_type, "quarter_SW"))
+      type = MAX_QUARTER_SW;
+
+   old_hor = ewin->state.maximized_horz != 0;
+   old_ver = ewin->state.maximized_vert != 0;
 
    if (ewin->state.inhibit_max_hor && hor)
       return;
    if (ewin->state.inhibit_max_ver && ver)
       return;
+
+   if ((type == MAX_HALF_E || type == MAX_HALF_W) && hor && ! ver) 
+      old_ver = 0;
+   if ((type == MAX_HALF_N || type == MAX_HALF_S) && ver && ! hor) 
+      old_hor = 0;
 
    if (!old_hor && !old_ver)
      {
@@ -889,34 +924,6 @@ MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver, const char *sc
 	h = ewin->save_max.h;
 	goto do_resize;
      }
-
-   type = MAX_ABSOLUTE;		/* Select default */
-   if (!resize_type || !resize_type[0])
-      type = Conf.movres.mode_maximize_default;
-   else if (!strcmp(resize_type, "absolute"))
-      type = MAX_ABSOLUTE;
-   else if (!strcmp(resize_type, "available"))
-      type = MAX_AVAILABLE;
-   else if (!strcmp(resize_type, "conservative"))
-      type = MAX_CONSERVATIVE;
-   else if (!strcmp(resize_type, "xinerama"))
-      type = MAX_XINERAMA;
-   else if (!strcmp(resize_type, "half_N"))
-      type = MAX_HALF_N;
-   else if (!strcmp(resize_type, "half_S"))
-      type = MAX_HALF_S;
-   else if (!strcmp(resize_type, "half_E"))
-      type = MAX_HALF_E;
-   else if (!strcmp(resize_type, "half_W"))
-      type = MAX_HALF_W;
-   else if (!strcmp(resize_type, "quarter_NE"))
-      type = MAX_QUARTER_NE;
-   else if (!strcmp(resize_type, "quarter_NW"))
-      type = MAX_QUARTER_NW;
-   else if (!strcmp(resize_type, "quarter_SE"))
-      type = MAX_QUARTER_SE;
-   else if (!strcmp(resize_type, "quarter_SW"))
-      type = MAX_QUARTER_SW;
 
    /* Default is no change */
    x = EoGetX(ewin);
@@ -997,6 +1004,23 @@ MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver, const char *sc
 	     lst = EwinListGetForDesk(&num, EoGetDesk(ewin));
 	  }
 
+	if (type == MAX_HALF_E && hor)
+    {
+      x1 += (x2 - x1) / 2;
+    }
+	if (type == MAX_HALF_W && hor)
+    {
+      x2 -= (x2 - x1) / 2;
+    }
+	if (type == MAX_HALF_N && ver)
+    {
+      y2 -= (y2 - y1) / 2;
+    }
+	if (type == MAX_HALF_S && ver)
+    {
+      y1 += (y2 - y1) / 2;
+    }
+
 #if ENABLE_SMART_MAXIMISE
 	if (type == MAX_CONSERVATIVE && ver && hor &&
 	    ( /*(!old_hor && !old_ver) || */ Conf.movres.enable_smart_max_hv))
@@ -1022,37 +1046,6 @@ MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver, const char *sc
 	     _get_span_x(ewin, type, lst, num, &x1, &x2);
 	     x = x1;
 	     w = x2 - x1;
-	  }
-
-  /* half and quarter ops are possible with toggle_size only */
-	if (hor && ver)
-	  {	
-	    if (type == MAX_HALF_E || type == MAX_HALF_W ||
-	        type == MAX_QUARTER_NE || type == MAX_QUARTER_NW ||
-          type == MAX_QUARTER_SE || type == MAX_QUARTER_SW)
-  		  {
-  		     w = w/2;
-  		  }
-		
-			if (type == MAX_HALF_N || type == MAX_HALF_S ||
-	        type == MAX_QUARTER_NE || type == MAX_QUARTER_NW ||
-          type == MAX_QUARTER_SE || type == MAX_QUARTER_SW)
-		    {
-		       h = h/2;
-		    }
-
-			if (type == MAX_HALF_E ||
-	        type == MAX_QUARTER_NE || type == MAX_QUARTER_SE)
-		    {
-		       x += w;
-		    }
-		
-		
-			if (type == MAX_HALF_S ||
-	        type == MAX_QUARTER_SE || type == MAX_QUARTER_SW)
-		    {
-		       y += h;
-		    }
 	  }
 
 	break;
