@@ -480,7 +480,7 @@ void                MoveResizeEnd(EWin * ewin);
 
 /* size.c */
 void                MaxSizeHV(EWin * ewin, const char *resize_type,
-			      int hor, int ver);
+			      int hor, int ver, const char *screen_spec);
 
 /* stacking.c */
 EWin               *const *EwinListStackGet(int *num);

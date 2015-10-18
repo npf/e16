@@ -434,7 +434,6 @@ IpcWinop(const WinOp * wop, EWin * ewin, const char *prm)
 
    param1[0] = param2[0] = '\0';
    sscanf(prm, "%127s %127s", param1, param2);
-
    switch (wop->op)
      {
      default:
@@ -676,15 +675,15 @@ IpcWinop(const WinOp * wop, EWin * ewin, const char *prm)
 	break;
 
      case EWIN_OP_MAX_WIDTH:
-	MaxSizeHV(ewin, param1, 1, 0);
+	MaxSizeHV(ewin, param1, 1, 0, param2);
 	break;
 
      case EWIN_OP_MAX_HEIGHT:
-	MaxSizeHV(ewin, param1, 0, 1);
+	MaxSizeHV(ewin, param1, 0, 1, param2);
 	break;
 
      case EWIN_OP_MAX_SIZE:
-	MaxSizeHV(ewin, param1, 1, 1);
+	MaxSizeHV(ewin, param1, 1, 1, param2);
 	break;
 
      case EWIN_OP_FULLSCREEN:
