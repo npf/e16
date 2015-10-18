@@ -979,7 +979,7 @@ EWMH_ProcessClientClientMessage(EWin * ewin, XClientMessageEvent * ev)
 	     if ((ewin->state.maximized_horz != maxh) ||
 		 (ewin->state.maximized_vert != maxv))
 	       {
-		  MaxSizeHV(ewin, "available", maxh, maxv);
+		  MaxSizeHV(ewin, "available", maxh, maxv, NULL);
 		  EWMH_SetWindowState(ewin);
 	       }
 	  }

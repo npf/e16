@@ -823,7 +823,7 @@ pareto_maximizer(EWin * ewin, int type, EWin * const *lst, int num,
 #endif /* ENABLE_SMART_MAXIMISE */
 
 void
-MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver)
+MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver, const char *screen_spec)
 {
    int                 x, y, w, h, x1, x2, y1, y2, type, bl, br, bt, bb;
    EWin               *const *lst;

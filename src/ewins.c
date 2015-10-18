@@ -902,7 +902,7 @@ AddToFamily(EWin * ewin, EX_Window xwin, XWindowAttributes * pxwa, int startup)
 	hor = ewin->state.maximized_horz;
 	ver = ewin->state.maximized_vert;
 	ewin->state.maximized_horz = ewin->state.maximized_vert = 0;
-	MaxSizeHV(ewin, "absolute", hor, ver);
+	MaxSizeHV(ewin, "absolute", hor, ver, NULL);
 	/* Set old state to current maximized one */
 	ewin->save_max.x = EoGetX(ewin);
 	ewin->save_max.y = EoGetY(ewin);
