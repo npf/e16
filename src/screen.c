@@ -357,6 +357,15 @@ ScreenGetHead(int xi, int yi)
 	     head = i;
 	  }
      }
+   return head;
+}
+
+int
+ScreenGetGeometry(int xi, int yi, int *px, int *py, int *pw, int *ph)
+{
+   int                 head;
+
+   head = ScreenGetHead(xi, yi);
 
    return head;
 }

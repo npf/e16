@@ -59,6 +59,7 @@ static const WinOp  winops[] = {
    {"stick", 2, 1, 1, EWIN_OP_STICK},
    {"focus", 2, 1, 0, EWIN_OP_FOCUS},
 
+   {"screen", 2, 1, 1, EWIN_OP_SCREEN},
    {"desk", 2, 1, 1, EWIN_OP_DESK},
    {"area", 2, 1, 1, EWIN_OP_AREA},
    {"move", 2, 1, 1, EWIN_OP_MOVE},
@@ -1659,6 +1660,45 @@ EwinOpMoveToDesk(EWin * ewin, int source __UNUSED__, Desk * dsk, int inc)
    HintsSetWindowState(ewin);
    HintsSetWindowDesktop(ewin);
    SnapshotEwinUpdate(ewin, SNAP_USE_STICKY);
+}
+
+void
+EwinOpMoveToScreen(EWin * ewin, int source __UNUSED__, int head)
+{
+   int                 x0, y0, w0, h0, x1, y1, w1, h1;
+   int                 x, y, w, h, nx, ny, nw, nh;
+   int                 bl, br, bt, bb;
+
+   if (head < 0 || head >= ScreenGetHeads()) {
+      return;
+   }
+
+   x = ewin->client.x;
+   y = ewin->client.y;
+   w = ewin->client.w;
+   h = ewin->client.h;
+
+   EwinBorderGetSize(ewin, &bl, &br, &bt, &bb);
+   x -= bl;
+   y -= bt;
+
+   ScreenGetGeometry(x + w / 2, y + h / 2, &x0, &y0, &w0, &h0);
+   ScreenGetGeometryByHead(head, &x1 ,&y1, &w1, &h1);
+
+   nx = (x - x0) * w1 / w0 + x1;
+   ny = (y - y0) * h1 / h0 + y1;
+   //nw = w * w1 / w0;
+   //nh = h * w1 / w0;
+   nw = w;
+   nh = h;
+//printf("x0 = %d ; y0 = %d ; w0 = %d ; h0 = %d\n", x0, y0, w0, h0);
+//printf("x1 = %d ; y1 = %d ; w1 = %d ; h1 = %d\n", x1, y1, w1, h1);
+printf("x = %d ; y = %d ; w = %d ; h = %d\n", x, y, w, h);
+printf("nx = %d ; ny = %d ; nw = %d ; nh = %d\n", nx, ny, nw, nh);
+printf("\n");
+
+   EwinMoveResize(ewin, nx, ny, nw, nh, MRF_MOVE | MRF_RESIZE |
+                  MRF_NOCHECK_ONSCREEN);
 }
 
 #if 0				/* Unused */
