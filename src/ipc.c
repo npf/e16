@@ -509,6 +509,30 @@ IpcWinop(const WinOp * wop, EWin * ewin, const char *prm)
 	EwinOpActivate(ewin, OPSRC_USER, 1);
 	break;
 
+     case EWIN_OP_SCREEN:
+	if (!param1[0])
+	  {
+	     IpcPrintf("Error: no screen supplied\n");
+	     goto done;
+	  }
+	if (!strncmp(param1, "next", 1))
+	  {
+	     EwinOpMoveToScreen(ewin, OPSRC_USER, ScreenGetHead(ewin->client.x,ewin->client.y) + 1);
+	  }
+	else if (!strncmp(param1, "prev", 1))
+	  {
+	     EwinOpMoveToScreen(ewin, OPSRC_USER, ScreenGetHead(ewin->client.x,ewin->client.y) - 1);
+	  }
+	else if (!strcmp(param1, "?"))
+	  {
+	     IpcPrintf("window screen: %d\n", ScreenGetHead(ewin->client.x,ewin->client.y));
+	  }
+	else
+	  {
+	     EwinOpMoveToScreen(ewin, OPSRC_USER, atoi(param1));
+	  }
+	break;
+
      case EWIN_OP_DESK:
 	if (!param1[0])
 	  {

@@ -30,6 +30,8 @@ void                ScreenAdd(int type, int head, int x, int y, unsigned int w,
 			      unsigned int h);
 void                ScreenSplit(unsigned int nx, unsigned int ny);
 void                ScreenShowInfo(const char *prm);
+int                 ScreenGetHeads(void);
+int                 ScreenGetHead(int x, int y);
 int                 ScreenGetGeometry(int x, int y, int *px, int *py,
 				      int *pw, int *ph);
 void                ScreenGetGeometryByHead(int head, int *px, int *py,

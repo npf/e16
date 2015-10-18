@@ -295,7 +295,13 @@ ScreenGetGeometryByHead(int head, int *px, int *py, int *pw, int *ph)
 }
 
 int
-ScreenGetGeometry(int xi, int yi, int *px, int *py, int *pw, int *ph)
+ScreenGetHeads()
+{
+   return n_screens;
+}
+
+int
+ScreenGetHead(int xi, int yi)
 {
    int                 i, dx, dy, dist, head;
    EScreen            *ps;
@@ -325,6 +331,15 @@ ScreenGetGeometry(int xi, int yi, int *px, int *py, int *pw, int *ph)
 	     head = i;
 	  }
      }
+   return head;
+}
+
+int
+ScreenGetGeometry(int xi, int yi, int *px, int *py, int *pw, int *ph)
+{
+   int                 head;
+
+   head = ScreenGetHead(xi, yi);
 
    ScreenGetGeometryByHead(head, px, py, pw, ph);
 

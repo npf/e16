@@ -454,6 +454,7 @@ void                EwinOpSetFocusedOpacity(EWin * ewin, int source,
 					    int opacity);
 void                EwinOpMoveToDesk(EWin * ewin, int source, Desk * dsk,
 				     int inc);
+void                EwinOpMoveToScreen(EWin * ewin, int source, int head);
 void                EwinOpFullscreen(EWin * ewin, int source, int on);
 
 /* finders.c */

@@ -37,6 +37,7 @@ typedef enum {
    EWIN_OP_STICK,
    EWIN_OP_FOCUS,
 
+   EWIN_OP_SCREEN,
    EWIN_OP_DESK,
    EWIN_OP_AREA,
    EWIN_OP_MOVE,
