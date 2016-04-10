@@ -37,6 +37,36 @@ typedef struct {
 static EScreen     *p_screens = NULL;
 static int          n_screens = 0;
 
+static void
+_ScreenAdd(int type, int head, int x, int y, unsigned int w, unsigned int h)
+{
+   EScreen            *es;
+
+   n_screens++;
+   p_screens = EREALLOC(EScreen, p_screens, n_screens);
+
+   es = p_screens + n_screens - 1;
+   es->type = type;
+   es->head = head;
+   es->x = x;
+   es->y = y;
+   es->w = w;
+   es->h = h;
+}
+
+int
+ScreenGetCurrent(void)
+{
+   int                 px, py;
+
+   if (n_screens <= 1)
+      return -1;		/* Only one head */
+
+   EQueryPointer(NULL, &px, &py, NULL, NULL);
+
+   return ScreenGetHead(px, py);
+}
+
 #if USE_XRANDR
 #include <X11/extensions/Xrandr.h>
 #define RANDR_VERSION VERS(RANDR_MAJOR, RANDR_MINOR)
@@ -60,7 +90,7 @@ _ScreenInitXrandr(void)
 	   break;
 	if (pci->width == 0 || pci->height == 0 || pci->noutput == 0)
 	   continue;
-	ScreenAdd(0, i, pci->x, pci->y, pci->width, pci->height);
+	_ScreenAdd(0, i, pci->x, pci->y, pci->width, pci->height);
 	XRRFreeCrtcInfo(pci);
      }
 
@@ -161,8 +191,8 @@ _ScreenInitXinerama(void)
    if (num_screens > 1)
      {
 	for (i = 0; i < num_screens; i++)
-	   ScreenAdd(0, screens[i].screen_number, screens[i].x_org,
-		     screens[i].y_org, screens[i].width, screens[i].height);
+	   _ScreenAdd(0, screens[i].screen_number, screens[i].x_org,
+		      screens[i].y_org, screens[i].width, screens[i].height);
      }
 
    if (screens)
@@ -199,23 +229,6 @@ _ScreenShowInfoXinerama(void)
 #endif /* USE_XINERAMA */
 
 void
-ScreenAdd(int type, int head, int x, int y, unsigned int w, unsigned int h)
-{
-   EScreen            *es;
-
-   n_screens++;
-   p_screens = EREALLOC(EScreen, p_screens, n_screens);
-
-   es = p_screens + n_screens - 1;
-   es->type = type;
-   es->head = head;
-   es->x = x;
-   es->y = y;
-   es->w = w;
-   es->h = h;
-}
-
-void
 ScreenInit(void)
 {
    n_screens = 0;		/* Causes reconfiguration */
@@ -250,9 +263,9 @@ ScreenSplit(unsigned int nx, unsigned int ny)
 
    for (i = 0; i < nx; i++)
       for (j = 0; j < ny; j++)
-	 ScreenAdd(1, Dpy.screen,
-		   i * WinGetW(VROOT) / nx, j * WinGetH(VROOT) / ny,
-		   WinGetW(VROOT) / nx, WinGetH(VROOT) / ny);
+	 _ScreenAdd(1, Dpy.screen,
+		    i * WinGetW(VROOT) / nx, j * WinGetH(VROOT) / ny,
+		    WinGetW(VROOT) / nx, WinGetH(VROOT) / ny);
 }
 
 void
@@ -314,7 +327,7 @@ ScreenGetGeometryByHead(int head, int *px, int *py, int *pw, int *ph)
 }
 
 int
-ScreenGetGeometry(int xi, int yi, int *px, int *py, int *pw, int *ph)
+ScreenGetHead(int xi, int yi)
 {
    int                 i, dx, dy, dist, head;
    EScreen            *ps;
@@ -345,6 +358,15 @@ ScreenGetGeometry(int xi, int yi, int *px, int *py, int *pw, int *ph)
 	  }
      }
 
+   return head;
+}
+
+int
+ScreenGetGeometry(int xi, int yi, int *px, int *py, int *pw, int *ph)
+{
+   int                 head;
+
+   head = ScreenGetHead(xi, yi);
    ScreenGetGeometryByHead(head, px, py, pw, ph);
 
    return head;
