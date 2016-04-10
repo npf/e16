@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2003-2014 Kim Woelders
+ * Copyright (C) 2003-2016 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -44,6 +44,28 @@ static int          n_screens = 0;
 static void
 _ScreenInitXrandr(void)
 {
+#if RANDR_VERSION >= VERS(1, 2)	/* >= 1.2 */
+   XRRScreenResources *psr;
+   XRRCrtcInfo        *pci;
+   int                 i;
+
+   psr = XRRGetScreenResources(disp, WinGetXwin(VROOT));
+   if (!psr)
+      return;
+
+   for (i = 0; i < psr->ncrtc; i++)
+     {
+	pci = XRRGetCrtcInfo(disp, psr, psr->crtcs[i]);
+	if (!pci)
+	   break;
+	if (pci->width == 0 || pci->height == 0 || pci->noutput == 0)
+	   continue;
+	ScreenAdd(0, i, pci->x, pci->y, pci->width, pci->height);
+	XRRFreeCrtcInfo(pci);
+     }
+
+   XRRFreeScreenResources(psr);
+#endif
 }
 
 static void
@@ -209,7 +231,8 @@ ScreenInit(void)
    _ScreenInitXrandr();
 #endif
 #if USE_XINERAMA
-   _ScreenInitXinerama();
+   if (n_screens == 0)		/* Only if not added in randr code */
+      _ScreenInitXinerama();
 #endif
 }
 
