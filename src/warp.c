@@ -322,12 +322,17 @@ WarpFocusHide(void)
 }
 
 static void
-_WarpAddEwins(void)
+_WarpAddEwins(int samehead)
 {
    EWin               *const *lst;
    EWin               *ewin;
-   int                 i, num;
+   int                 i, num, head_ptr, head_ewin;
    WarplistItem       *wl;
+
+   head_ptr = ScreenGetCurrent();
+   if (head_ptr < 0 && !samehead)
+      return;			/* Want ewins on different head but only one head */
+   head_ewin = head_ptr;	/* Speed-up if one head */
 
    lst = EwinListFocusGet(&num);
    for (i = 0; i < num; i++)
@@ -348,6 +353,13 @@ _WarpAddEwins(void)
 	   continue;
 	/* Keep iconified windows if conf says so */
 	if (ewin->state.iconified && !Conf.warplist.showiconified)
+	   continue;
+	/* Current (pointer) head, or the rest */
+	if (head_ptr >= 0)
+	   head_ewin = ScreenGetHead(EoGetX(ewin) + EoGetW(ewin) / 2,
+				     EoGetY(ewin) + EoGetH(ewin) / 2);
+	if ((samehead && head_ewin != head_ptr) ||
+	    (!samehead && head_ewin == head_ptr))
 	   continue;
 
 	/* All good - add it */
@@ -374,7 +386,8 @@ WarpFocus(int delta)
    if (!warplist)
      {
 	warplist_num = 0;	/* Not necessary but silences clang */
-	_WarpAddEwins();
+	_WarpAddEwins(1);
+	_WarpAddEwins(0);
 
 	/* Hmmm. Hack... */
 	if (warplist_num >= 2 && warplist[1].ewin == GetFocusEwin())
