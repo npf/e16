@@ -158,10 +158,6 @@ _ScreenInitXinerama(void)
 
    screens = _EXineramaQueryScreens(&num_screens);
 
-   Mode.display.xinerama_active = (XineramaIsActive(disp)) ? 1 : 0;
-   if (!Mode.display.xinerama_active && num_screens > 1)
-      Mode.display.xinerama_active = 2;
-
    if (num_screens > 1)
      {
 	for (i = 0; i < num_screens; i++)

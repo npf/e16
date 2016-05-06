@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2015 Kim Woelders
+ * Copyright (C) 2004-2016 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -294,10 +294,6 @@ _DlgApplyPlacement(Dialog * d, int val __UNUSED__, void *data __UNUSED__)
    Conf.place.ignore_struts_fullscreen = dd->place_ignore_struts_fullscreen;
    Conf.place.ignore_struts_maximize = dd->place_ignore_struts_maximize;
    Conf.place.raise_fullscreen = dd->raise_fullscreen;
-#ifdef USE_XINERAMA_no		/* Not implemented */
-   if (Mode.display.xinerama_active)
-      Conf.place.extra_head = dd->extra_head;
-#endif
 
    autosave();
 }
@@ -462,16 +458,6 @@ _DlgFillPlacement(Dialog * d, DItem * table, void *data __UNUSED__)
    DialogItemSetColSpan(di, 2);
    DialogItemSetText(di, _("Raise fullscreen windows"));
    DialogItemCheckButtonSetPtr(di, &dd->raise_fullscreen);
-
-#ifdef USE_XINERAMA_no		/* Not implemented */
-   if (Mode.display.xinerama_active)
-     {
-	di = DialogAddItem(table, DITEM_CHECKBUTTON);
-	DialogItemSetColSpan(di, 2);
-	DialogItemSetText(di, _("Place windows on another head when full"));
-	DialogItemCheckButtonSetPtr(di, &dd->extra_head);
-     }
-#endif
 }
 
 const DialogDef     DlgPlacement = {
