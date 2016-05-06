@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2015 Kim Woelders
+ * Copyright (C) 2004-2016 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -321,14 +321,48 @@ WarpFocusHide(void)
    warplist_num = 0;
 }
 
-void
-WarpFocus(int delta)
+static void
+_WarpAddEwins(void)
 {
-   WarpFocusWin       *fw = warpFocusWindow;
    EWin               *const *lst;
    EWin               *ewin;
    int                 i, num;
    WarplistItem       *wl;
+
+   lst = EwinListFocusGet(&num);
+   for (i = 0; i < num; i++)
+     {
+	ewin = lst[i];
+	/* Either visible or iconified or show all */
+	if (!(EwinIsOnScreen(ewin) || ewin->state.iconified ||
+	      Conf.warplist.showalldesks))
+	   continue;
+	/* Exclude windows that explicitely say so */
+	if (ewin->props.skip_focuslist || ewin->props.skip_ext_task)
+	   continue;
+	/* Keep shaded windows if conf says so */
+	if (ewin->state.shaded && !Conf.warplist.showshaded)
+	   continue;
+	/* Keep sticky windows if conf says so */
+	if (EoIsSticky(ewin) && !Conf.warplist.showsticky)
+	   continue;
+	/* Keep iconified windows if conf says so */
+	if (ewin->state.iconified && !Conf.warplist.showiconified)
+	   continue;
+
+	/* All good - add it */
+	warplist_num++;
+	warplist = EREALLOC(WarplistItem, warplist, warplist_num);
+	wl = warplist + warplist_num - 1;
+	wl->ewin = ewin;
+     }
+}
+
+void
+WarpFocus(int delta)
+{
+   WarpFocusWin       *fw = warpFocusWindow;
+   EWin               *ewin;
 
    /* Remember invoking keycode (ugly hack) */
    if (!fw || !EoIsShown(fw))
@@ -340,29 +374,7 @@ WarpFocus(int delta)
    if (!warplist)
      {
 	warplist_num = 0;	/* Not necessary but silences clang */
-	lst = EwinListFocusGet(&num);
-	for (i = 0; i < num; i++)
-	  {
-	     ewin = lst[i];
-	     if (		/* Either visible or iconified */
-		   ((EwinIsOnScreen(ewin)) || (ewin->state.iconified) ||
-		    (Conf.warplist.showalldesks)) &&
-		   /* Exclude windows that explicitely say so */
-		   (!ewin->props.skip_focuslist) &&
-		   (!ewin->props.skip_ext_task) &&
-		   /* Keep shaded windows if conf say so */
-		   ((!ewin->state.shaded) || (Conf.warplist.showshaded)) &&
-		   /* Keep sticky windows if conf say so */
-		   ((!EoIsSticky(ewin)) || (Conf.warplist.showsticky)) &&
-		   /* Keep iconified windows if conf say so */
-		   ((!ewin->state.iconified) || (Conf.warplist.showiconified)))
-	       {
-		  warplist_num++;
-		  warplist = EREALLOC(WarplistItem, warplist, warplist_num);
-		  wl = warplist + warplist_num - 1;
-		  wl->ewin = ewin;
-	       }
-	  }
+	_WarpAddEwins();
 
 	/* Hmmm. Hack... */
 	if (warplist_num >= 2 && warplist[1].ewin == GetFocusEwin())
