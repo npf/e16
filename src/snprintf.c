@@ -82,21 +82,9 @@ Evsnprintf(char *str, size_t count, const char *fmt, va_list args)
    return (strlen(str));
 }
 
-#ifdef HAVE_STDARG_H
 int
 Esnprintf(char *str, size_t count, const char *fmt, ...)
-#else
-int
-Esnprintf(va_alist)
-     va_dcl
-#endif
 {
-#ifndef HAVE_STDARG_H
-   char               *str;
-   size_t              count;
-   char               *fmt;
-
-#endif
    VA_LOCAL_DECL;
 
    VA_START(fmt);

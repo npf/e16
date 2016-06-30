@@ -116,12 +116,8 @@ __EXPORT__ void __PRINTF__ Eprintf(const char *fmt, ...);
 int                 Evsnprintf(char *str, size_t count, const char *fmt,
 			       va_list args);
 
-#ifdef HAVE_STDARG_H
 int                 Esnprintf(char *str, size_t count, const char *fmt, ...);
 
-#else
-int                 Esnprintf(va_alist);
-#endif
 #endif /* HAVE_SNPRINTF */
 
 #if USE_MODULES
