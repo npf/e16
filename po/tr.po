@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2015-06-22 20:25+0200\n"
+"POT-Creation-Date: 2016-08-10 14:21+0200\n"
 "PO-Revision-Date: 2014-05-24 08:31+0000\n"
 "Last-Translator: Eliovir <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
@@ -516,7 +516,7 @@ msgid "Whirl"
 msgstr "Sarmal"
 
 #: src/container.c:1683 src/settings.c:126 src/settings.c:131
-#: src/settings.c:396
+#: src/settings.c:392
 msgid "Box"
 msgstr "Kutu olarak"
 
@@ -1331,7 +1331,7 @@ msgstr "E Ýletiþim Kutularý:"
 msgid "Tooltips:"
 msgstr "Ýpuçlarý:"
 
-#: src/mod-trans.c:165 src/settings.c:96 src/settings.c:101 src/settings.c:381
+#: src/mod-trans.c:165 src/settings.c:96 src/settings.c:101 src/settings.c:377
 msgid "Opaque"
 msgstr "Mat"
 
@@ -1565,11 +1565,11 @@ msgstr "Taþýma þekli :"
 msgid "Resize Methods:"
 msgstr "Yeniden boyutlandýrma þekli :"
 
-#: src/settings.c:106 src/settings.c:111 src/settings.c:386
+#: src/settings.c:106 src/settings.c:111 src/settings.c:382
 msgid "Technical"
 msgstr "Teknik"
 
-#: src/settings.c:116 src/settings.c:121 src/settings.c:391
+#: src/settings.c:116 src/settings.c:121 src/settings.c:387
 msgid "TechOpaque"
 msgstr "Mat"
 
@@ -1649,83 +1649,79 @@ msgstr ""
 "Enlightenment Taþýma & boyutlandýrma\n"
 "türleri ayarlarý diyaloðu"
 
-#: src/settings.c:340
+#: src/settings.c:336
 msgid "Dialog windows appear together with their owner"
 msgstr "Ýletiþim pencerelerini ana pencereleriyle beraber ayný masaüstünde aç"
 
-#: src/settings.c:345
+#: src/settings.c:341
 msgid "Switch to desktop where dialog appears"
 msgstr "Yeni bir iletiþim penceresinin açýldýðý masaüstüne geç"
 
-#: src/settings.c:353
+#: src/settings.c:349
 msgid "Place windows manually"
 msgstr "Pencereleri elle yerleþtir"
 
-#: src/settings.c:358
+#: src/settings.c:354
 msgid "Place windows under mouse"
 msgstr "Pencereleri farenin altýna yerleþtir"
 
-#: src/settings.c:363
+#: src/settings.c:359
 msgid "Center windows when desk is full"
 msgstr "Disk dolduðunda pencereleri ortala"
 
-#: src/settings.c:368
+#: src/settings.c:364
 msgid "Slide windows in when they appear"
 msgstr "Pencerler gözükürken pencereleri kaydýrt"
 
-#: src/settings.c:373
+#: src/settings.c:369
 msgid "Slide windows around when cleaning up"
 msgstr "Ekraný temizlerken pencereleri kaydýrt"
 
-#: src/settings.c:378
+#: src/settings.c:374
 msgid "Slide Method:"
 msgstr "Kaydýrma þekli :"
 
-#: src/settings.c:405
+#: src/settings.c:401
 msgid "Appear Slide speed:"
 msgstr "Görünün  kaydýrma hýzý:"
 
-#: src/settings.c:416
+#: src/settings.c:412
 msgid "Cleanup Slide speed:"
 msgstr "Saydamlýk hýzýný ayarlayýn:"
 
-#: src/settings.c:429
+#: src/settings.c:425
 msgid "Animate shading and unshading of windows"
 msgstr "Pencerelerin toplanmasýný hareketlendir"
 
-#: src/settings.c:435
+#: src/settings.c:431
 msgid "Window Shading speed:"
 msgstr "Penceere Gölgelendirme hýzý:"
 
-#: src/settings.c:448
+#: src/settings.c:444
 msgid "Ignore struts/panels for placing normal windows"
 msgstr "Normal pencereleri yerleþtirirken panelleri yoksay"
 
-#: src/settings.c:453
+#: src/settings.c:449
 msgid "Ignore struts/panels when windows are fullscreen"
 msgstr "Pencereleri tam ekran yaparken panelleri yoksay"
 
-#: src/settings.c:458
+#: src/settings.c:454
 msgid "Ignore struts/panels when maximizing windows"
 msgstr "Pencereler ekraný kaplarken panelleri yoksay"
 
-#: src/settings.c:463
+#: src/settings.c:459
 msgid "Raise fullscreen windows"
 msgstr "Tam ekran pencereleri yükselt"
 
-#: src/settings.c:471
-msgid "Place windows on another head when full"
-msgstr "Eðer dolu iþe pencereyi baþka baþlýða yerleþtir"
-
-#: src/settings.c:479
+#: src/settings.c:465
 msgid "Placement"
 msgstr "Yerleþtirme"
 
-#: src/settings.c:479
+#: src/settings.c:465
 msgid "Window Placement Settings"
 msgstr "Pencere yerleþme ayarlarý"
 
-#: src/settings.c:483
+#: src/settings.c:469
 msgid ""
 "Enlightenment Window Placement\n"
 "Settings Dialog"
@@ -1733,35 +1729,35 @@ msgstr ""
 "Enlightenment pencere yerleþme\n"
 "ayarlarý diyaloðu"
 
-#: src/settings.c:526
+#: src/settings.c:512
 msgid "Enable Dialog Headers"
 msgstr "Uygun Diyalog Baþlýklarý"
 
-#: src/settings.c:532
+#: src/settings.c:518
 msgid "Enable Button Images"
 msgstr "Etkinleþtir Düðmesi Resimleri"
 
-#: src/settings.c:541
+#: src/settings.c:527
 msgid "Enable sliding startup windows"
 msgstr "Baþlangýç pencerelerini kaydýrmayý etkinleþtir"
 
-#: src/settings.c:549
+#: src/settings.c:535
 msgid "Use saveunders to reduce window exposures"
 msgstr "Pencere gösterimlerini \"saveunder\"'leri kullanýp azalt"
 
-#: src/settings.c:558
+#: src/settings.c:544
 msgid "Magwin zoom resolution"
 msgstr "Magwin büyütme çözünürlüðü"
 
-#: src/settings.c:570 config/strings.c:136 config/strings.c:152
+#: src/settings.c:556 config/strings.c:136 config/strings.c:152
 msgid "Miscellaneous"
 msgstr "Çeþitli"
 
-#: src/settings.c:570
+#: src/settings.c:556
 msgid "Miscellaneous Settings"
 msgstr "Çeþitli Ayarlar"
 
-#: src/settings.c:574
+#: src/settings.c:560
 msgid ""
 "Enlightenment Miscellaneous\n"
 "Settings Dialog"
@@ -1769,55 +1765,55 @@ msgstr ""
 "Enlightenment karýþýk ayarlar\n"
 "diyaloðu"
 
-#: src/settings.c:610
+#: src/settings.c:596
 msgid "Enable Composite"
 msgstr "Composite Etkinleþtir"
 
-#: src/settings.c:618
+#: src/settings.c:604
 msgid "Enable Fading"
 msgstr "Solmayý aktif et"
 
-#: src/settings.c:624
+#: src/settings.c:610
 msgid "Fading Speed:"
 msgstr "Solma hýzý"
 
-#: src/settings.c:637
+#: src/settings.c:623
 msgid "Shadows Off"
 msgstr "Gölgeler Kapalý"
 
-#: src/settings.c:643
+#: src/settings.c:629
 msgid "Shadows Sharp"
 msgstr "Gölgeler Keskin"
 
-#: src/settings.c:649
+#: src/settings.c:635
 msgid "Shadows Sharp2"
 msgstr "Gölgeler Keskin2"
 
-#: src/settings.c:655
+#: src/settings.c:641
 msgid "Shadows Blurred"
 msgstr "Gölgeler Bulanýklaþmýþ"
 
-#: src/settings.c:666
+#: src/settings.c:652
 msgid "Default focused window opacity:"
 msgstr "Varsayýlan odaklanmýþ pencere saydamlýðý:"
 
-#: src/settings.c:677
+#: src/settings.c:663
 msgid "Default unfocused window opacity:"
 msgstr "Varsayýlan odaklanmamýþ pencere saydamlýðý:"
 
-#: src/settings.c:688
+#: src/settings.c:674
 msgid "Default pop-up window opacity:"
 msgstr "Varsayýlan açýlýr pencere saydamlýðý:"
 
-#: src/settings.c:699
+#: src/settings.c:685
 msgid "Composite"
 msgstr "Birleþik"
 
-#: src/settings.c:699
+#: src/settings.c:685
 msgid "Composite Settings"
 msgstr "Composite Ayarlarý"
 
-#: src/settings.c:703
+#: src/settings.c:689
 msgid ""
 "Enlightenment Composite\n"
 "Settings Dialog"
@@ -1825,7 +1821,7 @@ msgstr ""
 "Enlightenment Bileþiklik\n"
 "Ayarlar Diyaloðu"
 
-#: src/settings.c:787
+#: src/settings.c:773
 msgid "Enlightenment Settings"
 msgstr "Enlightenment Ayarlarý"
 
@@ -2696,6 +2692,9 @@ msgstr "Uygulamalar"
 #: config/strings.c:192
 msgid "Epplets"
 msgstr "Eppletler"
+
+#~ msgid "Place windows on another head when full"
+#~ msgstr "Eðer dolu iþe pencereyi baþka baþlýða yerleþtir"
 
 #~ msgid "Shaded"
 #~ msgstr "Gölgeli"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enlightenment\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2015-06-22 20:25+0200\n"
+"POT-Creation-Date: 2016-08-10 14:21+0200\n"
 "PO-Revision-Date: 2015-03-29 14:25+0000\n"
 "Last-Translator: JoanColl <Unknown>\n"
 "Language-Team: Catalan <ca@li.org>\n"
@@ -518,7 +518,7 @@ msgid "Whirl"
 msgstr "Torsió"
 
 #: src/container.c:1683 src/settings.c:126 src/settings.c:131
-#: src/settings.c:396
+#: src/settings.c:392
 msgid "Box"
 msgstr "Caixa"
 
@@ -1336,7 +1336,7 @@ msgstr "Diàlegs:"
 msgid "Tooltips:"
 msgstr "Consells d'eines:"
 
-#: src/mod-trans.c:165 src/settings.c:96 src/settings.c:101 src/settings.c:381
+#: src/mod-trans.c:165 src/settings.c:96 src/settings.c:101 src/settings.c:377
 msgid "Opaque"
 msgstr "Opac"
 
@@ -1572,11 +1572,11 @@ msgstr "Mètodes de moviment:"
 msgid "Resize Methods:"
 msgstr "Mètodes de canvi de tamany:"
 
-#: src/settings.c:106 src/settings.c:111 src/settings.c:386
+#: src/settings.c:106 src/settings.c:111 src/settings.c:382
 msgid "Technical"
 msgstr "Tècnic"
 
-#: src/settings.c:116 src/settings.c:121 src/settings.c:391
+#: src/settings.c:116 src/settings.c:121 src/settings.c:387
 msgid "TechOpaque"
 msgstr "TecOpac"
 
@@ -1656,86 +1656,82 @@ msgstr ""
 "Mou/Redimensiona d'Enlightenment\n"
 "Diàleg dels paràmetres del mètode"
 
-#: src/settings.c:340
+#: src/settings.c:336
 msgid "Dialog windows appear together with their owner"
 msgstr ""
 "Els diàlegs de les finestres es mostraran juntament amb la finestra "
 "propietària"
 
-#: src/settings.c:345
+#: src/settings.c:341
 msgid "Switch to desktop where dialog appears"
 msgstr "Canvia a l'escriptori a on apareixi el diàleg"
 
-#: src/settings.c:353
+#: src/settings.c:349
 msgid "Place windows manually"
 msgstr "Ubica les finestres manualment"
 
-#: src/settings.c:358
+#: src/settings.c:354
 msgid "Place windows under mouse"
 msgstr "Ubica les finestres sota el ratolí"
 
-#: src/settings.c:363
+#: src/settings.c:359
 msgid "Center windows when desk is full"
 msgstr "Centra les finestres quan l'escriptori estigui ple"
 
-#: src/settings.c:368
+#: src/settings.c:364
 msgid "Slide windows in when they appear"
 msgstr "Diapositives de les finestres a dins quan apareixin"
 
-#: src/settings.c:373
+#: src/settings.c:369
 msgid "Slide windows around when cleaning up"
 msgstr "Diapositives de les finestres al voltant quan es netegi"
 
-#: src/settings.c:378
+#: src/settings.c:374
 msgid "Slide Method:"
 msgstr "Mètode de diapositiva"
 
-#: src/settings.c:405
+#: src/settings.c:401
 msgid "Appear Slide speed:"
 msgstr "Velocitat de l'aparició de la diapositiva:"
 
-#: src/settings.c:416
+#: src/settings.c:412
 msgid "Cleanup Slide speed:"
 msgstr "Velocitat de la neteja de la diapositiva:"
 
-#: src/settings.c:429
+#: src/settings.c:425
 msgid "Animate shading and unshading of windows"
 msgstr "Animació de l'ombrejat de les finestres"
 
-#: src/settings.c:435
+#: src/settings.c:431
 msgid "Window Shading speed:"
 msgstr "Velocitat de l'ombrejat de la finestra:"
 
-#: src/settings.c:448
+#: src/settings.c:444
 msgid "Ignore struts/panels for placing normal windows"
 msgstr "Ignora les estructures/taulers per posicionar finestres normals"
 
-#: src/settings.c:453
+#: src/settings.c:449
 msgid "Ignore struts/panels when windows are fullscreen"
 msgstr ""
 "Ignora les estructures/taulers quan les finestres siguin pantalla completa"
 
-#: src/settings.c:458
+#: src/settings.c:454
 msgid "Ignore struts/panels when maximizing windows"
 msgstr "Ignora les estructures/taulers quan es maximitzin finestres"
 
-#: src/settings.c:463
+#: src/settings.c:459
 msgid "Raise fullscreen windows"
 msgstr "Apuja les finestres de pantalla completa"
 
-#: src/settings.c:471
-msgid "Place windows on another head when full"
-msgstr "Posiciona les finestres en una altra capçalera quan estigui ple"
-
-#: src/settings.c:479
+#: src/settings.c:465
 msgid "Placement"
 msgstr "Emplaçament"
 
-#: src/settings.c:479
+#: src/settings.c:465
 msgid "Window Placement Settings"
 msgstr "Paràmetres posicionament finestres"
 
-#: src/settings.c:483
+#: src/settings.c:469
 msgid ""
 "Enlightenment Window Placement\n"
 "Settings Dialog"
@@ -1743,35 +1739,35 @@ msgstr ""
 "Posicionament de finestres Enlightenment\n"
 "Diàleg de paràmetres"
 
-#: src/settings.c:526
+#: src/settings.c:512
 msgid "Enable Dialog Headers"
 msgstr "Activa les capçaleres de diàleg"
 
-#: src/settings.c:532
+#: src/settings.c:518
 msgid "Enable Button Images"
 msgstr "Activa les imatges de botó"
 
-#: src/settings.c:541
+#: src/settings.c:527
 msgid "Enable sliding startup windows"
 msgstr "Activa desplaçament finestres d'inici"
 
-#: src/settings.c:549
+#: src/settings.c:535
 msgid "Use saveunders to reduce window exposures"
 msgstr "Utilitza desa sota per reduïr les exposicions de la finestra"
 
-#: src/settings.c:558
+#: src/settings.c:544
 msgid "Magwin zoom resolution"
 msgstr "Resolució ampliació finestra"
 
-#: src/settings.c:570 config/strings.c:136 config/strings.c:152
+#: src/settings.c:556 config/strings.c:136 config/strings.c:152
 msgid "Miscellaneous"
 msgstr "Miscel·lània"
 
-#: src/settings.c:570
+#: src/settings.c:556
 msgid "Miscellaneous Settings"
 msgstr "Altres opcions"
 
-#: src/settings.c:574
+#: src/settings.c:560
 msgid ""
 "Enlightenment Miscellaneous\n"
 "Settings Dialog"
@@ -1779,55 +1775,55 @@ msgstr ""
 "Diàleg de configuració\n"
 "Diversos"
 
-#: src/settings.c:610
+#: src/settings.c:596
 msgid "Enable Composite"
 msgstr "Activa composició"
 
-#: src/settings.c:618
+#: src/settings.c:604
 msgid "Enable Fading"
 msgstr "Activa esvaïment"
 
-#: src/settings.c:624
+#: src/settings.c:610
 msgid "Fading Speed:"
 msgstr "Velocitat d'esvaïment:"
 
-#: src/settings.c:637
+#: src/settings.c:623
 msgid "Shadows Off"
 msgstr "Ombres desactivades"
 
-#: src/settings.c:643
+#: src/settings.c:629
 msgid "Shadows Sharp"
 msgstr "Realçat d'ombres"
 
-#: src/settings.c:649
+#: src/settings.c:635
 msgid "Shadows Sharp2"
 msgstr "Realçat d'ombres2"
 
-#: src/settings.c:655
+#: src/settings.c:641
 msgid "Shadows Blurred"
 msgstr "Ombra difuminada"
 
-#: src/settings.c:666
+#: src/settings.c:652
 msgid "Default focused window opacity:"
 msgstr "Opacitat predeterminada de la finestra activa:"
 
-#: src/settings.c:677
+#: src/settings.c:663
 msgid "Default unfocused window opacity:"
 msgstr "Opacitat predeterminada de la finestra no activa:"
 
-#: src/settings.c:688
+#: src/settings.c:674
 msgid "Default pop-up window opacity:"
 msgstr "Opacitat predeterminada de la finestra emergent:"
 
-#: src/settings.c:699
+#: src/settings.c:685
 msgid "Composite"
 msgstr "Composició"
 
-#: src/settings.c:699
+#: src/settings.c:685
 msgid "Composite Settings"
 msgstr "Opcions de composició"
 
-#: src/settings.c:703
+#: src/settings.c:689
 msgid ""
 "Enlightenment Composite\n"
 "Settings Dialog"
@@ -1835,7 +1831,7 @@ msgstr ""
 "Enlightenment Composició\n"
 "Diàleg de paràmetres"
 
-#: src/settings.c:787
+#: src/settings.c:773
 msgid "Enlightenment Settings"
 msgstr "Paràmetres Enlightenment"
 
@@ -2707,3 +2703,6 @@ msgstr "Aplicacions"
 #: config/strings.c:192
 msgid "Epplets"
 msgstr "Epplets"
+
+#~ msgid "Place windows on another head when full"
+#~ msgstr "Posiciona les finestres en una altra capçalera quan estigui ple"
