@@ -49,13 +49,19 @@ static int
 _pango_xft_Load(TextState * ts, const char *name)
 {
    FontCtxPangoXft    *fdc;
+   PangoFontMap       *fmap;
    PangoFontDescription *font;
    PangoFontMask       flags;
 
    if (!_pango_ctx)
-      _pango_ctx = pango_xft_get_context(disp, Dpy.screen);
-   if (!_pango_ctx)
-      return -1;
+     {
+	fmap = pango_xft_get_font_map(disp, Dpy.screen);
+	if (!fmap)
+	   return -1;
+	_pango_ctx = pango_font_map_create_context(fmap);
+	if (!_pango_ctx)
+	   return -1;
+     }
 
    font = pango_font_description_from_string(name);
    if (!font)
