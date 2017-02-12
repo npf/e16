@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2015 Kim Woelders
+ * Copyright (C) 2004-2017 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -579,7 +579,7 @@ EDestroyWindow(Win win)
 #if DEBUG_XWIN
    Eprintf("%s: %p %#x\n", __func__, win, win->xwin);
 #endif
-   if (win->parent != NoXID)
+   if (win->parent)
      {
 	EFreeWindowBackgroundPixmap(win);
 	XDestroyWindow(disp, win->xwin);

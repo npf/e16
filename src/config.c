@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2014 Kim Woelders
+ * Copyright (C) 2004-2017 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -137,6 +137,7 @@ GetLine(char *s, int size, FILE * f)
 	  case '\t':
 	     if (so == s)	/* Skip leading whitespace */
 		break;
+	     /* FALLTHROUGH */
 	   case_char:		/* Normal character */
 	  default:
 	     *so++ = ch;

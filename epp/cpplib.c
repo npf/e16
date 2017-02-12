@@ -3142,6 +3142,7 @@ get_directive_token(cpp_reader * pfile)
 	     if (!CPP_IS_MACRO_BUFFER(CPP_BUFFER(pfile)))
 		return token;
 	     /* ... else fall though ... */
+	     /* FALLTHROUGH */
 	  case CPP_HSPACE:
 	  case CPP_COMMENT:
 	     CPP_SET_WRITTEN(pfile, old_written);
@@ -4289,6 +4290,7 @@ skip_if_group(cpp_reader * pfile, int any)
 			  validate_else(pfile,
 					kt->type ==
 					T_ELSE ? "#else" : "#endif");
+		       /* FALLTHROUGH */
 		    case T_ELIF:
 		       if (pfile->if_stack == CPP_BUFFER(pfile)->if_stack)
 			 {
@@ -6658,6 +6660,7 @@ cpp_handle_options(cpp_reader * pfile, int argc, char **argv)
 		       opts->out_fname = "";
 		       break;
 		    }		/* else fall through into error */
+		  /* FALLTHROUGH */
 	       default:
 		  return i;
 	       }

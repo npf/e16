@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2007 Carsten Haitzler, Geoff Harrison and various contributors
- * Copyright (C) 2004-2015 Kim Woelders
+ * Copyright (C) 2004-2017 Kim Woelders
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -47,14 +47,15 @@
 #endif
 #if USE_XPRESENT
 #include <X11/extensions/Xpresent.h>
+#define USE_GENERIC 1
 #endif
 #if USE_GLX
 #include <GL/glx.h>
 #endif
 #if USE_XI2
 #include <X11/extensions/XInput2.h>
+#define USE_GENERIC 1
 #endif
-#define USE_GENERIC defined(USE_XI2) || defined(USE_XPRESENT)
 
 #include "E.h"
 #include "aclass.h"
