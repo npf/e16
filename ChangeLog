@@ -5928,3 +5928,19 @@ Sun Jul 12 20:02:43 CEST 2015
 
 --- 1.0.17 ---
 No changes since 1.0.16.002.
+
+-------------------------------------------------------------------------------
+
+Sun Apr 16 15:21:23 CEST 2017
+
+--- 1.0.18 ---
+Use AC_USE_SYSTEM_EXTENSIONS.
+Build .xz tarball too.
+Use RandR data to populate screens structure.
+Remove unused Mode.display.xinerama_active.
+Refactor some screen stuff.
+Refactorization in WarpFocus().
+Window list: Show windows on same head as pointer first.
+Drop incomplete HAVE_STDARG_H stuff.
+Fix warning with recent pango.
+Warning fixes for gcc 7.
