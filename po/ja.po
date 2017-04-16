@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2016-08-10 14:21+0200\n"
+"POT-Creation-Date: 2017-04-16 15:27+0200\n"
 "PO-Revision-Date: 2011-10-11 18:12+0900\n"
 "Last-Translator: Yasufumi Haga <yasufumi.haga@nifty.com>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -177,7 +177,7 @@ msgstr "Enlightenment 終了"
 msgid "Attention !!!"
 msgstr "注意 !!!"
 
-#: src/alert.c:582 src/dialog.c:684 src/dialog.c:1823 src/events.c:102
+#: src/alert.c:582 src/dialog.c:684 src/dialog.c:1823 src/events.c:103
 #: src/setup.c:163 src/setup.c:176 src/sound.c:309
 msgid "OK"
 msgstr "了解"
@@ -336,17 +336,17 @@ msgstr ""
 "\n"
 "%s\n"
 
-#: src/config.c:201 src/config.c:293
+#: src/config.c:202 src/config.c:294
 #, c-format
 msgid "CONFIG: ignoring extra data in \"%s\""
 msgstr "CONFIG: \"%s\" にある余分なデータは無視します。"
 
-#: src/config.c:209 src/config.c:300
+#: src/config.c:210 src/config.c:301
 #, c-format
 msgid "CONFIG: missing required data in \"%s\""
 msgstr "CONFIG: \"%s\" に必要なデータが含まれていません。"
 
-#: src/config.c:219
+#: src/config.c:220
 #, c-format
 msgid ""
 "Warning: unable to determine what to do with\n"
@@ -358,7 +358,7 @@ msgstr ""
 "%s\n"
 "無視して次に行きます...\n"
 
-#: src/config.c:227
+#: src/config.c:228
 #, c-format
 msgid ""
 "Warning:  Configuration error in %s block.\n"
@@ -367,19 +367,19 @@ msgstr ""
 "警告。%s ブロックに設定エラーがあります。\n"
 "出力はおそらくおかしくなっていると思います。\n"
 
-#: src/config.c:309
+#: src/config.c:310
 msgid "Theme versioning ERROR"
 msgstr "テーマのバージョンエラー"
 
-#: src/config.c:310
+#: src/config.c:311
 msgid "Restart with Defaults"
 msgstr "デフォルトの設定で再起動"
 
-#: src/config.c:311
+#: src/config.c:312
 msgid "Abort and Exit"
 msgstr "無視して終了"
 
-#: src/config.c:312
+#: src/config.c:313
 #, c-format
 msgid ""
 "ERROR:\n"
@@ -413,7 +413,7 @@ msgstr ""
 "このテーマで利用している機能が新しい Enlightenment の機能なのに、\n"
 "Enlightenment がしばらく更新されていないためかもしれません。\n"
 
-#: src/config.c:614
+#: src/config.c:615
 msgid "Enlightenment Starting..."
 msgstr "Enlightenment 起動中..."
 
@@ -725,11 +725,11 @@ msgstr ""
 "Composite, Damage, Fixes, Render の各拡張機能が\n"
 "ロードされていることを xdpyinfo を使って確認してください."
 
-#: src/events.c:102
+#: src/events.c:103
 msgid "X server setup error"
 msgstr "X サーバーの設定エラー"
 
-#: src/events.c:103
+#: src/events.c:104
 msgid ""
 "FATAL ERROR:\n"
 "\n"

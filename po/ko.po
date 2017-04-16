@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2016-08-10 14:21+0200\n"
+"POT-Creation-Date: 2017-04-16 15:27+0200\n"
 "PO-Revision-Date: 2009-12-02 09:48+0000\n"
 "Last-Translator: Michael Kim <Unknown>\n"
 "Language-Team: Korean <translation-team-ko@lists.sourceforge.net>\n"
@@ -163,7 +163,7 @@ msgstr "인라이튼먼트 종료"
 msgid "Attention !!!"
 msgstr "주목 !!!"
 
-#: src/alert.c:582 src/dialog.c:684 src/dialog.c:1823 src/events.c:102
+#: src/alert.c:582 src/dialog.c:684 src/dialog.c:1823 src/events.c:103
 #: src/setup.c:163 src/setup.c:176 src/sound.c:309
 msgid "OK"
 msgstr "확인"
@@ -319,17 +319,17 @@ msgstr ""
 "\n"
 "%s\n"
 
-#: src/config.c:201 src/config.c:293
+#: src/config.c:202 src/config.c:294
 #, c-format
 msgid "CONFIG: ignoring extra data in \"%s\""
 msgstr "CONFIG: \"%s\"에 있는 더 많은 데이타는 무시합니다"
 
-#: src/config.c:209 src/config.c:300
+#: src/config.c:210 src/config.c:301
 #, c-format
 msgid "CONFIG: missing required data in \"%s\""
 msgstr "CONFIG: \"%s\"에 요구되는 데이타가 없습니다"
 
-#: src/config.c:219
+#: src/config.c:220
 #, c-format
 msgid ""
 "Warning: unable to determine what to do with\n"
@@ -338,26 +338,26 @@ msgid ""
 "Will ignore and continue...\n"
 msgstr ""
 
-#: src/config.c:227
+#: src/config.c:228
 #, c-format
 msgid ""
 "Warning:  Configuration error in %s block.\n"
 "Outcome is likely not good.\n"
 msgstr ""
 
-#: src/config.c:309
+#: src/config.c:310
 msgid "Theme versioning ERROR"
 msgstr "테마 버전 오류"
 
-#: src/config.c:310
+#: src/config.c:311
 msgid "Restart with Defaults"
 msgstr "기본 테마로 재시작"
 
-#: src/config.c:311
+#: src/config.c:312
 msgid "Abort and Exit"
 msgstr "중단하고 종료"
 
-#: src/config.c:312
+#: src/config.c:313
 #, c-format
 msgid ""
 "ERROR:\n"
@@ -378,7 +378,7 @@ msgid ""
 "features in Enlightenment in new versions.\n"
 msgstr ""
 
-#: src/config.c:614
+#: src/config.c:615
 msgid "Enlightenment Starting..."
 msgstr "인라이튼먼트 시작중..."
 
@@ -680,11 +680,11 @@ msgid ""
 "extensions are loaded."
 msgstr ""
 
-#: src/events.c:102
+#: src/events.c:103
 msgid "X server setup error"
 msgstr "X 서버 설정 오류"
 
-#: src/events.c:103
+#: src/events.c:104
 msgid ""
 "FATAL ERROR:\n"
 "\n"

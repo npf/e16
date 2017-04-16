@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2016-08-10 14:21+0200\n"
+"POT-Creation-Date: 2017-04-16 15:27+0200\n"
 "PO-Revision-Date: 2012-12-07 19:51+0100\n"
 "Last-Translator: Massimo Maiurana <Unknown>\n"
 "Language-Team: none\n"
@@ -176,7 +176,7 @@ msgstr "Arresta Enlightenment"
 msgid "Attention !!!"
 msgstr "Attenzione !!!"
 
-#: src/alert.c:582 src/dialog.c:684 src/dialog.c:1823 src/events.c:102
+#: src/alert.c:582 src/dialog.c:684 src/dialog.c:1823 src/events.c:103
 #: src/setup.c:163 src/setup.c:176 src/sound.c:309
 msgid "OK"
 msgstr "OK"
@@ -331,17 +331,17 @@ msgstr ""
 "\n"
 "%s\n"
 
-#: src/config.c:201 src/config.c:293
+#: src/config.c:202 src/config.c:294
 #, c-format
 msgid "CONFIG: ignoring extra data in \"%s\""
 msgstr "CONFIG: ignoro dati extra in \"%s\""
 
-#: src/config.c:209 src/config.c:300
+#: src/config.c:210 src/config.c:301
 #, c-format
 msgid "CONFIG: missing required data in \"%s\""
 msgstr "CONFIG: dati richiesti mancanti in \"%s\""
 
-#: src/config.c:219
+#: src/config.c:220
 #, c-format
 msgid ""
 "Warning: unable to determine what to do with\n"
@@ -354,7 +354,7 @@ msgstr ""
 "%s\n"
 "Ignoro e vado avanti...\n"
 
-#: src/config.c:227
+#: src/config.c:228
 #, c-format
 msgid ""
 "Warning:  Configuration error in %s block.\n"
@@ -363,19 +363,19 @@ msgstr ""
 "Attenzione: errore di configurazione nel blocco %s.\n"
 "Probabilmente l'esito non sará buono.\n"
 
-#: src/config.c:309
+#: src/config.c:310
 msgid "Theme versioning ERROR"
 msgstr "ERRORE nella versione del tema"
 
-#: src/config.c:310
+#: src/config.c:311
 msgid "Restart with Defaults"
 msgstr "Riavvia con valori predefiniti"
 
-#: src/config.c:311
+#: src/config.c:312
 msgid "Abort and Exit"
 msgstr "Abortisci ed esci"
 
-#: src/config.c:312
+#: src/config.c:313
 #, c-format
 msgid ""
 "ERROR:\n"
@@ -413,7 +413,7 @@ msgstr ""
 "nuove funzionalitá presenti nelle ultime versioni di\n"
 "Enlightenment.\n"
 
-#: src/config.c:614
+#: src/config.c:615
 msgid "Enlightenment Starting..."
 msgstr "Avvio di Enlightenment..."
 
@@ -719,11 +719,11 @@ msgstr ""
 "estensioni Composite, Damage, Fixes, e\n"
 "Render siano caricate."
 
-#: src/events.c:102
+#: src/events.c:103
 msgid "X server setup error"
 msgstr "Errore configurazione del server X"
 
-#: src/events.c:103
+#: src/events.c:104
 msgid ""
 "FATAL ERROR:\n"
 "\n"

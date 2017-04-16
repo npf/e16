@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: e16\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2016-08-10 14:21+0200\n"
+"POT-Creation-Date: 2017-04-16 15:27+0200\n"
 "PO-Revision-Date: 2010-05-09 01:21+0000\n"
 "Last-Translator: Peter Wehrfritz <Unknown>\n"
 "Language-Team: Enlightenment l10n <enlightenment-intl@lists.sourceforge."
@@ -206,7 +206,7 @@ msgstr "Achtung!"
 # src/settings.c:1460 src/settings.c:1522 src/settings.c:1610
 # src/settings.c:2012 src/settings.c:3405 src/settings.c:3750
 # src/settings.c:4048 src/settings.c:4186 src/snaps.c:547 src/sound.c:262
-#: src/alert.c:582 src/dialog.c:684 src/dialog.c:1823 src/events.c:102
+#: src/alert.c:582 src/dialog.c:684 src/dialog.c:1823 src/events.c:103
 #: src/setup.c:163 src/setup.c:176 src/sound.c:309
 msgid "OK"
 msgstr "OK"
@@ -395,7 +395,7 @@ msgstr ""
 # src/config.c:1649 src/config.c:1896 src/config.c:1965 src/config.c:2060
 # src/config.c:2316 src/config.c:2532 src/config.c:2795 src/config.c:2887
 # src/config.c:2964 src/config.c:3065 src/config.c:3387
-#: src/config.c:201 src/config.c:293
+#: src/config.c:202 src/config.c:294
 #, c-format
 msgid "CONFIG: ignoring extra data in \"%s\""
 msgstr "KONFIG: ignoriere überflüssige Daten in \"%s\""
@@ -405,13 +405,13 @@ msgstr "KONFIG: ignoriere überflüssige Daten in \"%s\""
 # src/config.c:1657 src/config.c:1902 src/config.c:1971 src/config.c:2068
 # src/config.c:2322 src/config.c:2540 src/config.c:2801 src/config.c:3071
 # src/config.c:3395
-#: src/config.c:209 src/config.c:300
+#: src/config.c:210 src/config.c:301
 #, c-format
 msgid "CONFIG: missing required data in \"%s\""
 msgstr "KONFIG: vermisse benötigte Daten in \"%s\""
 
 # src/config.c:2929
-#: src/config.c:219
+#: src/config.c:220
 #, c-format
 msgid ""
 "Warning: unable to determine what to do with\n"
@@ -425,7 +425,7 @@ msgstr ""
 "Werde dies ignorieren und fortfahren...\n"
 
 # src/config.c:927 src/config.c:1160
-#: src/config.c:227
+#: src/config.c:228
 #, c-format
 msgid ""
 "Warning:  Configuration error in %s block.\n"
@@ -435,22 +435,22 @@ msgstr ""
 "Das Ergebnis ist vermutlich nicht gut.\n"
 
 # src/config.c:3404
-#: src/config.c:309
+#: src/config.c:310
 msgid "Theme versioning ERROR"
 msgstr "FEHLER in der Themen-Versionsnummerierung"
 
 # src/config.c:3405 src/config.c:3439
-#: src/config.c:310
+#: src/config.c:311
 msgid "Restart with Defaults"
 msgstr "Mit Voreinstellung neu starten"
 
 # src/config.c:3406 src/config.c:3440
-#: src/config.c:311
+#: src/config.c:312
 msgid "Abort and Exit"
 msgstr "Abbrechen und verlassen"
 
 # src/config.c:3407
-#: src/config.c:312
+#: src/config.c:313
 #, c-format
 msgid ""
 "ERROR:\n"
@@ -489,7 +489,7 @@ msgstr ""
 "in neueren Versionen finden.\n"
 
 # src/config.c:3743
-#: src/config.c:614
+#: src/config.c:615
 msgid "Enlightenment Starting..."
 msgstr "Enlightenment startet..."
 
@@ -857,12 +857,12 @@ msgstr ""
 "Render-Erweiterungen geladen sind."
 
 # src/setup.c:294 src/setup.c:340
-#: src/events.c:102
+#: src/events.c:103
 msgid "X server setup error"
 msgstr "Einstellungsfehler im X-Server"
 
 # src/setup.c:296
-#: src/events.c:103
+#: src/events.c:104
 msgid ""
 "FATAL ERROR:\n"
 "\n"

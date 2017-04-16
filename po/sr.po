@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: trunk\n"
 "Report-Msgid-Bugs-To: enlightenment-intl@lists.sourceforge.net\n"
-"POT-Creation-Date: 2016-08-10 14:21+0200\n"
+"POT-Creation-Date: 2017-04-16 15:27+0200\n"
 "PO-Revision-Date: 2013-06-20 12:49+0000\n"
 "Last-Translator: Саша Петровић <salepetronije@gmail.com>\n"
 "Language-Team: српски <српски <xfce-i18n@xfce.org>>\n"
@@ -174,7 +174,7 @@ msgstr "Напусти Просвећење"
 msgid "Attention !!!"
 msgstr "Пажња !!!"
 
-#: src/alert.c:582 src/dialog.c:684 src/dialog.c:1823 src/events.c:102
+#: src/alert.c:582 src/dialog.c:684 src/dialog.c:1823 src/events.c:103
 #: src/setup.c:163 src/setup.c:176 src/sound.c:309
 msgid "OK"
 msgstr "У реду"
@@ -330,17 +330,17 @@ msgstr ""
 "\n"
 "%s\n"
 
-#: src/config.c:201 src/config.c:293
+#: src/config.c:202 src/config.c:294
 #, c-format
 msgid "CONFIG: ignoring extra data in \"%s\""
 msgstr "ПОДЕШАВАЊА: занемарујем додатне податке у „%s“"
 
-#: src/config.c:209 src/config.c:300
+#: src/config.c:210 src/config.c:301
 #, c-format
 msgid "CONFIG: missing required data in \"%s\""
 msgstr "ПОДЕШАВАЊА: недостају неопходни подаци у „%s“"
 
-#: src/config.c:219
+#: src/config.c:220
 #, c-format
 msgid ""
 "Warning: unable to determine what to do with\n"
@@ -353,7 +353,7 @@ msgstr ""
 "%s\n"
 "Занемарићу и наставићу...\n"
 
-#: src/config.c:227
+#: src/config.c:228
 #, c-format
 msgid ""
 "Warning:  Configuration error in %s block.\n"
@@ -362,19 +362,19 @@ msgstr ""
 "Упозорење:  Грешка у подешавањима у блоку %s.\n"
 "Исход највероватније неће ваљати.\n"
 
-#: src/config.c:309
+#: src/config.c:310
 msgid "Theme versioning ERROR"
 msgstr "Грешка у обележавању издања теме"
 
-#: src/config.c:310
+#: src/config.c:311
 msgid "Restart with Defaults"
 msgstr "Покрени поново са подразумеваним поставкама"
 
-#: src/config.c:311
+#: src/config.c:312
 msgid "Abort and Exit"
 msgstr "Напустите и изађите"
 
-#: src/config.c:312
+#: src/config.c:313
 #, c-format
 msgid ""
 "ERROR:\n"
@@ -410,7 +410,7 @@ msgstr ""
 "неко време, а да тема користи нове \n"
 "могућности новијег Просвећења.\n"
 
-#: src/config.c:614
+#: src/config.c:615
 msgid "Enlightenment Starting..."
 msgstr "Покрећем Просвећење..."
 
@@ -717,11 +717,11 @@ msgstr ""
 "да ли су учитана проширења\n"
 "Composite, Damage, Fixes, и Render."
 
-#: src/events.c:102
+#: src/events.c:103
 msgid "X server setup error"
 msgstr "Грешка подешавања Икс служитеља"
 
-#: src/events.c:103
+#: src/events.c:104
 msgid ""
 "FATAL ERROR:\n"
 "\n"
