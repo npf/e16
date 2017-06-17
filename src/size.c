@@ -40,13 +40,21 @@
 #define MAX_AVAILABLE    1	/* Expand until don't cover */
 #define MAX_CONSERVATIVE 2	/* Expand until something */
 #define MAX_XINERAMA     3	/* Fill Xinerama screen */
+#define MAX_HALF_N       4	/* Expand to North half */
+#define MAX_HALF_S       5	/* Expand to South half */
+#define MAX_HALF_E       6	/* Expand to East half*/
+#define MAX_HALF_W       7	/* Expand to West half*/
 
 static int
 _ignore(const EWin * ewin, int type)
 {
    if (ewin->state.iconified || EoIsFloating(ewin) ||
        ewin->props.ignorearrange ||
-       (type == MAX_AVAILABLE && !ewin->props.never_use_area))
+       ((type == MAX_AVAILABLE ||
+         type == MAX_HALF_N ||
+         type == MAX_HALF_S ||
+         type == MAX_HALF_E ||
+         type == MAX_HALF_W) && !ewin->props.never_use_area))
       return 1;
    return 0;
 }
@@ -807,7 +815,7 @@ pareto_maximizer(EWin * ewin, int type, EWin * const *lst, int num,
 #endif /* ENABLE_SMART_MAXIMISE */
 
 void
-MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver)
+MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver, const char *screen_spec)
 {
    int                 x, y, w, h, x1, x2, y1, y2, type, bl, br, bt, bb;
    EWin               *const *lst;
@@ -818,10 +826,35 @@ MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver)
    if (!ewin)
       return;
 
+   type = MAX_ABSOLUTE;		/* Select default */
+   if (!resize_type || !resize_type[0])
+      type = Conf.movres.mode_maximize_default;
+   else if (!strcmp(resize_type, "absolute"))
+      type = MAX_ABSOLUTE;
+   else if (!strcmp(resize_type, "available"))
+      type = MAX_AVAILABLE;
+   else if (!strcmp(resize_type, "conservative"))
+      type = MAX_CONSERVATIVE;
+   else if (!strcmp(resize_type, "xinerama"))
+      type = MAX_XINERAMA;
+   else if (!strcmp(resize_type, "half_N"))
+      type = MAX_HALF_N;
+   else if (!strcmp(resize_type, "half_S"))
+      type = MAX_HALF_S;
+   else if (!strcmp(resize_type, "half_E"))
+      type = MAX_HALF_E;
+   else if (!strcmp(resize_type, "half_W"))
+      type = MAX_HALF_W;
+
    if (ewin->state.inhibit_max_hor && hor)
       return;
    if (ewin->state.inhibit_max_ver && ver)
       return;
+
+   if ((type == MAX_HALF_E || type == MAX_HALF_W) && hor && ! ver) 
+      old_ver = 0;
+   if ((type == MAX_HALF_N || type == MAX_HALF_S) && ver && ! hor) 
+      old_hor = 0;
 
    if (!old_hor && !old_ver)
      {
@@ -874,18 +907,6 @@ MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver)
 	goto do_resize;
      }
 
-   type = MAX_ABSOLUTE;		/* Select default */
-   if (!resize_type || !resize_type[0])
-      type = Conf.movres.mode_maximize_default;
-   else if (!strcmp(resize_type, "absolute"))
-      type = MAX_ABSOLUTE;
-   else if (!strcmp(resize_type, "available"))
-      type = MAX_AVAILABLE;
-   else if (!strcmp(resize_type, "conservative"))
-      type = MAX_CONSERVATIVE;
-   else if (!strcmp(resize_type, "xinerama"))
-      type = MAX_XINERAMA;
-
    /* Default is no change */
    x = EoGetX(ewin);
    y = EoGetY(ewin);
@@ -911,6 +932,10 @@ MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver)
      case MAX_ABSOLUTE:
      case MAX_AVAILABLE:
      case MAX_CONSERVATIVE:
+     case MAX_HALF_N:
+     case MAX_HALF_S:
+     case MAX_HALF_E:
+     case MAX_HALF_W:
 	ScreenGetAvailableArea(x + w / 2, y + h / 2, &x1, &y1, &x2, &y2,
 			       Conf.place.ignore_struts_maximize);
 	x2 += x1;
@@ -956,6 +981,23 @@ MaxSizeHV(EWin * ewin, const char *resize_type, int hor, int ver)
 	  {
 	     lst = EwinListGetForDesk(&num, EoGetDesk(ewin));
 	  }
+
+	if (type == MAX_HALF_E && hor)
+    {
+      x1 += (x2 - x1) / 2;
+    }
+	if (type == MAX_HALF_W && hor)
+    {
+      x2 -= (x2 - x1) / 2;
+    }
+	if (type == MAX_HALF_N && ver)
+    {
+      y2 -= (y2 - y1) / 2;
+    }
+	if (type == MAX_HALF_S && ver)
+    {
+      y1 += (y2 - y1) / 2;
+    }
 
 #if ENABLE_SMART_MAXIMISE
 	if (type == MAX_CONSERVATIVE && ver && hor &&

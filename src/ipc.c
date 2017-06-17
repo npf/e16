@@ -652,15 +652,15 @@ IpcWinop(const WinOp * wop, EWin * ewin, const char *prm)
 	break;
 
      case EWIN_OP_MAX_WIDTH:
-	MaxSizeHV(ewin, param1, 1, 0);
+	MaxSizeHV(ewin, param1, 1, 0, param2);
 	break;
 
      case EWIN_OP_MAX_HEIGHT:
-	MaxSizeHV(ewin, param1, 0, 1);
+	MaxSizeHV(ewin, param1, 0, 1, param2);
 	break;
 
      case EWIN_OP_MAX_SIZE:
-	MaxSizeHV(ewin, param1, 1, 1);
+	MaxSizeHV(ewin, param1, 1, 1, param2);
 	break;
 
      case EWIN_OP_FULLSCREEN:
@@ -1579,6 +1579,7 @@ static const IpcItem IPCArray[] = {
     "          (you can use ? and ?? to retreive client and frame locations)\n"
     "  win_op <windowid> <mr/sr> <x> <y>   (incremental move/size)\n"
     "  win_op <windowid> toggle_<width/height/size> <conservative/available/xinerama>\n"
+    "  win_op <windowid> toggle_size <half_[N|S|E|W]>\n"
     "  win_op <windowid> <fullscreen/zoom>\n"
     "  win_op <windowid> layer <0-100,4=normal>\n"
     "  win_op <windowid> <raise/lower>\n"
