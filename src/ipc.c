@@ -1579,6 +1579,7 @@ static const IpcItem IPCArray[] = {
     "          (you can use ? and ?? to retreive client and frame locations)\n"
     "  win_op <windowid> <mr/sr> <x> <y>   (incremental move/size)\n"
     "  win_op <windowid> toggle_<width/height/size> <conservative/available/xinerama>\n"
+    "  win_op <windowid> toggle_size <half_[N|S|E|W]>\n"
     "  win_op <windowid> <fullscreen/zoom>\n"
     "  win_op <windowid> layer <0-100,4=normal>\n"
     "  win_op <windowid> <raise/lower>\n"
