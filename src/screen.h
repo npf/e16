@@ -28,6 +28,7 @@ void                ScreenInit(void);
 void                ScreenSplit(unsigned int nx, unsigned int ny);
 void                ScreenShowInfo(const char *prm);
 int                 ScreenGetCurrent(void);
+int                 ScreenGetHeads(void);
 int                 ScreenGetHead(int xi, int yi);
 int                 ScreenGetGeometry(int x, int y, int *px, int *py,
 				      int *pw, int *ph);
